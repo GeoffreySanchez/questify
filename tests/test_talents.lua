@@ -32,6 +32,7 @@ local function load()
   Q.TalentBuildData.WARRIOR = {
     { key = "W_TEST", kind = "leveling", title = { enUS = "Arms leveling", frFR = "Armes montée" },
       order = { { 1, 1, 2 }, { 1, 1, 2 }, { 1, 2, 2 } } },
+    { key = "W_DUNGEON", kind = "dungeon", title = { enUS = "Protection dungeons" }, order = { { 1, 1, 1 } } },
   }
   return Q
 end
@@ -59,7 +60,13 @@ return {
     t.eq(Mock.countPrinted(Q.L.TALENT_FIRST), 1)
     local P = Q.UI.TalentPicker
     t.ok(P.frame and P.frame:IsShown(), "preset asked at level 10")
-    P.buttons[1]:GetScript("OnClick")(P.buttons[1])
+    t.eq(#P.shownCards, 2, "one card per preset")
+    t.eq(P.shownCards[1].kind, "leveling"); t.eq(P.shownCards[2].kind, "dungeon")
+    t.eq(#P.shownCards[1].tiles, 8, "rotating planet: world map tiles behind a round mask")
+    P.frame:GetScript("OnUpdate")(P.frame, 1)
+    t.ok(P.shownCards[2].anims[1]:IsPlaying(), "portal swirls")
+    P.shownCards[1]:GetScript("OnClick")(P.shownCards[1])
+    t.ok(not P.frame:IsShown())
     t.eq(Q.char.talentPreset, "W_TEST")
     local nxt = Q.Talents:Next()
     t.eq(nxt.name, "Deflection"); t.eq(nxt.rank, 0); t.eq(nxt.tabName, "Arms")
@@ -117,5 +124,24 @@ return {
     levelUp(10)
     t.eq(Q.Talents:Alert(), nil)
     t.eq(Mock.countPrinted(Q.L.TALENT_FIRST), 0)
+  end,
+
+  cards_wait_for_end_of_combat = function(t)
+    local Q = load()
+    Mock.player.combat = true
+    levelUp(10)
+    local P = Q.UI.TalentPicker
+    t.ok(not (P.frame and P.frame:IsShown()), "not in combat")
+    Mock.player.combat = false
+    Mock.fire("PLAYER_REGEN_ENABLED")
+    t.ok(P.frame:IsShown(), "after combat")
+    Mock.player.combat = true
+    Mock.fire("PLAYER_REGEN_DISABLED")
+    t.ok(not P.frame:IsShown(), "closed when a fight starts")
+    Mock.player.combat = false
+    Mock.fire("PLAYER_REGEN_ENABLED")
+    t.ok(P.frame:IsShown(), "back after the fight")
+    P.noneButton:GetScript("OnClick")(P.noneButton)
+    t.eq(Q.char.talentPreset, false)
   end,
 }

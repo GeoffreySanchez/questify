@@ -13,6 +13,9 @@
 - Nouvelle option « Touche de ciblage auto » : un raccourci (Échap > Raccourcis > Questify Vanilla)
   cible le monstre d'objectif le plus proche de l'étape courante et le marque d'un crâne, hors
   combat seulement.
+- Forever : animation dorée (ondes et étoile qui tourne) autour de l'objet à utiliser quand l'étape
+  pointe sur un objet du monde (coffre, seau…), avec le marqueur natif. Option « Animer l'objet à
+  utiliser », activée par défaut.
 
 ### English
 - Test build for WoW Classic Era (1.15.8, 1.15.9): `Questify_Vanilla_Vanilla.toc`, compatibility
@@ -24,6 +27,9 @@
   nearest one and marks it with a skull.
 - New "Auto targeting key" option: a key binding (Esc > Key Bindings > Questify Vanilla) targets
   the nearest objective monster of the current step and marks it with a skull, out of combat only.
+- Forever: golden animation (waves and a spinning star) around the object to use when the step
+  points at a world object (chest, bucket…), with the built-in marker. "Animate the object to use"
+  option, on by default.
 
 ## 0.1.0 (2026-11-03)
 

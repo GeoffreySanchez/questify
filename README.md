@@ -55,6 +55,8 @@ Ces points ne se vérifient que dans le jeu (le client Forever n'est pas simulab
 - [ ] Option « Touche de ciblage auto » : une touche liée dans Échap > Raccourcis > Questify Vanilla
       cible le monstre d'objectif le plus proche et lui pose un crâne hors combat, et ne fait rien
       en combat.
+- [ ] Étape avec un objet à utiliser (coffre, seau) et marqueur natif : animation dorée centrée sur
+      l'objet, qui disparaît hors de l'écran ou au-delà de 50 m (option « Animer l'objet à utiliser »).
 - [ ] L'acceptation et le rendu automatiques fonctionnent sur les quêtes de la route, et Maj (Shift)
       les suspend.
 - [ ] Le choix de récompense automatique propose une amélioration ou, à défaut, l'objet qui se vend le

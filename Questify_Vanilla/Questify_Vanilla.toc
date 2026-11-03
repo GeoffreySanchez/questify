@@ -41,6 +41,7 @@ Automation\AutoQuest.lua
 UI\Tracker.lua
 UI\MobPanel.lua
 UI\Nameplates.lua
+UI\ObjectGlow.lua
 UI\ClassQuestPopup.lua
 UI\Journal.lua
 UI\Wizard.lua

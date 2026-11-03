@@ -16,8 +16,13 @@ Guide de leveling **gratuit et open source** pour **World of Warcraft: Forever**
 - Liste des monstres à tuer, quêtes de classe, acceptation et rendu automatiques (désactivables).
 
 ### Installation
-1. Télécharge l'addon et décompresse-le dans `World of Warcraft\_forever_\Interface\AddOns\`
-   (le dossier `Questify_Vanilla` doit se trouver directement dans `AddOns`).
+Les zips sont téléchargeables dans la dernière version publiée du dépôt GitHub :
+<https://github.com/GeoffreySanchez/questify-vanilla/releases/latest>.
+1. Télécharge le zip de ton jeu et décompresse-le (le dossier `Questify_Vanilla` doit se trouver
+   directement dans `AddOns`) :
+   - **Forever** : `Questify_Vanilla-<version>-forever.zip` dans `World of Warcraft\_forever_\Interface\AddOns\` ;
+   - **Classic Era** (test) : `Questify_Vanilla-<version>-era.zip` dans
+     `World of Warcraft\_classic_era_\Interface\AddOns\` (voir « Tester sur Classic Era »).
 2. Installe [**QuestieDB**](https://www.curseforge.com/wow/addons/questiedb) depuis CurseForge :
    c'est une dépendance obligatoire (les données de quêtes viennent de là).
 3. Facultatif : installe [**ShortestPath Forever**](https://www.curseforge.com/wow/addons/shortest-path-forever)
@@ -79,8 +84,9 @@ Dans le suivi : clic droit pour passer une étape, Maj + clic droit pour revenir
 Maintenir Maj (Shift) suspend l'acceptation et le rendu automatiques.
 
 ### Tester sur Classic Era
-Le même zip contient une version de test pour WoW Classic Era (1.15.8 et 1.15.9), chargée par le
-client Era grâce au fichier `Questify_Vanilla_Vanilla.toc`. La version Forever ne change pas.
+Le zip `Questify_Vanilla-<version>-era.zip` est une version de test pour WoW Classic Era (1.15.8 et
+1.15.9), à décompresser dans `World of Warcraft\_classic_era_\Interface\AddOns\`. La version Forever
+ne change pas.
 - Installe **QuestieDB** depuis CurseForge en choisissant le fichier Classic Era (obligatoire, comme
   sur Forever).
 - **TomTom** (version Classic) est conseillé : Classic Era n'a ni repère de carte ni marqueur 3D,
@@ -90,6 +96,18 @@ client Era grâce au fichier `Questify_Vanilla_Vanilla.toc`. La version Forever 
 - La route Era ne couvre que **Nain et Gnome, niveaux 1 à 12** : Coldridge Valley (1-6) puis
   Dun Morogh (6-12). Les autres races n'ont pas de route sur Era.
 - Si le jeu indique l'addon « périmé », coche « Charger les addons périmés ».
+
+À vérifier en jeu sur Era :
+- [ ] Pas d'erreur Lua au chargement ; `/qf` ouvre le journal.
+- [ ] Prendre une quête : le suivi passe à l'étape suivante ; terminer ses objectifs : l'étape
+      « faire » se coche.
+- [ ] Replier un en-tête de zone du journal de quêtes : le suivi continue de suivre les quêtes
+      de cette zone (étapes « faire » et « rendre »).
+- [ ] Un PNJ à plusieurs quêtes sans dialogue : la bonne quête est prise ou rendue automatiquement.
+- [ ] La récompense est choisie seule quand il y a plusieurs choix.
+- [ ] Clic sur un monstre du panneau : il est ciblé et reçoit un crâne ; icône au-dessus de sa barre
+      de nom.
+- [ ] Avec TomTom : la flèche pointe vers l'étape.
 
 ### Licence
 GPL-3.0-or-later (voir `LICENSE`). Les données de QuestieDB ne sont pas redistribuées : elles sont
@@ -107,8 +125,13 @@ lues en jeu depuis l'addon QuestieDB.
 - Mob list for objectives, class quests, automatic accept and turn-in (can be turned off).
 
 ### Installation
-1. Download the addon and unzip it into `World of Warcraft\_forever_\Interface\AddOns\`
-   (the `Questify_Vanilla` folder must sit directly inside `AddOns`).
+The zips can be downloaded from the GitHub repository's latest release:
+<https://github.com/GeoffreySanchez/questify-vanilla/releases/latest>.
+1. Download the zip for your game and unzip it (the `Questify_Vanilla` folder must sit directly
+   inside `AddOns`):
+   - **Forever**: `Questify_Vanilla-<version>-forever.zip` into `World of Warcraft\_forever_\Interface\AddOns\`;
+   - **Classic Era** (test): `Questify_Vanilla-<version>-era.zip` into
+     `World of Warcraft\_classic_era_\Interface\AddOns\` (see "Testing on Classic Era").
 2. Install [**QuestieDB**](https://www.curseforge.com/wow/addons/questiedb) from CurseForge: it is a
    required dependency (quest data comes from it).
 3. Optional: install [**ShortestPath Forever**](https://www.curseforge.com/wow/addons/shortest-path-forever)
@@ -166,6 +189,31 @@ exact error message.
 
 In the tracker: right-click skips a step, Shift + right-click goes back.
 Holding Shift pauses automatic accept and turn-in.
+
+### Testing on Classic Era
+The `Questify_Vanilla-<version>-era.zip` file is a test build for WoW Classic Era (1.15.8 and
+1.15.9). Unzip it into `World of Warcraft\_classic_era_\Interface\AddOns\`. The Forever build does not
+change.
+- Install **QuestieDB** from CurseForge, picking the Classic Era file (required, as on Forever).
+- **TomTom** (Classic version) is recommended: Classic Era has no map pin and no 3D marker, so
+  without TomTom only the on-screen tracker shows the step. Pick TomTom in the wizard
+  (`/qf wizard`) or in the options.
+- Type `/qf` to open the journal (chapters, steps, options, class quests).
+- The Era route only covers **Dwarf and Gnome, levels 1 to 12**: Coldridge Valley (1-6), then
+  Dun Morogh (6-12). Other races have no route on Era.
+- If the game says the addon is out of date, tick "Load out of date AddOns".
+
+To check in game on Era:
+- [ ] No Lua error on load; `/qf` opens the journal.
+- [ ] Accept a quest: the tracker moves to the next step; finish its objectives: the "complete"
+      step ticks.
+- [ ] Collapse a zone header in the quest log: the tracker still follows that zone's quests
+      ("complete" and "turn in" steps).
+- [ ] An NPC with several quests and no dialogue: the right quest is accepted or turned in
+      automatically.
+- [ ] The reward is picked on its own when there are several choices.
+- [ ] Click a mob in the panel: it is targeted and gets a skull; icon over its nameplate.
+- [ ] With TomTom: the arrow points to the step.
 
 ### License
 GPL-3.0-or-later (see `LICENSE`). QuestieDB data is not redistributed: it is read in game from the

@@ -79,18 +79,50 @@ end
 
 local function fmtTime(s) return ("%d min"):format(math.floor(s / 60 + 0.5)) end
 
+-- Chemins : absolus et normalisés (« . » et « .. » résolus), puis chemin relatif de from vers to.
+local cwd
+local function absPath(p)
+  if p:sub(1, 1) == "/" then return p end
+  if not cwd then
+    local h = assert(io.popen("pwd"), "pwd failed")
+    cwd = h:read("*l"); h:close()
+  end
+  return cwd .. "/" .. p
+end
+
+local function splitPath(p)
+  local parts = {}
+  for seg in absPath(p):gmatch("[^/]+") do
+    if seg == ".." then parts[#parts] = nil
+    elseif seg ~= "." then parts[#parts + 1] = seg end
+  end
+  return parts
+end
+
+local function relPath(from, to)
+  local a, b = splitPath(from), splitPath(to)
+  local i = 1
+  while a[i] and b[i] and a[i] == b[i] do i = i + 1 end
+  local out = {}
+  for _ = i, #a do out[#out + 1] = ".." end
+  for k = i, #b do out[#out + 1] = b[k] end
+  return table.concat(out, "/")
+end
+
 -- Valide les guides écrits avec tools/validate_guides.lua (flux E, inchangé) : qdb.load et
--- world.load sont redirigés vers la vue Era le temps de l'appel.
+-- world.load sont redirigés vers la vue Era le temps de l'appel. Le validateur lit
+-- <dir>/Guides.xml puis <dir>/<fichier> : chaque guide y est donné par son chemin relatif à <dir>,
+-- quel que soit --out (relatif ou absolu).
 local function validate(o, files)
   local dir = here .. "/data_era/validate"
   mkdir(dir)
-  -- chemins relatifs à <dir> (le validateur lit <dir>/<fichier>)
-  local up = "../../../../"
   local lines = { "<Ui>" }
-  for _, rel in ipairs(files) do lines[#lines + 1] = ('  <Script file="%s%s/%s"/>'):format(up, o.out, rel) end
+  for _, rel in ipairs(files) do
+    lines[#lines + 1] = ('  <Script file="%s"/>'):format(relPath(dir, o.out .. "/" .. rel))
+  end
   lines[#lines + 1] = "</Ui>"
   writeFile(dir .. "/Guides.xml", table.concat(lines, "\n") .. "\n")
-  local M = assert(loadfile("tools/validate_guides.lua"))("--as-module")
+  local M = assert(loadfile(here .. "/../validate_guides.lua"))("--as-module")
   local origLoad, origWorld = qdb.load, world.load
   qdb.load = function(opts) return qdbEra.load(opts) end
   world.load = function(d)

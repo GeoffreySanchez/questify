@@ -15,7 +15,9 @@ optional-dependencies:
   - tomtom
 
 # Le fichier Questify_Vanilla_Camelot.toc (Interface 16xxx) est reconnu par le packager
-# comme la variante « Forever ». Le dépôt garde l'addon dans le sous-dossier Questify_Vanilla/ :
+# comme la variante « Forever », et Questify_Vanilla_Vanilla.toc (Interface 11508, 11509) comme la
+# variante Classic Era : un même paquet est alors marqué pour les deux jeux (la TOC Era charge
+# Guides\GuidesEra.xml, route de test Nain/Gnome 1-12). Le dépôt garde l'addon dans le sous-dossier Questify_Vanilla/ :
 # un packager lancé à la racine du dépôt doit donc être réglé pour prendre ce sous-dossier
 # comme racine de l'addon (ou le dépôt doit être réorganisé) avant une publication automatique.
 ignore:

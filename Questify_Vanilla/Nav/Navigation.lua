@@ -135,7 +135,7 @@ PROVIDERS.native = {
     -- Q.API.SetNativeWaypoint : sur une carte refusée, l'ancien point trompeur est retiré ;
     -- nil = client sans repère natif (Classic Era) : rien à poser, le suivi reste seul guide.
     local placed = Q.API.SetNativeWaypoint(t.mapId, t.x / 100, t.y / 100, t.title)
-    if placed == nil and not nativeHintShown then
+    if placed == nil and Q.IsClassicEra() and not nativeHintShown then
       nativeHintShown = true
       Q:Print(Q.L.NAV_NO_NATIVE_ERA)
     end

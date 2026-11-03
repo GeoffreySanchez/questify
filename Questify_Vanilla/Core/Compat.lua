@@ -58,42 +58,38 @@ local function logEntry(i)
   return nil
 end
 
--- Toutes les lignes du journal (en-têtes compris), dans l'ordre du client.
-function API.QuestLogEntries()
-  local out = {}
-  local n = 0
-  if C_QuestLog and C_QuestLog.GetNumQuestLogEntries then
-    n = C_QuestLog.GetNumQuestLogEntries() or 0
-  elseif GetNumQuestLogEntries then
-    n = GetNumQuestLogEntries() or 0
-  end
-  for i = 1, n do
-    local e = logEntry(i)
-    if e then out[#out + 1] = e end
-  end
-  return out
-end
-
 -- Vrai si la quête est dans le journal.
+-- Forever : index C_QuestLog.GetLogIndexForQuestID ; Era : C_QuestLog.IsOnQuest, qui ne dépend pas
+-- des en-têtes repliés (GetQuestLogIndexByID ne voit que les lignes affichées).
 function API.IsOnQuest(id)
   if type(id) ~= "number" then return false end
+  if C_QuestLog and C_QuestLog.GetLogIndexForQuestID then return API.QuestLogIndex(id) ~= nil end
+  if C_QuestLog and C_QuestLog.IsOnQuest then return C_QuestLog.IsOnQuest(id) == true end
   return API.QuestLogIndex(id) ~= nil
 end
 
 -- Vrai si la quête du journal peut être rendue.
--- Era : 6e valeur de GetQuestLogTitle (1 = terminée, -1 = échouée). Une quête sans objectif
--- (« va parler à ») renvoie nil alors qu'elle peut être rendue : on la compte terminée.
+-- Era : 6e valeur de GetQuestLogTitle (1 = terminée, -1 = échouée). Sans ligne lisible (en-tête
+-- replié) ou sans état, les objectifs font foi : tous remplis, ou aucun objectif (« va parler à »).
 function API.IsQuestComplete(id)
   if type(id) ~= "number" then return false end
   if C_QuestLog and C_QuestLog.IsComplete then return C_QuestLog.IsComplete(id) == true end
+  if not API.IsOnQuest(id) then return false end
   local idx = API.QuestLogIndex(id)
-  if not idx then return false end
-  local e = logEntry(idx)
-  if not e or e.isHeader then return false end
-  if e.isComplete == 1 then return true end
-  if e.isComplete == -1 then return false end
+  local e = idx and logEntry(idx)
+  if e and not e.isHeader then
+    if e.isComplete == 1 then return true end
+    if e.isComplete == -1 then return false end
+  end
   local objs = C_QuestLog and C_QuestLog.GetQuestObjectives and C_QuestLog.GetQuestObjectives(id)
-  return type(objs) == "table" and #objs == 0
+  if type(objs) ~= "table" then return false end
+  if #objs == 0 then return true end
+  -- ligne lue et état nil malgré des objectifs : pas terminée
+  if e and not e.isHeader then return false end
+  for _, o in ipairs(objs) do
+    if not o.finished then return false end
+  end
+  return true
 end
 
 -- Titre localisé d'une quête connue du client, ou nil.

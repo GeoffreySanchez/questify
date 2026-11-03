@@ -1,7 +1,7 @@
 ## Interface: 11508, 11509
 ## Title: Questify Vanilla
-## Notes: Free leveling guide for World of Warcraft: Forever (1-30). Classic Era test route: Dwarf/Gnome 1-12.
-## Notes-frFR: Guide de leveling gratuit pour World of Warcraft: Forever (1-30). Route de test Classic Era : Nain/Gnome 1-12.
+## Notes: Free leveling guide, Classic Era test build: Dwarf and Gnome route, levels 1-12 (TomTom recommended).
+## Notes-frFR: Guide de leveling gratuit, version de test Classic Era : route Nain et Gnome, niveaux 1 à 12 (TomTom conseillé).
 ## Author: Questify Vanilla contributors
 ## Version: 0.1.0
 ## IconTexture: Interface\Icons\INV_Misc_Book_09

@@ -53,8 +53,9 @@ sim.CONST = {
   FLY_PENALTY = 30,       -- s ajoutées au choix d'un vol (descendre, remonter, file d'attente)
   HEARTH_PENALTY = 120,   -- s de coût d'opportunité de la pierre (60 min de recharge ; 300 n'était jamais rentable)
   HEARTH_LOAD = 15,       -- s d'écran de chargement / téléportation
-  SAFE_QUEST_ABOVE = nil, -- niveaux : si défini, objectifs faits au plus tôt au niveau de la quête - N (désactivé : coûte ~8 % d'XP/h)
-  SAFE_MOB_ABOVE = nil,   -- niveaux : si défini, monstres à tuer (niveau moyen) au plus N niveaux au-dessus du personnage
+  SAFE_QUEST_ABOVE = 1,   -- niveaux : objectifs faits au plus tôt au niveau de la quête - 1 (jamais orange)
+  SAFE_GATE_GRIND = 60,   -- mobs à farmer acceptés pour atteindre le niveau « sûr » d'un objectif (au lieu de le sauter)
+  SAFE_MOB_ABOVE = 1,     -- niveaux : monstres à tuer (niveau moyen) au plus 1 niveau au-dessus du personnage
   ROUTE_MIN = 90,         -- s : en dessous, marche directe sans chercher de vol ni de liaison
   BONUS_CAP = 900,        -- s, plafond du bonus « quête de transport »
 }
@@ -1288,11 +1289,13 @@ function sim.chapter(D, W, plan, state, opts)
         if byId[c] and not byId[c].dropped then opensMore = true end
       end
       if q.next and byId[q.next] and not byId[q.next].dropped then opensMore = true end
-      if not skip and not opensMore and t.reqLevel and state.level < t.reqLevel then
+      if not skip and t.safeLevel and t.reqLevel and state.level < t.reqLevel then
+        -- niveau « sûr » trop loin : la quête est faite quand même (jamais sautée pour ça)
+        t.unsafe = mobsTo(t.reqLevel, cur) > C.SAFE_GATE_GRIND
+      elseif not skip and not opensMore and t.reqLevel and state.level < t.reqLevel then
         local n = mobsTo(t.reqLevel, cur)
         if n > C.GATE_GRIND then
-          skip = (t.safeLevel and "safe level %d not reached in time (~%d mobs to farm)"
-            or "required level %d not reached in time (~%d mobs to farm)"):format(t.reqLevel, n)
+          skip = ("required level %d not reached in time (~%d mobs to farm)"):format(t.reqLevel, n)
         end
       end
       if skip then
@@ -1326,7 +1329,7 @@ function sim.chapter(D, W, plan, state, opts)
         step._c = { name = q.name, level = q.level, simLevel = state.level }
         return step
       end
-      if (t.kind == "A" or t.kind == "C" or t.kind == "O") and t.reqLevel and state.level < t.reqLevel then
+      if (t.kind == "A" or t.kind == "C" or t.kind == "O") and t.reqLevel and state.level < t.reqLevel and not t.unsafe then
         cur = sim.grindTo(ctx, steps, cur, t.reqLevel, fms)
         cur = sim.travel(ctx, steps, cur, t.pos, fms)
       end

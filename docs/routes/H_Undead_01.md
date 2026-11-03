@@ -104,9 +104,9 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 20 | T | 98389 | A Light in the Darkness | 1420 | 31.1, 66.4 | 15 |  |
 | 21 | T | 380 | Night Web's Hollow | 1420 | 32.1, 66.0 | 48 |  |
 | 22 | A | 381 | The Scarlet Crusade | 1420 | 32.1, 66.0 | 0 |  |
-| 23 | O | 3902 | Scavenging Deathknell | 1420 | 33.0, 64.3 | 65 |  |
-| 24 | O | 381 | The Scarlet Crusade | 1420 | 37.5, 67.5 | 223 |  |
-| 25 | T | 381 | The Scarlet Crusade | 1420 | 32.1, 66.0 | 246 |  |
+| 23 | O | 381 | The Scarlet Crusade | 1420 | 37.5, 67.5 | 246 |  |
+| 24 | O | 3902 | Scavenging Deathknell | 1420 | 33.0, 64.3 | 223 |  |
+| 25 | T | 381 | The Scarlet Crusade | 1420 | 32.1, 66.0 | 65 |  |
 | 26 | A | 382 | The Red Messenger | 1420 | 32.1, 66.0 | 0 |  |
 | 27 | O | 382 | The Red Messenger | 1420 | 36.6, 68.5 | 213 |  |
 | 28 | T | 382 | The Red Messenger | 1420 | 32.1, 66.0 | 213 |  |

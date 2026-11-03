@@ -5,10 +5,10 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Item | Value |
 |---|---|
 | Level band | 14-16 |
-| Simulated level | 15.00 -> 16.61 |
+| Simulated level | 15.00 -> 16.71 |
 | Time | 74 min |
-| XP gained | 21281 |
-| XP/h | 17154 |
+| XP gained | 21233 |
+| XP/h | 17115 |
 | Steps | 38 |
 | Quests turned in | 12 |
 | Hubs | 8 |
@@ -23,8 +23,8 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 1 | 12 | The People's Militia | 12 | 910 | 15 |
 | 2 | 92742 | Testing the Wells | 12 | 910 est. | 15 |
 | 3 | 92744 | Murloc Gills | 12 | 910 est. | 15 |
-| 4 | 136 | Captain Sander's Hidden Treasure | 16 | 580 | 15 |
-| 5 | 138 | Captain Sander's Hidden Treasure | 16 | 580 | 15 |
+| 4 | 136 | Captain Sander's Hidden Treasure | 16 | 580 | 16 |
+| 5 | 138 | Captain Sander's Hidden Treasure | 16 | 580 | 16 |
 | 6 | 139 | Captain Sander's Hidden Treasure | 16 | 580 | 16 |
 | 7 | 13 | The People's Militia | 14 | 980 | 16 |
 | 8 | 92745 | The State of the Mines | 14 | 980 est. | 16 |

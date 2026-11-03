@@ -5,14 +5,14 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Item | Value |
 |---|---|
 | Level band | 12-15 |
-| Simulated level | 12.00 -> 16.23 |
-| Time | 115 min |
-| XP gained | 42975 |
-| XP/h | 22394 |
-| Steps | 93 |
-| Quests turned in | 35 |
+| Simulated level | 13.00 -> 16.28 |
+| Time | 110 min |
+| XP gained | 42601 |
+| XP/h | 23224 |
+| Steps | 89 |
+| Quests turned in | 34 |
 | Hubs | 8 |
-| Median ratio (XP/s) | 5.17 |
+| Median ratio (XP/s) | 5.19 |
 
 ## Kept quests (turn-in order)
 
@@ -22,39 +22,38 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 |---|---|---|---|---|---|
 | 1 | 428 | Lost Deathstalkers | 12 | 225 est. | 13 |
 | 2 | 435 | Escorting Erland | 11 | 880 | 13 |
-| 3 | 437 | The Dead Fields | 14 | 980 | 13 |
-| 4 | 421 | Prove Your Worth | 10 | 840 | 13 |
-| 5 | 438 | The Decrepit Ferry | 16 | 880 | 13 |
-| 6 | 422 | Arugal's Folly | 11 | 880 | 13 |
-| 7 | 449 | The Deathstalkers' Report | 11 | 440 | 13 |
-| 8 | 439 | Rot Hide Clues | 16 | 290 | 13 |
-| 9 | 460 | Resting in Pieces | 17 | 630 | 13 |
-| 10 | 461 | The Hidden Niche | 18 | 680 | 14 |
-| 11 | 423 | Arugal's Folly | 14 | 980 | 14 |
-| 12 | 443 | Rot Hide Ichor | 17 | 1250 | 14 |
-| 13 | 3221 | Speak with Renferrel | 12 | 90 | 14 |
-| 14 | 6321 | Supplying the Sepulcher | 10 | 210 | 14 |
-| 15 | 491 | Wand to Bethor | 18 | 1700 | 15 |
-| 16 | 444 | Rot Hide Origins | 17 | 315 | 15 |
-| 17 | 6323 | Ride to the Undercity | 10 | 420 | 15 |
-| 18 | 6322 | Michael Garrett | 10 | 210 | 15 |
-| 19 | 447 | A Recipe For Death | 12 | 910 | 15 |
-| 20 | 477 | Border Crossings | 14 | 980 | 15 |
-| 21 | 6324 | Return to Podrig | 10 | 1050 | 15 |
-| 22 | 91920 | Wild Eyes | 11 | 770 est. | 15 |
-| 23 | 446 | Thule Ravenclaw | 16 | 290 | 15 |
-| 24 | 429 | Wild Hearts | 11 | 440 | 15 |
-| 25 | 450 | A Recipe For Death | 15 | 1350 | 15 |
-| 26 | 448 | Report to Hadrec | 16 | 580 | 15 |
-| 27 | 478 | Maps and Runes | 14 | 740 | 15 |
-| 28 | 424 | Arugal's Folly | 15 | 1050 | 15 |
-| 29 | 98298 | Arugal's Folly | 16 | 1150 est. | 16 |
-| 30 | 430 | Return to Quinn | 11 | 660 | 16 |
-| 31 | 91921 | Return to Quinn (Again) | 11 | 660 est. | 16 |
-| 32 | 425 | Ivar the Foul | 12 | 680 | 16 |
-| 33 | 97891 | Prompt Potion Runner | 16 | 580 est. | 16 |
-| 34 | 1359 | Zinge's Delivery | 15 | 105 | 16 |
-| 35 | 440 | The Engraved Ring | 16 | 580 | 16 |
+| 3 | 421 | Prove Your Worth | 10 | 840 | 13 |
+| 4 | 437 | The Dead Fields | 14 | 980 | 13 |
+| 5 | 6321 | Supplying the Sepulcher | 10 | 210 | 13 |
+| 6 | 438 | The Decrepit Ferry | 16 | 880 | 13 |
+| 7 | 422 | Arugal's Folly | 11 | 880 | 13 |
+| 8 | 449 | The Deathstalkers' Report | 11 | 440 | 13 |
+| 9 | 439 | Rot Hide Clues | 16 | 290 | 13 |
+| 10 | 460 | Resting in Pieces | 17 | 630 | 14 |
+| 11 | 461 | The Hidden Niche | 18 | 680 | 14 |
+| 12 | 429 | Wild Hearts | 11 | 440 | 14 |
+| 13 | 443 | Rot Hide Ichor | 17 | 1250 | 15 |
+| 14 | 3221 | Speak with Renferrel | 12 | 90 | 15 |
+| 15 | 423 | Arugal's Folly | 14 | 980 | 15 |
+| 16 | 447 | A Recipe For Death | 12 | 910 | 15 |
+| 17 | 1359 | Zinge's Delivery | 15 | 105 | 15 |
+| 18 | 6323 | Ride to the Undercity | 10 | 420 | 15 |
+| 19 | 444 | Rot Hide Origins | 17 | 315 | 15 |
+| 20 | 491 | Wand to Bethor | 18 | 1700 | 15 |
+| 21 | 6322 | Michael Garrett | 10 | 210 | 15 |
+| 22 | 477 | Border Crossings | 14 | 980 | 15 |
+| 23 | 6324 | Return to Podrig | 10 | 1050 | 15 |
+| 24 | 91920 | Wild Eyes | 11 | 770 est. | 15 |
+| 25 | 446 | Thule Ravenclaw | 16 | 290 | 15 |
+| 26 | 450 | A Recipe For Death | 15 | 1350 | 15 |
+| 27 | 448 | Report to Hadrec | 16 | 580 | 15 |
+| 28 | 478 | Maps and Runes | 14 | 740 | 15 |
+| 29 | 424 | Arugal's Folly | 15 | 1050 | 16 |
+| 30 | 98298 | Arugal's Folly | 16 | 1150 est. | 16 |
+| 31 | 430 | Return to Quinn | 11 | 660 | 16 |
+| 32 | 91921 | Return to Quinn (Again) | 11 | 660 est. | 16 |
+| 33 | 425 | Ivar the Foul | 12 | 680 | 16 |
+| 34 | 440 | The Engraved Ring | 16 | 580 | 16 |
 
 ## Dropped quests
 
@@ -270,6 +269,7 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 91860 | A Grim Fate | 22 | class quest (ClassQuestData.lua) |
 | 91861 | Into Fenris Keep | 22 | class quest (ClassQuestData.lua) |
 | 91862 | Lumina Windsinger | 22 | class quest (ClassQuestData.lua) |
+| 92401 | A Frightened Request | 22 | required level 15 not reached in time (~21 mobs to farm) |
 | 94434 | A Lesson in Divinity | 12 | class quest (ClassQuestData.lua) |
 | 94435 | A Lesson in Divinity | 12 | class quest (ClassQuestData.lua) |
 | 95034 | The Debt | 24 | class quest (ClassQuestData.lua) |
@@ -284,17 +284,21 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 96984 | Heart of Disruption | 33 | quest level 33 above the band |
 | 96988 | Source of Power | 33 | quest level 33 above the band |
 | 97286 | Research Access | 20 | class quest (ClassQuestData.lua) |
+| 97289 | Unending Torment | 21 | required level 16 not reached in time (~98 mobs to farm) |
 | 97290 | Unending Torment | 21 | quest level 21 above the band |
+| 97291 | Unending Torment | 21 | required level 16 not reached in time (~98 mobs to farm) |
+| 97292 | Unending Torment | 21 | required level 16 not reached in time (~98 mobs to farm) |
 | 97583 | WRIGGLE. | 1 | quest level 1 below the band |
 | 97985 | Thundering Hearts | 33 | quest level 33 above the band |
 | 98299 | Stop the Spread | 20 | quest level 20 above the band |
 | 98887 | Conflict at Darkspear Islands | 39 | quest level 39 above the band |
 | 98888 | Conflict at Darkspear Islands | 39 | quest level 39 above the band |
-| 99 | Arugal's Folly | 15 | level band reached |
 | 451 | A Recipe For Death | 18 | level band reached |
+| 99 | Arugal's Folly | 15 | level band reached |
 | 479 | Ambermill Investigations | 16 | level band reached |
 | 482 | Dalaran's Intentions | 14 | level band reached |
 | 481 | Dalar's Analysis | 14 | level band reached |
+| 95216 | The New Plague | 22 | required level 16 not reached in time (~117 mobs to farm) |
 
 ## Candidate ratios
 
@@ -305,28 +309,28 @@ below 0.35 × the median ratio, or when an objective is more than 900 yd from ev
 | Quest | Name | Lvl | Value | Bonus | Isolated s | Marginal s | Ratio | Marginal ratio | Sites | Dropped |
 |---|---|---|---|---|---|---|---|---|---|---|
 | 99 | Arugal's Folly | 15 | 3660 | 0 | 707 | 564 | 5.17 | 6.48 | 1 | level band reached |
-| 421 | Prove Your Worth | 10 | 1230 | 0 | 313 | 189 | 5.07 | 6.67 | 1 |  |
-| 422 | Arugal's Folly | 11 | 880 | 0 | 162 | 119 | 5.67 | 6.74 | 1 |  |
-| 423 | Arugal's Folly | 14 | 3010 | 0 | 483 | 483 | 5.73 | 6.61 | 1 |  |
-| 424 | Arugal's Folly | 15 | 1170 | 0 | 216 | 128 | 5.24 | 7.12 | 1 |  |
+| 421 | Prove Your Worth | 10 | 1180 | 0 | 313 | 189 | 4.95 | 6.52 | 1 |  |
+| 422 | Arugal's Folly | 11 | 880 | 0 | 162 | 119 | 5.58 | 6.63 | 1 |  |
+| 423 | Arugal's Folly | 14 | 2902 | 0 | 483 | 483 | 5.62 | 6.48 | 1 |  |
+| 424 | Arugal's Folly | 15 | 1171 | 0 | 216 | 128 | 5.24 | 7.12 | 1 |  |
 | 425 | Ivar the Foul | 12 | 790 | 0 | 55 | 55 | 14.15 | 14.15 | 1 |  |
-| 428 | Lost Deathstalkers | 12 | 848 | 623 | 137 | 15 | 4.56 | 8.19 | 0 |  |
-| 429 | Wild Hearts | 11 | 1896 | 0 | 541 | 416 | 4.09 | 5.95 | 1 |  |
+| 428 | Lost Deathstalkers | 12 | 825 | 600 | 137 | 15 | 4.35 | 7.83 | 0 |  |
+| 429 | Wild Hearts | 11 | 1752 | 0 | 541 | 416 | 3.87 | 5.64 | 1 |  |
 | 430 | Return to Quinn | 11 | 660 | 0 | 147 | 24 | 6.51 | 19.00 | 0 |  |
-| 435 | Escorting Erland | 11 | 880 | 0 | 69 | 69 | 5.87 | 15.39 | 1 |  |
+| 435 | Escorting Erland | 11 | 880 | 0 | 69 | 69 | 5.86 | 15.27 | 1 |  |
 | 437 | The Dead Fields | 14 | 1095 | 0 | 213 | 106 | 5.41 | 10.43 | 1 |  |
 | 438 | The Decrepit Ferry | 16 | 880 | 0 | 104 | 13 | 5.47 | 10.46 | 0 |  |
 | 439 | Rot Hide Clues | 16 | 290 | 0 | 104 | 13 | 5.21 | 9.34 | 0 |  |
-| 440 | The Engraved Ring | 16 | 2177 | 1597 | 332 | 13 | 6.56 | 165.87 | 0 |  |
-| 443 | Rot Hide Ichor | 17 | 9503 | 0 | 1578 | 1291 | 5.17 | 7.61 | 1 |  |
+| 440 | The Engraved Ring | 16 | 2116 | 1536 | 332 | 13 | 6.38 | 161.26 | 0 |  |
+| 443 | Rot Hide Ichor | 17 | 9566 | 0 | 1578 | 1291 | 5.20 | 7.66 | 1 |  |
 | 444 | Rot Hide Origins | 17 | 315 | 0 | 303 | 20 | 1.53 | 18.04 | 0 |  |
 | 446 | Thule Ravenclaw | 16 | 290 | 0 | 303 | 20 | 2.19 | 20.14 | 0 |  |
-| 447 | A Recipe For Death | 12 | 4907 | 0 | 1245 | 1007 | 4.76 | 6.07 | 2 |  |
+| 447 | A Recipe For Death | 12 | 4538 | 0 | 1243 | 1004 | 4.63 | 5.92 | 2 |  |
 | 448 | Report to Hadrec | 16 | 580 | 0 | 20 | 20 | 28.40 | 28.40 | 0 |  |
-| 449 | The Deathstalkers' Report | 11 | 440 | 0 | 137 | 15 | 3.38 | 21.81 | 0 |  |
-| 450 | A Recipe For Death | 15 | 1350 | 0 | 467 | 39 | 5.47 | 7.18 | 1 |  |
-| 451 | A Recipe For Death | 18 | 14004 | 0 | 2243 | 2164 | 6.24 | 6.47 | 2 | level band reached |
-| 460 | Resting in Pieces | 17 | 1416 | 0 | 134 | 114 | 11.24 | 20.94 | 0 |  |
+| 449 | The Deathstalkers' Report | 11 | 440 | 0 | 137 | 15 | 3.37 | 21.25 | 0 |  |
+| 450 | A Recipe For Death | 15 | 1350 | 0 | 465 | 35 | 5.49 | 7.21 | 1 |  |
+| 451 | A Recipe For Death | 18 | 14025 | 0 | 2241 | 2161 | 6.26 | 6.49 | 2 | level band reached |
+| 460 | Resting in Pieces | 17 | 1422 | 0 | 134 | 114 | 11.26 | 20.98 | 0 |  |
 | 461 | The Hidden Niche | 18 | 680 | 0 | 40 | 14 | 12.12 | 85.56 | 0 |  |
 | 477 | Border Crossings | 14 | 980 | 0 | 97 | 14 | 6.91 | 13.53 | 0 |  |
 | 478 | Maps and Runes | 14 | 740 | 0 | 97 | 14 | 5.73 | 8.86 | 0 |  |
@@ -334,17 +338,16 @@ below 0.35 × the median ratio, or when an objective is more than 900 yd from ev
 | 481 | Dalar's Analysis | 14 | 100 | 0 | 21 | 21 | 5.07 | 6.14 | 0 | level band reached |
 | 482 | Dalaran's Intentions | 14 | 100 | 0 | 21 | 21 | 5.09 | 6.25 | 0 | level band reached |
 | 491 | Wand to Bethor | 18 | 1700 | 0 | 163 | 10 | 10.42 | 170.00 | 0 |  |
-| 1358 | Sample for Helbrim | 15 | 1050 | 0 | 5 | 5 | 192.14 | 192.14 | 0 |  |
-| 1359 | Zinge's Delivery | 15 | 105 | 0 | 238 | 21 | 3.47 | 33.57 | 0 |  |
-| 3221 | Speak with Renferrel | 12 | 90 | 0 | 20 | 20 | 3.57 | 17.87 | 0 |  |
+| 1358 | Sample for Helbrim | 15 | 1050 | 0 | 6 | 6 | 166.62 | 166.62 | 0 |  |
+| 1359 | Zinge's Delivery | 15 | 105 | 0 | 239 | 22 | 3.45 | 30.79 | 0 |  |
+| 3221 | Speak with Renferrel | 12 | 90 | 0 | 20 | 20 | 3.55 | 17.16 | 0 |  |
 | 6321 | Supplying the Sepulcher | 10 | 210 | 0 | 42 | 42 | 2.91 | 10.33 | 0 |  |
 | 6322 | Michael Garrett | 10 | 210 | 0 | 23 | 23 | 4.53 | 23.09 | 0 |  |
 | 6323 | Ride to the Undercity | 10 | 420 | 0 | 268 | 44 | 2.61 | 14.70 | 0 |  |
 | 6324 | Return to Podrig | 10 | 1050 | 0 | 264 | 25 | 3.97 | 41.66 | 0 |  |
-| 91920 | Wild Eyes | 11 | 1687 | 0 | 547 | 180 | 3.08 | 9.33 | 1 |  |
+| 91920 | Wild Eyes | 11 | 1694 | 0 | 547 | 180 | 3.09 | 9.37 | 1 |  |
 | 91921 | Return to Quinn (Again) | 11 | 660 | 0 | 147 | 24 | 4.48 | 26.66 | 0 |  |
-| 97891 | Prompt Potion Runner | 16 | 580 | 0 | 52 | 45 | 11.12 | 12.64 | 0 |  |
-| 98298 | Arugal's Folly | 16 | 2590 | 0 | 568 | 291 | 4.55 | 8.87 | 1 |  |
+| 98298 | Arugal's Folly | 16 | 2602 | 0 | 568 | 291 | 4.58 | 8.91 | 1 |  |
 
 ## Itinerary
 
@@ -356,102 +359,98 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 |---|---|---|---|---|---|---|---|
 | 1 | A | 447 | A Recipe For Death | 1421 | 42.8, 40.9 | 0 |  |
 | 2 | A | 91921 | Return to Quinn (Again) | 1421 | 42.8, 40.9 | 0 |  |
-| 3 | A | 428 | Lost Deathstalkers | 1421 | 43.4, 40.9 | 26 |  |
-| 4 | A | 437 | The Dead Fields | 1421 | 43.4, 40.9 | 15 |  |
+| 3 | A | 437 | The Dead Fields | 1421 | 43.4, 40.9 | 26 |  |
+| 4 | A | 428 | Lost Deathstalkers | 1421 | 43.4, 40.9 | 15 |  |
 | 5 | A | 421 | Prove Your Worth | 1421 | 44.2, 39.8 | 44 |  |
 | 6 | A | 98298 | Arugal's Folly | 1421 | 44.2, 39.8 | 0 |  |
 | 7 | O | 421 | Prove Your Worth | 1421 | 54.9, 21.6 | 677 |  |
 | 8 | A | 435 | Escorting Erland | 1421 | 56.2, 9.2 | 353 |  |
 | 9 | O | 435 | Escorting Erland | 1421 | 54.4, 13.4 | 140 |  |
-| 10 | A | 91920 | Wild Eyes | 1421 | 53.4, 12.6 | 45 |  |
-| 11 | T | 428 | Lost Deathstalkers | 1421 | 53.5, 13.4 | 23 |  |
-| 12 | A | 429 | Wild Hearts | 1421 | 53.5, 13.4 | 0 |  |
-| 13 | T | 435 | Escorting Erland | 1421 | 53.5, 13.4 | 0 |  |
-| 14 | A | 449 | The Deathstalkers' Report | 1421 | 53.5, 13.4 | 0 |  |
-| 15 | O | 447 | A Recipe For Death | 1421 | 49.9, 19.8 | 232 |  |
-| 16 | O | 437 | The Dead Fields | 1421 | 44.7, 20.7 | 220 |  |
-| 17 | O | 447 | A Recipe For Death | 1421 | 35.4, 14.5 | 423 |  |
-| 18 | T | 437 | The Dead Fields | 1421 | 43.4, 40.9 | 809 | near #6 (went 1036 yd away) |
-| 19 | A | 438 | The Decrepit Ferry | 1421 | 43.4, 40.9 | 0 | near #6 (went 1036 yd away) |
-| 20 | T | 421 | Prove Your Worth | 1421 | 44.2, 39.8 | 44 |  |
-| 21 | A | 422 | Arugal's Folly | 1421 | 44.2, 39.8 | 0 |  |
-| 22 | T | 438 | The Decrepit Ferry | 1421 | 58.4, 34.9 | 613 |  |
-| 23 | A | 439 | Rot Hide Clues | 1421 | 58.4, 34.9 | 0 |  |
-| 24 | O | 422 | Arugal's Folly | 1421 | 52.8, 28.6 | 294 |  |
-| 25 | T | 422 | Arugal's Folly | 1421 | 44.2, 39.8 | 479 | near #21 (went 613 yd away) |
-| 26 | A | 423 | Arugal's Folly | 1421 | 44.2, 39.8 | 0 | near #21 (went 613 yd away) |
-| 27 | T | 449 | The Deathstalkers' Report | 1421 | 43.4, 40.9 | 44 |  |
-| 28 | T | 439 | Rot Hide Clues | 1421 | 43.4, 40.9 | 0 |  |
-| 29 | A | 440 | The Engraved Ring | 1421 | 43.4, 40.9 | 0 |  |
+| 10 | T | 428 | Lost Deathstalkers | 1421 | 53.5, 13.4 | 38 |  |
+| 11 | A | 429 | Wild Hearts | 1421 | 53.5, 13.4 | 0 |  |
+| 12 | T | 435 | Escorting Erland | 1421 | 53.5, 13.4 | 0 |  |
+| 13 | A | 449 | The Deathstalkers' Report | 1421 | 53.5, 13.4 | 0 |  |
+| 14 | O | 437 | The Dead Fields | 1421 | 44.7, 20.7 | 421 |  |
+| 15 | O | 447 | A Recipe For Death | 1421 | 35.4, 14.5 | 423 |  |
+| 16 | T | 421 | Prove Your Worth | 1421 | 44.2, 39.8 | 797 | near #6 (went 994 yd away) |
+| 17 | A | 422 | Arugal's Folly | 1421 | 44.2, 39.8 | 0 | near #6 (went 994 yd away) |
+| 18 | T | 437 | The Dead Fields | 1421 | 43.4, 40.9 | 44 |  |
+| 19 | A | 438 | The Decrepit Ferry | 1421 | 43.4, 40.9 | 0 |  |
+| 20 | A | 6321 | Supplying the Sepulcher | 1421 | 43.4, 41.7 | 22 |  |
+| 21 | T | 6321 | Supplying the Sepulcher | 1421 | 45.6, 42.6 | 95 |  |
+| 22 | A | 6323 | Ride to the Undercity | 1421 | 45.6, 42.6 | 0 |  |
+| 23 | T | 438 | The Decrepit Ferry | 1421 | 58.4, 34.9 | 580 |  |
+| 24 | A | 439 | Rot Hide Clues | 1421 | 58.4, 34.9 | 0 |  |
+| 25 | O | 422 | Arugal's Folly | 1421 | 52.8, 28.6 | 294 |  |
+| 26 | T | 422 | Arugal's Folly | 1421 | 44.2, 39.8 | 479 | near #22 (went 613 yd away) |
+| 27 | A | 423 | Arugal's Folly | 1421 | 44.2, 39.8 | 0 | near #22 (went 613 yd away) |
+| 28 | T | 449 | The Deathstalkers' Report | 1421 | 43.4, 40.9 | 44 |  |
+| 29 | T | 439 | Rot Hide Clues | 1421 | 43.4, 40.9 | 0 |  |
 | 30 | A | 443 | Rot Hide Ichor | 1421 | 43.4, 40.9 | 0 |  |
-| 31 | A | 3221 | Speak with Renferrel | 1421 | 43.4, 40.9 | 0 |  |
-| 32 | A | 477 | Border Crossings | 1421 | 44.0, 40.9 | 23 |  |
-| 33 | A | 460 | Resting in Pieces | 1421 | 65.8, 24.5 | 1027 |  |
-| 34 | T | 460 | Resting in Pieces | 1421 | 67.9, 24.9 | 85 |  |
-| 35 | A | 461 | The Hidden Niche | 1421 | 67.9, 24.9 | 0 |  |
-| 36 | O | 443 | Rot Hide Ichor | 1421 | 65.9, 25.0 | 81 |  |
-| 37 | T | 461 | The Hidden Niche | 1421 | 65.4, 24.8 | 24 |  |
-| 38 | A | 491 | Wand to Bethor | 1421 | 65.4, 24.8 | 0 |  |
-| 39 | O | 423 | Arugal's Folly | 1421 | 42.9, 30.2 | 955 |  |
-| 40 | T | 423 | Arugal's Folly | 1421 | 44.2, 39.8 | 273 | near #32 (went 1078 yd away) |
-| 41 | A | 424 | Arugal's Folly | 1421 | 44.2, 39.8 | 0 | near #32 (went 1078 yd away) |
-| 42 | T | 443 | Rot Hide Ichor | 1421 | 42.8, 40.9 | 65 |  |
-| 43 | T | 3221 | Speak with Renferrel | 1421 | 42.8, 40.9 | 0 |  |
-| 44 | A | 444 | Rot Hide Origins | 1421 | 42.8, 40.9 | 0 |  |
-| 45 | A | 6321 | Supplying the Sepulcher | 1421 | 43.4, 41.7 | 34 |  |
-| 46 | T | 6321 | Supplying the Sepulcher | 1421 | 45.6, 42.6 | 95 |  |
-| 47 | A | 6323 | Ride to the Undercity | 1421 | 45.6, 42.6 | 0 |  |
-| 48 | O | 424 | Arugal's Folly | 1421 | 58.6, 44.9 | 547 |  |
-| 49 | O | 91920 | Wild Eyes | 1421 | 79.0, 30.6 | 945 |  |
-| 50 | A | 92421 | Light's Justice | 1458 | 58.1, 89.5 | 527 |  |
-| 51 | T | 491 | Wand to Bethor | 1458 | 84.1, 17.4 | 524 |  |
-| 52 | T | 444 | Rot Hide Origins | 1458 | 84.1, 17.4 | 0 |  |
-| 53 | A | 446 | Thule Ravenclaw | 1458 | 84.1, 17.4 | 0 |  |
-| 54 | T | 6323 | Ride to the Undercity | 1458 | 61.5, 41.8 | 266 |  |
-| 55 | A | 6322 | Michael Garrett | 1458 | 61.5, 41.8 | 0 |  |
-| 56 | T | 6322 | Michael Garrett | 1458 | 63.2, 48.6 | 46 |  |
-| 57 | A | 6324 | Return to Podrig | 1458 | 63.2, 48.6 | 0 |  |
-| 58 | A | 97891 | Prompt Potion Runner | 1458 | 58.6, 54.7 | 59 |  |
-| 59 | T | 447 | A Recipe For Death | 1458 | 48.8, 69.3 | 132 |  |
-| 60 | A | 450 | A Recipe For Death | 1458 | 48.8, 69.3 | 0 |  |
-| 61 | O | 429 | Wild Hearts | 1421 | 59.8, 9.2 | 532 |  |
-| 62 | T | 477 | Border Crossings | 1421 | 49.9, 60.3 | 1492 |  |
-| 63 | A | 478 | Maps and Runes | 1421 | 49.9, 60.3 | 0 |  |
-| 64 | O | 98298 | Arugal's Folly | 1421 | 47.5, 78.1 | 507 |  |
-| 65 | O | 450 | A Recipe For Death | 1421 | 43.0, 73.2 | 236 |  |
-| 66 | A | 92401 | A Frightened Request | 1421 | 44.5, 43.0 | 846 | near #47 (went 1997 yd away) |
-| 67 | T | 6324 | Return to Podrig | 1421 | 43.4, 41.7 | 59 | near #47 (went 2009 yd away) |
-| 68 | T | 91920 | Wild Eyes | 1421 | 42.8, 40.9 | 34 |  |
-| 69 | T | 446 | Thule Ravenclaw | 1421 | 42.8, 40.9 | 0 |  |
-| 70 | T | 429 | Wild Hearts | 1421 | 42.8, 40.9 | 0 |  |
-| 71 | A | 1359 | Zinge's Delivery | 1421 | 42.8, 40.9 | 0 |  |
-| 72 | A | 430 | Return to Quinn | 1421 | 42.8, 40.9 | 0 |  |
-| 73 | T | 450 | A Recipe For Death | 1421 | 42.8, 40.9 | 0 |  |
-| 74 | A | 448 | Report to Hadrec | 1421 | 42.8, 40.9 | 0 |  |
+| 31 | A | 440 | The Engraved Ring | 1421 | 43.4, 40.9 | 0 |  |
+| 32 | A | 3221 | Speak with Renferrel | 1421 | 43.4, 40.9 | 0 |  |
+| 33 | O | 423 | Arugal's Folly | 1421 | 42.9, 30.2 | 298 |  |
+| 34 | O | 447 | A Recipe For Death | 1421 | 49.9, 19.8 | 414 |  |
+| 35 | A | 91920 | Wild Eyes | 1421 | 53.4, 12.6 | 250 | near #13 (went 916 yd away) |
+| 36 | O | 429 | Wild Hearts | 1421 | 59.8, 9.2 | 285 |  |
+| 37 | A | 460 | Resting in Pieces | 1421 | 65.8, 24.5 | 497 |  |
+| 38 | T | 460 | Resting in Pieces | 1421 | 67.9, 24.9 | 85 |  |
+| 39 | A | 461 | The Hidden Niche | 1421 | 67.9, 24.9 | 0 |  |
+| 40 | O | 443 | Rot Hide Ichor | 1421 | 65.9, 25.0 | 81 |  |
+| 41 | T | 461 | The Hidden Niche | 1421 | 65.4, 24.8 | 24 |  |
+| 42 | A | 491 | Wand to Bethor | 1421 | 65.4, 24.8 | 0 |  |
+| 43 | A | 477 | Border Crossings | 1421 | 44.0, 40.9 | 1005 | near #32 (went 1111 yd away) |
+| 44 | T | 429 | Wild Hearts | 1421 | 42.8, 40.9 | 49 | near #32 (went 1144 yd away) |
+| 45 | T | 443 | Rot Hide Ichor | 1421 | 42.8, 40.9 | 0 |  |
+| 46 | A | 444 | Rot Hide Origins | 1421 | 42.8, 40.9 | 0 |  |
+| 47 | T | 3221 | Speak with Renferrel | 1421 | 42.8, 40.9 | 0 |  |
+| 48 | A | 1359 | Zinge's Delivery | 1421 | 42.8, 40.9 | 0 |  |
+| 49 | T | 423 | Arugal's Folly | 1421 | 44.2, 39.8 | 65 |  |
+| 50 | A | 424 | Arugal's Folly | 1421 | 44.2, 39.8 | 0 |  |
+| 51 | T | 447 | A Recipe For Death | 1458 | 48.8, 69.3 | 1480 |  |
+| 52 | A | 450 | A Recipe For Death | 1458 | 48.8, 69.3 | 0 |  |
+| 53 | T | 1359 | Zinge's Delivery | 1458 | 50.1, 68.0 | 15 |  |
+| 54 | A | 1358 | Sample for Helbrim | 1458 | 50.1, 68.0 | 0 |  |
+| 55 | T | 6323 | Ride to the Undercity | 1458 | 61.5, 41.8 | 199 |  |
+| 56 | A | 6322 | Michael Garrett | 1458 | 61.5, 41.8 | 0 |  |
+| 57 | T | 444 | Rot Hide Origins | 1458 | 84.1, 17.4 | 266 |  |
+| 58 | A | 446 | Thule Ravenclaw | 1458 | 84.1, 17.4 | 0 |  |
+| 59 | T | 491 | Wand to Bethor | 1458 | 84.1, 17.4 | 0 |  |
+| 60 | T | 6322 | Michael Garrett | 1458 | 63.2, 48.6 | 282 |  |
+| 61 | A | 6324 | Return to Podrig | 1458 | 63.2, 48.6 | 0 |  |
+| 62 | A | 92421 | Light's Justice | 1458 | 58.1, 89.5 | 266 |  |
+| 63 | O | 91920 | Wild Eyes | 1421 | 79.0, 30.6 | 527 |  |
+| 64 | O | 424 | Arugal's Folly | 1421 | 58.6, 44.9 | 945 |  |
+| 65 | T | 477 | Border Crossings | 1421 | 49.9, 60.3 | 566 |  |
+| 66 | A | 478 | Maps and Runes | 1421 | 49.9, 60.3 | 0 |  |
+| 67 | O | 98298 | Arugal's Folly | 1421 | 47.5, 78.1 | 507 |  |
+| 68 | O | 450 | A Recipe For Death | 1421 | 43.0, 73.2 | 236 |  |
+| 69 | T | 6324 | Return to Podrig | 1421 | 43.4, 41.7 | 882 | near #50 (went 2009 yd away) |
+| 70 | T | 91920 | Wild Eyes | 1421 | 42.8, 40.9 | 34 | near #50 (went 2015 yd away) |
+| 71 | T | 446 | Thule Ravenclaw | 1421 | 42.8, 40.9 | 0 |  |
+| 72 | A | 448 | Report to Hadrec | 1421 | 42.8, 40.9 | 0 |  |
+| 73 | A | 430 | Return to Quinn | 1421 | 42.8, 40.9 | 0 |  |
+| 74 | T | 450 | A Recipe For Death | 1421 | 42.8, 40.9 | 0 |  |
 | 75 | T | 448 | Report to Hadrec | 1421 | 43.4, 40.9 | 26 |  |
 | 76 | T | 478 | Maps and Runes | 1421 | 44.0, 40.9 | 23 |  |
 | 77 | T | 424 | Arugal's Folly | 1421 | 44.2, 39.8 | 32 |  |
 | 78 | T | 98298 | Arugal's Folly | 1421 | 44.2, 39.8 | 0 |  |
-| 79 | T | 430 | Return to Quinn | 1421 | 53.4, 12.6 | 855 | near #14 (went 1851 yd away) |
-| 80 | T | 91921 | Return to Quinn (Again) | 1421 | 53.4, 12.6 | 0 | near #14 (went 1851 yd away) |
+| 79 | T | 430 | Return to Quinn | 1421 | 53.4, 12.6 | 855 | near #35 (went 1851 yd away) |
+| 80 | T | 91921 | Return to Quinn (Again) | 1421 | 53.4, 12.6 | 0 | near #35 (went 1851 yd away) |
 | 81 | A | 425 | Ivar the Foul | 1421 | 53.5, 13.4 | 23 |  |
 | 82 | O | 425 | Ivar the Foul | 1421 | 51.5, 13.9 | 82 |  |
 | 83 | T | 425 | Ivar the Foul | 1421 | 53.5, 13.4 | 82 |  |
-| 84 | T | 97891 | Prompt Potion Runner | 1458 | 46.6, 74.1 | 786 | near #60 (went 2181 yd away) |
-| 85 | A | 95216 | The New Plague | 1458 | 46.3, 71.9 | 14 | near #60 (went 2192 yd away) |
-| 86 | A | 97292 | Unending Torment | 1458 | 48.8, 69.3 | 29 |  |
-| 87 | A | 97289 | Unending Torment | 1458 | 48.8, 69.3 | 0 |  |
-| 88 | A | 97291 | Unending Torment | 1458 | 48.8, 69.3 | 0 |  |
-| 89 | T | 1359 | Zinge's Delivery | 1458 | 50.1, 68.0 | 15 |  |
-| 90 | A | 1358 | Sample for Helbrim | 1458 | 50.1, 68.0 | 0 |  |
-| 91 | T | 440 | The Engraved Ring | 1420 | 61.3, 50.8 | 872 |  |
+| 84 | T | 440 | The Engraved Ring | 1420 | 61.3, 50.8 | 1383 |  |
 
-Walking between tasks: 16760 yd (~40 min at 7 yd/s).
+Walking between tasks: 16277 yd (~39 min at 7 yd/s).
 
 ## Logistics
 
 - step 4: `sethearth 1421 43.18 41.28`
-- step 93: `boat 1420 60.7 58.9` — Take the zeppelin to Orgrimmar (Durotar)
+- step 44: `hearth 1421`
+- step 53: `goto 1421 45.62 42.6` — Flight master
+- step 54: `fly 1458` — Undercity, Tirisfal
+- step 89: `boat 1420 60.7 58.9` — Take the zeppelin to Orgrimmar (Durotar)
 
 ## Warnings
 

@@ -5,10 +5,10 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Item | Value |
 |---|---|
 | Level band | 1-6 |
-| Simulated level | 1.00 -> 6.01 |
+| Simulated level | 1.00 -> 6.02 |
 | Time | 36 min |
-| XP gained | 7639 |
-| XP/h | 12649 |
+| XP gained | 7672 |
+| XP/h | 12703 |
 | Steps | 40 |
 | Quests turned in | 15 |
 | Hubs | 5 |
@@ -22,13 +22,13 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | # | Quest | Name | Lvl | XP | Sim lvl |
 |---|---|---|---|---|---|
 | 1 | 179 | Dwarven Outfitters | 1 | 80 | 2 |
-| 2 | 233 | Coldridge Valley Mail Delivery | 3 | 190 | 3 |
+| 2 | 233 | Coldridge Valley Mail Delivery | 3 | 190 | 2 |
 | 3 | 183 | The Boar Hunter | 3 | 250 | 3 |
-| 4 | 234 | Coldridge Valley Mail Delivery | 4 | 270 | 3 |
-| 5 | 182 | The Troll Cave | 4 | 355 | 4 |
-| 6 | 3364 | Scalding Mornbrew Delivery | 5 | 225 | 4 |
-| 7 | 3365 | Bring Back the Mug | 5 | 450 | 4 |
-| 8 | 218 | The Stolen Journal | 5 | 560 | 5 |
+| 4 | 182 | The Troll Cave | 4 | 355 | 4 |
+| 5 | 3364 | Scalding Mornbrew Delivery | 5 | 225 | 4 |
+| 6 | 3365 | Bring Back the Mug | 5 | 450 | 4 |
+| 7 | 218 | The Stolen Journal | 5 | 560 | 4 |
+| 8 | 234 | Coldridge Valley Mail Delivery | 4 | 270 | 5 |
 | 9 | 97277 | Grund and Gozwin | 6 | 540 est. | 5 |
 | 10 | 3361 | A Refugee's Quandary | 3 | 250 | 5 |
 | 11 | 170 | A New Threat | 2 | 170 | 5 |
@@ -95,36 +95,36 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 2 | O | 179 | Dwarven Outfitters | 1426 | 28.9, 74.5 | 119 |  |
 | 3 | T | 179 | Dwarven Outfitters | 1426 | 29.9, 71.2 | 119 |  |
 | 4 | A | 233 | Coldridge Valley Mail Delivery | 1426 | 29.9, 71.2 | 0 |  |
-| 5 | A | 183 | The Boar Hunter | 1426 | 22.6, 71.4 | 361 |  |
-| 6 | O | 183 | The Boar Hunter | 1426 | 21.5, 71.1 | 56 |  |
-| 7 | T | 233 | Coldridge Valley Mail Delivery | 1426 | 22.6, 71.4 | 56 |  |
-| 8 | A | 234 | Coldridge Valley Mail Delivery | 1426 | 22.6, 71.4 | 0 |  |
-| 9 | T | 183 | The Boar Hunter | 1426 | 22.6, 71.4 | 0 |  |
+| 5 | T | 233 | Coldridge Valley Mail Delivery | 1426 | 22.6, 71.4 | 361 |  |
+| 6 | A | 234 | Coldridge Valley Mail Delivery | 1426 | 22.6, 71.4 | 0 |  |
+| 7 | A | 183 | The Boar Hunter | 1426 | 22.6, 71.4 | 0 |  |
+| 8 | O | 183 | The Boar Hunter | 1426 | 21.5, 71.1 | 56 |  |
+| 9 | T | 183 | The Boar Hunter | 1426 | 22.6, 71.4 | 56 |  |
 | 10 | A | 182 | The Troll Cave | 1426 | 25.1, 75.7 | 186 |  |
-| 11 | T | 234 | Coldridge Valley Mail Delivery | 1426 | 25.1, 75.7 | 0 |  |
-| 12 | O | 182 | The Troll Cave | 1426 | 28.8, 80.3 | 236 |  |
-| 13 | T | 182 | The Troll Cave | 1426 | 25.1, 75.7 | 236 |  |
-| 14 | A | 218 | The Stolen Journal | 1426 | 25.1, 75.7 | 0 |  |
-| 15 | C | 3364 | Scalding Mornbrew Delivery | 1426 | 25.0, 76.0 | 9 |  |
-| 16 | A | 3365 | Bring Back the Mug | 1426 | 28.8, 66.4 | 0 |  |
-| 17 | A | 97277 | Grund and Gozwin | 1426 | 28.7, 67.5 | 38 |  |
-| 18 | A | 3361 | A Refugee's Quandary | 1426 | 28.6, 67.6 | 7 |  |
-| 19 | A | 170 | A New Threat | 1426 | 29.7, 71.2 | 131 |  |
-| 20 | O | 170 | A New Threat | 1426 | 31.0, 75.7 | 161 |  |
-| 21 | O | 218 | The Stolen Journal | 1426 | 30.5, 80.2 | 147 |  |
-| 22 | O | 3361 | A Refugee's Quandary | 1426 | 26.3, 79.3 | 206 |  |
-| 23 | O | 3361 | A Refugee's Quandary | 1426 | 22.8, 80.0 | 176 |  |
-| 24 | O | 3361 | A Refugee's Quandary | 1426 | 20.9, 76.1 | 159 |  |
-| 25 | T | 3365 | Bring Back the Mug | 1426 | 25.0, 76.0 | 201 |  |
-| 26 | T | 218 | The Stolen Journal | 1426 | 25.1, 75.7 | 9 |  |
+| 11 | O | 182 | The Troll Cave | 1426 | 28.8, 80.3 | 236 |  |
+| 12 | T | 182 | The Troll Cave | 1426 | 25.1, 75.7 | 236 |  |
+| 13 | A | 218 | The Stolen Journal | 1426 | 25.1, 75.7 | 0 |  |
+| 14 | C | 3364 | Scalding Mornbrew Delivery | 1426 | 25.0, 76.0 | 9 |  |
+| 15 | A | 3365 | Bring Back the Mug | 1426 | 28.8, 66.4 | 0 |  |
+| 16 | A | 97277 | Grund and Gozwin | 1426 | 28.7, 67.5 | 38 |  |
+| 17 | A | 3361 | A Refugee's Quandary | 1426 | 28.6, 67.6 | 7 |  |
+| 18 | A | 170 | A New Threat | 1426 | 29.7, 71.2 | 131 |  |
+| 19 | O | 170 | A New Threat | 1426 | 31.0, 75.7 | 161 |  |
+| 20 | O | 218 | The Stolen Journal | 1426 | 30.5, 80.2 | 147 |  |
+| 21 | O | 3361 | A Refugee's Quandary | 1426 | 26.3, 79.3 | 206 |  |
+| 22 | O | 3361 | A Refugee's Quandary | 1426 | 22.8, 80.0 | 176 |  |
+| 23 | O | 3361 | A Refugee's Quandary | 1426 | 20.9, 76.1 | 159 |  |
+| 24 | T | 3365 | Bring Back the Mug | 1426 | 25.0, 76.0 | 201 |  |
+| 25 | T | 218 | The Stolen Journal | 1426 | 25.1, 75.7 | 9 |  |
+| 26 | T | 234 | Coldridge Valley Mail Delivery | 1426 | 25.1, 75.7 | 0 |  |
 | 27 | A | 282 | Senir's Observations | 1426 | 25.1, 75.7 | 0 |  |
-| 28 | O | 97277 | Grund and Gozwin | 1426 | 27.3, 62.9 | 435 | near #16 (went 604 yd away) |
+| 28 | O | 97277 | Grund and Gozwin | 1426 | 27.3, 62.9 | 435 | near #15 (went 604 yd away) |
 | 29 | T | 97277 | Grund and Gozwin | 1426 | 28.7, 67.5 | 167 |  |
 | 30 | T | 3361 | A Refugee's Quandary | 1426 | 28.6, 67.6 | 7 |  |
 | 31 | T | 170 | A New Threat | 1426 | 29.7, 71.2 | 131 |  |
 | 32 | T | 282 | Senir's Observations | 1426 | 33.5, 71.8 | 186 |  |
-| 33 | A | 420 | Senir's Observations | 1426 | 33.5, 71.8 | 0 |  |
-| 34 | A | 96628 | The Adventurer | 1426 | 33.5, 71.8 | 0 |  |
+| 33 | A | 96628 | The Adventurer | 1426 | 33.5, 71.8 | 0 |  |
+| 34 | A | 420 | Senir's Observations | 1426 | 33.5, 71.8 | 0 |  |
 | 35 | A | 2160 | Supplies to Tannok | 1426 | 33.9, 72.2 | 22 |  |
 | 36 | T | 96628 | The Adventurer | 1426 | 46.7, 53.9 | 872 |  |
 | 37 | T | 420 | Senir's Observations | 1426 | 46.7, 53.8 | 3 |  |

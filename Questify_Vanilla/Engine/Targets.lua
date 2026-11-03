@@ -150,6 +150,10 @@ local function compute(entry)
       if #cands == 0 then cands = rows end
       mapId, x, y, kind, id = nearest(cands)
     end
+  elseif a == "train" then
+    local cands = {}
+    for _, id in ipairs(Q.Trainer and Q.Trainer:TrainerIds() or {}) do cands[#cands + 1] = { kind = "npc", id = id } end
+    mapId, x, y, kind, id = nearest(cands)
   elseif POINT_ACTIONS[a] then
     mapId, x, y, kind = step.mapId, step.x, step.y, "point"
   elseif step.at then

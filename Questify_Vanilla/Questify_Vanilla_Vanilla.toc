@@ -25,12 +25,14 @@ Core\Settings.lua
 Data\Constants.lua
 Data\QDB.lua
 Data\Maps.lua
+Data\ClassTrainers.lua
 
 Engine\Guides.lua
 Engine\Progress.lua
 Engine\Targets.lua
 Engine\Format.lua
 Engine\ClassQuests.lua
+Engine\Trainer.lua
 Engine\Telemetry.lua
 
 Nav\Navigation.lua

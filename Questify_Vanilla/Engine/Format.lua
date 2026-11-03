@@ -21,6 +21,7 @@ local ICONS = {
   hearth = "Interface\\Icons\\INV_Misc_Rune_01",
   level = "Interface\\Icons\\INV_Sword_04",
   note = "Interface\\Icons\\INV_Misc_Note_01",
+  train = "Interface\\Icons\\INV_Misc_Book_11",
 }
 local UNKNOWN_ICON = "Interface\\Icons\\INV_Misc_QuestionMark"
 
@@ -132,6 +133,10 @@ local function mainText(entry, step)
     return fmt(L.STEP_LEVEL, step.level or 0)
   elseif a == "note" then
     return step.text or ""
+  elseif a == "train" then
+    local who = giverName(entry, step, { npcs = Q.Trainer and Q.Trainer:TrainerIds() or {} })
+    if who then return fmt(L.STEP_TRAIN, who) end
+    return L.STEP_TRAIN_ANY
   end
   return tostring(a)
 end
@@ -189,6 +194,7 @@ local function titleText(step)
   if a == "fly" then return fmt(L.STEP_FLY, Q.Maps:MapName(step.mapId)) end
   if a == "level" then return fmt(L.STEP_LEVEL, step.level or 0) end
   if a == "note" then return step.text or "" end
+  if a == "train" then return L.TITLE_TRAIN end
   return tostring(a)
 end
 

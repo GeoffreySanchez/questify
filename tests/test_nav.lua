@@ -240,19 +240,44 @@ return {
     t.ok(title and title ~= "", "has a title")
   end,
 
-  complete_target_is_recomputed_every_5s = function(t)
+  complete_target_is_recomputed_every_3s = function(t)
     local Q = load()
     accept179()
     local before = Mock.countCalls("C_Map.SetUserWaypoint")
-    Mock.advance(5)
+    Mock.advance(6)
     t.eq(Mock.countCalls("C_Map.SetUserWaypoint"), before, "same nearest wolf: deduplicated")
     -- le joueur traverse la vallée : le loup le plus proche change
-    Mock.player.x, Mock.player.y = 22.6, 78.0
-    Mock.advance(4)
+    Mock.player.x, Mock.player.y = 22.6, 79.5
+    Mock.advance(2)
     t.eq(Mock.countCalls("C_Map.SetUserWaypoint"), before, "not yet")
     Mock.advance(1)
-    t.eq(Mock.countCalls("C_Map.SetUserWaypoint"), before + 1, "recomputed after 5 s")
+    t.eq(Mock.countCalls("C_Map.SetUserWaypoint"), before + 1, "recomputed after 3 s")
     t.near(Mock.lastCall("C_Map.SetUserWaypoint").args[1].position.x, 0.2257, 0.001)
+    noNavErrors(t)
+  end,
+
+  spawn_under_the_player_skipped = function(t)
+    local Q = load()
+    accept179()
+    Mock.player.x, Mock.player.y = 22.58, 78.22   -- sur un point d'apparition de loup (22.57, 78.23)
+    Mock.advance(3)
+    local x = Mock.lastCall("C_Map.SetUserWaypoint").args[1].position.x
+    t.ok(math.abs(x - 0.2257) > 0.001, "next wolf, not the one under the player")
+    noNavErrors(t)
+  end,
+
+  site_step_follows_nearest_mob_once_inside = function(t)
+    local Q = load()
+    Q:RegisterGuide({ id = "T_site", faction = "Alliance", steps = { { "complete", 179, at = { 1426, 30.0, 72.0 } } } })
+    Mock.quests.log[179] = { objectives = { { text = "Tough Wolf Meat: 0/8", finished = false } } }
+    Q.Progress:SetGuide("T_site")
+    Mock.player.x, Mock.player.y = 45.0, 50.0      -- loin de la zone : centre de la zone
+    Mock.advance(3)
+    local tg = Q.Targets:ForEntry(Q.Progress:Current())
+    t.eq(tg.kind, "area"); t.near(tg.x, 30.0, 0.001)
+    Mock.player.x, Mock.player.y = 30.1, 72.1      -- dans la zone : le loup le plus proche
+    tg = Q.Targets:ForEntry(Q.Progress:Current())
+    t.eq(tg.kind, "npc"); t.eq(tg.id, 705)
     noNavErrors(t)
   end,
 

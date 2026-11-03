@@ -6,6 +6,9 @@ local Targets = {}
 Q.Targets = Targets
 
 local MOB_WINDOW = 15   -- nombre d'étapes non faites examinées pour la liste des monstres
+local SITE_RADIUS = 200 -- yards : dans la zone d'objectif, la cible suit le monstre le plus proche
+local SPAWN_MIN = 25    -- yards : points d'apparition trop proches ignorés (monstre déjà tué, TomTom
+                        -- efface sa flèche à l'arrivée)
 local POINT_ACTIONS = { ["goto"] = true, fp = true, sethearth = true, boat = true }
 
 ---------------------------------------------------------------------------
@@ -105,6 +108,41 @@ local function nearest(cands)
   return r[1], r[2], r[3], r[4], r[5]
 end
 
+-- Plus proche point d'apparition à plus de minD yards du joueur parmi des candidats { kind, id } :
+-- -> mapId, x, y, kind, id, distance ; nil si aucun sur le continent du joueur.
+local function nearestAway(cands, minD)
+  local pm, px, py = Q.Maps:PlayerPos()
+  if not pm then return nil end
+  local best, bestD
+  for _, c in ipairs(cands) do
+    for m, list in pairs(spawnsOf(c.kind, c.id) or {}) do
+      if type(m) == "number" and type(list) == "table" then
+        for _, p in ipairs(list) do
+          local d = Q.Maps:Distance(pm, px, py, m, p[1], p[2])
+          if d and d >= minD and (not bestD or d < bestD) then best, bestD = { m, p[1], p[2], c.kind, c.id }, d end
+        end
+      end
+    end
+  end
+  if not best then return nil end
+  return best[1], best[2], best[3], best[4], best[5], bestD
+end
+
+-- Cibles des objectifs encore à faire d'une étape « complete ».
+local function completeCands(step)
+  local rows = objectiveTargets(step.questId)
+  local cands = {}
+  if step.obj then
+    for _, r in ipairs(rows) do if r.objIndex == step.obj then cands[#cands + 1] = r end end
+  elseif Q.Progress:InLog(step.questId) then
+    for _, r in ipairs(rows) do
+      if not Q.Progress:ObjectiveDone(step.questId, r.objIndex) then cands[#cands + 1] = r end
+    end
+  end
+  if #cands == 0 then cands = rows end
+  return cands
+end
+
 local function givers(list)
   local cands = {}
   for _, id in ipairs(list.npcs or {}) do cands[#cands + 1] = { kind = "npc", id = id } end
@@ -137,18 +175,16 @@ local function compute(entry)
   elseif a == "complete" then
     if step.at then
       mapId, x, y, kind = step.at[1], step.at[2], step.at[3], "area"
-    else
-      local rows = objectiveTargets(step.questId)
-      local cands = {}
-      if step.obj then
-        for _, r in ipairs(rows) do if r.objIndex == step.obj then cands[#cands + 1] = r end end
-      elseif Q.Progress:InLog(step.questId) then
-        for _, r in ipairs(rows) do
-          if not Q.Progress:ObjectiveDone(step.questId, r.objIndex) then cands[#cands + 1] = r end
-        end
+      -- dans la zone d'objectif : le monstre (ou l'objet) le plus proche, pas le centre de la zone
+      local d = Q.Maps:DistanceFromPlayer(mapId, x, y)
+      if d and d <= SITE_RADIUS then
+        local m2, x2, y2, k2, id2, d2 = nearestAway(completeCands(step), SPAWN_MIN)
+        if m2 and d2 <= SITE_RADIUS * 1.5 then mapId, x, y, kind, id = m2, x2, y2, k2, id2 end
       end
-      if #cands == 0 then cands = rows end
-      mapId, x, y, kind, id = nearest(cands)
+    else
+      local cands = completeCands(step)
+      mapId, x, y, kind, id = nearestAway(cands, SPAWN_MIN)
+      if not mapId then mapId, x, y, kind, id = nearest(cands) end
     end
   elseif a == "train" or a == "trainprof" then
     local ids

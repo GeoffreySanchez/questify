@@ -15,7 +15,8 @@ Q.UI.Tracker = Tracker
 
 local L = Q.L
 
-local WIDTH = 260
+local WIDTH = 260           -- largeur par défaut (réglage tracker.width, poignée en bas à droite)
+local MIN_WIDTH, MAX_WIDTH = 220, 480
 local PAD = 8
 local ICON = 22             -- icône de l'action courante
 local ICON_COL = 38         -- colonne de l'icône et de la distance
@@ -24,7 +25,6 @@ local MAX_NEXT = 10
 local DIST_INTERVAL = 0.5   -- secondes entre deux calculs de distance
 local TARGET_INTERVAL = 2   -- secondes entre deux recherches du point le plus proche
 
-local TEXT_W = WIDTH - 2 * PAD - ICON_COL - 2   -- largeur du texte de l'étape courante
 local MOB_ROW_H = 16
 local MOB_INDENT = 10       -- retrait des lignes de monstres sous leur objectif
 local MOB_LEVEL_W = 62
@@ -39,6 +39,15 @@ local LEVEL_COLOR = "|cffaaaaaa"
 -- Outils
 ---------------------------------------------------------------------------
 local function setting(path) return Q.Settings:Get(path) end
+
+-- Largeur courante : celle de la poignée pendant un redimensionnement, sinon le réglage.
+local function curWidth()
+  local w = Tracker.liveWidth or tonumber(setting("tracker.width")) or WIDTH
+  return math.max(MIN_WIDTH, math.min(MAX_WIDTH, w))
+end
+-- Largeur du texte de l'étape courante.
+local function textWidth() return curWidth() - 2 * PAD - ICON_COL - 2 end
+Tracker.Width = function() return curWidth() end
 
 local function qdbStatus()
   if not Q.QDB then return "missing" end
@@ -138,6 +147,15 @@ local function startMoving()
   f:StartMoving()
 end
 
+-- Coin haut gauche en unités d'UIParent : la position ne dépend ni de l'ancre d'origine ni de
+-- la taille du suivi, et survit au /reload.
+local function saveTopLeft(f)
+  local left, top = f:GetLeft(), f:GetTop()
+  if not (left and top) then return end
+  local k = scaleRatio(f)
+  Q.Settings:Set("tracker.point", { "TOPLEFT", "BOTTOMLEFT", Q.Util.Round(left * k, 1), Q.Util.Round(top * k, 1) })
+end
+
 local function stopMoving()
   local f = Tracker.frame
   if not f then return end
@@ -145,13 +163,44 @@ local function stopMoving()
   Tracker.moving = false
   f:StopMovingOrSizing()
   if setting("tracker.locked") and not wasMoving then return end
-  -- Coin haut gauche en unités d'UIParent : la position ne dépend ni de l'ancre d'origine ni de
-  -- la taille du suivi, et survit au /reload.
-  local left, top = f:GetLeft(), f:GetTop()
-  if not (left and top) then return end
-  local k = scaleRatio(f)
-  Q.Settings:Set("tracker.point", { "TOPLEFT", "BOTTOMLEFT", Q.Util.Round(left * k, 1), Q.Util.Round(top * k, 1) })
+  saveTopLeft(f)
 end
+
+---------------------------------------------------------------------------
+-- Redimensionnement (poignée en bas à droite) : largeur seulement, le texte se réorganise
+---------------------------------------------------------------------------
+local function cursorX(f)
+  local x = GetCursorPosition and GetCursorPosition() or 0
+  return x / (f:GetEffectiveScale() or 1)
+end
+
+local function startSizing()
+  local f = Tracker.frame
+  if not f or setting("tracker.locked") then return end
+  -- le coin haut gauche est fixé d'abord : la largeur grandit vers la droite
+  saveTopLeft(f)
+  Tracker.sizing = { x = cursorX(f), w = curWidth() }
+  Tracker.liveWidth = curWidth()
+end
+
+local function updateSizing()
+  local sz, f = Tracker.sizing, Tracker.frame
+  if not sz or not f then return end
+  local w = math.max(MIN_WIDTH, math.min(MAX_WIDTH, sz.w + cursorX(f) - sz.x))
+  if math.abs(w - (Tracker.liveWidth or 0)) >= 1 then
+    Tracker.liveWidth = w
+    Tracker:Refresh()
+  end
+end
+
+local function stopSizing()
+  if not Tracker.sizing then return end
+  local w = Q.Util.Round(curWidth(), 0)
+  Tracker.sizing = nil
+  Tracker.liveWidth = nil
+  Q.Settings:Set("tracker.width", w)
+end
+Tracker.StartSizing, Tracker.UpdateSizing, Tracker.StopSizing = startSizing, updateSizing, stopSizing
 
 ---------------------------------------------------------------------------
 -- Construction
@@ -163,7 +212,6 @@ local function newNextLine(f)
   line.text = f:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
   line.text:SetJustifyH("LEFT")
   line.text:SetWordWrap(false)
-  line.text:SetWidth(WIDTH - 2 * PAD - 16)
   line.icon:Hide()
   line.text:Hide()
   return line
@@ -173,7 +221,7 @@ function Tracker:Create()
   if self.frame then return self.frame end
   local f = CreateFrame("Frame", "QuestifyVanillaTracker", UIParent, "BackdropTemplate")
   self.frame = f
-  f:SetSize(WIDTH, 60)
+  f:SetSize(curWidth(), 60)
   f:SetFrameStrata("LOW")
   f:SetClampedToScreen(true)
   if f.SetDontSavePosition then f:SetDontSavePosition(true) end
@@ -194,7 +242,6 @@ function Tracker:Create()
   -- Message seul (QuestieDB absent, aucun chapitre)
   local msg = f:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
   msg:SetPoint("TOPLEFT", PAD, -PAD)
-  msg:SetWidth(WIDTH - 2 * PAD)
   msg:SetJustifyH("LEFT")
   msg:Hide()
   self.message = msg
@@ -202,7 +249,6 @@ function Tracker:Create()
   -- En-tête
   local title = f:CreateFontString(nil, "OVERLAY", "GameFontNormal")
   title:SetPoint("TOPLEFT", PAD, -PAD)
-  title:SetWidth(WIDTH - 2 * PAD - 48)
   title:SetJustifyH("LEFT")
   title:SetWordWrap(false)
   self.title = title
@@ -318,6 +364,23 @@ function Tracker:Create()
   self.nextLines = {}
   for i = 1, MAX_NEXT do self.nextLines[i] = newNextLine(f) end
 
+  -- Poignée de redimensionnement (cachée quand le suivi est verrouillé)
+  local grip = CreateFrame("Button", nil, f)
+  grip:SetSize(16, 16)
+  grip:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -2, 2)
+  grip:SetFrameLevel((f:GetFrameLevel() or 1) + 5)
+  grip:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up")
+  grip:SetHighlightTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Highlight")
+  grip:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Down")
+  grip:SetScript("OnMouseDown", function(_, button)
+    if button == "LeftButton" then Q.SafeCall(startSizing) end
+  end)
+  grip:SetScript("OnMouseUp", function() Q.SafeCall(stopSizing) end)
+  grip:SetScript("OnUpdate", function() if Tracker.sizing then Q.SafeCall(updateSizing) end end)
+  grip:SetScript("OnEnter", function(btn) Q.SafeCall(showTooltip, btn, { L.UI_TRACKER_HINT_RESIZE }) end)
+  grip:SetScript("OnLeave", hideTooltip)
+  self.grip = grip
+
   -- Distance toutes les 0,5 s, recherche du point le plus proche toutes les 2 s.
   local sinceDist, sinceTarget = 0, 0
   f:SetScript("OnUpdate", function(_, elapsed)
@@ -341,7 +404,6 @@ function Tracker:TextChunk(i)
   local chunk = self.textChunks[i]
   if chunk then return chunk end
   chunk = self.current:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-  chunk:SetWidth(TEXT_W)
   chunk:SetJustifyH("LEFT")
   chunk:SetJustifyV("TOP")
   chunk:SetWordWrap(true)
@@ -362,7 +424,6 @@ function Tracker:MobRow(i)
   row.name = cur:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   row.name:SetJustifyH("LEFT")
   row.name:SetWordWrap(false)
-  row.name:SetWidth(TEXT_W - MOB_INDENT - 16 - MOB_LEVEL_W)
   row.level = cur:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
   row.level:SetJustifyH("RIGHT")
   row.level:SetWordWrap(false)
@@ -513,6 +574,9 @@ local function applyLock(f)
   local locked = setting("tracker.locked") and true or false
   f:SetMovable(not locked)
   f:EnableMouse(not locked)
+  if Tracker.grip then
+    if locked then Tracker.grip:Hide() else Tracker.grip:Show() end
+  end
 end
 
 -- Compte des étapes du chapitre (hors étapes insérées et étapes passées) : faites, total.
@@ -587,6 +651,7 @@ function Tracker:LayoutCurrent(cur, yTop)
     if seg.text then
       nText = nText + 1
       local chunk = self:TextChunk(nText)
+      chunk:SetWidth(textWidth())
       chunk:ClearAllPoints()
       chunk:SetPoint("TOPLEFT", self.current, "TOPLEFT", ICON_COL + 2, -yy)
       chunk:SetText(seg.text)
@@ -601,6 +666,7 @@ function Tracker:LayoutCurrent(cur, yTop)
       row.skull:SetDesaturated(mob.done and true or false)
       row.skull:SetAlpha(mob.done and 0.5 or 1)
       row.skull:Show()
+      row.name:SetWidth(textWidth() - MOB_INDENT - 16 - MOB_LEVEL_W)
       row.name:ClearAllPoints()
       row.name:SetPoint("TOPLEFT", self.current, "TOPLEFT", x + 16, -yy - 2)
       row.name:SetText((mob.done and MOB_DONE_COLOR or MOB_COLOR) .. mob.name .. "|r")
@@ -612,7 +678,7 @@ function Tracker:LayoutCurrent(cur, yTop)
       row.level:Show()
       row.mob = mob
       -- zone du bouton de ciblage, depuis le coin haut gauche du suivi
-      slots[#slots + 1] = { mob = mob, x = PAD + x - 2, y = yTop + yy, w = TEXT_W - MOB_INDENT + 2, h = MOB_ROW_H }
+      slots[#slots + 1] = { mob = mob, x = PAD + x - 2, y = yTop + yy, w = textWidth() - MOB_INDENT + 2, h = MOB_ROW_H }
       yy = yy + MOB_ROW_H
     end
   end
@@ -637,6 +703,11 @@ function Tracker:Refresh()
     if not self.moving then applyPosition(f) end
   end
   applyLock(f)
+  local W = curWidth()
+  f:SetWidth(W)
+  self.message:SetWidth(W - 2 * PAD)
+  self.title:SetWidth(W - 2 * PAD - 48)
+  for _, line in ipairs(self.nextLines) do line.text:SetWidth(W - 2 * PAD - 16) end
   f:Show()
 
   local status = qdbStatus()

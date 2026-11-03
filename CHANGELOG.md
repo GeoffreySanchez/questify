@@ -16,6 +16,16 @@
 - Forever : animation dorée (ondes et étoile qui tourne) autour de l'objet à utiliser quand l'étape
   pointe sur un objet du monde (coffre, seau…), avec le marqueur natif. Option « Animer l'objet à
   utiliser », activée par défaut.
+- Alerte « nouveaux sorts » dans le suivi selon le niveau et les sorts déjà appris (liste relevée
+  chez le maître de classe) ; clic : étape vers le maître de classe le plus proche.
+- Annonce « Équipez <objet> pour gagner en puissance » au milieu de l'écran quand un objet reçu
+  améliore l'équipement (clic : équiper).
+- Vente automatique de la camelote chez les marchands (option, Maj pour suspendre).
+- Choix des métiers à l'accueil ; la route passe chez le maître du métier quand il est proche.
+- Dans la zone d'objectif, la flèche (marqueur, TomTom, WaypointUI) suit le monstre le plus proche.
+- Largeur du suivi réglable avec une poignée en bas à droite.
+- Routes : pierre de foyer liée au premier passage à l'auberge et utilisée ; objectifs faits à un
+  niveau sûr (quête au plus +1, monstres au plus +1).
 
 ### English
 - Test build for WoW Classic Era (1.15.8, 1.15.9): `Questify_Vanilla_Vanilla.toc`, compatibility
@@ -30,6 +40,16 @@
 - Forever: golden animation (waves and a spinning star) around the object to use when the step
   points at a world object (chest, bucket…), with the built-in marker. "Animate the object to use"
   option, on by default.
+- "New spells" alert in the tracker from your level and known spells (list read at the class
+  trainer); click: step to the nearest class trainer.
+- "Equip <item> to gain power" announcement in the middle of the screen when a received item is an
+  upgrade (click: equip).
+- Automatic junk selling at merchants (option, Shift to pause).
+- Profession choice on first login; the route stops at the trainer when one is nearby.
+- Inside an objective area, the arrow (marker, TomTom, WaypointUI) follows the nearest monster.
+- Tracker width adjustable with a grip in the bottom-right corner.
+- Routes: hearthstone bound on the first visit to the inn and actually used; objectives done at a
+  safe level (quest at most +1, monsters at most +1).
 
 ## 0.1.0 (2026-11-03)
 

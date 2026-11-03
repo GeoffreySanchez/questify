@@ -263,4 +263,30 @@ return {
     t.ok(plain(Q.UI.Tracker.currentText:GetText()):find("Prendre", 1, true), "french step text")
     t.eq(Q.L.UI_MOB_LEVEL, "Niveau %s")
   end,
+
+  tracker_resize_grip_changes_width = function(t)
+    local Q = load()
+    local T = Q.UI.Tracker
+    local f = T.frame
+    local cx = 500
+    GetCursorPosition = function() return cx, 300 end
+    t.eq(f:GetWidth(), 260)
+    t.ok(T.grip:IsShown(), "grip while unlocked")
+    T.grip:GetScript("OnMouseDown")(T.grip, "LeftButton")
+    t.eq(Q.Settings:Get("tracker.point")[1], "TOPLEFT", "top-left corner fixed before resizing")
+    cx = 580
+    T.grip:GetScript("OnUpdate")(T.grip, 0.02)
+    t.eq(f:GetWidth(), 340, "live width")
+    t.eq(T.currentText:GetWidth(), 340 - 16 - 38 - 2, "text follows the width")
+    cx = 2000
+    T.grip:GetScript("OnUpdate")(T.grip, 0.02)
+    t.eq(f:GetWidth(), 480, "max width")
+    T.grip:GetScript("OnMouseUp")(T.grip, "LeftButton")
+    t.eq(Q.Settings:Get("tracker.width"), 480, "saved")
+    local Q2 = Mock.reload()
+    t.eq(Q2.UI.Tracker.frame:GetWidth(), 480, "kept after /reload")
+    Q2.Settings:Set("tracker.locked", true)
+    t.ok(not Q2.UI.Tracker.grip:IsShown(), "no grip when locked")
+    t.eq(#Mock.errors, 0)
+  end,
 }

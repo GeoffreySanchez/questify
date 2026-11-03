@@ -8,6 +8,8 @@ local addonName, Q = ...
 --   /qf wizard     assistant de navigation
 --   /qf export     mesures de temps, prêtes à copier
 --   /qf debug      messages de débogage (QuestifyVanillaDB.debug)
+--   /qf check      autodiagnostic du client (API, QuestieDB, navigation, route)
+--   /qf report     rapport de bug prêt à copier ; /qf report clear vide les erreurs gardées
 --   /qf reset      efface la progression du personnage (après confirmation)
 local L = Q.L
 
@@ -93,6 +95,21 @@ COMMANDS.debug = function()
   Q:Print(QuestifyVanillaDB.debug and L.UI_SLASH_DEBUG_ON or L.UI_SLASH_DEBUG_OFF)
 end
 
+COMMANDS.check = function()
+  Q.Diagnostics:PrintChecks()
+end
+COMMANDS.diag = COMMANDS.check
+
+COMMANDS.report = function(rest)
+  if rest == "clear" then
+    Q:ClearErrors()
+    Q:Print(L.REPORT_CLEARED)
+    return
+  end
+  if Q.UI and Q.UI.Report then Q.UI.Report:Show() end
+end
+COMMANDS.bug = COMMANDS.report
+
 COMMANDS.reset = function()
   if StaticPopup_Show then StaticPopup_Show(RESET_DIALOG) end
 end
@@ -102,10 +119,10 @@ COMMANDS.help = function()
 end
 
 local function handle(msg)
-  local cmd = tostring(msg or ""):match("^%s*(%S*)") or ""
-  cmd = cmd:lower()
+  local cmd, rest = tostring(msg or ""):match("^%s*(%S*)%s*(.-)%s*$")
+  cmd, rest = (cmd or ""):lower(), (rest or ""):lower()
   local fn = COMMANDS[cmd] or COMMANDS.help
-  fn()
+  fn(rest)
 end
 
 SLASH_QUESTIFYVANILLA1 = "/questify"

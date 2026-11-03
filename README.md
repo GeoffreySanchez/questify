@@ -40,8 +40,14 @@ Les zips sont téléchargeables dans la dernière version publiée du dépôt Gi
 Sans addon de navigation, Questify utilise le marqueur 3D natif du jeu.
 
 ### Première connexion : liste de vérification
-Ces points ne se vérifient que dans le jeu (le client Forever n'est pas simulable). Si l'un d'eux
-échoue, note le message d'erreur exact.
+Ces points ne se vérifient que dans le jeu (le client Forever n'est pas simulable). Commence par
+`/qf check` : l'addon vérifie seul les fonctions du jeu qu'il utilise, QuestieDB, le repère, la
+navigation et la route, et affiche une ligne par point. Si quelque chose échoue (ici ou dans la
+liste ci-dessous), tape `/qf report`, copie le texte (Ctrl + A puis Ctrl + C) et colle-le dans une
+issue GitHub : il contient la version, le client, le personnage, l'étape, les réglages et les
+erreurs Lua avec leur pile d'appels (gardées même après `/reload`).
+Si le jeu indique l'addon « périmé » (numéro d'interface changé par un patch), coche « Charger les
+addons périmés ».
 - [ ] L'addon apparaît dans la liste des addons, sans message d'erreur Lua au chargement (le client
       reconnaît `Questify_Vanilla_Camelot.toc` ; QuestieDB est chargé, sinon le client ou Questify le signale).
 - [ ] L'assistant de navigation s'ouvre environ 3 secondes après la première connexion, applique le
@@ -78,6 +84,9 @@ Ces points ne se vérifient que dans le jeu (le client Forever n'est pas simulab
 - `/qf skip` : passer l'étape courante ; `/qf back` : revenir à l'étape précédente.
 - `/qf options` : options ; `/qf wizard` : assistant de navigation.
 - `/qf export` : exporter les mesures de temps par étape (rien n'est envoyé automatiquement).
+- `/qf check` : autodiagnostic (fonctions du jeu, QuestieDB, repère, navigation, route, erreurs).
+- `/qf report` : rapport de bug prêt à copier (bouton « Rapport de bug » dans les options) ;
+  `/qf report clear` vide les erreurs enregistrées.
 - `/qf debug` : mode débogage ; `/qf reset` : réinitialiser la progression du personnage.
 
 Dans le suivi : clic droit pour passer une étape, Maj + clic droit pour revenir en arrière.
@@ -149,8 +158,14 @@ The zips can be downloaded from the GitHub repository's latest release:
 Without a navigation addon, Questify uses the game's native 3D waypoint.
 
 ### First launch: checklist
-These can only be checked in game (the Forever client cannot be simulated). If one fails, note the
-exact error message.
+These can only be checked in game (the Forever client cannot be simulated). Start with `/qf check`:
+the addon checks on its own the game functions it uses, QuestieDB, the map pin, navigation and the
+route, and prints one line per item. If something fails (there or in the list below), type
+`/qf report`, copy the text (Ctrl + A, then Ctrl + C) and paste it in a GitHub issue: it holds the
+version, client, character, step, settings and the Lua errors with their call stack (kept even after
+`/reload`).
+If the game says the addon is out of date (interface number changed by a patch), tick "Load out of
+date AddOns".
 - [ ] The addon shows in the addon list with no Lua error on load (the client recognizes
       `Questify_Vanilla_Camelot.toc`; QuestieDB is loaded, otherwise the client or Questify warns you).
 - [ ] The navigation wizard opens about 3 seconds after the first login, applies your choice at once
@@ -185,6 +200,9 @@ exact error message.
 - `/qf skip`: skip the current step; `/qf back`: go back one step.
 - `/qf options`: options; `/qf wizard`: navigation wizard.
 - `/qf export`: export the per-step timing data (nothing is ever sent automatically).
+- `/qf check`: self-check (game functions, QuestieDB, map pin, navigation, route, errors).
+- `/qf report`: bug report ready to copy ("Bug report" button in the options);
+  `/qf report clear` empties the saved errors.
 - `/qf debug`: debug mode; `/qf reset`: reset this character's progress.
 
 In the tracker: right-click skips a step, Shift + right-click goes back.

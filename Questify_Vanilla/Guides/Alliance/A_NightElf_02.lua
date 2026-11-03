@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 121 étapes, niveau final 12.10, ~21292 xp/h, 100 min.
+-- Simulation : 121 étapes, niveau final 12.10, ~21269 xp/h, 100 min.
 Q:RegisterGuide({
   id = "A_NightElf_02",
   title = "Teldrassil",
@@ -32,10 +32,10 @@ Q:RegisterGuide({
     { "turnin", 997, xp = 225 }, -- Denalan's Earth (lvl 5, ~225 xp, sim lvl 7)
     { "accept", 922 }, -- Rellian Greenspyre (lvl 7, ~315 xp, sim lvl 7)
     { "turnin", 929, xp = 335 }, -- Crown of the Earth (lvl 5, ~335 xp, sim lvl 7)
+    { "sethearth", 1438, 55.62, 59.79 }, -- lier la pierre de foyer
     { "accept", 933 }, -- Crown of the Earth (lvl 9, ~780 xp, sim lvl 7)
     { "turnin", 476, xp = 540 }, -- Gnarlpine Corruption (lvl 6, ~540 xp, sim lvl 7)
     { "accept", 483 }, -- The Relics of Wakening (lvl 9, ~780 xp, sim lvl 7)
-    { "sethearth", 1438, 55.62, 59.79 }, -- lier la pierre de foyer
     { "accept", 487 }, -- The Road to Darnassus (lvl 8, ~700 xp, sim lvl 7)
     { "complete", 483, at = { 1438, 45.65, 57.44 } }, -- The Relics of Wakening (lvl 9, ~780 xp, sim lvl 7)
     { "accept", 99053 }, -- Escaping Ban'ethil (lvl 9, ~780 xp, sim lvl 7)

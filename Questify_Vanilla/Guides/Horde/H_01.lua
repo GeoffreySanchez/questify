@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 134 étapes, niveau final 17.79, ~23114 xp/h, 181 min.
+-- Simulation : 135 étapes, niveau final 17.79, ~23432 xp/h, 178 min.
 Q:RegisterGuide({
   id = "H_01",
   title = "The Barrens",
@@ -18,8 +18,8 @@ Q:RegisterGuide({
     { "accept", 5041 }, -- Supplies for the Crossroads (lvl 14, ~980 xp, sim lvl 12)
     { "accept", 871 }, -- Disrupt the Attacks (lvl 12, ~910 xp, sim lvl 12)
     { "accept", 1492 }, -- Wharfmaster Dizzywig (lvl 11, ~440 xp, sim lvl 12)
-    { "accept", 848 }, -- Fungal Spores (lvl 15, ~1050 xp, sim lvl 12)
     { "sethearth", 1413, 51.99, 29.89 }, -- lier la pierre de foyer
+    { "accept", 848 }, -- Fungal Spores (lvl 15, ~1050 xp, sim lvl 12)
     { "complete", 848, at = { 1413, 45.11, 22.66 } }, -- Fungal Spores (lvl 15, ~1050 xp, sim lvl 12)
     { "complete", 870, at = { 1413, 45.06, 22.53 } }, -- The Forgotten Pools (lvl 13, ~680 xp, sim lvl 12)
     { "complete", 867, at = { 1413, 40.78, 15.56 } }, -- Harpy Raiders (lvl 15, ~1050 xp, sim lvl 12)
@@ -135,6 +135,7 @@ Q:RegisterGuide({
     { "complete", 901, at = { 1413, 52.84, 10.39 } }, -- Samophlange (lvl 14, ~740 xp, sim lvl 17)
     { "turnin", 901, xp = 740 }, -- Samophlange (lvl 14, ~740 xp, sim lvl 17)
     { "accept", 902 }, -- Samophlange (lvl 16, ~1150 xp, sim lvl 17)
+    { "hearth", 1413 }, -- pierre de foyer
     { "turnin", 881, xp = 1450 }, -- Echeyakee (lvl 16, ~1450 xp, sim lvl 17)
     { "turnin", 4921, xp = 1150 }, -- Lost in Battle (lvl 20, ~1150 xp, sim lvl 17)
     { "turnin", 95774, xp = 1550 }, -- Her Name Is Olgra (lvl 20, ~1550 xp, sim lvl 17)

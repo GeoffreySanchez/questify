@@ -8,7 +8,7 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Simulated level | 15.00 -> 16.61 |
 | Time | 74 min |
 | XP gained | 21281 |
-| XP/h | 17158 |
+| XP/h | 17154 |
 | Steps | 38 |
 | Quests turned in | 12 |
 | Hubs | 8 |
@@ -124,8 +124,8 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 2 | A | 64 | The Forgotten Heirloom | 1436 | 60.0, 19.4 | 1107 |  |
 | 3 | A | 12 | The People's Militia | 1436 | 56.3, 47.5 | 669 |  |
 | 4 | A | 92742 | Testing the Wells | 1436 | 52.5, 53.0 | 185 |  |
-| 5 | A | 92744 | Murloc Gills | 1436 | 52.5, 53.0 | 0 |  |
-| 6 | O | 92742 | Testing the Wells | 1436 | 56.6, 18.7 | 827 | near #2 (went 812 yd away) |
+| 5 | A | 92744 | Murloc Gills | 1436 | 52.5, 53.0 | 21 |  |
+| 6 | O | 92742 | Testing the Wells | 1436 | 56.6, 18.7 | 812 | near #2 (went 812 yd away) |
 | 7 | O | 64 | The Forgotten Heirloom | 1436 | 49.3, 19.3 | 255 |  |
 | 8 | O | 12 | The People's Militia | 1436 | 44.8, 26.0 | 222 |  |
 | 9 | O | 92744 | Murloc Gills | 1436 | 34.5, 17.0 | 415 |  |
@@ -158,13 +158,13 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 36 | T | 64 | The Forgotten Heirloom | 1436 | 60.0, 19.4 | 669 | near #6 (went 1364 yd away) |
 | 37 | T | 92748 | Explosive Consultation | 1453 | 61.9, 30.6 | 1526 |  |
 
-Walking between tasks: 13116 yd (~31 min at 7 yd/s).
+Walking between tasks: 13123 yd (~31 min at 7 yd/s).
 
 ## Logistics
 
 - step 1: `fp 1453 71.29 72.23`
 - step 3: `fp 1436 56.55 52.64`
-- step 7: `sethearth 1436 52.86 53.71`
+- step 6: `sethearth 1436 52.86 53.71`
 
 ## Warnings
 

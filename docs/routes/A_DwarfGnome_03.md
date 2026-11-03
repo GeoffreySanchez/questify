@@ -6,10 +6,10 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 |---|---|
 | Level band | 11-14 |
 | Simulated level | 11.00 -> 15.20 |
-| Time | 107 min |
+| Time | 104 min |
 | XP gained | 37540 |
-| XP/h | 21149 |
-| Steps | 69 |
+| XP/h | 21595 |
+| Steps | 68 |
 | Quests turned in | 25 |
 | Hubs | 9 |
 | Median ratio (XP/s) | 4.99 |
@@ -487,9 +487,8 @@ Walking between tasks: 13357 yd (~32 min at 7 yd/s).
 
 - step 22: `goto 1455 55.5 47.74` — Flight master
 - step 23: `fly 1432` — Thelsamar, Loch Modan
-- step 66: `goto 1432 33.94 50.95` — Flight master
-- step 67: `fly 1455` — Ironforge, Dun Morogh
-- step 68: `boat 1455 78 51.4` — Take the Deeprun Tram to Stormwind
+- step 66: `hearth 1426`
+- step 67: `boat 1455 78 51.4` — Take the Deeprun Tram to Stormwind
 
 ## Warnings
 

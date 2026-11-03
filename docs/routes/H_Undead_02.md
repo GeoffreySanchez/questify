@@ -6,10 +6,10 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 |---|---|
 | Level band | 6-12 |
 | Simulated level | 6.00 -> 12.94 |
-| Time | 166 min |
+| Time | 162 min |
 | XP gained | 45829 |
-| XP/h | 16579 |
-| Steps | 128 |
+| XP/h | 16955 |
+| Steps | 129 |
 | Quests turned in | 44 |
 | Hubs | 7 |
 | Median ratio (XP/s) | 3.64 |
@@ -439,9 +439,9 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 2 | A | 99134 | Discipline | 1420 | 60.6, 51.8 | 0 |  |
 | 3 | A | 398 | WANTED: Maggot Eye | 1420 | 60.7, 51.5 | 10 |  |
 | 4 | A | 358 | Graverobbers | 1420 | 61.3, 50.8 | 30 |  |
-| 5 | A | 86784 | Sticks and Bones | 1420 | 58.5, 51.4 | 127 |  |
+| 5 | A | 86784 | Sticks and Bones | 1420 | 58.5, 51.4 | 148 |  |
 | 6 | A | 404 | A Putrid Task | 1420 | 58.2, 51.5 | 12 |  |
-| 7 | O | 86784 | Sticks and Bones | 1420 | 55.7, 52.4 | 270 |  |
+| 7 | O | 86784 | Sticks and Bones | 1420 | 55.7, 52.4 | 114 |  |
 | 8 | O | 404 | A Putrid Task | 1420 | 53.3, 56.5 | 166 |  |
 | 9 | A | 5481 | Gordo's Task | 1420 | 43.1, 54.7 | 464 |  |
 | 10 | O | 5481 | Gordo's Task | 1420 | 42.7, 54.6 | 16 |  |
@@ -561,14 +561,15 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 124 | T | 95328 | Whispering Horror Residue | 1458 | 49.1, 14.6 | 256 |  |
 | 125 | T | 445 | Delivery to Silverpine Forest | 1421 | 42.8, 40.9 | 1776 |  |
 
-Walking between tasks: 22029 yd (~52 min at 7 yd/s).
+Walking between tasks: 21894 yd (~52 min at 7 yd/s).
 
 ## Logistics
 
-- step 7: `sethearth 1420 61.72 52.05`
+- step 5: `sethearth 1420 61.72 52.05`
 - step 38: `fp 1458 63.25 48.56`
 - step 67: `level 10` — About 2 mobs here (Scarlet Zealot, level 8)
-- step 127: `fp 1421 45.62 42.6`
+- step 114: `hearth 1420`
+- step 128: `fp 1421 45.62 42.6`
 
 ## Warnings
 

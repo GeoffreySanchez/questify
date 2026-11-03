@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 118 étapes, niveau final 19.90, ~27291 xp/h, 157 min.
+-- Simulation : 119 étapes, niveau final 19.90, ~27732 xp/h, 155 min.
 Q:RegisterGuide({
   id = "A_01",
   title = "Darkshore",
@@ -14,6 +14,7 @@ Q:RegisterGuide({
     { "fp", 1439, 36.34, 45.58 }, -- point de vol
     { "accept", 3524 }, -- Washed Ashore (lvl 13, ~680 xp, sim lvl 16)
     { "accept", 4740 }, -- WANTED: Murkdeep! (lvl 18, ~1700 xp, sim lvl 16)
+    { "sethearth", 1439, 37.04, 44.13 }, -- lier la pierre de foyer
     { "accept", 947 }, -- Cave Mushrooms (lvl 17, ~1250 xp, sim lvl 16)
     { "accept", 4811 }, -- The Red Crystal (lvl 14, ~490 xp, sim lvl 16)
     { "accept", 2118 }, -- Plagued Lands (lvl 14, ~980 xp, sim lvl 16)
@@ -31,7 +32,6 @@ Q:RegisterGuide({
     { "accept", 985 }, -- How Big a Threat? (lvl 14, ~980 xp, sim lvl 16)
     { "accept", 4761 }, -- Thundris Windweaver (lvl 15, ~105 xp, sim lvl 16)
     { "accept", 729 }, -- The Absent Minded Prospector (lvl 20, ~1150 xp, sim lvl 16)
-    { "sethearth", 1439, 37.04, 44.13 }, -- lier la pierre de foyer
     { "turnin", 4761, xp = 105 }, -- Thundris Windweaver (lvl 15, ~105 xp, sim lvl 16)
     { "accept", 4762 }, -- The Cliffspring River (lvl 15, ~800 xp, sim lvl 16)
     { "accept", 4723 }, -- Beached Sea Creature (lvl 13, ~455 xp, sim lvl 16)
@@ -78,6 +78,7 @@ Q:RegisterGuide({
     { "accept", 4730 }, -- Beached Sea Creature (lvl 16, ~580 xp, sim lvl 18)
     { "complete", 4740, at = { 1439, 36.44, 76.51 } }, -- WANTED: Murkdeep! (lvl 18, ~1700 xp, sim lvl 18)
     { "accept", 4728 }, -- Beached Sea Creature (lvl 14, ~490 xp, sim lvl 18)
+    { "hearth", 1439 }, -- pierre de foyer
     { "turnin", 4730, xp = 580 }, -- Beached Sea Creature (lvl 16, ~580 xp, sim lvl 18)
     { "turnin", 4731, xp = 730 }, -- Beached Sea Turtle (lvl 19, ~730 xp, sim lvl 18)
     { "complete", 4812, at = { 1439, 37.78, 44.03 } }, -- As Water Cascades (lvl 14, ~490 xp, sim lvl 18)

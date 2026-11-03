@@ -8,7 +8,7 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Simulated level | 6.00 -> 12.10 |
 | Time | 100 min |
 | XP gained | 35531 |
-| XP/h | 21292 |
+| XP/h | 21269 |
 | Steps | 121 |
 | Quests turned in | 44 |
 | Hubs | 12 |
@@ -313,10 +313,10 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 19 | T | 997 | Denalan's Earth | 1438 | 60.9, 68.5 | 0 |  |
 | 20 | A | 922 | Rellian Greenspyre | 1438 | 60.9, 68.5 | 0 |  |
 | 21 | T | 929 | Crown of the Earth | 1438 | 56.1, 61.7 | 334 | near #2 (went 608 yd away) |
-| 22 | A | 933 | Crown of the Earth | 1438 | 56.1, 61.7 | 0 | near #2 (went 608 yd away) |
+| 22 | A | 933 | Crown of the Earth | 1438 | 56.1, 61.7 | 70 | near #2 (went 608 yd away) |
 | 23 | T | 476 | Gnarlpine Corruption | 1438 | 56.0, 57.3 | 150 | near #10 (went 619 yd away) |
 | 24 | A | 483 | The Relics of Wakening | 1438 | 56.0, 57.3 | 0 | near #10 (went 619 yd away) |
-| 25 | A | 487 | The Road to Darnassus | 1438 | 52.9, 57.2 | 163 | near #6 (went 773 yd away) |
+| 25 | A | 487 | The Road to Darnassus | 1438 | 52.9, 57.2 | 155 | near #6 (went 773 yd away) |
 | 26 | O | 483 | The Relics of Wakening | 1438 | 45.6, 57.4 | 369 |  |
 | 27 | A | 99053 | Escaping Ban'ethil | 1438 | 44.7, 58.9 | 70 |  |
 | 28 | O | 483 | The Relics of Wakening | 1438 | 43.7, 61.2 | 92 |  |
@@ -410,11 +410,11 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 116 | A | 6342 | Flight to Auberdine | 1438 | 58.4, 94.0 | 0 |  |
 | 117 | T | 6342 | Flight to Auberdine | 1439 | 36.8, 44.3 |  |  |
 
-Walking between tasks: 17704 yd (~42 min at 7 yd/s).
+Walking between tasks: 17766 yd (~42 min at 7 yd/s).
 
 ## Logistics
 
-- step 25: `sethearth 1438 55.62 59.79`
+- step 22: `sethearth 1438 55.62 59.79`
 - step 113: `goto 1457 29.1 41.2` — Take the portal down to Rut'theran Village
 - step 114: `fp 1438 58.4 94.02`
 - step 119: `boat 1438 54.9 96.8` — Take the boat to Auberdine

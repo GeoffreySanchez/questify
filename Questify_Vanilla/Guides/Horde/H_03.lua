@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 99 étapes, niveau final 25.00, ~31143 xp/h, 213 min.
+-- Simulation : 100 étapes, niveau final 25.00, ~31583 xp/h, 210 min.
 Q:RegisterGuide({
   id = "H_03",
   title = "Ashenvale and Stonetalon Mountains",
@@ -12,9 +12,9 @@ Q:RegisterGuide({
   steps = {
     { "accept", 6381 }, -- New Life (lvl 25, ~2000 xp, sim lvl 21)
     { "accept", 6282 }, -- Harpies Threaten (lvl 26, ~2100 xp, sim lvl 21)
+    { "sethearth", 1442, 47.47, 62.13 }, -- lier la pierre de foyer
     { "accept", 86576 }, -- Bloodfury Trinkets (lvl 26, ~2100 xp, sim lvl 21)
     { "accept", 6393 }, -- Elemental War (lvl 25, ~2000 xp, sim lvl 21)
-    { "sethearth", 1442, 47.47, 62.13 }, -- lier la pierre de foyer
     { "complete", 6282, at = { 1442, 36.82, 67.37 } }, -- Harpies Threaten (lvl 26, ~2100 xp, sim lvl 21)
     { "complete", 6393, at = { 1442, 31.73, 73.96 } }, -- Elemental War (lvl 25, ~2000 xp, sim lvl 21)
     { "complete", 6381, at = { 1442, 32.73, 70.18 } }, -- New Life (lvl 25, ~2000 xp, sim lvl 21)
@@ -59,6 +59,7 @@ Q:RegisterGuide({
     { "complete", 1087, at = { 1442, 36.18, 12.84 } }, -- Cenarius' Legacy (lvl 25, ~1500 xp, sim lvl 22)
     { "complete", 1058, at = { 1442, 32.38, 10.7 } }, -- Jin'Zil's Forest Magic (lvl 26, ~2100 xp, sim lvl 22)
     { "complete", 1058, at = { 1442, 34.38, 17.93 } }, -- Jin'Zil's Forest Magic (lvl 26, ~2100 xp, sim lvl 23)
+    { "hearth", 1442 }, -- pierre de foyer
     { "turnin", 1087, xp = 1500 }, -- Cenarius' Legacy (lvl 25, ~1500 xp, sim lvl 23)
     { "accept", 1088 }, -- Ordanus (lvl 29, ~2350 xp, sim lvl 23)
     { "turnin", 6381, xp = 2000 }, -- New Life (lvl 25, ~2000 xp, sim lvl 23)

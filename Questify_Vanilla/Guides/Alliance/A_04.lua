@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 92 étapes, niveau final 29.00, ~38424 xp/h, 182 min.
+-- Simulation : 92 étapes, niveau final 29.00, ~38564 xp/h, 181 min.
 Q:RegisterGuide({
   id = "A_04",
   title = "Wetlands",
@@ -21,11 +21,11 @@ Q:RegisterGuide({
     { "accept", 98221 }, -- From the Ashes (lvl 28, ~570 xp, sim lvl 26)
     { "accept", 288 }, -- The Third Fleet (lvl 27, ~220 xp, sim lvl 26)
     { "complete", 288, at = { 1437, 10.7, 60.95 } }, -- The Third Fleet (lvl 27, ~220 xp, sim lvl 26)
+    { "sethearth", 1437, 10.7, 60.95 }, -- lier la pierre de foyer
     { "turnin", 288, xp = 220 }, -- The Third Fleet (lvl 27, ~220 xp, sim lvl 26)
     { "accept", 289 }, -- The Cursed Crew (lvl 29, ~1750 xp, sim lvl 26)
     { "accept", 470 }, -- Digging Through the Ooze (lvl 24, ~2400 xp, sim lvl 26)
     { "accept", 472 }, -- Fall of Dun Modr (lvl 25, ~1000 xp, sim lvl 26)
-    { "sethearth", 1437, 10.7, 60.95 }, -- lier la pierre de foyer
     { "accept", 305 }, -- In Search of The Excavation Team (lvl 24, ~970 xp, sim lvl 26)
     { "complete", 289, at = { 1437, 13.81, 30.07 } }, -- The Cursed Crew (lvl 29, ~1750 xp, sim lvl 26)
     { "complete", 289, at = { 1437, 14.67, 24.18 } }, -- The Cursed Crew (lvl 29, ~1750 xp, sim lvl 26)

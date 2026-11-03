@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 105 étapes, niveau final 12.91, ~17325 xp/h, 157 min.
+-- Simulation : 105 étapes, niveau final 12.91, ~17341 xp/h, 157 min.
 Q:RegisterGuide({
   id = "H_OrcTroll_02",
   title = "Durotar",
@@ -24,12 +24,12 @@ Q:RegisterGuide({
     { "turnin", 96604, xp = 540 }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 6)
     { "accept", 96655 }, -- Camping 101: Cooking (lvl 6, ~540 xp, sim lvl 6)
     { "accept", 815 }, -- Break a Few Eggs (lvl 8, ~700 xp, sim lvl 6)
+    { "sethearth", 1411, 51.51, 41.64 }, -- lier la pierre de foyer
     { "accept", 96825 }, -- This Fruit Could Bite Back (lvl 6, ~540 xp, sim lvl 6)
     { "accept", 837 }, -- Encroachment (lvl 10, ~630 xp, sim lvl 6)
     { "accept", 784 }, -- Vanquish the Betrayers (lvl 7, ~630 xp, sim lvl 6)
     { "turnin", 823, xp = 315 }, -- Report to Orgnil (lvl 7, ~315 xp, sim lvl 6)
     { "accept", 806 }, -- Dark Storms (lvl 12, ~910 xp, sim lvl 6)
-    { "sethearth", 1411, 51.51, 41.64 }, -- lier la pierre de foyer
     { "complete", 784, at = { 1411, 57.04, 57.49 } }, -- Vanquish the Betrayers (lvl 7, ~630 xp, sim lvl 6)
     { "accept", 830, at = { 1411, 59.26, 57.65 }, note = "Loot Aged Envelope to start the quest" }, -- The Admiral's Orders (lvl 7, ~630 xp, sim lvl 6)
     { "complete", 818, at = { 1411, 63.74, 56.42 } }, -- A Solvent Spirit (lvl 7, ~630 xp, sim lvl 6)

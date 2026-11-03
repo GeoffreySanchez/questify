@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 65 étapes, niveau final 22.00, ~28213 xp/h, 146 min.
+-- Simulation : 65 étapes, niveau final 22.00, ~28204 xp/h, 146 min.
 Q:RegisterGuide({
   id = "A_02",
   title = "Ashenvale and Stonetalon Mountains",
@@ -14,9 +14,9 @@ Q:RegisterGuide({
     { "accept", 1008 }, -- The Zoram Strand (lvl 19, ~1450 xp, sim lvl 19)
     { "accept", 1056 }, -- Journey to Stonetalon Peak (lvl 18, ~680 xp, sim lvl 19)
     { "turnin", 990, xp = 365 }, -- Trek to Ashenvale (lvl 19, ~365 xp, sim lvl 19)
+    { "sethearth", 1440, 36.99, 49.22 }, -- lier la pierre de foyer
     { "accept", 1054 }, -- Culling the Threat (lvl 25, ~2000 xp, sim lvl 19)
     { "accept", 991 }, -- Raene's Cleansing (lvl 19, ~1450 xp, sim lvl 19)
-    { "sethearth", 1440, 36.99, 49.22 }, -- lier la pierre de foyer
     { "accept", 78132 }, -- Dragonslayer's Helm (lvl 25, ~1000 xp, sim lvl 19)
     { "accept", 78134 }, -- Dragonslayer's Lance (lvl 25, ~1000 xp, sim lvl 19)
     { "turnin", 78134, xp = 1000 }, -- Dragonslayer's Lance (lvl 25, ~1000 xp, sim lvl 19)

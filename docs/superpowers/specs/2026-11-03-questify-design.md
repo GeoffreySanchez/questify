@@ -166,7 +166,7 @@ questify/
     Engine/                     registre de guides, étapes, progression, quêtes de classe, mesures
     Nav/                        abstraction de navigation + 4 fournisseurs
     Automation/                 auto quêtes + choix de récompense
-    UI/                         suivi, panneau mobs, journal, assistant, options, barres de nom
+    UI/                         suivi (et mobs sous les objectifs), journal, assistant, options, barres de nom
     Guides/                     guides générés (Alliance/, Horde/, Skyborne/) + données de classe
   tools/routebuilder/           générateur de routes hors jeu (LuaJIT)
   tests/                        harnais LuaJIT qui simule l'API WoW
@@ -284,13 +284,19 @@ Champs facultatifs sur toute étape : `race = {...}`, `class = {...}`, `optional
   On peut le rouvrir depuis les options.
 
 ### 5.5 Objectifs, mobs et barres de nom (`UI/`)
-- **Liste des mobs** (sous le suivi) : créatures des objectifs des quêtes actives de la route.
+- **Mobs de l'étape courante** (dans le suivi, sous chaque ligne d'objectif de l'étape « Faire » :
+  crâne, nom, niveau ; 6 au plus, grisés quand l'objectif est rempli).
   - Sources : objectifs de type créature, killcredit, et mobs qui lâchent les objets demandés,
     triés par taux de loot.
-  - Pour chaque mob : nom, niveau, progression de l'objectif.
+  - Pour chaque mob : nom, niveau (la progression est sur la ligne d'objectif au-dessus).
   - Survol : modèle 3D (`PlayerModel:SetCreature(npcID)`), avec une icône si le modèle reste vide.
-  - Clic : bouton sécurisé `/cleartarget`, `/targetexact Nom`, `/tm !8`. La liste se reconstruit
-    hors combat uniquement, avec une file d'attente pendant le combat.
+  - Clic : bouton sécurisé `/cleartarget`, `/targetexact Nom`, `/tm !8`, posé par-dessus la ligne
+    par coordonnées d'écran (jamais enfant du suivi, qui resterait sinon protégé). Les boutons se
+    replacent hors combat uniquement, avec une file d'attente pendant le combat.
+  - Option « Touche de ciblage auto » (désactivée par défaut) : un raccourci (`Bindings.xml`) clique
+    un bouton sécurisé caché dont la macro (`/stopmacro [combat]`, puis `/targetexact` sur chaque
+    nom, objectifs restants d'abord, puis `/tm !8`) cible et marque le plus proche. Le client
+    interdit tout ciblage sans touche ni clic : un ciblage entièrement automatique est impossible.
 - **Objets à utiliser** (coffres, plantes) : la cible de navigation pointe sur l'objet, et le
   marqueur 3D natif ou WaypointUI flotte au-dessus. Le suivi affiche « Utiliser : <objet> ».
 - **Barres de nom** : sur `NAME_PLATE_UNIT_ADDED`, si le npcID fait partie des mobs d'objectif, on
@@ -329,7 +335,7 @@ Champs facultatifs sur toute étape : `race = {...}`, `class = {...}`, `optional
   - en-tête : chapitre, niveaux, barre de progression ;
   - étape courante en gros (icône d'action, texte, distance) ;
   - les 3 étapes suivantes en petit ;
-  - liste des mobs ;
+  - mobs à tuer sous les objectifs de l'étape courante ;
   - alerte de quête de classe.
 - **Journal** (`/questify`, `/qf`, ou bouton du compartiment d'addons), trois onglets :
   1. **Route** : toutes les étapes du chapitre, cochées ou grisées, avec un sélecteur de chapitre ;

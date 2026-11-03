@@ -216,6 +216,41 @@ local function collectMobs()
   return rows
 end
 
+-- Monstres d'une seule étape « complete » (affichés sous ses objectifs dans le suivi) :
+-- { npcId, name, minLevel, maxLevel, questId, objIndex, done, viaItem }, un par monstre, dans
+-- l'ordre des objectifs. Quête absente du journal : objectifs QuestieDB, aucun n'est terminé.
+local function stepMobs(entry)
+  local step = type(entry) == "table" and entry.step
+  if type(step) ~= "table" or step.action ~= "complete" or not step.questId then return {} end
+  local questId = step.questId
+  local inLog = Q.Progress:InLog(questId)
+  local complete = inLog and Q.Progress:IsComplete(questId)
+  local rows, seen = {}, {}
+  for _, r in ipairs(objectiveTargets(questId)) do
+    if r.kind == "npc" and not seen[r.id] and (not step.obj or r.objIndex == step.obj) then
+      seen[r.id] = true
+      local npc = Q.QDB:Npc(r.id)
+      rows[#rows + 1] = {
+        npcId = r.id,
+        name = Q.QDB:NpcName(r.id),
+        minLevel = npc and npc.minLevel,
+        maxLevel = npc and npc.maxLevel,
+        questId = questId,
+        objIndex = r.objIndex,
+        done = (inLog and (complete or Q.Progress:ObjectiveDone(questId, r.objIndex))) and true or false,
+        viaItem = r.viaItem,
+      }
+    end
+  end
+  return rows
+end
+
+-- Q.Targets:MobsForEntry(entry) -> liste neuve (jamais en cache), vide hors étape « complete ».
+function Targets:MobsForEntry(entry)
+  local ok, rows = Q.SafeCall(stepMobs, entry)
+  return (ok and rows) or {}
+end
+
 -- Cache recalculé au plus une fois entre deux recalculs de la progression : les barres de nom
 -- interrogent ces listes à chaque apparition de barre. Il est vidé à chaque PROGRESS_UPDATED,
 -- GUIDE_CHANGED et évènement du journal de quêtes (objectif terminé visible tout de suite).

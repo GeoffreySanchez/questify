@@ -55,7 +55,9 @@ local function giverName(entry, step, list)
 end
 
 -- Lignes d'objectifs : celles du journal si la quête y est, sinon les cibles QuestieDB.
-local function objectiveLines(step)
+-- -> { { text, index } } ; index = n° de l'objectif du journal, sinon ordre QuestieDB (comme
+-- objIndex dans Q.Targets).
+local function objectiveList(step)
   local L = Q.L
   local id = step.questId
   local lines = {}
@@ -63,7 +65,7 @@ local function objectiveLines(step)
     local objs = C_QuestLog.GetQuestObjectives(id) or {}
     for i, o in ipairs(objs) do
       if (not step.obj or step.obj == i) and type(o.text) == "string" and o.text ~= "" then
-        lines[#lines + 1] = (o.finished and DONE_COLOR or TODO_COLOR) .. o.text .. "|r"
+        lines[#lines + 1] = { text = (o.finished and DONE_COLOR or TODO_COLOR) .. o.text .. "|r", index = i }
       end
     end
   end
@@ -73,27 +75,28 @@ local function objectiveLines(step)
       for ordinal, o in ipairs(q.objectives.ordered) do
         if not step.obj or step.obj == ordinal then
           if o.kind == "creature" then
-            lines[#lines + 1] = fmt(L.OBJ_KILL, Q.QDB:NpcName(o.ids[1]))
+            lines[#lines + 1] = { text = fmt(L.OBJ_KILL, Q.QDB:NpcName(o.ids[1])), index = ordinal }
           elseif o.kind == "killCredit" then
-            lines[#lines + 1] = fmt(L.OBJ_KILL, o.text or Q.QDB:NpcName(o.base or o.ids[1]))
+            lines[#lines + 1] = { text = fmt(L.OBJ_KILL, o.text or Q.QDB:NpcName(o.base or o.ids[1])), index = ordinal }
           elseif o.kind == "object" then
-            lines[#lines + 1] = fmt(L.OBJ_USE, Q.QDB:ObjectName(o.ids[1]))
+            lines[#lines + 1] = { text = fmt(L.OBJ_USE, Q.QDB:ObjectName(o.ids[1])), index = ordinal }
           elseif o.kind == "item" then
             local item = Q.QDB:Item(o.ids[1])
             if item and #item.npcDrops == 0 and item.objectDrops[1] then
               -- objet ramassé sur un objet du monde (coffre, plante) : « Utiliser : <objet> »
-              lines[#lines + 1] = fmt(L.OBJ_USE, Q.QDB:ObjectName(item.objectDrops[1]))
+              lines[#lines + 1] = { text = fmt(L.OBJ_USE, Q.QDB:ObjectName(item.objectDrops[1])), index = ordinal }
             else
-              lines[#lines + 1] = fmt(L.OBJ_LOOT, Q.QDB:ItemName(o.ids[1]))
+              lines[#lines + 1] = { text = fmt(L.OBJ_LOOT, Q.QDB:ItemName(o.ids[1])), index = ordinal }
             end
           end
         end
       end
     end
   end
-  if #lines == 0 then return "" end
-  return "\n  " .. table.concat(lines, "\n  ")
+  return lines
 end
+
+local OBJ_INDENT = "  "
 
 local function mainText(entry, step)
   local L = Q.L
@@ -112,7 +115,7 @@ local function mainText(entry, step)
     if kind == "object" then return fmt(L.STEP_TURNIN_OBJECT, name, who) end
     return fmt(L.STEP_TURNIN_ANY, name)
   elseif a == "complete" then
-    return fmt(L.STEP_COMPLETE, Q.QDB:QuestName(step.questId)) .. objectiveLines(step)
+    return fmt(L.STEP_COMPLETE, Q.QDB:QuestName(step.questId)), objectiveList(step)
   elseif a == "goto" then
     return L.STEP_GOTO
   elseif a == "fp" then
@@ -133,23 +136,42 @@ local function mainText(entry, step)
   return tostring(a)
 end
 
--- Q.Format:StepText(entry) -> texte coloré pour le suivi (accepte aussi une étape seule).
-function Format:StepText(entry)
+-- Q.Format:StepParts(entry) -> { head = texte, objectives = { { text, index } }, tail = { lignes } }
+-- Les lignes d'objectifs sont sans retrait ; le suivi les met en page et place sous chacune les
+-- monstres à tuer.
+function Format:StepParts(entry)
+  local parts = { head = "", objectives = {}, tail = {} }
   local step = stepOf(entry)
-  if not step then return "" end
+  if not step then return parts end
   if type(entry.step) ~= "table" then entry = { step = step } end
-  local ok, text = pcall(mainText, entry, step)
+  local ok, head, objectives = pcall(mainText, entry, step)
   if not ok then
-    Q:ReportError(text)
-    text = tostring(step.action)
+    Q:ReportError(head)
+    head, objectives = tostring(step.action), nil
   end
+  parts.head = head
+  parts.objectives = type(objectives) == "table" and objectives or {}
   if step.dungeon then
-    text = text .. "\n" .. NOTE_COLOR .. fmt(Q.L.DUNGEON_TAG, step.dungeon) .. "|r"
+    parts.tail[#parts.tail + 1] = NOTE_COLOR .. fmt(Q.L.DUNGEON_TAG, step.dungeon) .. "|r"
   end
   if step.note then
-    text = text .. "\n" .. NOTE_COLOR .. step.note .. "|r"
+    parts.tail[#parts.tail + 1] = NOTE_COLOR .. step.note .. "|r"
   end
-  return text
+  return parts
+end
+
+-- Ligne d'objectif telle qu'affichée sous le titre de l'étape (avec son retrait).
+function Format:ObjectiveLine(text)
+  return OBJ_INDENT .. tostring(text or "")
+end
+
+-- Q.Format:StepText(entry) -> texte coloré pour le suivi (accepte aussi une étape seule).
+function Format:StepText(entry)
+  local parts = self:StepParts(entry)
+  local lines = { parts.head }
+  for _, o in ipairs(parts.objectives) do lines[#lines + 1] = self:ObjectiveLine(o.text) end
+  for _, line in ipairs(parts.tail) do lines[#lines + 1] = line end
+  return table.concat(lines, "\n")
 end
 
 local function titleText(step)

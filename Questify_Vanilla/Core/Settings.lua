@@ -9,7 +9,7 @@ Settings.defaults = {
   autoReward = true,
   dungeonQuests = true,
   nav = { routing = false, display = "native" },
-  tracker = { locked = false, scale = 1, nextSteps = 3, showMobs = true },
+  tracker = { locked = false, scale = 1, nextSteps = 3, showMobs = true, autoTarget = false },
   nameplates = true,
   telemetry = true,
 }

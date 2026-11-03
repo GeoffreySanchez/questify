@@ -13,7 +13,7 @@ Guide de leveling **gratuit et open source** pour **World of Warcraft: Forever**
 - Les étapes se cochent toutes seules selon ton journal de quêtes ; les étapes impossibles pour ton
   personnage sont sautées.
 - Navigation vers chaque étape (marqueur natif du jeu, ou TomTom, WaypointUI, ShortestPath Forever).
-- Liste des monstres à tuer, quêtes de classe, acceptation et rendu automatiques (désactivables).
+- Monstres à tuer sous chaque objectif (clic ou touche de ciblage auto : cible + crâne), quêtes de classe, acceptation et rendu automatiques (désactivables).
 
 ### Installation
 Les zips sont téléchargeables dans la dernière version publiée du dépôt GitHub :
@@ -50,20 +50,23 @@ Ces points ne se vérifient que dans le jeu (le client Forever n'est pas simulab
       si installés) ; il disparaît ou change quand l'étape change.
 - [ ] Les étapes se cochent toutes seules : prise et rendu de quête, point de vol découvert, pierre
       de foyer liée. Le rayon de 15 yards des étapes `goto` n'est pas trop serré.
-- [ ] `/tm` fonctionne en solo : un clic sur un monstre du panneau cible le plus proche et lui pose
+- [ ] `/tm` fonctionne en solo : un clic sur un monstre sous l'objectif cible le plus proche et lui pose
       un crâne, une seule fois par clic, avec `ActionButtonUseKeyDown` à 0 puis à 1.
+- [ ] Option « Touche de ciblage auto » : une touche liée dans Échap > Raccourcis > Questify Vanilla
+      cible le monstre d'objectif le plus proche et lui pose un crâne hors combat, et ne fait rien
+      en combat.
 - [ ] L'acceptation et le rendu automatiques fonctionnent sur les quêtes de la route, et Maj (Shift)
       les suspend.
 - [ ] Le choix de récompense automatique propose une amélioration ou, à défaut, l'objet qui se vend le
       plus cher ; il ne choisit rien quand les objets ne sont pas encore chargés.
 - [ ] Aucune erreur en combat : pas de message d'action d'interface bloquée par un addon,
-      le suivi peut grandir en combat, le panneau des monstres se reconstruit à la fin du combat.
+      le suivi peut grandir en combat, les boutons de ciblage se replacent à la fin du combat.
 - [ ] Aucune erreur avec des valeurs secrètes en combat, ni dans une instance (barres de nom
       interdites).
 - [ ] Le suivi est bien placé à 1080p, avec une échelle d'interface de 1 et de 0,8 : lisible, les
       textes longs passent à la ligne, le déplacement et le verrouillage marchent, la position
       survit à `/reload`, les boutons de taille fonctionnent, pas de chevauchement avec le suivi de Blizzard.
-- [ ] Le panneau des monstres : modèle 3D au survol (point d'interrogation si le modèle n'est pas
+- [ ] Les monstres sous l'objectif : modèle 3D au survol (point d'interrogation si le modèle n'est pas
       en cache), icône qui rebondit sur les bonnes barres de nom et qui disparaît à l'objectif rempli.
 - [ ] Le journal : cadre, titre, onglets, Échap pour fermer, défilement à la molette, infobulles des
       objets ; la fenêtre des quêtes de classe (icône de classe, objets, zone de départ).
@@ -105,7 +108,7 @@ ne change pas.
       de cette zone (étapes « faire » et « rendre »).
 - [ ] Un PNJ à plusieurs quêtes sans dialogue : la bonne quête est prise ou rendue automatiquement.
 - [ ] La récompense est choisie seule quand il y a plusieurs choix.
-- [ ] Clic sur un monstre du panneau : il est ciblé et reçoit un crâne ; icône au-dessus de sa barre
+- [ ] Clic sur un monstre sous l'objectif : il est ciblé et reçoit un crâne ; icône au-dessus de sa barre
       de nom.
 - [ ] Avec TomTom : la flèche pointe vers l'étape.
 

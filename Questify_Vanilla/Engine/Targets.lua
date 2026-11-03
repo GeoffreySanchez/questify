@@ -150,9 +150,15 @@ local function compute(entry)
       if #cands == 0 then cands = rows end
       mapId, x, y, kind, id = nearest(cands)
     end
-  elseif a == "train" then
+  elseif a == "train" or a == "trainprof" then
+    local ids
+    if a == "train" then
+      ids = Q.Trainer and Q.Trainer:TrainerIds() or {}
+    else
+      ids = Q.Professions and Q.Professions:TrainerIds(step.prof) or {}
+    end
     local cands = {}
-    for _, id in ipairs(Q.Trainer and Q.Trainer:TrainerIds() or {}) do cands[#cands + 1] = { kind = "npc", id = id } end
+    for _, id in ipairs(ids) do cands[#cands + 1] = { kind = "npc", id = id } end
     mapId, x, y, kind, id = nearest(cands)
   elseif POINT_ACTIONS[a] then
     mapId, x, y, kind = step.mapId, step.x, step.y, "point"

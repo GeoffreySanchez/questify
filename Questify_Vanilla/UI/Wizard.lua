@@ -345,6 +345,8 @@ function Wizard:Finish()
   Q.Settings:Set("autoQuest", c.autoQuest)
   Q.Settings:Set("autoReward", c.autoReward)
   if Q.char then Q.char.wizardDone = true end
+  -- étape suivante de l'accueil : le choix des métiers
+  if Q.UI.ProfessionPicker then Q:After(0.5, Q.UI.ProfessionPicker.AutoShow) end
   self.frame:Hide()
   playSound("IG_MAINMENU_OPTION_CHECKBOX_ON")
   Q:Print(L.UI_WIZ_SAVED)

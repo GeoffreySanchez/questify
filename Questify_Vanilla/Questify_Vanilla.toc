@@ -33,6 +33,7 @@ Engine\Targets.lua
 Engine\Format.lua
 Engine\ClassQuests.lua
 Engine\Trainer.lua
+Engine\Professions.lua
 Engine\Telemetry.lua
 
 Nav\Navigation.lua
@@ -46,6 +47,7 @@ UI\MobPanel.lua
 UI\Nameplates.lua
 UI\ObjectGlow.lua
 UI\UpgradePopup.lua
+UI\ProfessionPicker.lua
 UI\ClassQuestPopup.lua
 UI\Journal.lua
 UI\Wizard.lua

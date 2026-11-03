@@ -14,6 +14,7 @@ local VALID = {
   level = "level",
   note = "text",
   train = "none",   -- maître de classe le plus proche (étape insérée par Engine/Trainer.lua)
+  trainprof = "prof", -- maître de métier le plus proche (étape insérée par Engine/Professions.lua)
 }
 Guides.VALID_ACTIONS = VALID
 
@@ -67,6 +68,10 @@ function Guides:Normalize(raw)
     local l = raw.level or a2
     if not isNum(l) then return nil, "level: needs a number" end
     step.level = l
+  elseif kind == "prof" then
+    local prof = raw.prof or a2
+    if type(prof) ~= "string" or prof == "" then return nil, "trainprof: needs a profession" end
+    step.prof = prof
   elseif kind == "text" then
     local txt = raw.text or a2
     if type(txt) ~= "string" then return nil, "note: needs a text" end

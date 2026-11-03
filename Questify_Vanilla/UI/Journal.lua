@@ -733,6 +733,11 @@ function Journal:BuildOptions(parent)
       self.resetButton = toolButton(L.UI_OPT_RESET_CHAPTER, 250, resetChapter)
       self.resetButton:SetPoint("LEFT", self.wizardButton, "RIGHT", 8, 0)
       y = y + 28
+      self.profButton = toolButton(L.UI_OPT_PROFESSIONS, 200, function()
+        if Q.UI.ProfessionPicker then Q.UI.ProfessionPicker:Show() end
+      end)
+      self.profButton:SetPoint("TOPLEFT", panel, "TOPLEFT", 12, -y)
+      y = y + 28
       self.exportButton = toolButton(L.UI_OPT_EXPORT, 200, function() Journal:ShowExport() end)
       self.exportButton:SetPoint("TOPLEFT", panel, "TOPLEFT", 12, -y)
       y = y + 30

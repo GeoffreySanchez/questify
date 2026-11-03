@@ -22,6 +22,7 @@ local ICONS = {
   level = "Interface\\Icons\\INV_Sword_04",
   note = "Interface\\Icons\\INV_Misc_Note_01",
   train = "Interface\\Icons\\INV_Misc_Book_11",
+  trainprof = "Interface\\Icons\\INV_Misc_Book_08",
 }
 local UNKNOWN_ICON = "Interface\\Icons\\INV_Misc_QuestionMark"
 
@@ -137,6 +138,12 @@ local function mainText(entry, step)
     local who = giverName(entry, step, { npcs = Q.Trainer and Q.Trainer:TrainerIds() or {} })
     if who then return fmt(L.STEP_TRAIN, who) end
     return L.STEP_TRAIN_ANY
+  elseif a == "trainprof" then
+    local P = Q.Professions
+    local prof = P and P:Name(step.prof) or tostring(step.prof)
+    local who = giverName(entry, step, { npcs = P and P:TrainerIds(step.prof) or {} })
+    if who then return fmt(L.STEP_TRAINPROF, prof, who) end
+    return fmt(L.STEP_TRAINPROF_ANY, prof)
   end
   return tostring(a)
 end
@@ -195,6 +202,9 @@ local function titleText(step)
   if a == "level" then return fmt(L.STEP_LEVEL, step.level or 0) end
   if a == "note" then return step.text or "" end
   if a == "train" then return L.TITLE_TRAIN end
+  if a == "trainprof" then
+    return fmt(L.TITLE_TRAINPROF, Q.Professions and Q.Professions:Name(step.prof) or tostring(step.prof))
+  end
   return tostring(a)
 end
 

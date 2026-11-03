@@ -213,6 +213,24 @@ function Rewards:Usable(choice, player)
   return false
 end
 
+-- ReadItem(link) -> { name, equipLoc, classID, subclassID, minLevel, sellPrice, stats, loaded }
+Rewards.ReadItem = function(_, link) return readItem(link) end
+
+-- UpgradeGain(item, player, equipped) -> gain de score par rapport à l'objet porté (le moins bon des
+-- emplacements comparés), ou nil si l'objet n'est pas portable par la classe à ce niveau.
+-- equipped(slot) facultatif : score porté (cache de l'appelant).
+function Rewards:UpgradeGain(item, player, equipped)
+  player = player or Q.Player or {}
+  local slots = self:Usable(item, player) and self:ComparisonSlots(item.equipLoc, player)
+  if not slots then return nil end
+  local base = math.huge
+  for _, s in ipairs(slots) do
+    base = math.min(base, equipped and equipped(s) or self:EquippedScore(s, player))
+  end
+  return self:Score(item.stats, player.classFile) - base
+end
+Rewards.EPSILON = EPSILON
+
 ---------------------------------------------------------------------------
 -- Choix
 ---------------------------------------------------------------------------
@@ -232,11 +250,8 @@ function Rewards:Pick(choices, player)
 
   local best, bestGain, bestPos
   for pos, c in ipairs(choices) do
-    local slots = self:Usable(c, player) and self:ComparisonSlots(c.equipLoc, player)
-    if slots then
-      local base = math.huge
-      for _, s in ipairs(slots) do base = math.min(base, equipped(s)) end
-      local gain = self:Score(c.stats, player.classFile) - base
+    local gain = self:UpgradeGain(c, player, equipped)
+    if gain then
       if gain > EPSILON then
         if not best or gain > bestGain + EPSILON
           or (math.abs(gain - bestGain) <= EPSILON and (c.sellPrice or 0) > (best.sellPrice or 0)) then

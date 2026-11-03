@@ -13,6 +13,7 @@ Settings.defaults = {
   nameplates = true,
   objectGlow = true,
   trainerAlert = true,
+  upgradePopup = true,
   telemetry = true,
 }
 

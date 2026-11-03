@@ -601,7 +601,7 @@ end
 ---------------------------------------------------------------------------
 local OPTION_GROUPS = {
   { title = "UI_OPT_AUTOMATION", checks = { { "autoQuest", "UI_OPT_AUTOQUEST" }, { "autoReward", "UI_OPT_AUTOREWARD" },
-    { "upgradePopup", "UI_OPT_UPGRADE" },
+    { "upgradePopup", "UI_OPT_UPGRADE" }, { "sellJunk", "UI_OPT_SELLJUNK" },
     { "tracker.autoTarget", "UI_OPT_AUTOTARGET" }, { "trainerAlert", "UI_OPT_TRAINER" } } },
   { title = "UI_OPT_ROUTE", checks = { { "dungeonQuests", "UI_OPT_DUNGEON" } } },
   { title = "UI_OPT_DISPLAY", checks = { { "nameplates", "UI_OPT_NAMEPLATES" },
@@ -684,7 +684,11 @@ function Journal:ShowExport()
   box:HighlightText()
 end
 
-function Journal:BuildOptions(panel)
+function Journal:BuildOptions(parent)
+  -- options dans une liste défilante : elles ne tiennent plus toutes dans la hauteur du journal
+  local scroll, panel = newScroll(parent, "QuestifyVanillaJournalOptionsScroll", CLASS_W, LIST_H + 20)
+  scroll:SetPoint("TOPLEFT", parent, "TOPLEFT", 0, 0)
+  self.optionsScroll, self.optionsChild = scroll, panel
   local y = 4
   for _, group in ipairs(OPTION_GROUPS) do
     local h = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -753,6 +757,7 @@ function Journal:BuildOptions(panel)
     end
     y = y + 8
   end
+  panel:SetHeight(y)
 end
 
 function Journal:RefreshOptions()

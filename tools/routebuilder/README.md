@@ -191,6 +191,84 @@ finisher spawn, objectives without a position, missing flight masters).
    overshoots its band makes the next chapter drop quests as "level band reached".
 4. Regenerate and run `luajit tests/run.lua` (the boot test loads every guide).
 
+## Changes from Stream E (Tasks 14-16)
+
+### Determinism and CLI
+
+- The build runs in the LuaJIT interpreter by default (`jit.off()`), and `--jit` speeds it up.
+  Travel costs in `order.lua` are integer centiseconds, so both modes give byte-identical output.
+- `--only <planId>` on a race-specific chapter simulates only that race's path up to that chapter.
+
+### Travel (`transport.lua`, `sim.route`)
+
+- Walk regions: Eastern Kingdoms north and south of the mountains, Kalimdor, top of Teldrassil,
+  Rut'theran. Inside a region, walking is a straight line.
+- Between regions, the router uses Dijkstra over walking, known flights, links and the hearthstone.
+- Links:
+  - Deeprun Tram;
+  - Stormwind Harbor <-> Auberdine;
+  - the one-way loop Auberdine -> Menethil -> Southshore -> Auberdine;
+  - Rut'theran boat and the Darnassus portals;
+  - zeppelins Orgrimmar <-> Undercity;
+  - Skyborne skyboats and the Dalaran portal.
+- Steps written: `boat` at the dock (or `goto` for a portal), `goto` FM + `fly`, `hearth`.
+- Unknown flight paths are picked up on a walk when the detour is 300 yd or less.
+
+### Ordering (`order.lua`)
+
+- Nearest feasible neighbour, then or-opt with segments up to 6 tasks.
+- Then simulated annealing with a fixed seed (moves with no gain are refused), then or-opt again.
+- Then a pass moves accepts and flight paths forward to the first visit of the same place.
+- `order.build` returns `seq, issues`. In a deadlock, a final task is moved forward before the
+  quest log cap is ever exceeded.
+
+### Chapter selection (`sim.chapter`)
+
+- Band widening: if the band's quests would need more than 25 mobs of grinding, the chapter is
+  re-run with quests up to `maxLevel + 6`.
+- Level-gated leaf quests: an accept blocked by level that would need more than 15 mobs of grinding
+  is skipped, if it opens no other quest. The chapter is then re-run without it.
+- XP budget: prerequisites are kept down to depth 200. The budget is raised while kept quests lose
+  their prerequisites.
+- Carried turn-ins: a quest whose finisher is in one of the next two chapters of the path is
+  accepted and done now, and turned in there.
+- Grind spots skip unique named mobs (quest targets) and NPCs with a subname. A final `level` step
+  of 3 mobs or fewer is not written.
+- Exclusions before analysis are listed in the report with a reason: class quest, blacklist,
+  seasonal or event, level out of band, dungeon not in the plan.
+
+### Shared trunk (`build.simulateFaction`, `paths.lua`)
+
+- Race-specific chapters are simulated on their lead race.
+- The trunk is simulated once, from a merged state at each chapter where paths join: lowest level,
+  common flight paths, common hearth, log padding for the most loaded path.
+- A path that joins from another region is brought to the join point at the end of its own last
+  chapter (`exitTo`).
+- Every race path is then replayed (`paths.replay`). A step that is invalid for a race gets a
+  `race` filter. `tools/validate_guides.lua` replays the same paths and fails on any invalid
+  applying step.
+
+### New plan fields
+
+| Field | Meaning |
+|---|---|
+| `levelBelow` | Lowest quest level accepted: `minLevel - levelBelow` (default 3). |
+| `far` | Distance in yards beyond which a quest is dropped as `far` (default 900). |
+| `dungeonReqSlack` | Dungeon quests accepted up to required level `maxLevel + n`. |
+| `dungeonLevelHigh` | Dungeon quests accepted up to quest level `maxLevel + n`. |
+
+### Reports
+
+The itinerary lists every task with its walking leg in yards and "returns" (back within 150 yd of
+an earlier task after going more than 600 yd away), plus the total walking time.
+
+### ClassQuestData
+
+- Chains follow prerequisites, next quest and breadcrumbs.
+- Where the Forever data has no links:
+  - a handoff (the next id, up to +3, starts at the previous quest's finisher) links the quests;
+  - quests with the same title and the same race mask form one chain, ordered by level.
+
 ## Known limits
 
 - Walking is a straight line in world coordinates (no pathing around mountains, no city

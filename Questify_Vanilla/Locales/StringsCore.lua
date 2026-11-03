@@ -24,10 +24,13 @@ Q:RegisterStrings({
     STEP_FLY = "Fly to %s",
     STEP_BOAT = "Take the boat",
     STEP_LEVEL = "Kill monsters until level %d",
+    STEP_TRAIN = "Learn your new spells from |cff00ff96%s|r",
+    STEP_TRAIN_ANY = "Learn your new spells from a class trainer",
 
     TITLE_ACCEPT = "Accept: %s",
     TITLE_TURNIN = "Turn in: %s",
     TITLE_COMPLETE = "%s",
+    TITLE_TRAIN = "Class trainer",
 
     OBJ_KILL = "Kill: |cffff6060%s|r",
     OBJ_LOOT = "Loot: |cffffffff%s|r",
@@ -68,10 +71,13 @@ Q:RegisterStrings({
     STEP_FLY = "Prendre un vol vers %s",
     STEP_BOAT = "Prendre le bateau",
     STEP_LEVEL = "Tuer des monstres jusqu'au niveau %d",
+    STEP_TRAIN = "Apprendre tes nouveaux sorts auprès de |cff00ff96%s|r",
+    STEP_TRAIN_ANY = "Apprendre tes nouveaux sorts chez un maître de classe",
 
     TITLE_ACCEPT = "Prendre : %s",
     TITLE_TURNIN = "Rendre : %s",
     TITLE_COMPLETE = "%s",
+    TITLE_TRAIN = "Maître de classe",
 
     OBJ_KILL = "Tuer : |cffff6060%s|r",
     OBJ_LOOT = "Ramasser : |cffffffff%s|r",

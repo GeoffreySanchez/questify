@@ -13,6 +13,7 @@ local VALID = {
   hearth = "map", fly = "map",
   level = "level",
   note = "text",
+  train = "none",   -- maître de classe le plus proche (étape insérée par Engine/Trainer.lua)
 }
 Guides.VALID_ACTIONS = VALID
 

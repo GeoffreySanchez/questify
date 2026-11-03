@@ -299,6 +299,10 @@ Champs facultatifs sur toute étape : `race = {...}`, `class = {...}`, `optional
     interdit tout ciblage sans touche ni clic : un ciblage entièrement automatique est impossible.
 - **Objets à utiliser** (coffres, plantes) : la cible de navigation pointe sur l'objet, et le
   marqueur 3D natif ou WaypointUI flotte au-dessus. Le suivi affiche « Utiliser : <objet> ».
+  - Forever, marqueur natif : animation dorée (deux ondes, étoile qui tourne) accrochée au cadre
+    d'écran du marqueur (`C_Navigation.GetFrame()`), affichée si l'objet est à l'écran
+    (`WasClampedToScreen` faux) et à moins de 50 m, taille selon `GetDistance()`. Un addon ne peut
+    rien dessiner dans le monde 3D : c'est la seule accroche possible. Option `objectGlow`.
 - **Barres de nom** : sur `NAME_PLATE_UNIT_ADDED`, si le npcID fait partie des mobs d'objectif, on
   pose une icône animée qui rebondit au-dessus de la barre. Toute valeur secrète est ignorée sans
   erreur.

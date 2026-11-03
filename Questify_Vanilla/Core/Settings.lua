@@ -11,6 +11,7 @@ Settings.defaults = {
   nav = { routing = false, display = "native" },
   tracker = { locked = false, scale = 1, nextSteps = 3, showMobs = true, autoTarget = false },
   nameplates = true,
+  objectGlow = true,
   telemetry = true,
 }
 

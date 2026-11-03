@@ -15,6 +15,8 @@ local SKIP = {
   ["test_autoquest.greeting_uses_indexes"] = "greeting IDs (Era gives titles only: era.greeting_* below)",
   ["test_tracker.tracker_default_anchor_minimap_without_objective_tracker"] =
     "Era has QuestWatchFrame: the tracker sits left of it (era.tracker_shows_first_step)",
+  ["test_wizard.wizard_disables_missing_providers"] = "asserts the game map pin is enabled (disabled on Era: era.wizard_* below)",
+  ["test_wizard.wizard_shows_once_and_saves"] = "clicks the game map pin radio (disabled on Era: era.wizard_* below)",
   ["test_rewards.missing_item_stats_api_is_survived"] = "removes C_Item.GetItemStats only (Era has GetItemStats)",
   ["test_progress.player_context_ignores_secret_values"] = "secret values do not exist on Era",
   ["test_util.is_secret"] = "secret values do not exist on Era",
@@ -141,9 +143,7 @@ tests["era.quest_log_wrappers"] = function(t)
   Mock.quests.log[179] = { title = "Dwarven Outfitters", complete = true, objectives = { { text = "x", finished = true } } }
   Mock.quests.log[233] = { title = "Coldridge Valley Mail Delivery", objectives = {} }   -- « va parler à »
   Mock.quests.log[170] = { title = "A New Threat", failed = true, objectives = { { text = "y", finished = false } } }
-  local rows = A.QuestLogEntries()
-  t.eq(#rows, 3)
-  t.eq(rows[1], { questID = 170, title = "A New Threat", isHeader = false, isComplete = -1 })
+  t.eq(A.QuestLogEntries, nil, "no unused log iterator")
   t.eq(A.QuestLogIndex(233), 3)
   t.eq(A.QuestLogIndex(424242), nil, "0 from GetQuestLogIndexByID becomes nil")
   t.ok(A.IsQuestComplete(179), "complete")
@@ -151,6 +151,22 @@ tests["era.quest_log_wrappers"] = function(t)
   t.ok(not A.IsQuestComplete(170), "failed")
   t.ok(not A.IsQuestComplete(424242), "not in log")
   t.eq(A.QuestTitle(233), "Coldridge Valley Mail Delivery", "C_QuestLog.GetQuestInfo")
+  t.eq(#Mock.errors, 0)
+end
+
+-- En-tête de zone replié : GetQuestLogIndexByID ne voit plus la quête, C_QuestLog.IsOnQuest si.
+tests["era.collapsed_log_header_keeps_tracking"] = function(t)
+  local Q = load(nil, true)
+  local A = Q.API
+  acceptWolves()
+  GetQuestLogIndexByID = function() return 0 end   -- toutes les lignes sous un en-tête replié
+  t.ok(A.IsOnQuest(179), "IsOnQuest does not depend on collapsed headers")
+  t.ok(not A.IsQuestComplete(179), "objectives not finished")
+  Mock.quests.log[179].objectives[1].finished = true
+  t.ok(A.IsQuestComplete(179), "complete from objectives when the row is hidden")
+  Mock.fire("QUEST_LOG_UPDATE")
+  Mock.advance(0.3)
+  t.eq(Q.Progress:Current().key, "g:A_DwarfGnome_01:3", "the complete step still ticks")
   t.eq(#Mock.errors, 0)
 end
 
@@ -168,9 +184,14 @@ tests["era.auto_accept_and_turn_in"] = function(t)
   t.eq(#Mock.errors, 0)
 end
 
+local function greetingNpc(npcId)
+  Mock.units.npc = { guid = ("Creature-0-1-0-1-%d-00004A1B2C"):format(npcId), name = "NPC", level = 5 }
+end
+
 tests["era.greeting_matches_titles"] = function(t)
   local Q = load(nil, true)
-  -- 179 dans le journal et terminée ; la fenêtre sans dialogue ne donne que les titres
+  -- 179 dans le journal et terminée ; Sten Stoutarm (658) la reçoit et donne 233
+  greetingNpc(658)
   Mock.quests.log[179] = { title = "Dwarven Outfitters", complete = true, objectives = { { text = "x", finished = true } } }
   Mock.greeting.active = { { title = "Some Other Quest", isComplete = true },
     { title = "Dwarven Outfitters", isComplete = true } }
@@ -190,12 +211,99 @@ tests["era.greeting_matches_titles"] = function(t)
   Mock.greeting.available = { { title = "Not On The Route" } }
   Mock.fire("QUEST_GREETING")
   t.eq(Mock.countCalls("SelectAvailableQuest"), 1, "unknown title ignored")
-  -- état « terminée » absent (nil) : le journal fait foi
+  -- état « terminée » absent (nil) : le journal fait foi (Balir Frosthammer, 713, reçoit 170)
+  greetingNpc(713)
   Mock.quests.log[170] = { title = "A New Threat", objectives = { { text = "y", finished = false } } }
   Mock.greeting.active = { { title = "A New Threat" } }
   Mock.greeting.available = {}
   Mock.fire("QUEST_GREETING")
   t.eq(Mock.countCalls("SelectActiveQuest"), 1, "unfinished quest not selected")
+  -- GUID inconnu : pas de correspondance par titre
+  Mock.units.npc = nil
+  Mock.quests.log[170].objectives[1].finished = true
+  Mock.quests.log[170].complete = true
+  Mock.fire("QUEST_GREETING")
+  t.eq(Mock.countCalls("SelectActiveQuest"), 1, "no NPC, no title match")
+  t.eq(#Mock.errors, 0)
+end
+
+-- Titres en double sur la vraie route Era (233 / 234 « Coldridge Valley Mail Delivery ») : données
+-- réelles de QuestieDB (vue Era), sauf 234 aussi donnée par Sten (658) pour forcer un doublon chez lui.
+local MAIL = "Coldridge Valley Mail Delivery"
+local ERA_QDB = { quests = {
+  [233] = { name = MAIL, startedBy = { { 658 } }, finishedBy = { { 714 } }, preQuestSingle = { 179 },
+    requiredLevel = 1, questLevel = 3, requiredRaces = 77 },
+  [234] = { name = MAIL, startedBy = { { 714, 658 } }, finishedBy = { { 786 } }, preQuestSingle = { 233 },
+    requiredLevel = 1, questLevel = 4, requiredRaces = 77 },
+  [183] = { name = "The Boar Hunter", startedBy = { { 714 } }, finishedBy = { { 714 } },
+    requiredLevel = 1, questLevel = 3, requiredRaces = 77 },
+} }
+
+tests["era.greeting_same_title_real_route"] = function(t)
+  Mock.player.level = 4
+  local Q = load({ qdb = ERA_QDB })
+  t.eq(Q.Progress:Guide().id, "ERA_A_DwarfGnome_01")
+  t.ok(Q.AutoQuest:IsRouteQuest(233) and Q.AutoQuest:IsRouteQuest(234), "both mail quests are on the Era route")
+  Mock.quests.completed[179] = true
+  -- Sten : 233 (prérequis 179 rendu) et 234 (prérequis 233 non rendu) ont le même titre
+  greetingNpc(658)
+  t.eq(Q.AutoQuest:MatchGreetingTitle(MAIL, false), 233, "prerequisites decide between 233 and 234")
+  Mock.greeting.available = { { title = MAIL } }
+  Mock.fire("QUEST_GREETING")
+  t.eq(Mock.countCalls("SelectAvailableQuest"), 1)
+  -- Talin (714) : 233 dans le journal (sans objectif, donc terminée) ; 234 pas encore proposée
+  Mock.quests.log[233] = { title = MAIL, objectives = {} }
+  greetingNpc(714)
+  t.eq(Q.AutoQuest:MatchGreetingTitle(MAIL, true), 233, "in the log, handed in to Talin")
+  t.eq(Q.AutoQuest:MatchGreetingTitle(MAIL, false), nil, "234 needs 233 turned in")
+  Mock.greeting.active = { { title = MAIL } }
+  Mock.greeting.available = { { title = "The Boar Hunter" } }
+  Mock.fire("QUEST_GREETING")
+  t.eq(Mock.countCalls("SelectActiveQuest"), 1, "233 handed in to Talin")
+  t.eq(Mock.lastCall("SelectActiveQuest").args[1], 1)
+  -- 233 rendue, 183 déjà rendue : Talin propose 234 (même titre) et une Boar Hunter hors route
+  Mock.quests.log[233] = nil
+  Mock.quests.completed[233] = true
+  Mock.quests.completed[183] = true
+  Mock.greeting.active = {}
+  Mock.greeting.available = { { title = "The Boar Hunter" }, { title = MAIL } }
+  t.eq(Q.AutoQuest:MatchGreetingTitle(MAIL, false), 234)
+  t.eq(Q.AutoQuest:MatchGreetingTitle("The Boar Hunter", false), nil, "turned-in route quest: the offered one is another")
+  Mock.fire("QUEST_GREETING")
+  t.eq(Mock.countCalls("SelectAvailableQuest"), 2)
+  t.eq(Mock.lastCall("SelectAvailableQuest").args[1], 2, "234, not the turned-in Boar Hunter title")
+  -- Grelin (786) ne donne pas 234 : une quête de même titre chez lui n'est pas la nôtre
+  greetingNpc(786)
+  t.eq(Q.AutoQuest:MatchGreetingTitle(MAIL, false), nil, "Grelin does not give 234")
+  Mock.greeting.available = { { title = MAIL } }
+  Mock.fire("QUEST_GREETING")
+  t.eq(Mock.countCalls("SelectAvailableQuest"), 2, "same title at another NPC: not selected")
+  t.eq(#Mock.errors, 0)
+end
+
+-- Deux quêtes de la route, même titre, même PNJ, prérequis remplis : l'étape la plus proche gagne.
+tests["era.greeting_same_title_nearest_step"] = function(t)
+  local qdb = { quests = {
+    [880501] = { name = "Twin Errand", startedBy = { { 658 } }, finishedBy = { { 658 } }, requiredLevel = 1, questLevel = 1 },
+    [880502] = { name = "Twin Errand", startedBy = { { 658 } }, finishedBy = { { 658 } }, requiredLevel = 1, questLevel = 1 },
+  } }
+  local Q = load({ qdb = qdb, savedVariables = { QuestifyVanillaCharDB = { guideId = "T_Twins" } },
+    beforeLogin = function(Q)
+      Q:RegisterGuide({ id = "T_Twins", faction = "Alliance", races = { "Dwarf" }, minLevel = 1, maxLevel = 10,
+        steps = { { "accept", 880502 }, { "accept", 880501 } } })
+    end }, true)
+  t.eq(Q.Progress:Guide().id, "T_Twins")
+  greetingNpc(658)
+  t.eq(Q.AutoQuest:MatchGreetingTitle("Twin Errand", false), 880502, "current step wins")
+  Mock.greeting.available = { { title = "Twin Errand" } }
+  Mock.fire("QUEST_GREETING")
+  t.eq(Mock.countCalls("SelectAvailableQuest"), 1)
+  Mock.quests.log[880502] = { title = "Twin Errand", objectives = {} }
+  Mock.fire("QUEST_ACCEPTED", 1, 880502)
+  t.eq(Q.AutoQuest:MatchGreetingTitle("Twin Errand", false), 880501, "next pending step")
+  t.eq(Q.AutoQuest:MatchGreetingTitle("Twin Errand", true), 880502, "the one in the log")
+  Mock.fire("QUEST_GREETING")
+  t.eq(Mock.countCalls("SelectAvailableQuest"), 2, "then 880501 (880502 is in the log)")
   t.eq(#Mock.errors, 0)
 end
 
@@ -267,6 +375,26 @@ tests["era.mob_panel_macro_and_nameplate_from_guid"] = function(t)
   Mock.fire("NAME_PLATE_UNIT_ADDED", "nameplate1")
   local icon = Q.UI.Nameplates.icons.nameplate1
   t.ok(icon and icon:IsShown(), "quest icon over the wolf nameplate")
+  t.eq(#Mock.errors, 0)
+end
+
+tests["era.wizard_disables_game_pin_and_prefers_tomtom"] = function(t)
+  Mock.addons.TomTom = true
+  local Q = load({ savedVariables = { QuestifyVanillaCharDB = { wizardDone = true } } }, true)
+  local W = Q.UI.Wizard
+  W:Show()
+  t.ok(not W.radios.native:IsEnabled(), "no game map pin on Era")
+  t.ok(W.radios.tomtom:IsEnabled())
+  t.eq(W.choice.display, "tomtom", "saved native setting becomes TomTom on Era")
+  t.ok(W.radios.tomtom:GetChecked())
+  t.eq(#Mock.errors, 0)
+end
+
+tests["era.forever_without_pin_api_prints_no_era_hint"] = function(t)
+  local Q = Mock.loadAddon(Era.FOREVER_TOC, { skipGuides = true, extraFiles = { GUIDES },
+    beforeLogin = function() C_Map.SetUserWaypoint = nil end })
+  t.ok(not Q.IsClassicEra())
+  t.eq(Mock.countPrinted(Q.L.NAV_NO_NATIVE_ERA), 0, "the Era hint is for Era only")
   t.eq(#Mock.errors, 0)
 end
 

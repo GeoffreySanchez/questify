@@ -38,12 +38,17 @@ local function playSound(kit)
   if PlaySound and SOUNDKIT and SOUNDKIT[kit] then pcall(PlaySound, SOUNDKIT[kit]) end
 end
 
+-- Repère du jeu : absent sur Classic Era (ni repère de carte ni marqueur 3D), il y est désactivé.
+local function hasNative()
+  return not (Q.API and Q.API.HasNativeWaypoint) or Q.API.HasNativeWaypoint()
+end
+
 -- Détection : Q.Nav:Detect() (flux C) ; à défaut, les mêmes règles sur les globales.
 function Wizard:Detect()
   if Q.Nav and Q.Nav.Detect then
     local ok, d = pcall(Q.Nav.Detect, Q.Nav)
     if ok and type(d) == "table" then
-      d.native = true
+      d.native = hasNative()
       return d
     end
   end
@@ -51,7 +56,7 @@ function Wizard:Detect()
     shortestpath = type(ShortestPathForever) == "table" and ShortestPathForever.API ~= nil,
     waypointui = type(WaypointUIAPI) == "table" and WaypointUIAPI.Navigation ~= nil,
     tomtom = type(TomTom) == "table" and TomTom.AddWaypoint ~= nil,
-    native = true,
+    native = hasNative(),
   }
 end
 
@@ -270,6 +275,9 @@ function Wizard:Load()
   -- Premier passage : le meilleur repère installé (WaypointUI, puis TomTom, puis le jeu).
   if not (Q.char and Q.char.wizardDone) then
     display = (d.waypointui and "waypointui") or (d.tomtom and "tomtom") or "native"
+  elseif display == "native" and not d.native and d.tomtom then
+    -- Classic Era : le repère du jeu n'existe pas, TomTom installé est proposé à la place
+    display = "tomtom"
   end
   self.choice = {
     routing = d.shortestpath and Q.Settings:Get("nav.routing") == true or false,

@@ -34,6 +34,27 @@ function Talents:Find(tab, tier, column)
   return nil
 end
 
+-- Relevé des arbres pour QuestifyVanillaDB.talentDump : -> nombre de talents relevés.
+function Talents:Dump()
+  QuestifyVanillaDB = QuestifyVanillaDB or {}
+  local db = QuestifyVanillaDB
+  db.talentDump = db.talentDump or {}
+  local flavor = (Q.IsClassicEra and Q.IsClassicEra()) and "era" or "forever"
+  db.talentDump[flavor] = db.talentDump[flavor] or {}
+  local list, count = { locale = GetLocale and GetLocale() or "?", tabs = {} }, 0
+  for tab = 1, (call(GetNumTalentTabs) or 0) do
+    local a, b = call(GetTalentTabInfo, tab)
+    list.tabs[tab] = type(a) == "number" and b or a
+    for i = 1, (call(GetNumTalents, tab) or 0) do
+      local name, icon, tier, col, _, maxRank = call(GetTalentInfo, tab, i)
+      list[#list + 1] = { tab = tab, index = i, name = name, icon = icon, tier = tier, column = col, maxRank = maxRank }
+      count = count + 1
+    end
+  end
+  db.talentDump[flavor][Q.Player.classFile or "?"] = list
+  return count
+end
+
 -- Points déjà placés dans tous les arbres.
 function Talents:Spent()
   local total = 0
@@ -60,10 +81,17 @@ end
 ---------------------------------------------------------------------------
 -- Presets
 ---------------------------------------------------------------------------
+-- Presets de la classe pour ce jeu (champ flavor : "era" ou "forever" ; absent = les deux).
 function Talents:Presets()
   local data = Q.TalentBuildData
   local list = type(data) == "table" and Q.Player.classFile and data[Q.Player.classFile]
-  return type(list) == "table" and list or {}
+  if type(list) ~= "table" then return {} end
+  local flavor = (Q.IsClassicEra and Q.IsClassicEra()) and "era" or "forever"
+  local out = {}
+  for _, p in ipairs(list) do
+    if p.flavor == nil or p.flavor == flavor then out[#out + 1] = p end
+  end
+  return out
 end
 
 function Talents:PresetTitle(preset)
@@ -105,6 +133,9 @@ function Talents:Next()
     need[k] = (need[k] or 0) + 1
     local index, name, icon, rank, maxRank = self:Find(tab, tier, col)
     if not index then return nil end   -- arbre différent de celui du preset : on ne conseille rien
+    -- vérifications : rang max, et nom anglais quand le client est en anglais
+    if pos[4] and pos[4] ~= maxRank then return nil end
+    if pos[5] and GetLocale and GetLocale() == "enUS" and pos[5] ~= name then return nil end
     if rank < need[k] and rank < maxRank then
       local tabName = call(GetTalentTabInfo, tab)
       if type(tabName) == "number" then tabName = select(2, call(GetTalentTabInfo, tab)) end

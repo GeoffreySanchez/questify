@@ -3,4 +3,6 @@
 <Bindings>
   <Binding name="CLICK QuestifyVanillaAutoTarget:LeftButton" header="QUESTIFYVANILLA">
   </Binding>
+  <Binding name="CLICK QuestifyVanillaQuestItem:LeftButton">
+  </Binding>
 </Bindings>

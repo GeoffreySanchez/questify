@@ -100,6 +100,10 @@ COMMANDS.talents = function()
   Q:Print(L.UI_SLASH_TALENTS_DUMPED, n)
 end
 
+COMMANDS.bug = function()
+  if Q.UI and Q.UI.BugReport then Q.UI.BugReport:Show() end
+end
+
 COMMANDS.reset = function()
   if StaticPopup_Show then StaticPopup_Show(RESET_DIALOG) end
 end

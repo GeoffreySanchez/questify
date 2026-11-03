@@ -36,6 +36,7 @@ Engine\ClassQuests.lua
 Engine\Trainer.lua
 Engine\Professions.lua
 Engine\Talents.lua
+Engine\StepGuard.lua
 Engine\Telemetry.lua
 
 Nav\Navigation.lua
@@ -54,6 +55,8 @@ UI\TalentPicker.lua
 UI\ClassQuestPopup.lua
 UI\Journal.lua
 UI\Wizard.lua
+UI\QuestItemButton.lua
+UI\BugReport.lua
 UI\Slash.lua
 
 Guides\Guides.xml

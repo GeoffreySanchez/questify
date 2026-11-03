@@ -56,6 +56,7 @@ Q:RegisterStrings({
     REASON_PASSED = "Already past this step",
     REASON_ERROR = "Could not check this step",
     DUNGEON_TAG = "Dungeon: %s",
+    GUARD_UNAVAILABLE = "%s is not offered by %s (quest changed?): step skipped. /qf back to reopen it.",
   },
   frFR = {
     NEED_QUESTIEDB = "QuestieDB est requis : installe-le depuis CurseForge.",
@@ -110,5 +111,6 @@ Q:RegisterStrings({
     REASON_PASSED = "Étape déjà dépassée",
     REASON_ERROR = "Vérification impossible",
     DUNGEON_TAG = "Donjon : %s",
+    GUARD_UNAVAILABLE = "%s n'est pas proposée par %s (quête modifiée ?) : étape passée. /qf back pour la rouvrir.",
   },
 })

@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 116 étapes, niveau final 26.01, ~31681 xp/h, 233 min.
+-- Simulation : 119 étapes, niveau final 26.01, ~32914 xp/h, 224 min.
 Q:RegisterGuide({
   id = "A_03",
   title = "Redridge Mountains and Duskwood",
@@ -10,6 +10,7 @@ Q:RegisterGuide({
   minLevel = 22, maxLevel = 26,
   next = "A_04",
   steps = {
+    { "hearth", 1440 }, -- pierre de foyer
     { "goto", 1440, 34.41, 47.99, note = "Flight master" }, -- déplacement
     { "fly", 1439, note = "Auberdine, Darkshore" }, -- vol
     { "boat", 1439, 32.7, 41.8, note = "Take the boat to Stormwind Harbor" }, -- bateau
@@ -40,14 +41,15 @@ Q:RegisterGuide({
     { "accept", 163 }, -- Raven Hill (lvl 20, ~390 xp, sim lvl 22)
     { "accept", 165 }, -- The Hermit (lvl 25, ~1000 xp, sim lvl 22)
     { "accept", 56 }, -- The Night Watch (lvl 24, ~1450 xp, sim lvl 22)
+    { "sethearth", 1431, 73.87, 44.41 }, -- lier la pierre de foyer
     { "accept", 96139 }, -- The Valor Family (lvl 22, ~1750 xp, sim lvl 22)
     { "accept", 377, optional = true, dungeon = "The Stockade" }, -- Crime and Punishment (lvl 26, ~0 xp, sim lvl 22)
-    { "sethearth", 1431, 73.87, 44.41 }, -- lier la pierre de foyer
     { "complete", 101, obj = 1, at = { 1431, 24.06, 35.68 } }, -- The Totem of Infliction (lvl 25, ~2550 xp, sim lvl 22)
     { "turnin", 164, xp = 920 }, -- Deliveries to Sven (lvl 23, ~920 xp, sim lvl 23)
     { "accept", 95 }, -- Sven's Revenge (lvl 25, ~1000 xp, sim lvl 23)
     { "turnin", 165, xp = 1000 }, -- The Hermit (lvl 25, ~1000 xp, sim lvl 23)
     { "accept", 148 }, -- Supplies from Darkshire (lvl 24, ~485 xp, sim lvl 23)
+    { "hearth", 1431 }, -- pierre de foyer
     { "accept", 66 }, -- The Legend of Stalvan (lvl 28, ~230 xp, sim lvl 23)
     { "turnin", 148, xp = 485 }, -- Supplies from Darkshire (lvl 24, ~485 xp, sim lvl 23)
     { "accept", 149 }, -- Ghost Hair Thread (lvl 24, ~485 xp, sim lvl 23)
@@ -99,6 +101,7 @@ Q:RegisterGuide({
     { "complete", 101, at = { 1431, 28.4, 49.5 } }, -- The Totem of Infliction (lvl 25, ~2550 xp, sim lvl 24)
     { "complete", 156, at = { 1431, 21.66, 45.32 } }, -- Gather Rot Blossoms (lvl 24, ~970 xp, sim lvl 24)
     { "complete", 57, at = { 1431, 22.47, 43.72 } }, -- The Night Watch (lvl 26, ~2100 xp, sim lvl 24)
+    { "hearth", 1431 }, -- pierre de foyer
     { "turnin", 265, xp = 200 }, -- The Shadowy Search Continues (lvl 25, ~200 xp, sim lvl 24)
     { "accept", 266 }, -- Inquire at the Inn (lvl 25, ~200 xp, sim lvl 24)
     { "turnin", 66, xp = 230 }, -- The Legend of Stalvan (lvl 28, ~230 xp, sim lvl 24)

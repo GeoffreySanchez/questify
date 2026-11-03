@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger les plans de tools/routebuilder/build_era.lua, puis le relancer (route Classic Era).
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9 (vue Classic Era), généré le 2026-11-03.
--- Simulation : 63 étapes, niveau final 12.01, ~16541 xp/h, 132 min.
+-- Simulation : 63 étapes, niveau final 12.01, ~16601 xp/h, 132 min.
 Q:RegisterGuide({
   id = "ERA_A_DwarfGnome_02",
   title = "Dun Morogh",
@@ -20,12 +20,12 @@ Q:RegisterGuide({
     { "turnin", 5541, xp = 540 }, -- Ammo for Rumbleshot (lvl 6, ~540 xp, sim lvl 6)
     { "complete", 317, at = { 1426, 42.26, 59.92 } }, -- Stocking Jetsteam (lvl 6, ~680 xp, sim lvl 6)
     { "complete", 384, at = { 1426, 47.38, 52.52 } }, -- Beer Basted Boar Ribs (lvl 7, ~630 xp, sim lvl 6)
+    { "sethearth", 1426, 47.38, 52.52 }, -- lier la pierre de foyer
     { "turnin", 317, xp = 680 }, -- Stocking Jetsteam (lvl 6, ~680 xp, sim lvl 6)
     { "accept", 318 }, -- Evershine (lvl 7, ~160 xp, sim lvl 6)
     { "turnin", 384, xp = 630 }, -- Beer Basted Boar Ribs (lvl 7, ~630 xp, sim lvl 6)
     { "accept", 287 }, -- Frostmane Hold (lvl 9, ~590 xp, sim lvl 7)
     { "accept", 412 }, -- Operation Recombobulation (lvl 10, ~840 xp, sim lvl 7)
-    { "sethearth", 1426, 47.38, 52.52 }, -- lier la pierre de foyer
     { "accept", 312 }, -- Tundra MacGrann's Stolen Stash (lvl 12, ~910 xp, sim lvl 7)
     { "complete", 287, at = { 1426, 23.55, 51.57 } }, -- Frostmane Hold (lvl 9, ~590 xp, sim lvl 7)
     { "complete", 412, at = { 1426, 25.19, 42.31 } }, -- Operation Recombobulation (lvl 10, ~840 xp, sim lvl 7)

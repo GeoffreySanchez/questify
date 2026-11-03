@@ -7,7 +7,7 @@
 --   opts   = { logCap = 20, initialLog = 0, finish = pos|nil, tieSeconds = 20/7, maxPasses = 200,
 --              levelXP = xp.LEVEL_XP|nil, level = n, xp = n, maxSegment = 3,
 --              anneal = bool, seed = n, annealIters = n, annealMax = n, T0 = s, T1 = s }
---   Facultatif sur une tâche : reqLevel (niveau requis pour une tâche A ou C) et gain(level) -> XP.
+--   Facultatif sur une tâche : reqLevel (niveau requis pour une tâche A, C ou O) et gain(level) -> XP.
 --
 -- Contraintes : chaque tâche passe après ses `after` ; le journal compte au plus logCap quêtes
 -- acceptées non rendues (A +1, T −1) ; une tâche `final` attend toutes les tâches non finales ;
@@ -40,7 +40,7 @@ end
 
 local function levelOk(t, level, levelXP)
   if not levelXP or not t.reqLevel or t.needLevel then return true end
-  if t.kind ~= "A" and t.kind ~= "C" then return true end
+  if t.kind ~= "A" and t.kind ~= "C" and t.kind ~= "O" then return true end
   return level >= t.reqLevel
 end
 
@@ -129,7 +129,7 @@ function order.build(tasks, start, rawDist, opts)
       -- impasse : une prise bloquée par le niveau (la plus basse) passe après un farm ; sinon
       -- (contrainte impossible) on prend la première tâche restante pour ne pas boucler
       for _, t in ipairs(tasks) do
-        if not done[t.id] and t.reqLevel and (t.kind == "A" or t.kind == "C") and not levelOk(t, level, levelXP) then
+        if not done[t.id] and t.reqLevel and (t.kind == "A" or t.kind == "C" or t.kind == "O") and not levelOk(t, level, levelXP) then
           local free = not (t.final and nonFinalLeft > 0) and not (t.kind == "A" and log + 1 > cap)
           for _, a in ipairs(t.after or {}) do if ids[a] and not done[a] then free = false end end
           if free and (not best or t.reqLevel < best.reqLevel) then best = t end

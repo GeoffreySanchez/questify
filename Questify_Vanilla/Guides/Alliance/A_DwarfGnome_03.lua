@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 69 étapes, niveau final 15.20, ~21149 xp/h, 107 min.
+-- Simulation : 68 étapes, niveau final 15.20, ~21595 xp/h, 104 min.
 Q:RegisterGuide({
   id = "A_DwarfGnome_03",
   title = "Loch Modan",
@@ -76,8 +76,7 @@ Q:RegisterGuide({
     { "accept", 258, note = "Timed quest: do it right away" }, -- A Hunter's Challenge (lvl 17, ~950 xp, sim lvl 15)
     { "complete", 258, at = { 1432, 65.43, 39.37 } }, -- A Hunter's Challenge (lvl 17, ~950 xp, sim lvl 15)
     { "turnin", 258, xp = 950 }, -- A Hunter's Challenge (lvl 17, ~950 xp, sim lvl 15)
-    { "goto", 1432, 33.94, 50.95, note = "Flight master" }, -- déplacement
-    { "fly", 1455, note = "Ironforge, Dun Morogh" }, -- vol
+    { "hearth", 1426 }, -- pierre de foyer
     { "boat", 1455, 78, 51.4, note = "Take the Deeprun Tram to Stormwind" }, -- bateau
     { "turnin", 1338, xp = 980 }, -- Stormpike's Order (lvl 14, ~980 xp, sim lvl 15)
   },

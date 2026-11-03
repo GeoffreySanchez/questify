@@ -8,7 +8,7 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Simulated level | 1.00 -> 6.92 |
 | Time | 46 min |
 | XP gained | 10913 |
-| XP/h | 14128 |
+| XP/h | 14149 |
 | Steps | 44 |
 | Quests turned in | 17 |
 | Hubs | 5 |
@@ -160,8 +160,8 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 24 | O | 761 | Swoop Hunting | 1412 | 52.0, 62.1 | 213 |  |
 | 25 | T | 761 | Swoop Hunting | 1412 | 47.7, 62.7 | 266 |  |
 | 26 | A | 99079 | Longwalker Malah | 1412 | 46.7, 63.8 | 77 |  |
-| 27 | A | 743 | Dangers of the Windfury | 1412 | 46.5, 64.9 | 46 |  |
-| 28 | T | 96659 | The Adventurer | 1412 | 46.2, 67.3 | 129 |  |
+| 27 | A | 743 | Dangers of the Windfury | 1412 | 46.5, 64.9 | 49 |  |
+| 28 | T | 96659 | The Adventurer | 1412 | 46.2, 67.3 | 99 |  |
 | 29 | A | 96605 | The Great Outdoors | 1412 | 46.2, 67.3 | 0 |  |
 | 30 | O | 96605 | The Great Outdoors | 1412 | 46.2, 67.3 | 3 |  |
 | 31 | T | 96605 | The Great Outdoors | 1412 | 46.2, 67.3 | 3 |  |
@@ -177,11 +177,11 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 41 | T | 767 | Rite of Vision | 1412 | 46.9, 61.2 | 90 |  |
 | 42 | T | 749 | The Ravaged Caravan | 1412 | 51.9, 53.4 | 444 |  |
 
-Walking between tasks: 10203 yd (~24 min at 7 yd/s).
+Walking between tasks: 10176 yd (~24 min at 7 yd/s).
 
 ## Logistics
 
-- step 29: `sethearth 1412 45.93 64.16`
+- step 28: `sethearth 1412 45.93 64.16`
 
 ## Warnings
 

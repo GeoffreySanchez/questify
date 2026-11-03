@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 95 étapes, niveau final 21.11, ~24733 xp/h, 171 min.
+-- Simulation : 96 étapes, niveau final 21.11, ~25258 xp/h, 167 min.
 Q:RegisterGuide({
   id = "H_02",
   title = "Stonetalon Mountains and The Barrens",
@@ -58,6 +58,7 @@ Q:RegisterGuide({
     { "complete", 1068, obj = 2, at = { 1442, 64.09, 56.62 } }, -- Shredding Machines (lvl 23, ~1850 xp, sim lvl 19)
     { "complete", 1068, at = { 1442, 67.2, 46.69 } }, -- Shredding Machines (lvl 23, ~1850 xp, sim lvl 19)
     { "turnin", 6542, xp = 145 }, -- Report to Kadrak (lvl 19, ~145 xp, sim lvl 19)
+    { "hearth", 1413 }, -- pierre de foyer
     { "accept", 3281 }, -- Stolen Silver (lvl 18, ~1350 xp, sim lvl 19)
     { "accept", 899 }, -- Consumed by Hatred (lvl 20, ~1950 xp, sim lvl 19)
     { "turnin", 905, xp = 1250 }, -- The Angry Scytheclaws (lvl 17, ~1250 xp, sim lvl 19)
@@ -70,11 +71,11 @@ Q:RegisterGuide({
     { "complete", 899, at = { 1413, 52.96, 53.61 } }, -- Consumed by Hatred (lvl 20, ~1950 xp, sim lvl 19)
     { "accept", 884, at = { 1413, 49.4, 59.2 }, note = "Loot Owatanka's Tailspike to start the quest" }, -- Owatanka (lvl 24, ~1450 xp, sim lvl 19)
     { "turnin", 884, xp = 1450 }, -- Owatanka (lvl 24, ~1450 xp, sim lvl 19)
+    { "sethearth", 1413, 45.58, 59.04 }, -- lier la pierre de foyer
     { "turnin", 3261, xp = 135 }, -- Jorn Skyseer (lvl 18, ~135 xp, sim lvl 19)
     { "accept", 882 }, -- Ishamuhale (lvl 19, ~1800 xp, sim lvl 19)
     { "accept", 97250 }, -- Wrongly Blamed, Justly Corrected (lvl 23, ~1850 xp, sim lvl 19)
     { "accept", 878 }, -- Tribes at War (lvl 21, ~1650 xp, sim lvl 19)
-    { "sethearth", 1413, 45.58, 59.04 }, -- lier la pierre de foyer
     { "complete", 878, obj = 3, at = { 1413, 43.26, 48.08 } }, -- Tribes at War (lvl 21, ~1650 xp, sim lvl 19)
     { "turnin", 899, xp = 1950 }, -- Consumed by Hatred (lvl 20, ~1950 xp, sim lvl 19)
     { "turnin", 3281, xp = 1350 }, -- Stolen Silver (lvl 18, ~1350 xp, sim lvl 19)

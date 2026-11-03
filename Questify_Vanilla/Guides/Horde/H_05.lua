@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 58 étapes, niveau final 30.12, ~28278 xp/h, 194 min.
+-- Simulation : 61 étapes, niveau final 30.12, ~29280 xp/h, 187 min.
 Q:RegisterGuide({
   id = "H_05",
   title = "Hillsbrad Foothills",
@@ -33,6 +33,7 @@ Q:RegisterGuide({
     { "fly", 1458, note = "Undercity, Tirisfal" }, -- vol
     { "turnin", 513, xp = 1150 }, -- Elixir of Agony (lvl 28, ~1150 xp, sim lvl 28)
     { "complete", 527, at = { 1424, 33.86, 37.58 } }, -- Battle of Hillsbrad (lvl 24, ~1950 xp, sim lvl 28)
+    { "hearth", 1424 }, -- pierre de foyer
     { "turnin", 527, xp = 1950 }, -- Battle of Hillsbrad (lvl 24, ~1950 xp, sim lvl 28)
     { "accept", 528 }, -- Battle of Hillsbrad (lvl 25, ~2000 xp, sim lvl 28)
     { "accept", 547 }, -- Humbert's Sword (lvl 30, ~3050 xp, sim lvl 28)
@@ -50,6 +51,7 @@ Q:RegisterGuide({
     { "accept", 502 }, -- Elixir of Pain (lvl 24, ~1450 xp, sim lvl 29)
     { "turnin", 502, xp = 1450 }, -- Elixir of Pain (lvl 24, ~1450 xp, sim lvl 29)
     { "complete", 532, at = { 1424, 29.67, 41.64 } }, -- Battle of Hillsbrad (lvl 26, ~2100 xp, sim lvl 29)
+    { "hearth", 1424 }, -- pierre de foyer
     { "turnin", 532, xp = 2100 }, -- Battle of Hillsbrad (lvl 26, ~2100 xp, sim lvl 29)
     { "accept", 539 }, -- Battle of Hillsbrad (lvl 28, ~2300 xp, sim lvl 29)
     { "accept", 552 }, -- Helcular's Revenge (lvl 33, ~2650 xp, sim lvl 29)
@@ -58,6 +60,7 @@ Q:RegisterGuide({
     { "turnin", 539, xp = 2300 }, -- Battle of Hillsbrad (lvl 28, ~2300 xp, sim lvl 29)
     { "accept", 541 }, -- Battle of Hillsbrad (lvl 30, ~2450 xp, sim lvl 29)
     { "complete", 541, at = { 1424, 71.28, 79.49 } }, -- Battle of Hillsbrad (lvl 30, ~2450 xp, sim lvl 29)
+    { "hearth", 1424 }, -- pierre de foyer
     { "turnin", 552, xp = 2650 }, -- Helcular's Revenge (lvl 33, ~2650 xp, sim lvl 29)
     { "accept", 96986, optional = true, dungeon = "City of Dalaran" }, -- The Grave Knight (lvl 33, ~0 xp, sim lvl 30)
     { "turnin", 541, xp = 2450 }, -- Battle of Hillsbrad (lvl 30, ~2450 xp, sim lvl 30)

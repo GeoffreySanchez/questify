@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 114 étapes, niveau final 12.04, ~18718 xp/h, 115 min.
+-- Simulation : 114 étapes, niveau final 12.04, ~18762 xp/h, 115 min.
 Q:RegisterGuide({
   id = "A_Human_02",
   title = "Elwynn Forest",
@@ -13,6 +13,7 @@ Q:RegisterGuide({
   steps = {
     { "accept", 62 }, -- The Fargodeep Mine (lvl 7, ~475 xp, sim lvl 6)
     { "accept", 60 }, -- Kobold Candles (lvl 7, ~475 xp, sim lvl 6)
+    { "sethearth", 1429, 43.77, 65.8 }, -- lier la pierre de foyer
     { "accept", 106 }, -- Young Lovers (lvl 6, ~135 xp, sim lvl 6)
     { "turnin", 106, xp = 135 }, -- Young Lovers (lvl 6, ~135 xp, sim lvl 6)
     { "accept", 111 }, -- Speak with Gramma (lvl 6, ~135 xp, sim lvl 6)
@@ -33,7 +34,6 @@ Q:RegisterGuide({
     { "turnin", 107, xp = 135 }, -- Note to William (lvl 6, ~135 xp, sim lvl 7)
     { "accept", 112 }, -- Collecting Kelp (lvl 7, ~315 xp, sim lvl 7)
     { "accept", 95998 }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 7)
-    { "sethearth", 1429, 43.77, 65.8 }, -- lier la pierre de foyer
     { "accept", 99127 }, -- A Net Disaster (lvl 7, ~630 xp, sim lvl 7)
     { "complete", 99127, at = { 1429, 48.38, 63.78 } }, -- A Net Disaster (lvl 7, ~630 xp, sim lvl 7)
     { "turnin", 99127, xp = 630 }, -- A Net Disaster (lvl 7, ~630 xp, sim lvl 7)

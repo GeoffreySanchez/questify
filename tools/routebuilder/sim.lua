@@ -51,8 +51,10 @@ sim.CONST = {
   TRANSIT = 900,          -- s forfaitaires quand aucun trajet n'est connu (ni marche, ni vol, ni liaison)
   FP_DETOUR = 300,        -- yards, détour accepté pour prendre un point de vol inconnu en marchant
   FLY_PENALTY = 30,       -- s ajoutées au choix d'un vol (descendre, remonter, file d'attente)
-  HEARTH_PENALTY = 300,   -- s de coût d'opportunité de la pierre (60 min de recharge)
+  HEARTH_PENALTY = 120,   -- s de coût d'opportunité de la pierre (60 min de recharge ; 300 n'était jamais rentable)
   HEARTH_LOAD = 15,       -- s d'écran de chargement / téléportation
+  SAFE_QUEST_ABOVE = nil, -- niveaux : si défini, objectifs faits au plus tôt au niveau de la quête - N (désactivé : coûte ~8 % d'XP/h)
+  SAFE_MOB_ABOVE = nil,   -- niveaux : si défini, monstres à tuer (niveau moyen) au plus N niveaux au-dessus du personnage
   ROUTE_MIN = 90,         -- s : en dessous, marche directe sans chercher de vol ni de liaison
   BONUS_CAP = 900,        -- s, plafond du bonus « quête de transport »
 }
@@ -1208,6 +1210,16 @@ function sim.chapter(D, W, plan, state, opts)
       local q = info.q
       local counted = simulatedEligible(ctx, q)
       if (t.kind == "A" or t.kind == "C") and (q.reqLevel or 0) > 1 then t.reqLevel = q.reqLevel end
+      -- Difficulté : les objectifs attendent un niveau « sûr » (quête jaune facile, monstres pas plus
+      -- hauts que le personnage) ; l'ordonnancement fait d'abord le plus facile.
+      if (t.kind == "C" or t.kind == "O") and C.SAFE_QUEST_ABOVE and C.SAFE_MOB_ABOVE then
+        local safe = (q.level or 0) - C.SAFE_QUEST_ABOVE
+        local sites = t.kind == "O" and { t.site } or info.sites or {}
+        for _, s in ipairs(sites) do
+          for _, k in ipairs(s.kills or {}) do safe = math.max(safe, k[1] - C.SAFE_MOB_ABOVE) end
+        end
+        if safe > (t.reqLevel or 1) then t.reqLevel, t.safeLevel = safe, true end
+      end
       if counted then
         if t.kind == "O" then
           local kills = t.site.kills
@@ -1261,7 +1273,7 @@ function sim.chapter(D, W, plan, state, opts)
   end
   for idx, t in ipairs(ordered) do repeat
     if t.q and skipQ[t.q] then break end
-    if (t.kind == "A" or t.kind == "C") and t.info and not t.info.carried then
+    if (t.kind == "A" or t.kind == "C" or t.kind == "O") and t.info and not t.info.carried then
       local q = t.info.q
       local skip
       for _, p in ipairs(q.preGroup) do if skipQ[p] then skip = "prerequisite skipped" end end
@@ -1278,7 +1290,10 @@ function sim.chapter(D, W, plan, state, opts)
       if q.next and byId[q.next] and not byId[q.next].dropped then opensMore = true end
       if not skip and not opensMore and t.reqLevel and state.level < t.reqLevel then
         local n = mobsTo(t.reqLevel, cur)
-        if n > C.GATE_GRIND then skip = ("required level %d not reached in time (~%d mobs to farm)"):format(t.reqLevel, n) end
+        if n > C.GATE_GRIND then
+          skip = (t.safeLevel and "safe level %d not reached in time (~%d mobs to farm)"
+            or "required level %d not reached in time (~%d mobs to farm)"):format(t.reqLevel, n)
+        end
       end
       if skip then
         skipQ[q.id] = true
@@ -1311,7 +1326,7 @@ function sim.chapter(D, W, plan, state, opts)
         step._c = { name = q.name, level = q.level, simLevel = state.level }
         return step
       end
-      if (t.kind == "A" or t.kind == "C") and t.reqLevel and state.level < t.reqLevel then
+      if (t.kind == "A" or t.kind == "C" or t.kind == "O") and t.reqLevel and state.level < t.reqLevel then
         cur = sim.grindTo(ctx, steps, cur, t.reqLevel, fms)
         cur = sim.travel(ctx, steps, cur, t.pos, fms)
       end
@@ -1551,8 +1566,10 @@ function sim.flightMasters(ctx)
   return out
 end
 
--- Choisit où lier la pierre de foyer : premier passage au hub le plus fréquenté, si la route y
--- revient après s'en être éloignée de plus de SETHEARTH_LEAVE yards.
+-- Choisit où lier la pierre de foyer : pendant le premier passage au hub le plus fréquenté, si la
+-- route y revient après s'en être éloignée de plus de SETHEARTH_LEAVE yards. La pierre est liée
+-- après la tâche de ce premier passage la plus proche de l'aubergiste (détour minimal : souvent une
+-- quête prise ou rendue à l'auberge même), pas à la fin du passage.
 function sim.planSethearth(ctx, ordered, hubs)
   local best
   for _, h in ipairs(hubs) do if not best or h.count > best.count then best = h end end
@@ -1573,17 +1590,20 @@ function sim.planSethearth(ctx, ordered, hubs)
   if not inn then return nil end
   local hearth = ctx.state.hearth and mkPos(ctx.W, ctx.state.hearth[1], ctx.state.hearth[2], ctx.state.hearth[3])
   if hearth and yards(hearth, inn) <= C.HEARTH_NEAR then return nil end
-  local firstVisit, left
+  local firstVisit, left, pick, pickD
   for i, t in ipairs(ordered) do
     local d = yards(t.pos, best.pos)
     if d <= C.HUB_RADIUS then
       if not firstVisit then firstVisit = i
-      elseif left then return { index = firstVisit, pos = inn } end
+      elseif left then return { index = pick, pos = inn } end
     elseif firstVisit and d > C.SETHEARTH_LEAVE then
       left = true
     end
-    -- fin du premier passage : dernière tâche consécutive au hub
-    if firstVisit and not left and d <= C.HUB_RADIUS then firstVisit = i end
+    -- premier passage (jusqu'au premier grand éloignement) : tâche la plus proche de l'auberge
+    if firstVisit and not left then
+      local di = yards(t.pos, inn)
+      if not pickD or di < pickD - 1e-9 then pick, pickD = i, di end
+    end
   end
   return nil
 end

@@ -8,7 +8,7 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Simulated level | 6.00 -> 12.91 |
 | Time | 157 min |
 | XP gained | 45345 |
-| XP/h | 17325 |
+| XP/h | 17341 |
 | Steps | 105 |
 | Quests turned in | 38 |
 | Hubs | 9 |
@@ -480,12 +480,12 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 11 | T | 96604 | The Great Outdoors | 1411 | 52.0, 47.3 | 7 |  |
 | 12 | A | 96655 | Camping 101: Cooking | 1411 | 52.0, 47.3 | 0 |  |
 | 13 | A | 815 | Break a Few Eggs | 1411 | 51.1, 42.5 | 176 |  |
-| 14 | A | 96825 | This Fruit Could Bite Back | 1411 | 51.1, 42.5 | 0 |  |
+| 14 | A | 96825 | This Fruit Could Bite Back | 1411 | 51.1, 42.5 | 35 |  |
 | 15 | A | 837 | Encroachment | 1411 | 52.0, 43.5 | 57 |  |
 | 16 | A | 784 | Vanquish the Betrayers | 1411 | 52.0, 43.5 | 0 |  |
 | 17 | T | 823 | Report to Orgnil | 1411 | 52.2, 43.1 | 19 |  |
 | 18 | A | 806 | Dark Storms | 1411 | 52.2, 43.1 | 0 |  |
-| 19 | O | 784 | Vanquish the Betrayers | 1411 | 57.0, 57.5 | 630 |  |
+| 19 | O | 784 | Vanquish the Betrayers | 1411 | 57.0, 57.5 | 565 |  |
 | 20 | A | 830 | The Admiral's Orders | 1411 | 59.3, 57.6 | 117 |  |
 | 21 | O | 818 | A Solvent Spirit | 1411 | 63.7, 56.4 | 241 |  |
 | 22 | O | 815 | Break a Few Eggs | 1411 | 68.7, 70.8 | 570 |  |
@@ -572,11 +572,11 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 103 | A | 840 | Conscript of the Horde | 1411 | 50.8, 43.6 | 58 |  |
 | 104 | T | 840 | Conscript of the Horde | 1413 | 62.3, 19.4 | 965 |  |
 
-Walking between tasks: 20593 yd (~49 min at 7 yd/s).
+Walking between tasks: 20563 yd (~49 min at 7 yd/s).
 
 ## Logistics
 
-- step 19: `sethearth 1411 51.51 41.64`
+- step 14: `sethearth 1411 51.51 41.64`
 - step 63: `fp 1454 45.12 63.89`
 
 ## Warnings

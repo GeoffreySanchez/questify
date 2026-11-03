@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 44 étapes, niveau final 6.92, ~14128 xp/h, 46 min.
+-- Simulation : 44 étapes, niveau final 6.92, ~14149 xp/h, 46 min.
 Q:RegisterGuide({
   id = "H_Tauren_01",
   title = "Camp Narache",
@@ -38,8 +38,8 @@ Q:RegisterGuide({
     { "complete", 761, at = { 1412, 51.99, 62.13 } }, -- Swoop Hunting (lvl 6, ~680 xp, sim lvl 4)
     { "turnin", 761, xp = 680 }, -- Swoop Hunting (lvl 6, ~680 xp, sim lvl 4)
     { "accept", 99079 }, -- Longwalker Malah (lvl 9, ~780 xp, sim lvl 5)
-    { "accept", 743 }, -- Dangers of the Windfury (lvl 8, ~700 xp, sim lvl 5)
     { "sethearth", 1412, 45.93, 64.16 }, -- lier la pierre de foyer
+    { "accept", 743 }, -- Dangers of the Windfury (lvl 8, ~700 xp, sim lvl 5)
     { "turnin", 96659, xp = 135 }, -- The Adventurer (lvl 6, ~135 xp, sim lvl 5)
     { "accept", 96605 }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 5)
     { "complete", 96605, at = { 1412, 46.21, 67.31 } }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 5)

@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 103 étapes, niveau final 11.97, ~19468 xp/h, 111 min.
+-- Simulation : 103 étapes, niveau final 11.97, ~19501 xp/h, 111 min.
 Q:RegisterGuide({
   id = "A_DwarfGnome_02",
   title = "Dun Morogh",
@@ -15,6 +15,7 @@ Q:RegisterGuide({
     { "accept", 313 }, -- The Grizzled Den (lvl 7, ~630 xp, sim lvl 6)
     { "accept", 5541 }, -- Ammo for Rumbleshot (lvl 6, ~540 xp, sim lvl 6)
     { "accept", 99158 }, -- Dawn in the Mountains (lvl 8, ~530 xp, sim lvl 6)
+    { "sethearth", 1426, 47.38, 52.52 }, -- lier la pierre de foyer
     { "accept", 98322 }, -- Secure the Mountain (lvl 8, ~530 xp, sim lvl 6)
     { "accept", 96608 }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 6)
     { "complete", 96608, at = { 1426, 46.68, 53.84 } }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 6)
@@ -31,7 +32,6 @@ Q:RegisterGuide({
     { "turnin", 317, xp = 680 }, -- Stocking Jetsteam (lvl 6, ~680 xp, sim lvl 6)
     { "accept", 318 }, -- Evershine (lvl 7, ~160 xp, sim lvl 7)
     { "accept", 287 }, -- Frostmane Hold (lvl 9, ~590 xp, sim lvl 7)
-    { "sethearth", 1426, 47.38, 52.52 }, -- lier la pierre de foyer
     { "accept", 312 }, -- Tundra MacGrann's Stolen Stash (lvl 12, ~910 xp, sim lvl 7)
     { "complete", 287, at = { 1426, 23.55, 51.57 } }, -- Frostmane Hold (lvl 9, ~590 xp, sim lvl 7)
     { "accept", 315 }, -- The Perfect Stout (lvl 9, ~780 xp, sim lvl 7)

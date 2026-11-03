@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 160 étapes, niveau final 19.05, ~28623 xp/h, 214 min.
+-- Simulation : 161 étapes, niveau final 19.05, ~29065 xp/h, 210 min.
 Q:RegisterGuide({
   id = "A_NightElf_03",
   title = "Darkshore",
@@ -13,6 +13,7 @@ Q:RegisterGuide({
   steps = {
     { "accept", 3524 }, -- Washed Ashore (lvl 13, ~680 xp, sim lvl 12)
     { "accept", 983 }, -- Buzzbox 827 (lvl 10, ~840 xp, sim lvl 12)
+    { "sethearth", 1439, 37.04, 44.13 }, -- lier la pierre de foyer
     { "accept", 947 }, -- Cave Mushrooms (lvl 17, ~1250 xp, sim lvl 12)
     { "accept", 4811 }, -- The Red Crystal (lvl 14, ~490 xp, sim lvl 12)
     { "accept", 2118 }, -- Plagued Lands (lvl 14, ~980 xp, sim lvl 12)
@@ -57,7 +58,6 @@ Q:RegisterGuide({
     { "accept", 986 }, -- A Lost Master (lvl 20, ~1550 xp, sim lvl 13)
     { "turnin", 2138, xp = 1150 }, -- Cleansing of the Infected (lvl 16, ~1150 xp, sim lvl 13)
     { "accept", 982 }, -- Deep Ocean, Vast Sea (lvl 17, ~1250 xp, sim lvl 13)
-    { "sethearth", 1439, 37.04, 44.13 }, -- lier la pierre de foyer
     { "turnin", 4761, xp = 105 }, -- Thundris Windweaver (lvl 15, ~105 xp, sim lvl 13)
     { "turnin", 958, xp = 910 }, -- Tools of the Highborne (lvl 12, ~910 xp, sim lvl 13)
     { "accept", 4762 }, -- The Cliffspring River (lvl 15, ~800 xp, sim lvl 14)
@@ -161,6 +161,7 @@ Q:RegisterGuide({
     { "accept", 731 }, -- The Absent Minded Prospector (lvl 20, ~1950 xp, sim lvl 18)
     { "complete", 731, at = { 1439, 35.67, 84.03 } }, -- The Absent Minded Prospector (lvl 20, ~1950 xp, sim lvl 18)
     { "complete", 4740, at = { 1439, 36.44, 76.51 } }, -- WANTED: Murkdeep! (lvl 18, ~1700 xp, sim lvl 18)
+    { "hearth", 1439 }, -- pierre de foyer
     { "turnin", 87760, xp = 1550 }, -- Holy Diver (lvl 20, ~1550 xp, sim lvl 18)
     { "turnin", 1138, xp = 1250 }, -- Fruit of the Sea (lvl 17, ~1250 xp, sim lvl 18)
     { "turnin", 4813, xp = 980 }, -- The Fragments Within (lvl 14, ~980 xp, sim lvl 18)

@@ -8,7 +8,7 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Simulated level | 6.00 -> 12.01 |
 | Time | 132 min |
 | XP gained | 36433 |
-| XP/h | 16541 |
+| XP/h | 16601 |
 | Steps | 63 |
 | Quests turned in | 22 |
 | Hubs | 6 |
@@ -422,7 +422,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 13 | T | 384 | Beer Basted Boar Ribs | 1426 | 46.8, 52.4 | 182 |  |
 | 14 | A | 287 | Frostmane Hold | 1426 | 46.7, 53.8 | 48 |  |
 | 15 | A | 412 | Operation Recombobulation | 1426 | 45.9, 49.4 | 152 |  |
-| 16 | A | 312 | Tundra MacGrann's Stolen Stash | 1426 | 34.6, 51.6 | 631 |  |
+| 16 | A | 312 | Tundra MacGrann's Stolen Stash | 1426 | 34.6, 51.6 | 560 |  |
 | 17 | O | 287 | Frostmane Hold | 1426 | 23.5, 51.6 | 542 |  |
 | 18 | O | 412 | Operation Recombobulation | 1426 | 25.2, 42.3 | 314 |  |
 | 19 | T | 318 | Evershine | 1426 | 30.2, 45.7 | 270 |  |
@@ -469,11 +469,11 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 60 | O | 417 | A Pilot's Revenge | 1426 | 78.3, 37.8 | 84 |  |
 | 61 | T | 417 | A Pilot's Revenge | 1426 | 83.9, 39.2 | 278 |  |
 
-Walking between tasks: 12948 yd (~31 min at 7 yd/s).
+Walking between tasks: 12877 yd (~31 min at 7 yd/s).
 
 ## Logistics
 
-- step 16: `sethearth 1426 47.38 52.52`
+- step 11: `sethearth 1426 47.38 52.52`
 - step 46: `fp 1455 55.5 47.74`
 - step 63: `level 12` — About 133 more mobs here (Rockjaw Backbreaker, level 11)
 

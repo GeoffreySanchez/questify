@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 104 étapes, niveau final 28.00, ~27973 xp/h, 235 min.
+-- Simulation : 104 étapes, niveau final 28.00, ~28678 xp/h, 229 min.
 Q:RegisterGuide({
   id = "H_04",
   title = "Southern Barrens and Thousand Needles",
@@ -10,7 +10,8 @@ Q:RegisterGuide({
   minLevel = 25, maxLevel = 28,
   next = "H_05",
   steps = {
-    { "goto", 1440, 12.24, 33.8, note = "Flight master" }, -- déplacement
+    { "hearth", 1442 }, -- pierre de foyer
+    { "goto", 1442, 45.12, 59.84, note = "Flight master" }, -- déplacement
     { "fly", 1413, note = "Camp Taurajo, The Barrens" }, -- vol
     { "accept", 893 }, -- Weapons of Choice (lvl 24, ~1950 xp, sim lvl 25)
     { "accept", 5052 }, -- Blood Shards of Agamaggan (lvl 21, ~1250 xp, sim lvl 25)
@@ -38,9 +39,9 @@ Q:RegisterGuide({
     { "accept", 1149 }, -- Test of Faith (lvl 26, ~1050 xp, sim lvl 26)
     { "fp", 1441, 45.14, 49.11 }, -- point de vol
     { "turnin", 4542, xp = 510 }, -- Message to Freewind Post (lvl 25, ~510 xp, sim lvl 26)
+    { "sethearth", 1441, 46.07, 51.52 }, -- lier la pierre de foyer
     { "accept", 4841 }, -- Pacify the Centaur (lvl 25, ~2000 xp, sim lvl 26)
     { "accept", 4767 }, -- Wind Rider (lvl 29, ~1750 xp, sim lvl 26)
-    { "sethearth", 1441, 46.07, 51.52 }, -- lier la pierre de foyer
     { "accept", 5151 }, -- Hypercapacitor Gizmo (lvl 30, ~3050 xp, sim lvl 26)
     { "complete", 4767, at = { 1441, 11.77, 35.26 } }, -- Wind Rider (lvl 29, ~1750 xp, sim lvl 26)
     { "complete", 5151, at = { 1441, 22.76, 24.62 } }, -- Hypercapacitor Gizmo (lvl 30, ~3050 xp, sim lvl 26)
@@ -95,8 +96,7 @@ Q:RegisterGuide({
     { "goto", 1413, 63.08, 37.16, note = "Flight master" }, -- déplacement
     { "fly", 1413, note = "Crossroads, The Barrens" }, -- vol
     { "accept", 868 }, -- Egg Hunt (lvl 22, ~1750 xp, sim lvl 27)
-    { "goto", 1413, 51.5, 30.34, note = "Flight master" }, -- déplacement
-    { "fly", 1441, note = "Freewind Post, Thousand Needles" }, -- vol
+    { "hearth", 1441 }, -- pierre de foyer
     { "complete", 1153, at = { 1441, 65.16, 48.23 } }, -- A New Ore Sample (lvl 29, ~2350 xp, sim lvl 27)
     { "turnin", 1151, xp = 3050 }, -- Test of Strength (lvl 30, ~3050 xp, sim lvl 27)
     { "accept", 857 }, -- The Tear of the Moons (lvl 30, ~2450 xp, sim lvl 27)

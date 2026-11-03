@@ -8,7 +8,7 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Simulated level | 12.00 -> 16.23 |
 | Time | 115 min |
 | XP gained | 42975 |
-| XP/h | 22354 |
+| XP/h | 22394 |
 | Steps | 93 |
 | Quests turned in | 35 |
 | Hubs | 8 |
@@ -357,10 +357,10 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 1 | A | 447 | A Recipe For Death | 1421 | 42.8, 40.9 | 0 |  |
 | 2 | A | 91921 | Return to Quinn (Again) | 1421 | 42.8, 40.9 | 0 |  |
 | 3 | A | 428 | Lost Deathstalkers | 1421 | 43.4, 40.9 | 26 |  |
-| 4 | A | 437 | The Dead Fields | 1421 | 43.4, 40.9 | 0 |  |
+| 4 | A | 437 | The Dead Fields | 1421 | 43.4, 40.9 | 15 |  |
 | 5 | A | 421 | Prove Your Worth | 1421 | 44.2, 39.8 | 44 |  |
 | 6 | A | 98298 | Arugal's Folly | 1421 | 44.2, 39.8 | 0 |  |
-| 7 | O | 421 | Prove Your Worth | 1421 | 54.9, 21.6 | 737 |  |
+| 7 | O | 421 | Prove Your Worth | 1421 | 54.9, 21.6 | 677 |  |
 | 8 | A | 435 | Escorting Erland | 1421 | 56.2, 9.2 | 353 |  |
 | 9 | O | 435 | Escorting Erland | 1421 | 54.4, 13.4 | 140 |  |
 | 10 | A | 91920 | Wild Eyes | 1421 | 53.4, 12.6 | 45 |  |
@@ -446,11 +446,11 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 90 | A | 1358 | Sample for Helbrim | 1458 | 50.1, 68.0 | 0 |  |
 | 91 | T | 440 | The Engraved Ring | 1420 | 61.3, 50.8 | 872 |  |
 
-Walking between tasks: 16803 yd (~40 min at 7 yd/s).
+Walking between tasks: 16760 yd (~40 min at 7 yd/s).
 
 ## Logistics
 
-- step 7: `sethearth 1421 43.18 41.28`
+- step 4: `sethearth 1421 43.18 41.28`
 - step 93: `boat 1420 60.7 58.9` — Take the zeppelin to Orgrimmar (Durotar)
 
 ## Warnings

@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 38 étapes, niveau final 16.61, ~17158 xp/h, 74 min.
+-- Simulation : 38 étapes, niveau final 16.61, ~17154 xp/h, 74 min.
 Q:RegisterGuide({
   id = "A_DwarfGnome_04",
   title = "Westfall",
@@ -16,8 +16,8 @@ Q:RegisterGuide({
     { "fp", 1436, 56.55, 52.64 }, -- point de vol
     { "accept", 12 }, -- The People's Militia (lvl 12, ~910 xp, sim lvl 15)
     { "accept", 92742 }, -- Testing the Wells (lvl 12, ~910 xp, sim lvl 15)
-    { "accept", 92744 }, -- Murloc Gills (lvl 12, ~910 xp, sim lvl 15)
     { "sethearth", 1436, 52.86, 53.71 }, -- lier la pierre de foyer
+    { "accept", 92744 }, -- Murloc Gills (lvl 12, ~910 xp, sim lvl 15)
     { "complete", 92742, obj = 1, at = { 1436, 56.62, 18.69 } }, -- Testing the Wells (lvl 12, ~910 xp, sim lvl 15)
     { "complete", 64, at = { 1436, 49.33, 19.28 } }, -- The Forgotten Heirloom (lvl 12, ~910 xp, sim lvl 15)
     { "complete", 12, obj = 2, at = { 1436, 44.8, 25.95 } }, -- The People's Militia (lvl 12, ~910 xp, sim lvl 15)

@@ -8,7 +8,7 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Simulated level | 6.00 -> 11.97 |
 | Time | 111 min |
 | XP gained | 36127 |
-| XP/h | 19468 |
+| XP/h | 19501 |
 | Steps | 103 |
 | Quests turned in | 37 |
 | Hubs | 11 |
@@ -481,7 +481,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 2 | A | 313 | The Grizzled Den | 1426 | 49.6, 48.6 | 11 |  |
 | 3 | A | 5541 | Ammo for Rumbleshot | 1426 | 50.1, 49.4 | 34 |  |
 | 4 | A | 99158 | Dawn in the Mountains | 1426 | 47.3, 52.2 | 162 |  |
-| 5 | A | 98322 | Secure the Mountain | 1426 | 46.7, 53.8 | 61 |  |
+| 5 | A | 98322 | Secure the Mountain | 1426 | 46.7, 53.8 | 53 |  |
 | 6 | A | 96608 | The Great Outdoors | 1426 | 46.7, 53.9 | 3 |  |
 | 7 | O | 96608 | The Great Outdoors | 1426 | 46.7, 53.8 | 3 |  |
 | 8 | T | 96608 | The Great Outdoors | 1426 | 46.7, 53.9 | 3 |  |
@@ -497,7 +497,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 18 | T | 317 | Stocking Jetsteam | 1426 | 49.4, 48.4 | 424 | near #3 (went 697 yd away) |
 | 19 | A | 318 | Evershine | 1426 | 49.4, 48.4 | 0 | near #3 (went 697 yd away) |
 | 20 | A | 287 | Frostmane Hold | 1426 | 46.7, 53.8 | 222 | near #9 (went 616 yd away) |
-| 21 | A | 312 | Tundra MacGrann's Stolen Stash | 1426 | 34.6, 51.6 | 631 |  |
+| 21 | A | 312 | Tundra MacGrann's Stolen Stash | 1426 | 34.6, 51.6 | 603 |  |
 | 22 | O | 287 | Frostmane Hold | 1426 | 23.5, 51.6 | 542 |  |
 | 23 | A | 315 | The Perfect Stout | 1426 | 30.2, 45.7 | 379 |  |
 | 24 | T | 318 | Evershine | 1426 | 30.2, 45.7 | 0 |  |
@@ -579,11 +579,11 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 100 | A | 414 | Stout to Kadrell | 1426 | 86.3, 48.8 | 0 |  |
 | 101 | T | 414 | Stout to Kadrell | 1432 | 32.6, 49.7 | 453 |  |
 
-Walking between tasks: 16591 yd (~40 min at 7 yd/s).
+Walking between tasks: 16555 yd (~39 min at 7 yd/s).
 
 ## Logistics
 
-- step 21: `sethearth 1426 47.38 52.52`
+- step 5: `sethearth 1426 47.38 52.52`
 - step 64: `fp 1455 55.5 47.74`
 - step 102: `fp 1432 33.94 50.95`
 

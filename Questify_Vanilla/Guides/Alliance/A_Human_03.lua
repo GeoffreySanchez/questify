@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 68 étapes, niveau final 16.04, ~22224 xp/h, 133 min.
+-- Simulation : 69 étapes, niveau final 16.04, ~22606 xp/h, 130 min.
 Q:RegisterGuide({
   id = "A_Human_03",
   title = "Westfall",
@@ -12,9 +12,9 @@ Q:RegisterGuide({
   next = "A_01",
   steps = {
     { "accept", 12 }, -- The People's Militia (lvl 12, ~910 xp, sim lvl 12)
-    { "sethearth", 1436, 52.86, 53.71 }, -- lier la pierre de foyer
     { "accept", 153 }, -- Red Leather Bandanas (lvl 15, ~1050 xp, sim lvl 12)
     { "accept", 92744 }, -- Murloc Gills (lvl 12, ~910 xp, sim lvl 12)
+    { "sethearth", 1436, 52.86, 53.71 }, -- lier la pierre de foyer
     { "accept", 92742 }, -- Testing the Wells (lvl 12, ~910 xp, sim lvl 12)
     { "accept", 9 }, -- The Killing Fields (lvl 15, ~1050 xp, sim lvl 12)
     { "accept", 22 }, -- Goretusk Liver Pie (lvl 12, ~910 xp, sim lvl 12)
@@ -45,6 +45,7 @@ Q:RegisterGuide({
     { "complete", 13, at = { 1436, 43.7, 68.91 } }, -- The People's Militia (lvl 14, ~980 xp, sim lvl 13)
     { "accept", 152 }, -- The Coast Isn't Clear (lvl 19, ~1450 xp, sim lvl 13)
     { "accept", 103 }, -- Keeper of the Flame (lvl 16, ~1150 xp, sim lvl 13)
+    { "hearth", 1436 }, -- pierre de foyer
     { "turnin", 92744, xp = 910 }, -- Murloc Gills (lvl 12, ~910 xp, sim lvl 13)
     { "turnin", 92742, xp = 910 }, -- Testing the Wells (lvl 12, ~910 xp, sim lvl 13)
     { "accept", 92745 }, -- The State of the Mines (lvl 14, ~980 xp, sim lvl 13)

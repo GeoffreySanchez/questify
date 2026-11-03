@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 93 étapes, niveau final 16.23, ~22354 xp/h, 115 min.
+-- Simulation : 93 étapes, niveau final 16.23, ~22394 xp/h, 115 min.
 Q:RegisterGuide({
   id = "H_Undead_03",
   title = "Silverpine Forest",
@@ -14,10 +14,10 @@ Q:RegisterGuide({
     { "accept", 447 }, -- A Recipe For Death (lvl 12, ~910 xp, sim lvl 12)
     { "accept", 91921 }, -- Return to Quinn (Again) (lvl 11, ~660 xp, sim lvl 12)
     { "accept", 428 }, -- Lost Deathstalkers (lvl 12, ~225 xp, sim lvl 12)
+    { "sethearth", 1421, 43.18, 41.28 }, -- lier la pierre de foyer
     { "accept", 437 }, -- The Dead Fields (lvl 14, ~980 xp, sim lvl 12)
     { "accept", 421 }, -- Prove Your Worth (lvl 10, ~840 xp, sim lvl 12)
     { "accept", 98298 }, -- Arugal's Folly (lvl 16, ~1150 xp, sim lvl 12)
-    { "sethearth", 1421, 43.18, 41.28 }, -- lier la pierre de foyer
     { "complete", 421, at = { 1421, 54.87, 21.65 } }, -- Prove Your Worth (lvl 10, ~840 xp, sim lvl 12)
     { "accept", 435 }, -- Escorting Erland (lvl 11, ~880 xp, sim lvl 12)
     { "complete", 435, at = { 1421, 54.37, 13.38 } }, -- Escorting Erland (lvl 11, ~880 xp, sim lvl 12)

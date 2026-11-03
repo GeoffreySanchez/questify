@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 128 étapes, niveau final 12.94, ~16579 xp/h, 166 min.
+-- Simulation : 129 étapes, niveau final 12.94, ~16955 xp/h, 162 min.
 Q:RegisterGuide({
   id = "H_Undead_02",
   title = "Tirisfal Glades",
@@ -15,9 +15,9 @@ Q:RegisterGuide({
     { "accept", 99134 }, -- Discipline (lvl 6, ~540 xp, sim lvl 6)
     { "accept", 398 }, -- WANTED: Maggot Eye (lvl 10, ~840 xp, sim lvl 6)
     { "accept", 358 }, -- Graverobbers (lvl 8, ~700 xp, sim lvl 6)
+    { "sethearth", 1420, 61.72, 52.05 }, -- lier la pierre de foyer
     { "accept", 86784 }, -- Sticks and Bones (lvl 7, ~630 xp, sim lvl 6)
     { "accept", 404 }, -- A Putrid Task (lvl 6, ~405 xp, sim lvl 6)
-    { "sethearth", 1420, 61.72, 52.05 }, -- lier la pierre de foyer
     { "complete", 86784, at = { 1420, 55.74, 52.39 } }, -- Sticks and Bones (lvl 7, ~630 xp, sim lvl 6)
     { "complete", 404, at = { 1420, 53.26, 56.49 } }, -- A Putrid Task (lvl 6, ~405 xp, sim lvl 6)
     { "accept", 5481 }, -- Gordo's Task (lvl 5, ~225 xp, sim lvl 6)
@@ -124,6 +124,7 @@ Q:RegisterGuide({
     { "complete", 95314, at = { 1420, 10.36, 64.95 } }, -- That Shadowvale Green Elixir (lvl 10, ~840 xp, sim lvl 11)
     { "complete", 99153, at = { 1420, 9.74, 69.43 } }, -- The One That Got Away (lvl 10, ~840 xp, sim lvl 11)
     { "turnin", 99153, xp = 840 }, -- The One That Got Away (lvl 10, ~840 xp, sim lvl 11)
+    { "hearth", 1420 }, -- pierre de foyer
     { "turnin", 99142, xp = 770 }, -- Tomb Weed (lvl 11, ~770 xp, sim lvl 12)
     { "turnin", 95314, xp = 840 }, -- That Shadowvale Green Elixir (lvl 10, ~840 xp, sim lvl 12)
     { "turnin", 398, xp = 840 }, -- WANTED: Maggot Eye (lvl 10, ~840 xp, sim lvl 12)

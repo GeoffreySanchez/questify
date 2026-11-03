@@ -6,10 +6,10 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 |---|---|
 | Level band | 11-16 |
 | Simulated level | 12.00 -> 16.04 |
-| Time | 133 min |
+| Time | 130 min |
 | XP gained | 49119 |
-| XP/h | 22224 |
-| Steps | 68 |
+| XP/h | 22606 |
+| Steps | 69 |
 | Quests turned in | 23 |
 | Hubs | 8 |
 | Median ratio (XP/s) | 5.29 |
@@ -126,9 +126,9 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | # | Task | Quest | Name | Map | x, y | Leg yd | Return |
 |---|---|---|---|---|---|---|---|
 | 1 | A | 12 | The People's Militia | 1436 | 56.3, 47.5 | 0 |  |
-| 2 | A | 153 | Red Leather Bandanas | 1436 | 54.0, 53.0 | 42 |  |
+| 2 | A | 153 | Red Leather Bandanas | 1436 | 54.0, 53.0 | 151 |  |
 | 3 | A | 92744 | Murloc Gills | 1436 | 52.5, 53.0 | 52 |  |
-| 4 | A | 92742 | Testing the Wells | 1436 | 52.5, 53.0 | 0 |  |
+| 4 | A | 92742 | Testing the Wells | 1436 | 52.5, 53.0 | 21 |  |
 | 5 | A | 9 | The Killing Fields | 1436 | 56.0, 31.2 | 522 |  |
 | 6 | A | 22 | Goretusk Liver Pie | 1436 | 56.4, 30.5 | 21 |  |
 | 7 | A | 151 | Poor Old Blanchy | 1436 | 59.9, 19.4 | 286 |  |
@@ -193,11 +193,12 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 66 | T | 6281 | Continue to Stormwind | 1453 | 77.2, 61.0 | 1268 |  |
 | 67 | T | 92748 | Explosive Consultation | 1453 | 61.9, 30.6 | 441 |  |
 
-Walking between tasks: 15255 yd (~36 min at 7 yd/s).
+Walking between tasks: 15385 yd (~37 min at 7 yd/s).
 
 ## Logistics
 
-- step 2: `sethearth 1436 52.86 53.71`
+- step 4: `sethearth 1436 52.86 53.71`
+- step 35: `hearth 1436`
 
 ## Warnings
 

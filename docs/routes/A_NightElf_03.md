@@ -6,10 +6,10 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 |---|---|
 | Level band | 11-19 |
 | Simulated level | 12.00 -> 19.05 |
-| Time | 214 min |
+| Time | 210 min |
 | XP gained | 101890 |
-| XP/h | 28623 |
-| Steps | 160 |
+| XP/h | 29065 |
+| Steps | 161 |
 | Quests turned in | 56 |
 | Hubs | 12 |
 | Median ratio (XP/s) | 4.15 |
@@ -183,7 +183,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 |---|---|---|---|---|---|---|---|
 | 1 | A | 3524 | Washed Ashore | 1439 | 36.6, 45.6 | 58 |  |
 | 2 | A | 983 | Buzzbox 827 | 1439 | 37.0, 44.1 | 67 |  |
-| 3 | A | 947 | Cave Mushrooms | 1439 | 37.3, 43.6 | 31 |  |
+| 3 | A | 947 | Cave Mushrooms | 1439 | 37.3, 43.6 | 28 |  |
 | 4 | A | 4811 | The Red Crystal | 1439 | 37.7, 43.4 | 26 |  |
 | 5 | A | 2118 | Plagued Lands | 1439 | 38.8, 43.4 | 74 |  |
 | 6 | A | 984 | How Big a Threat? | 1439 | 39.4, 43.5 | 34 |  |
@@ -227,7 +227,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 44 | A | 986 | A Lost Master | 1439 | 39.4, 43.5 | 0 | near #22 (went 770 yd away) |
 | 45 | T | 2138 | Cleansing of the Infected | 1439 | 38.8, 43.4 | 34 |  |
 | 46 | A | 982 | Deep Ocean, Vast Sea | 1439 | 38.1, 41.2 | 109 |  |
-| 47 | T | 4761 | Thundris Windweaver | 1439 | 37.4, 40.1 | 176 | near #16 (went 944 yd away) |
+| 47 | T | 4761 | Thundris Windweaver | 1439 | 37.4, 40.1 | 65 | near #16 (went 944 yd away) |
 | 48 | T | 958 | Tools of the Highborne | 1439 | 37.4, 40.1 | 0 |  |
 | 49 | A | 4762 | The Cliffspring River | 1439 | 37.4, 40.1 | 0 |  |
 | 50 | O | 1001 | Buzzbox 411 | 1439 | 33.7, 36.0 | 302 |  |
@@ -341,11 +341,12 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 158 | T | 994 | Escape Through Force | 1439 | 39.4, 43.5 | 34 |  |
 | 159 | A | 990 | Trek to Ashenvale | 1439 | 39.3, 43.5 | 5 |  |
 
-Walking between tasks: 28156 yd (~67 min at 7 yd/s).
+Walking between tasks: 28042 yd (~67 min at 7 yd/s).
 
 ## Logistics
 
-- step 47: `sethearth 1439 37.04 44.13`
+- step 3: `sethearth 1439 37.04 44.13`
+- step 151: `hearth 1439`
 
 ## Warnings
 

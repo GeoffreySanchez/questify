@@ -8,7 +8,7 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Simulated level | 6.00 -> 12.04 |
 | Time | 115 min |
 | XP gained | 35932 |
-| XP/h | 18718 |
+| XP/h | 18762 |
 | Steps | 114 |
 | Quests turned in | 43 |
 | Hubs | 10 |
@@ -536,7 +536,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 |---|---|---|---|---|---|---|---|
 | 1 | A | 62 | The Fargodeep Mine | 1429 | 42.1, 65.9 | 0 |  |
 | 2 | A | 60 | Kobold Candles | 1429 | 43.3, 65.7 | 42 |  |
-| 3 | A | 106 | Young Lovers | 1429 | 43.1, 89.6 | 553 |  |
+| 3 | A | 106 | Young Lovers | 1429 | 43.1, 89.6 | 551 |  |
 | 4 | T | 106 | Young Lovers | 1429 | 29.8, 86.0 | 469 |  |
 | 5 | A | 111 | Speak with Gramma | 1429 | 29.8, 86.0 | 0 |  |
 | 6 | A | 85 | Lost Necklace | 1429 | 34.5, 84.2 | 166 |  |
@@ -556,7 +556,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 20 | T | 107 | Note to William | 1429 | 43.3, 65.7 | 0 |  |
 | 21 | A | 112 | Collecting Kelp | 1429 | 43.3, 65.7 | 0 |  |
 | 22 | A | 95998 | The Great Outdoors | 1429 | 44.9, 63.4 | 77 |  |
-| 23 | A | 99127 | A Net Disaster | 1429 | 47.5, 62.2 | 153 |  |
+| 23 | A | 99127 | A Net Disaster | 1429 | 47.5, 62.2 | 92 |  |
 | 24 | O | 99127 | A Net Disaster | 1429 | 48.4, 63.8 | 48 |  |
 | 25 | T | 99127 | A Net Disaster | 1429 | 47.5, 62.2 | 48 |  |
 | 26 | A | 99128 | Slimy Menace | 1429 | 47.5, 62.2 | 0 |  |
@@ -647,11 +647,11 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 111 | T | 184 | Furlbrow's Deed | 1436 | 60.0, 19.4 | 293 |  |
 | 112 | T | 109 | Report to Gryan Stoutmantle | 1436 | 56.3, 47.5 | 669 |  |
 
-Walking between tasks: 17072 yd (~41 min at 7 yd/s).
+Walking between tasks: 17010 yd (~41 min at 7 yd/s).
 
 ## Logistics
 
-- step 23: `sethearth 1429 43.77 65.8`
+- step 3: `sethearth 1429 43.77 65.8`
 - step 59: `fp 1453 71.29 72.23`
 - step 113: `fp 1436 56.55 52.64`
 

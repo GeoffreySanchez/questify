@@ -14,6 +14,7 @@ Settings.defaults = {
   objectGlow = true,
   trainerAlert = true,
   upgradePopup = true,
+  sellJunk = true,
   telemetry = true,
 }
 

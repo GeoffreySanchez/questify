@@ -39,6 +39,7 @@ Nav\Navigation.lua
 
 Automation\Rewards.lua
 Automation\AutoQuest.lua
+Automation\SellJunk.lua
 
 UI\Tracker.lua
 UI\MobPanel.lua

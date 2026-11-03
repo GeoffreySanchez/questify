@@ -16,11 +16,13 @@ Locales\Locale.lua
 Locales\StringsCore.lua
 Locales\StringsNav.lua
 Locales\StringsUI.lua
+Locales\StringsDiag.lua
 
 Core\Init.lua
 Core\Util.lua
 Core\Compat.lua
 Core\Settings.lua
+Core\Diagnostics.lua
 
 Data\Constants.lua
 Data\QDB.lua
@@ -44,6 +46,7 @@ UI\Nameplates.lua
 UI\ClassQuestPopup.lua
 UI\Journal.lua
 UI\Wizard.lua
+UI\Report.lua
 UI\Slash.lua
 
 Guides\GuidesEra.xml

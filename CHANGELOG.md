@@ -7,12 +7,24 @@
   couche de compatibilité `Core/Compat.lua` (journal de quêtes, objets, fenêtre de quêtes sans
   dialogue reconnue par le titre, repère natif absent sur Era), route Nain / Gnome 1-12
   (`Guides/Era/`, générée par `tools/routebuilder/build_era.lua`). La version Forever est inchangée.
+- `/qf check` : autodiagnostic en jeu (fonctions du jeu utilisées, QuestieDB, repère natif et
+  marqueur 3D, navigation choisie et réellement utilisée, route du personnage, ciblage, erreurs).
+- `/qf report` (et bouton « Rapport de bug » des options) : rapport de bug à copier, avec version,
+  client, personnage, étape, cible, réglages, résultat du diagnostic et erreurs Lua.
+- Les erreurs Lua sont gardées avec leur pile d'appels (les 20 dernières, nombre de répétitions
+  compris) et survivent à `/reload` ; la première erreur d'une session indique `/qf report`.
 
 ### English
 - Test build for WoW Classic Era (1.15.8, 1.15.9): `Questify_Vanilla_Vanilla.toc`, compatibility
   layer `Core/Compat.lua` (quest log, items, title-based quest greeting, no native waypoint on Era),
   Dwarf / Gnome 1-12 route (`Guides/Era/`, built by `tools/routebuilder/build_era.lua`). The Forever
   build is unchanged.
+- `/qf check`: in-game self-check (game functions used, QuestieDB, native pin and 3D marker,
+  chosen and actually used navigation, character route, targeting, errors).
+- `/qf report` (and a "Bug report" button in the options): a bug report to copy, with version,
+  client, character, step, target, settings, self-check results and Lua errors.
+- Lua errors are kept with their call stack (the last 20, with repeat counts) and survive
+  `/reload`; the first error of a session points to `/qf report`.
 
 ## 0.1.0 (2026-11-03)
 

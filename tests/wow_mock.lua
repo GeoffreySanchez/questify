@@ -1100,9 +1100,9 @@ local function installApi()
       return { mapID = mapID, name = m.name, mapType = m.parent and 3 or 2, parentMapID = m.parent or 0 }
     end,
     CanSetUserWaypointOnMap = function(mapID) return Mock.maps[mapID] ~= nil end,
-    SetUserWaypoint = function(point) record("C_Map.SetUserWaypoint", point) end,
-    ClearUserWaypoint = function() record("C_Map.ClearUserWaypoint") end,
-    HasUserWaypoint = function() return false end,
+    SetUserWaypoint = function(point) Mock.userWaypoint = point; record("C_Map.SetUserWaypoint", point) end,
+    ClearUserWaypoint = function() Mock.userWaypoint = nil; record("C_Map.ClearUserWaypoint") end,
+    HasUserWaypoint = function() return Mock.userWaypoint ~= nil end,
   }
   C_SuperTrack = {
     SetSuperTrackedUserWaypoint = function(b) record("C_SuperTrack.SetSuperTrackedUserWaypoint", b) end,
@@ -1168,6 +1168,7 @@ function Mock.reset()
   Mock.maps = defaultMaps()
   Mock.qdbContract = 4
   Mock.navigateResult = true
+  Mock.userWaypoint = nil
   Mock.ns = nil
   Mock.lastToc = nil
   Mock.lastOpts = nil

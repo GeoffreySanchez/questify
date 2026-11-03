@@ -44,25 +44,109 @@ function Q:Debug(...)
 end
 
 ---------------------------------------------------------------------------
--- Erreurs : chaque erreur distincte n'est affichée qu'une fois.
+-- Erreurs : chaque erreur distincte n'est affichée qu'une fois dans la discussion.
+-- Elles sont aussi gardées, avec leur pile d'appels, dans QuestifyVanillaDB.errors
+-- (les 20 plus récentes) : /qf report les retrouve après /reload ou une déconnexion.
 ---------------------------------------------------------------------------
-local reported = {}
-Q.errorLog = {}
+local MAX_SAVED_ERRORS = 20
+local MAX_STACK_CHARS = 2000
+
+local reported = {}     -- [msg] = entrée de la session
+local lastStack         -- pile capturée par errorHandler, reprise par ReportError
+local hintShown         -- conseil « /qf report » : une fois par session
+Q.errorLog = {}         -- erreurs de la session : { msg, stack, count, time, saved }
+
+local function now()
+  return (time and time()) or 0
+end
+
+-- Liste sauvegardée, ou nil tant que les SavedVariables ne sont pas chargées.
+local function savedErrors()
+  local db = QuestifyVanillaDB
+  if type(db) ~= "table" then return nil end
+  if type(db.errors) ~= "table" then db.errors = {} end
+  return db.errors
+end
+
+-- Ajoute l'erreur à la liste sauvegardée, ou compte une répétition (la plus récente à la fin).
+local function saveError(e)
+  local list = savedErrors()
+  if not list then return end
+  for i = #list, 1, -1 do
+    local old = list[i]
+    if type(old) == "table" and old.msg == e.msg and old.version == Q.version then
+      old.count = (tonumber(old.count) or 1) + 1
+      old.time = e.time
+      if i ~= #list then
+        table.remove(list, i)
+        list[#list + 1] = old
+      end
+      e.saved = true
+      return
+    end
+  end
+  list[#list + 1] = { msg = e.msg, stack = e.stack, count = e.count or 1, time = e.time, version = Q.version }
+  while #list > MAX_SAVED_ERRORS do table.remove(list, 1) end
+  e.saved = true
+end
+
+-- Erreurs survenues avant le chargement des SavedVariables : enregistrées à l'INIT.
+local function flushErrors()
+  for _, e in ipairs(Q.errorLog) do
+    if not e.saved then saveError(e) end
+  end
+end
 
 function Q:ReportError(err)
   local msg = tostring(err)
-  if reported[msg] then return end
-  reported[msg] = true
-  self.errorLog[#self.errorLog + 1] = msg
-  output(ERROR_PREFIX .. " " .. msg)
+  local e = reported[msg]
+  if e then
+    lastStack = nil
+    e.count = e.count + 1
+    e.time = now()
+    e.saved = false
+    saveError(e)
+    return
+  end
+  -- pile de Q.SafeCall, sinon celle de l'appelant direct (lecture QuestieDB protégée…)
+  local stack = lastStack or (debugstack and tostring(debugstack(2))) or nil
+  lastStack = nil
+  if type(stack) == "string" and #stack > MAX_STACK_CHARS then stack = stack:sub(1, MAX_STACK_CHARS) end
+  e = { msg = msg, stack = stack, count = 1, time = now() }
+  reported[msg] = e
+  self.errorLog[#self.errorLog + 1] = e
+  saveError(e)
+  if QuestifyVanillaDB and QuestifyVanillaDB.debug and stack then
+    output(ERROR_PREFIX .. " " .. msg .. "\n" .. stack)
+  else
+    output(ERROR_PREFIX .. " " .. msg)
+  end
+  if not hintShown then
+    hintShown = true
+    output(ERROR_PREFIX .. " " .. tostring(Q.L and Q.L.ERROR_REPORT_HINT))
+  end
+end
+
+-- Erreurs gardées (sauvegardées si possible, sinon celles de la session), la plus récente en dernier.
+function Q:SavedErrors()
+  local list = savedErrors()
+  if list then return list end
+  return self.errorLog
+end
+
+-- Vide la liste sauvegardée (/qf report clear). Les erreurs déjà vues restent muettes jusqu'au
+-- prochain /reload ; une répétition est de nouveau enregistrée.
+function Q:ClearErrors()
+  local db = QuestifyVanillaDB
+  if type(db) == "table" then db.errors = {} end
 end
 
 local function pack(...) return { n = select("#", ...), ... } end
 
+-- Garde la pile d'appels d'une erreur nouvelle pour le journal (une erreur répétée à chaque
+-- image ne la recalcule pas) ; le message reste celui de l'erreur.
 local function errorHandler(err)
-  if QuestifyVanillaDB and QuestifyVanillaDB.debug and debugstack then
-    return tostring(err) .. "\n" .. tostring(debugstack(2))
-  end
+  if debugstack and not reported[tostring(err)] then lastStack = tostring(debugstack(2)) end
   return err
 end
 
@@ -184,6 +268,7 @@ local function onAddonLoaded(event, name)
   end
   Q.db = QuestifyVanillaDB
   Q.char = QuestifyVanillaCharDB
+  flushErrors()
   Q:Fire("INIT")
 end
 Q:RegisterEvent("ADDON_LOADED", onAddonLoaded)

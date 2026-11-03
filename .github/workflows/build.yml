@@ -34,7 +34,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: questify-vanilla-zips
+          name: questify-zips
           path: dist/*.zip
 
       - name: Publier la release « latest » (main)

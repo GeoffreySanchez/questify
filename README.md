@@ -17,7 +17,7 @@ Guide de leveling **gratuit et open source** pour **World of Warcraft: Forever**
 
 ### Installation
 Les zips sont téléchargeables dans la dernière version publiée du dépôt GitHub :
-<https://github.com/GeoffreySanchez/questify-vanilla/releases/latest>.
+<https://github.com/GeoffreySanchez/questify/releases/tag/latest>.
 1. Télécharge le zip de ton jeu et décompresse-le (le dossier `Questify_Vanilla` doit se trouver
    directement dans `AddOns`) :
    - **Forever** : `Questify_Vanilla-<version>-forever.zip` dans `World of Warcraft\_forever_\Interface\AddOns\` ;
@@ -126,7 +126,7 @@ lues en jeu depuis l'addon QuestieDB.
 
 ### Installation
 The zips can be downloaded from the GitHub repository's latest release:
-<https://github.com/GeoffreySanchez/questify-vanilla/releases/latest>.
+<https://github.com/GeoffreySanchez/questify/releases/tag/latest>.
 1. Download the zip for your game and unzip it (the `Questify_Vanilla` folder must sit directly
    inside `AddOns`):
    - **Forever**: `Questify_Vanilla-<version>-forever.zip` into `World of Warcraft\_forever_\Interface\AddOns\`;

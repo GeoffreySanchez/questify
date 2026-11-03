@@ -3,10 +3,12 @@ local addonName, Q = ...
 -- Suivi sous la minimap (spec § 5.8) :
 --   en-tête : titre du chapitre, niveaux, barre de progression « faites/total » ;
 --   alerte de quête de classe (lueur pulsée) quand une chaîne devient disponible ;
---   étape courante en gros : icône d'action, texte coloré, distance (mise à jour toutes les 0,5 s) ;
+--   étape courante en gros : icône d'action, texte coloré, distance (mise à jour toutes les 0,5 s),
+--   et sous chaque ligne d'objectif les monstres à tuer (crâne, nom, niveau) ;
 --   les étapes suivantes en petit et en gris.
--- La liste des monstres (UI/MobPanel.lua) se place sous ce cadre sans s'y ancrer : ses boutons
--- sont sécurisés et rendraient le suivi protégé (impossible à redimensionner en combat).
+-- Le clic sur un monstre passe par les boutons sécurisés d'UI/MobPanel.lua, posés par-dessus ses
+-- lignes sans s'ancrer au suivi : un enfant sécurisé rendrait le suivi protégé (impossible à
+-- redimensionner en combat). Ici, les lignes de monstres ne sont que du texte et des textures.
 Q.UI = Q.UI or {}
 local Tracker = {}
 Q.UI.Tracker = Tracker
@@ -22,7 +24,16 @@ local MAX_NEXT = 10
 local DIST_INTERVAL = 0.5   -- secondes entre deux calculs de distance
 local TARGET_INTERVAL = 2   -- secondes entre deux recherches du point le plus proche
 
+local TEXT_W = WIDTH - 2 * PAD - ICON_COL - 2   -- largeur du texte de l'étape courante
+local MOB_ROW_H = 16
+local MOB_INDENT = 10       -- retrait des lignes de monstres sous leur objectif
+local MOB_LEVEL_W = 62
+local SKULL_ICON = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_8"
+
 local REASON_COLOR = "|cffff5555"
+local MOB_COLOR = "|cffff6060"
+local MOB_DONE_COLOR = "|cff808080"
+local LEVEL_COLOR = "|cffaaaaaa"
 
 ---------------------------------------------------------------------------
 -- Outils
@@ -263,13 +274,11 @@ function Tracker:Create()
   dist:SetWidth(ICON_COL + 4)
   dist:SetJustifyH("CENTER")
   dist:SetWordWrap(false)
-  local text = cur:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-  text:SetPoint("TOPLEFT", cur, "TOPLEFT", ICON_COL + 2, 0)
-  text:SetWidth(WIDTH - 2 * PAD - ICON_COL - 2)
-  text:SetJustifyH("LEFT")
-  text:SetJustifyV("TOP")
-  text:SetWordWrap(true)
-  self.current, self.currentIcon, self.currentText, self.distance = cur, icon, text, dist
+  self.current, self.currentIcon, self.distance = cur, icon, dist
+  -- Texte de l'étape en morceaux, entrecoupés des lignes de monstres : le premier morceau
+  -- (titre et premiers objectifs) est currentText.
+  self.textChunks, self.mobRows, self.mobSlots = {}, {}, {}
+  self.currentText = self:TextChunk(1)
 
   self.nextLines = {}
   for i = 1, MAX_NEXT do self.nextLines[i] = newNextLine(f) end
@@ -290,6 +299,42 @@ function Tracker:Create()
 
   applyPosition(f)
   return f
+end
+
+-- Morceau de texte de l'étape courante (créé à la demande).
+function Tracker:TextChunk(i)
+  local chunk = self.textChunks[i]
+  if chunk then return chunk end
+  chunk = self.current:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+  chunk:SetWidth(TEXT_W)
+  chunk:SetJustifyH("LEFT")
+  chunk:SetJustifyV("TOP")
+  chunk:SetWordWrap(true)
+  chunk:Hide()
+  self.textChunks[i] = chunk
+  return chunk
+end
+
+-- Ligne de monstre sous un objectif : crâne, nom, niveau (créée à la demande).
+function Tracker:MobRow(i)
+  local row = self.mobRows[i]
+  if row then return row end
+  local cur = self.current
+  row = {}
+  row.skull = cur:CreateTexture(nil, "ARTWORK")
+  row.skull:SetTexture(SKULL_ICON)
+  row.skull:SetSize(12, 12)
+  row.name = cur:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+  row.name:SetJustifyH("LEFT")
+  row.name:SetWordWrap(false)
+  row.name:SetWidth(TEXT_W - MOB_INDENT - 16 - MOB_LEVEL_W)
+  row.level = cur:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
+  row.level:SetJustifyH("RIGHT")
+  row.level:SetWordWrap(false)
+  row.level:SetWidth(MOB_LEVEL_W)
+  row.skull:Hide(); row.name:Hide(); row.level:Hide()
+  self.mobRows[i] = row
+  return row
 end
 
 ---------------------------------------------------------------------------
@@ -370,6 +415,7 @@ function Tracker:ShowMessage(text)
   local f = self.frame
   self.entry, self.target = nil, nil
   for _, r in ipairs({ self.title, self.levels, self.bar, self.alert, self.current }) do r:Hide() end
+  self.mobSlots = {}
   for _, line in ipairs(self.nextLines) do line.icon:Hide(); line.text:Hide() end
   self.alertPulse:Stop()
   self.message:SetText(text)
@@ -398,13 +444,100 @@ local function chapterProgress()
   return done, total
 end
 
-local function stepText(entry)
-  local text = Q.Format:StepText(entry)
+-- Morceaux de l'étape courante : { text = "..." } ou { mob = ligne de MobPanel:MobsFor }.
+-- Les monstres d'un objectif suivent sa ligne ; ceux dont l'objectif n'est pas affiché viennent
+-- après le dernier objectif. Notes et raison du blocage ferment la liste.
+local function stepSegments(entry, mobs)
+  local parts = Q.Format:StepParts(entry)
+  local segs, buf = {}, { parts.head }
+  local function flush()
+    if #buf > 0 then segs[#segs + 1] = { text = table.concat(buf, "\n") } end
+    buf = {}
+  end
+  local function addMobs(list)
+    flush()
+    for _, mob in ipairs(list) do segs[#segs + 1] = { mob = mob } end
+  end
+  local byIndex, placed = {}, {}
+  for _, mob in ipairs(mobs) do
+    local k = mob.objIndex or 0
+    byIndex[k] = byIndex[k] or {}
+    table.insert(byIndex[k], mob)
+  end
+  for _, o in ipairs(parts.objectives) do
+    buf[#buf + 1] = Q.Format:ObjectiveLine(o.text)
+    if byIndex[o.index] and not placed[o.index] then
+      placed[o.index] = true
+      addMobs(byIndex[o.index])
+    end
+  end
+  local rest = {}
+  for _, mob in ipairs(mobs) do
+    if not placed[mob.objIndex or 0] then rest[#rest + 1] = mob end
+  end
+  if #rest > 0 then addMobs(rest) end
+  for _, line in ipairs(parts.tail) do buf[#buf + 1] = line end
   local state, reason = Q.Progress:State(entry)
   if state == "blocked" and reason then
-    text = text .. "\n" .. REASON_COLOR .. Q.Format:Reason(reason) .. "|r"
+    buf[#buf + 1] = REASON_COLOR .. Q.Format:Reason(reason) .. "|r"
   end
-  return text
+  flush()
+  return segs
+end
+
+-- Met en page l'étape courante dans son bouton ; yTop = haut du bouton dans le suivi.
+-- -> hauteur du contenu ; remplit self.mobSlots pour les boutons de ciblage.
+function Tracker:LayoutCurrent(cur, yTop)
+  local segs
+  if cur then
+    local mobs = Q.UI.MobPanel and Q.UI.MobPanel:MobsFor(cur) or {}
+    segs = stepSegments(cur, mobs)
+  else
+    segs = { { text = L.UI_TRACKER_DONE } }
+  end
+  local slots = {}
+  local nText, nMob, yy = 0, 0, 0
+  for _, seg in ipairs(segs) do
+    if seg.text then
+      nText = nText + 1
+      local chunk = self:TextChunk(nText)
+      chunk:ClearAllPoints()
+      chunk:SetPoint("TOPLEFT", self.current, "TOPLEFT", ICON_COL + 2, -yy)
+      chunk:SetText(seg.text)
+      chunk:Show()
+      yy = yy + (chunk:GetStringHeight() or 14)
+    else
+      nMob = nMob + 1
+      local mob, row = seg.mob, self:MobRow(nMob)
+      local x = ICON_COL + 2 + MOB_INDENT
+      row.skull:ClearAllPoints()
+      row.skull:SetPoint("TOPLEFT", self.current, "TOPLEFT", x, -yy - 2)
+      row.skull:SetDesaturated(mob.done and true or false)
+      row.skull:SetAlpha(mob.done and 0.5 or 1)
+      row.skull:Show()
+      row.name:ClearAllPoints()
+      row.name:SetPoint("TOPLEFT", self.current, "TOPLEFT", x + 16, -yy - 2)
+      row.name:SetText((mob.done and MOB_DONE_COLOR or MOB_COLOR) .. mob.name .. "|r")
+      row.name:Show()
+      local lvl = Q.UI.MobPanel:LevelText(mob)
+      row.level:ClearAllPoints()
+      row.level:SetPoint("TOPRIGHT", self.current, "TOPRIGHT", 0, -yy - 2)
+      row.level:SetText(lvl ~= "" and (LEVEL_COLOR .. lvl .. "|r") or "")
+      row.level:Show()
+      row.mob = mob
+      -- zone du bouton de ciblage, depuis le coin haut gauche du suivi
+      slots[#slots + 1] = { mob = mob, x = PAD + x - 2, y = yTop + yy, w = TEXT_W - MOB_INDENT + 2, h = MOB_ROW_H }
+      yy = yy + MOB_ROW_H
+    end
+  end
+  for i = nText + 1, #self.textChunks do self.textChunks[i]:Hide() end
+  for i = nMob + 1, #self.mobRows do
+    local row = self.mobRows[i]
+    row.mob = nil
+    row.skull:Hide(); row.name:Hide(); row.level:Hide()
+  end
+  self.mobSlots = slots
+  return yy
 end
 
 function Tracker:Refresh()
@@ -475,15 +608,13 @@ function Tracker:Refresh()
   if cur then
     self.currentIcon:SetTexture(Q.Format:ActionIcon(cur.step.action))
     self.currentIcon:Show()
-    self.currentText:SetText(stepText(cur))
     if changed or not self.target then self.target = Q.Targets:ForEntry(cur) end
   else
     self.currentIcon:Hide()
-    self.currentText:SetText(L.UI_TRACKER_DONE)
     self.target = nil
   end
   self:UpdateDistance(false)
-  local textH = self.currentText:GetStringHeight() or 14
+  local textH = self:LayoutCurrent(cur, y)
   local h = math.max(textH, cur and (ICON + 14) or 14)
   cur_:SetHeight(h)
   cur_:Show()
@@ -527,10 +658,11 @@ function Tracker:Refresh()
   return self:AfterLayout()
 end
 
--- Après chaque mise en page : la liste des monstres se replace sous le suivi.
+-- Après chaque mise en page (et pendant un déplacement) : les boutons de ciblage se replacent
+-- sur les lignes de monstres.
 function Tracker:AfterLayout()
   local P = Q.UI.MobPanel
-  if P and P.Reposition then P:Reposition() end
+  if P and P.Attach then P:Attach(self.mobSlots) end
 end
 
 ---------------------------------------------------------------------------

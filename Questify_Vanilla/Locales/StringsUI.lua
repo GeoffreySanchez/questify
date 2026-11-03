@@ -18,12 +18,12 @@ Q:RegisterStrings({
     UI_CLASS_ALERT_MANY = "%d class quests available",
     UI_CLASS_ALERT_HINT = "Click to see the quest and choose what to do.",
 
-    -- Liste des monstres
-    UI_MOBS_TITLE = "Targets",
+    -- Monstres à tuer (sous les objectifs du suivi)
     UI_MOB_LEVEL = "Level %s",
     UI_MOB_HINT = "Click: target the nearest one and mark it with a skull",
-    UI_MOB_DONE = "Objective complete",
-    UI_MOB_PENDING = "The list will update after combat.",
+    UI_MOB_PENDING = "Targeting will update after combat.",
+    UI_AUTOTARGET_BINDING = "Target and mark the nearest objective monster",
+    UI_AUTOTARGET_NOKEY = "Auto targeting is on: bind a key in Esc > Key Bindings > Questify Vanilla.",
 
     -- Fenêtre des quêtes de classe
     UI_POPUP_LEVEL = "Level %d",
@@ -71,12 +71,13 @@ Q:RegisterStrings({
     UI_OPT_AUTOMATION = "Automation",
     UI_OPT_AUTOQUEST = "Accept and turn in quests automatically (hold Shift to pause)",
     UI_OPT_AUTOREWARD = "Choose the quest reward automatically",
+    UI_OPT_AUTOTARGET = "Auto targeting key (nearest objective monster, out of combat)",
     UI_OPT_ROUTE = "Route",
     UI_OPT_DUNGEON = "Include dungeon quests",
     UI_OPT_DISPLAY = "Display",
     UI_OPT_NAMEPLATES = "Show a bouncing icon above objective monsters",
     UI_OPT_LOCKED = "Lock the tracker",
-    UI_OPT_SHOWMOBS = "Show the monster list under the tracker",
+    UI_OPT_SHOWMOBS = "Show the monsters to kill under each objective",
     UI_OPT_SCALE = "Tracker size: %d%%",
     UI_OPT_TELEMETRY = "Record the time spent on each step (stays on your computer)",
     UI_OPT_TOOLS = "Tools",
@@ -139,12 +140,12 @@ Q:RegisterStrings({
     UI_CLASS_ALERT_MANY = "%d quêtes de classe disponibles",
     UI_CLASS_ALERT_HINT = "Clique pour voir la quête et choisir.",
 
-    -- Liste des monstres
-    UI_MOBS_TITLE = "Cibles",
+    -- Monstres à tuer (sous les objectifs du suivi)
     UI_MOB_LEVEL = "Niveau %s",
     UI_MOB_HINT = "Clic : cibler le plus proche et le marquer d'un crâne",
-    UI_MOB_DONE = "Objectif terminé",
-    UI_MOB_PENDING = "La liste se mettra à jour après le combat.",
+    UI_MOB_PENDING = "Le ciblage se mettra à jour après le combat.",
+    UI_AUTOTARGET_BINDING = "Cibler et marquer le monstre d'objectif le plus proche",
+    UI_AUTOTARGET_NOKEY = "Ciblage auto activé : choisis une touche dans Échap > Raccourcis > Questify Vanilla.",
 
     -- Fenêtre des quêtes de classe
     UI_POPUP_LEVEL = "Niveau %d",
@@ -192,12 +193,13 @@ Q:RegisterStrings({
     UI_OPT_AUTOMATION = "Automatisation",
     UI_OPT_AUTOQUEST = "Accepter et rendre les quêtes automatiquement (Maj pour suspendre)",
     UI_OPT_AUTOREWARD = "Choisir la récompense automatiquement",
+    UI_OPT_AUTOTARGET = "Touche de ciblage auto (monstre le plus proche, hors combat)",
     UI_OPT_ROUTE = "Route",
     UI_OPT_DUNGEON = "Inclure les quêtes de donjon",
     UI_OPT_DISPLAY = "Affichage",
     UI_OPT_NAMEPLATES = "Afficher une icône animée au-dessus des monstres d'objectif",
     UI_OPT_LOCKED = "Verrouiller le suivi",
-    UI_OPT_SHOWMOBS = "Afficher la liste des monstres sous le suivi",
+    UI_OPT_SHOWMOBS = "Afficher les monstres à tuer sous chaque objectif",
     UI_OPT_SCALE = "Taille du suivi : %d %%",
     UI_OPT_TELEMETRY = "Mesurer le temps passé par étape (reste sur ton ordinateur)",
     UI_OPT_TOOLS = "Outils",

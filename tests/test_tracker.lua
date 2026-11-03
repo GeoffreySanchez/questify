@@ -261,6 +261,6 @@ return {
     Mock.locale = "frFR"
     local Q = load()
     t.ok(plain(Q.UI.Tracker.currentText:GetText()):find("Prendre", 1, true), "french step text")
-    t.eq(Q.L.UI_MOBS_TITLE, "Cibles")
+    t.eq(Q.L.UI_MOB_LEVEL, "Niveau %s")
   end,
 }

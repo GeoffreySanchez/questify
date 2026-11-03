@@ -600,7 +600,8 @@ end
 -- Onglet Options
 ---------------------------------------------------------------------------
 local OPTION_GROUPS = {
-  { title = "UI_OPT_AUTOMATION", checks = { { "autoQuest", "UI_OPT_AUTOQUEST" }, { "autoReward", "UI_OPT_AUTOREWARD" } } },
+  { title = "UI_OPT_AUTOMATION", checks = { { "autoQuest", "UI_OPT_AUTOQUEST" }, { "autoReward", "UI_OPT_AUTOREWARD" },
+    { "tracker.autoTarget", "UI_OPT_AUTOTARGET" } } },
   { title = "UI_OPT_ROUTE", checks = { { "dungeonQuests", "UI_OPT_DUNGEON" } } },
   { title = "UI_OPT_DISPLAY", checks = { { "nameplates", "UI_OPT_NAMEPLATES" }, { "tracker.locked", "UI_OPT_LOCKED" },
     { "tracker.showMobs", "UI_OPT_SHOWMOBS" } }, scale = true },

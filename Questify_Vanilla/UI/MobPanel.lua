@@ -1,33 +1,39 @@
 local addonName, Q = ...
 
--- Liste des monstres d'objectif sous le suivi (spec § 5.5).
--- Chaque ligne est un bouton sécurisé (SecureActionButtonTemplate, type « macro ») : un clic
--- cible le monstre le plus proche du nom indiqué et pose un crâne (/tm !8). SetRaidTarget et
--- TargetUnit sont protégées : on ne les appelle jamais.
--- Règle du combat : aucun attribut, aucune ancre, aucune taille et aucun affichage de ces
--- boutons (ni de leur cadre parent) ne change pendant InCombatLockdown(). La liste est alors
--- marquée « en attente » et reconstruite sur PLAYER_REGEN_ENABLED ; seuls les textes de
--- progression des lignes déjà affichées suivent en combat.
--- Le cadre n'est jamais ancré au suivi : il est placé sur l'écran sous celui-ci, hors combat,
--- pour que le suivi reste un cadre normal (redimensionnable en combat).
+-- Monstres à tuer de l'étape courante (spec § 5.5).
+-- Ils sont affichés dans le suivi, sous la ligne d'objectif de l'étape « Faire » (UI/Tracker.lua,
+-- qui demande la liste ici avec MobPanel:MobsFor). Ce module pose par-dessus chaque ligne un
+-- bouton sécurisé invisible (SecureActionButtonTemplate, type « macro ») : un clic cible le
+-- monstre le plus proche du nom indiqué et pose un crâne (/tm !8). SetRaidTarget et TargetUnit
+-- sont protégées : on ne les appelle jamais.
+-- Les boutons ne sont pas enfants du suivi : un enfant sécurisé le rendrait protégé (impossible à
+-- déplacer ou à redimensionner en combat). Ils sont placés sur l'écran par coordonnées, hors combat.
+-- Règle du combat : aucun attribut, aucune ancre, aucune taille et aucun affichage de ces boutons
+-- ne change pendant InCombatLockdown(). Si les lignes du suivi bougent ou changent en combat, les
+-- boutons sont marqués « en attente » (surbrillance coupée, infobulle qui le dit) et replacés sur
+-- PLAYER_REGEN_ENABLED.
+-- Ciblage auto (option tracker.autoTarget) : un raccourci clavier (Bindings.xml) clique un bouton
+-- sécurisé caché dont la macro cible le plus proche des monstres de l'étape courante et lui pose
+-- un crâne. Le client interdit tout ciblage sans touche ni clic du joueur : sans raccourci, rien
+-- ne se passe. La macro s'arrête en combat ([combat]) pour ne pas voler la cible du joueur.
 Q.UI = Q.UI or {}
-local MobPanel = { rows = {}, pending = false }
+local MobPanel = { rows = {}, slots = {}, pending = false }
 Q.UI.MobPanel = MobPanel
 
 local L = Q.L
 
 local MAX_ROWS = 6
-local WIDTH = 260
-local ROW_H = 30
-local HEADER = 22
 local MODEL_SIZE = 160
 local MODEL_CHECK_DELAY = 0.3
 local FALLBACK_ICON = "Interface\\Icons\\INV_Misc_QuestionMark"
-local SKULL_ICON = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_8"
+local HIGHLIGHT = "Interface\\QuestFrame\\UI-QuestTitleHighlight"
+local AUTO_BUTTON = "QuestifyVanillaAutoTarget"
+local AUTO_BINDING = "CLICK " .. AUTO_BUTTON .. ":LeftButton"
+local MACRO_MAX = 255       -- longueur maximale d'une macro
 
-local MOB_COLOR = "|cffff6060"
-local DONE_COLOR = "|cff808080"
-local LEVEL_COLOR = "|cffaaaaaa"
+-- Textes de la fenêtre des raccourcis du jeu
+BINDING_HEADER_QUESTIFYVANILLA = "Questify Vanilla"
+_G["BINDING_NAME_" .. AUTO_BINDING] = L.UI_AUTOTARGET_BINDING
 
 local function setting(path) return Q.Settings:Get(path) end
 local function inCombat() return InCombatLockdown and InCombatLockdown() end
@@ -37,6 +43,33 @@ local function buildMacro(name)
   return "/cleartarget\n/targetexact " .. name .. "\n/tm !8"
 end
 MobPanel.BuildMacro = function(_, name) return buildMacro(name) end
+
+-- Macro du ciblage auto : rien en combat ; sinon le plus proche du premier nom présent (objectifs
+-- non terminés d'abord), puis le crâne. Les noms qui dépassent la longueur maximale sont omis.
+local function buildAutoMacro(mobs)
+  local names, seen = {}, {}
+  for _, wantDone in ipairs({ false, true }) do
+    for _, mob in ipairs(mobs) do
+      if (mob.done and true or false) == wantDone and not seen[mob.name] then
+        seen[mob.name] = true
+        names[#names + 1] = mob.name
+      end
+    end
+  end
+  if #names == 0 then return "" end
+  local head, tail = "/stopmacro [combat]\n/cleartarget\n", "/tm !8"
+  local lines = {}
+  local size = #head + #tail
+  for i, name in ipairs(names) do
+    local line = (i == 1 and "/targetexact " or "/targetexact [noexists] ") .. name .. "\n"
+    if size + #line > MACRO_MAX then break end
+    lines[#lines + 1] = line
+    size = size + #line
+  end
+  if #lines == 0 then return "" end
+  return head .. table.concat(lines) .. tail
+end
+MobPanel.BuildAutoMacro = function(_, mobs) return buildAutoMacro(mobs) end
 
 ---------------------------------------------------------------------------
 -- Données
@@ -48,33 +81,28 @@ local function cleanName(name)
   return name
 end
 
--- Copie d'une ligne de Q.Targets:ObjectiveMobs() : ces lignes sont partagées (cache du moteur),
--- on ne les modifie jamais.
-local function copyMob(src, name)
-  local mob = {}
-  for k, v in pairs(src) do mob[k] = v end
-  mob.name = name
-  return mob
-end
-
--- Monstres d'objectif : non terminés d'abord (ordre d'origine conservé), 6 au plus.
-local function collectMobs()
+-- Monstres de l'étape à afficher sous ses objectifs : 6 au plus. S'il y en a trop, les objectifs
+-- non terminés passent d'abord ; l'ordre d'affichage (celui des objectifs) est conservé.
+function MobPanel:MobsFor(entry)
   if not (Q.QDB and Q.QDB:IsAvailable() and Q.Progress:IsEnabled()) then return {} end
-  local todo, done = {}, {}
-  for _, src in ipairs(Q.Targets:ObjectiveMobs()) do
-    local name = cleanName(src.name)
-    if name then
-      local mob = copyMob(src, name)
-      if mob.done then done[#done + 1] = mob else todo[#todo + 1] = mob end
+  if setting("tracker.showMobs") == false then return {} end
+  local all = {}
+  for _, mob in ipairs(Q.Targets:MobsForEntry(entry)) do
+    mob.name = cleanName(mob.name)
+    if mob.name then all[#all + 1] = mob end
+  end
+  if #all <= MAX_ROWS then return all end
+  local keep, n = {}, 0
+  for _, wantDone in ipairs({ false, true }) do
+    for _, mob in ipairs(all) do
+      if n < MAX_ROWS and mob.done == wantDone then
+        keep[mob] = true
+        n = n + 1
+      end
     end
   end
   local out = {}
-  for _, list in ipairs({ todo, done }) do
-    for _, mob in ipairs(list) do
-      if #out >= MAX_ROWS then return out end
-      out[#out + 1] = mob
-    end
-  end
+  for _, mob in ipairs(all) do if keep[mob] then out[#out + 1] = mob end end
   return out
 end
 
@@ -85,6 +113,7 @@ local function levelText(mob)
   if lo and hi and lo ~= hi then range = lo .. "-" .. hi else range = tostring(lo or hi) end
   return string.format(L.UI_MOB_LEVEL, range)
 end
+MobPanel.LevelText = function(_, mob) return levelText(mob) end
 
 local function objectiveText(mob)
   local objs = C_QuestLog.GetQuestObjectives(mob.questId)
@@ -195,65 +224,18 @@ function MobPanel:HideModel()
 end
 
 ---------------------------------------------------------------------------
--- Cadre et lignes
+-- Boutons sécurisés posés sur les lignes du suivi
 ---------------------------------------------------------------------------
-function MobPanel:Create()
-  if self.frame then return self.frame end
-  local f = CreateFrame("Frame", "QuestifyVanillaMobPanel", UIParent, "BackdropTemplate")
-  self.frame = f
-  f:SetSize(WIDTH, HEADER + ROW_H)
-  f:SetFrameStrata("LOW")
-  f:SetClampedToScreen(true)
-  if f.SetBackdrop then
-    f:SetBackdrop({
-      bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
-      edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-      tile = true, tileSize = 16, edgeSize = 12,
-      insets = { left = 3, right = 3, top = 3, bottom = 3 },
-    })
-    f:SetBackdropColor(0, 0, 0, 0.55)
-    f:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.8)
-  end
-  local header = f:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-  header:SetPoint("TOPLEFT", f, "TOPLEFT", 8, -7)
-  header:SetText(L.UI_MOBS_TITLE)
-  self.header = header
-  local wait = f:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
-  wait:SetPoint("TOPRIGHT", f, "TOPRIGHT", -8, -7)
-  wait:SetText("")
-  self.waitText = wait
-  f:Hide()
-  return f
-end
-
 local function createRow(i)
-  local f = MobPanel.frame
-  local row = CreateFrame("Button", "QuestifyVanillaMobRow" .. i, f, "SecureActionButtonTemplate")
-  row:SetSize(WIDTH - 12, ROW_H)
-  row:SetPoint("TOPLEFT", f, "TOPLEFT", 6, -(HEADER + (i - 1) * ROW_H))
+  local row = CreateFrame("Button", "QuestifyVanillaMobRow" .. i, UIParent, "SecureActionButtonTemplate")
+  row:SetFrameStrata("MEDIUM")   -- au-dessus du suivi (LOW)
   row:RegisterForClicks("AnyUp", "AnyDown")
   row:SetAttribute("type", "macro")
-  row:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight", "ADD")
-
-  local skull = row:CreateTexture(nil, "ARTWORK")
-  skull:SetTexture(SKULL_ICON)
-  skull:SetSize(14, 14)
-  skull:SetPoint("TOPLEFT", row, "TOPLEFT", 2, -2)
-  local name = row:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-  name:SetPoint("TOPLEFT", skull, "TOPRIGHT", 4, 0)
-  name:SetJustifyH("LEFT")
-  name:SetWordWrap(false)
-  name:SetWidth(WIDTH - 12 - 24 - 70)
-  local level = row:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
-  level:SetPoint("TOPRIGHT", row, "TOPRIGHT", -2, -3)
-  level:SetJustifyH("RIGHT")
-  local objective = row:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
-  objective:SetPoint("TOPLEFT", name, "BOTTOMLEFT", 0, -2)
-  objective:SetWidth(WIDTH - 12 - 24)
-  objective:SetJustifyH("LEFT")
-  objective:SetWordWrap(false)
-  row.skull, row.name, row.level, row.objective = skull, name, level, objective
-
+  local hl = row:CreateTexture(nil, "HIGHLIGHT")
+  hl:SetTexture(HIGHLIGHT)
+  hl:SetBlendMode("ADD")
+  hl:SetAllPoints(row)
+  row.highlight = hl
   -- Scripts non sécurisés de survol seulement : le clic reste celui du modèle sécurisé.
   row:SetScript("OnEnter", function(self) Q.SafeCall(MobPanel.ShowModel, MobPanel, self) end)
   row:SetScript("OnLeave", function() Q.SafeCall(MobPanel.HideModel, MobPanel) end)
@@ -262,122 +244,131 @@ local function createRow(i)
   return row
 end
 
-local function setRowTexts(row, mob)
-  local done = mob.done
-  row.name:SetText((done and DONE_COLOR or MOB_COLOR) .. mob.name .. "|r")
-  local lvl = levelText(mob)
-  row.level:SetText(lvl ~= "" and (LEVEL_COLOR .. lvl .. "|r") or "")
-  row.objective:SetText(done and (DONE_COLOR .. L.UI_MOB_DONE .. "|r") or objectiveText(mob))
-  row.skull:SetDesaturated(done and true or false)
-  row.skull:SetAlpha(done and 0.5 or 1)
+-- Bouton caché du raccourci : seule sa macro change, hors combat.
+local function autoButton()
+  if MobPanel.auto then return MobPanel.auto end
+  local b = CreateFrame("Button", AUTO_BUTTON, UIParent, "SecureActionButtonTemplate")
+  b:RegisterForClicks("AnyUp", "AnyDown")
+  b:SetAttribute("type", "macro")
+  b:SetAttribute("macrotext", "")
+  b:Hide()
+  MobPanel.auto = b
+  return b
 end
 
--- En combat : seuls les textes des lignes affichées suivent (même monstre, même macro).
-function MobPanel:UpdateTexts()
-  local byNpc = {}
-  for _, mob in ipairs(Q.Targets:ObjectiveMobs()) do
-    if not byNpc[mob.npcId] then byNpc[mob.npcId] = mob end
-  end
-  for _, row in ipairs(self.rows) do
-    if row:IsShown() and row.mob then
-      local fresh = byNpc[row.mob.npcId]
-      local mob
-      if fresh then
-        mob = copyMob(fresh, row.mob.name)   -- même nom : la macro du bouton ne change pas
-      else
-        mob = copyMob(row.mob, row.mob.name)
-        mob.done = true                       -- plus dans les objectifs : affichée comme terminée
-      end
-      row.mob = mob
-      setRowTexts(row, mob)
-    end
-  end
-  if self.waitText then self.waitText:SetText(self.pending and L.UI_MOB_PENDING or "") end
+local function autoMacro(self)
+  if setting("tracker.autoTarget") ~= true then return "" end
+  local mobs = {}
+  for i, s in ipairs(self.slots) do mobs[i] = s.mob end
+  return buildAutoMacro(mobs)
 end
 
--- Place la liste sous le suivi, par coordonnées d'écran (hors combat seulement).
-function MobPanel:Reposition()
-  local f = self.frame
-  if not f then return end
-  if inCombat() then
-    self.pending = true
-    return
+-- Option activée sans touche : un rappel, une fois par session.
+local function bindingHint()
+  if MobPanel.hinted or setting("tracker.autoTarget") ~= true then return end
+  if GetBindingKey and GetBindingKey(AUTO_BINDING) then return end
+  MobPanel.hinted = true
+  Q:Print(L.UI_AUTOTARGET_NOKEY)
+end
+
+local function trackerFrame()
+  local T = Q.UI.Tracker
+  return T and T.frame
+end
+
+-- Boutons voulus d'après les lignes du suivi : { mob, macro, x, y, w, h, scale }, coordonnées
+-- d'écran dans l'échelle du suivi. nil si le rectangle du suivi n'est pas encore calculé.
+local function wanted(self)
+  local list = {}
+  local T = trackerFrame()
+  if #self.slots == 0 or not (T and T:IsShown()) then return list end
+  local left, top = T:GetLeft(), T:GetTop()
+  if not (left and top) then return nil end
+  local scale = T:GetScale() or 1
+  for i, s in ipairs(self.slots) do
+    list[i] = { mob = s.mob, macro = buildMacro(s.mob.name), x = left + s.x, y = top - s.y,
+      w = s.w, h = s.h, scale = scale, tracker = T }
   end
-  f:SetScale(tonumber(setting("tracker.scale")) or 1)
-  f:ClearAllPoints()
-  local T = Q.UI.Tracker and Q.UI.Tracker.frame
-  local left, bottom
-  if T and T:IsShown() then left, bottom = T:GetLeft(), T:GetBottom() end
-  if left and bottom then
-    local k = T:GetEffectiveScale() / f:GetEffectiveScale()
-    f:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left * k, bottom * k - 4)
-  else
-    f:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -20, -420)
+  return list
+end
+
+local function signature(list)
+  local parts = {}
+  for i, w in ipairs(list) do
+    parts[i] = string.format("%s|%.1f|%.1f|%.1f|%.1f|%.3f", w.macro, w.x, w.y, w.w, w.h, w.scale)
+  end
+  return table.concat(parts, "\n")
+end
+
+local function markStale(stale)
+  MobPanel.pending = stale and true or false
+  for _, row in ipairs(MobPanel.rows) do row.highlight:SetAlpha(stale and 0 or 1) end
+end
+
+-- Pose les boutons sur les lignes voulues (hors combat) ; en combat, les marque seulement « en
+-- attente » si elles ont changé.
+function MobPanel:Apply()
+  local list = wanted(self)
+  if not list then
     -- rectangle du suivi pas encore calculé (juste après sa création) : nouvel essai à l'image suivante
-    if T and T:IsShown() and not self.retryPending then
+    if not self.retryPending then
       self.retryPending = true
       Q:After(0, function()
         MobPanel.retryPending = false
-        local l, b = T:GetLeft(), T:GetBottom()
-        if l and b then MobPanel:Reposition() end
+        MobPanel:Apply()
       end)
     end
+    return
   end
-end
-
-function MobPanel:Refresh()
-  local f = self.frame
-  if not f then return end
+  local auto = autoMacro(self)
+  local sig = signature(list) .. "\n#auto\n" .. auto
   if inCombat() then
-    self.pending = true
-    self:UpdateTexts()
-    return
-  end
-  self.pending = false
-  self.waitText:SetText("")
-  local mobs = {}
-  if setting("tracker.showMobs") ~= false then mobs = collectMobs() end
-  if #mobs == 0 then
-    for _, row in ipairs(self.rows) do
-      row.mob = nil
-      row:Hide()
+    if sig ~= self.appliedSig then
+      markStale(true)
+    elseif not self.pending then
+      for i, w in ipairs(list) do self.rows[i].mob = w.mob end   -- même ligne, même monstre : infos à jour
     end
-    f:Hide()
-    self:HideModel()
     return
   end
-  for i, mob in ipairs(mobs) do
+  for i, w in ipairs(list) do
     local row = self.rows[i] or createRow(i)
-    local macro = buildMacro(mob.name)
-    if row:GetAttribute("macrotext") ~= macro then row:SetAttribute("macrotext", macro) end
-    row.mob = mob
-    setRowTexts(row, mob)
+    if row:GetAttribute("macrotext") ~= w.macro then row:SetAttribute("macrotext", w.macro) end
+    row:SetScale(w.scale)
+    local k = w.tracker:GetEffectiveScale() / row:GetEffectiveScale()
+    row:ClearAllPoints()
+    row:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", w.x * k, w.y * k)
+    row:SetSize(w.w, w.h)
+    row.mob = w.mob
     row:Show()
   end
-  for i = #mobs + 1, #self.rows do
+  for i = #list + 1, #self.rows do
     self.rows[i].mob = nil
     self.rows[i]:Hide()
   end
-  f:SetHeight(HEADER + #mobs * ROW_H + 6)
-  f:Show()
-  self:Reposition()
+  if #list == 0 then self:HideModel() end
+  local b = autoButton()
+  if b:GetAttribute("macrotext") ~= auto then b:SetAttribute("macrotext", auto) end
+  self.appliedSig = sig
+  markStale(false)
+end
+
+-- Appelé par le suivi après chaque mise en page : slots = { { mob, x, y, w, h } }, position de
+-- chaque ligne de monstre depuis le coin haut gauche du suivi, dans son échelle.
+function MobPanel:Attach(slots)
+  self.slots = type(slots) == "table" and slots or {}
+  self:Apply()
 end
 
 ---------------------------------------------------------------------------
--- Messages et évènements
+-- Évènements
 ---------------------------------------------------------------------------
-local function refresh() MobPanel:Refresh() end
-
-Q:On("LOGIN", function()
-  MobPanel:Create()
-  MobPanel:Refresh()
-end)
-Q:On("PROGRESS_UPDATED", refresh)
-Q:On("STEP_CHANGED", refresh)
-Q:On("GUIDE_CHANGED", refresh)
-Q:On("SETTINGS_CHANGED", function(path)
-  if type(path) == "string" and path:sub(1, 8) == "tracker." then refresh() end
-end)
 Q:RegisterEvent("PLAYER_REGEN_ENABLED", function()
-  if MobPanel.pending then MobPanel:Refresh() end
+  if MobPanel.pending then MobPanel:Apply() end
+end)
+Q:On("LOGIN", function()
+  if not inCombat() then autoButton() end   -- le raccourci trouve son bouton dès la connexion
+  bindingHint()
+end)
+Q:On("SETTINGS_CHANGED", function(path)
+  if path == "tracker.autoTarget" then bindingHint() end
 end)

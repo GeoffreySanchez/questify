@@ -7,12 +7,23 @@
   couche de compatibilité `Core/Compat.lua` (journal de quêtes, objets, fenêtre de quêtes sans
   dialogue reconnue par le titre, repère natif absent sur Era), route Nain / Gnome 1-12
   (`Guides/Era/`, générée par `tools/routebuilder/build_era.lua`). La version Forever est inchangée.
+- Les monstres à tuer s'affichent dans le suivi, sous la ligne d'objectif de l'étape « Faire »
+  (crâne, nom, niveau), au lieu du panneau « Cibles » séparé. Un clic cible toujours le plus proche
+  et lui pose un crâne.
+- Nouvelle option « Touche de ciblage auto » : un raccourci (Échap > Raccourcis > Questify Vanilla)
+  cible le monstre d'objectif le plus proche de l'étape courante et le marque d'un crâne, hors
+  combat seulement.
 
 ### English
 - Test build for WoW Classic Era (1.15.8, 1.15.9): `Questify_Vanilla_Vanilla.toc`, compatibility
   layer `Core/Compat.lua` (quest log, items, title-based quest greeting, no native waypoint on Era),
   Dwarf / Gnome 1-12 route (`Guides/Era/`, built by `tools/routebuilder/build_era.lua`). The Forever
   build is unchanged.
+- Monsters to kill are shown in the tracker, under the objective line of the current "Complete"
+  step (skull, name, level), instead of the separate "Targets" panel. Clicking still targets the
+  nearest one and marks it with a skull.
+- New "Auto targeting key" option: a key binding (Esc > Key Bindings > Questify Vanilla) targets
+  the nearest objective monster of the current step and marks it with a skull, out of combat only.
 
 ## 0.1.0 (2026-11-03)
 

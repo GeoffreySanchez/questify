@@ -1,0 +1,11 @@
+# Sorties de packaging (tools/package.sh)
+dist/
+
+# Clones de QuestieDB / Questie utilisés par le générateur de routes
+.cache/
+
+# Notes de travail des agents
+.superpowers/
+
+# Fichiers système
+.DS_Store

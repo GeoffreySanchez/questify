@@ -1,0 +1,34 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+  <!-- Fichier réécrit par tools/routebuilder/build.lua : un <Script> par guide, puis ClassQuestData.lua. -->
+  <Script file="Alliance\A_DwarfGnome_01.lua"/>
+  <Script file="Alliance\A_DwarfGnome_02.lua"/>
+  <Script file="Alliance\A_DwarfGnome_03.lua"/>
+  <Script file="Alliance\A_DwarfGnome_04.lua"/>
+  <Script file="Alliance\A_Human_01.lua"/>
+  <Script file="Alliance\A_Human_02.lua"/>
+  <Script file="Alliance\A_Human_03.lua"/>
+  <Script file="Alliance\A_NightElf_01.lua"/>
+  <Script file="Alliance\A_NightElf_02.lua"/>
+  <Script file="Alliance\A_NightElf_03.lua"/>
+  <Script file="Skyborne\A_Skyborne_01.lua"/>
+  <Script file="Alliance\A_01.lua"/>
+  <Script file="Alliance\A_02.lua"/>
+  <Script file="Alliance\A_03.lua"/>
+  <Script file="Alliance\A_04.lua"/>
+  <Script file="Alliance\A_05.lua"/>
+  <Script file="Horde\H_OrcTroll_01.lua"/>
+  <Script file="Horde\H_OrcTroll_02.lua"/>
+  <Script file="Horde\H_Tauren_01.lua"/>
+  <Script file="Horde\H_Tauren_02.lua"/>
+  <Script file="Horde\H_Undead_01.lua"/>
+  <Script file="Horde\H_Undead_02.lua"/>
+  <Script file="Horde\H_Undead_03.lua"/>
+  <Script file="Skyborne\H_Skyborne_01.lua"/>
+  <Script file="Horde\H_01.lua"/>
+  <Script file="Horde\H_02.lua"/>
+  <Script file="Horde\H_03.lua"/>
+  <Script file="Horde\H_04.lua"/>
+  <Script file="Horde\H_05.lua"/>
+  <Script file="ClassQuestData.lua"/>
+</Ui>

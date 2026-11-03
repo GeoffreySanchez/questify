@@ -1,0 +1,182 @@
+# Questify Vanilla
+
+Guide de leveling **gratuit et open source** pour **World of Warcraft: Forever** (niveaux 1 à 30).
+*A **free and open-source** leveling guide for **World of Warcraft: Forever** (levels 1 to 30).*
+
+---
+
+## Français
+
+### Ce que fait l'addon
+- Une route optimisée par race et par faction, étape par étape : prendre, faire et rendre les quêtes,
+  points de vol, pierre de foyer, bateaux.
+- Les étapes se cochent toutes seules selon ton journal de quêtes ; les étapes impossibles pour ton
+  personnage sont sautées.
+- Navigation vers chaque étape (marqueur natif du jeu, ou TomTom, WaypointUI, ShortestPath Forever).
+- Liste des monstres à tuer, quêtes de classe, acceptation et rendu automatiques (désactivables).
+
+### Installation
+1. Télécharge l'addon et décompresse-le dans `World of Warcraft\_forever_\Interface\AddOns\`
+   (le dossier `Questify_Vanilla` doit se trouver directement dans `AddOns`).
+2. Installe [**QuestieDB**](https://www.curseforge.com/wow/addons/questiedb) depuis CurseForge :
+   c'est une dépendance obligatoire (les données de quêtes viennent de là).
+3. Facultatif : installe [**ShortestPath Forever**](https://www.curseforge.com/wow/addons/shortest-path-forever)
+   (calcul d'itinéraire), [**WaypointUI**](https://www.curseforge.com/wow/addons/waypointui) ou
+   [**TomTom**](https://www.curseforge.com/wow/addons/tomtom) (affichage de la destination).
+
+### Dépendances
+| Addon | Rôle | Obligatoire |
+|---|---|---|
+| QuestieDB | Données des quêtes, PNJ et objets | oui |
+| ShortestPath Forever | Itinéraire entre zones (vols, bateaux) | non |
+| WaypointUI | Marqueur de destination | non |
+| TomTom | Flèche de destination | non |
+
+Sans addon de navigation, Questify utilise le marqueur 3D natif du jeu.
+
+### Première connexion : liste de vérification
+Ces points ne se vérifient que dans le jeu (le client Forever n'est pas simulable). Si l'un d'eux
+échoue, note le message d'erreur exact.
+- [ ] L'addon apparaît dans la liste des addons, sans message d'erreur Lua au chargement (le client
+      reconnaît `Questify_Vanilla_Camelot.toc` ; QuestieDB est chargé, sinon le client ou Questify le signale).
+- [ ] L'assistant de navigation s'ouvre environ 3 secondes après la première connexion, applique le
+      choix tout de suite et ne se rouvre pas après « Terminer » ou la fermeture.
+- [ ] Le marqueur natif s'affiche sur l'étape courante (et TomTom, WaypointUI ou ShortestPath Forever
+      si installés) ; il disparaît ou change quand l'étape change.
+- [ ] Les étapes se cochent toutes seules : prise et rendu de quête, point de vol découvert, pierre
+      de foyer liée. Le rayon de 15 yards des étapes `goto` n'est pas trop serré.
+- [ ] `/tm` fonctionne en solo : un clic sur un monstre du panneau cible le plus proche et lui pose
+      un crâne, une seule fois par clic, avec `ActionButtonUseKeyDown` à 0 puis à 1.
+- [ ] L'acceptation et le rendu automatiques fonctionnent sur les quêtes de la route, et Maj (Shift)
+      les suspend.
+- [ ] Le choix de récompense automatique propose une amélioration ou, à défaut, l'objet qui se vend le
+      plus cher ; il ne choisit rien quand les objets ne sont pas encore chargés.
+- [ ] Aucune erreur en combat : pas de message d'action d'interface bloquée par un addon,
+      le suivi peut grandir en combat, le panneau des monstres se reconstruit à la fin du combat.
+- [ ] Aucune erreur avec des valeurs secrètes en combat, ni dans une instance (barres de nom
+      interdites).
+- [ ] Le suivi est bien placé à 1080p, avec une échelle d'interface de 1 et de 0,8 : lisible, les
+      textes longs passent à la ligne, le déplacement et le verrouillage marchent, la position
+      survit à `/reload`, les boutons de taille fonctionnent, pas de chevauchement avec le suivi de Blizzard.
+- [ ] Le panneau des monstres : modèle 3D au survol (point d'interrogation si le modèle n'est pas
+      en cache), icône qui rebondit sur les bonnes barres de nom et qui disparaît à l'objectif rempli.
+- [ ] Le journal : cadre, titre, onglets, Échap pour fermer, défilement à la molette, infobulles des
+      objets ; la fenêtre des quêtes de classe (icône de classe, objets, zone de départ).
+- [ ] Les commandes : `/qf`, `/questify`, le bouton du menu des addons, `/qf reset` demande une
+      confirmation, `/qf export` sélectionne le texte pour Ctrl + C.
+- [ ] Client français : aucun bouton tronqué (par exemple « Réinitialiser la progression du
+      chapitre »), noms de quêtes et de monstres corrects, ciblage par nom opérationnel.
+- [ ] Les quêtes à plusieurs sites d'objectifs (par exemple 3361 au chapitre 1) pointent le bon objectif.
+
+### Commandes
+- `/questify` ou `/qf` : ouvrir ou fermer le journal.
+- `/qf skip` : passer l'étape courante ; `/qf back` : revenir à l'étape précédente.
+- `/qf options` : options ; `/qf wizard` : assistant de navigation.
+- `/qf export` : exporter les mesures de temps par étape (rien n'est envoyé automatiquement).
+- `/qf debug` : mode débogage ; `/qf reset` : réinitialiser la progression du personnage.
+
+Dans le suivi : clic droit pour passer une étape, Maj + clic droit pour revenir en arrière.
+Maintenir Maj (Shift) suspend l'acceptation et le rendu automatiques.
+
+### Tester sur Classic Era
+Le même zip contient une version de test pour WoW Classic Era (1.15.8 et 1.15.9), chargée par le
+client Era grâce au fichier `Questify_Vanilla_Vanilla.toc`. La version Forever ne change pas.
+- Installe **QuestieDB** depuis CurseForge en choisissant le fichier Classic Era (obligatoire, comme
+  sur Forever).
+- **TomTom** (version Classic) est conseillé : Classic Era n'a ni repère de carte ni marqueur 3D,
+  donc sans TomTom seul le suivi à l'écran indique l'étape. Choisis TomTom dans l'assistant
+  (`/qf wizard`) ou dans les options.
+- Tape `/qf` pour ouvrir le journal (chapitres, étapes, options, quêtes de classe).
+- La route Era ne couvre que **Nain et Gnome, niveaux 1 à 12** : Coldridge Valley (1-6) puis
+  Dun Morogh (6-12). Les autres races n'ont pas de route sur Era.
+- Si le jeu indique l'addon « périmé », coche « Charger les addons périmés ».
+
+### Licence
+GPL-3.0-or-later (voir `LICENSE`). Les données de QuestieDB ne sont pas redistribuées : elles sont
+lues en jeu depuis l'addon QuestieDB.
+
+---
+
+## English
+
+### What it does
+- An optimized route per race and faction, step by step: accept, complete and turn in quests,
+  flight paths, hearthstone, boats.
+- Steps tick themselves off from your quest log; steps your character cannot do are skipped.
+- Navigation to every step (native in-game marker, or TomTom, WaypointUI, ShortestPath Forever).
+- Mob list for objectives, class quests, automatic accept and turn-in (can be turned off).
+
+### Installation
+1. Download the addon and unzip it into `World of Warcraft\_forever_\Interface\AddOns\`
+   (the `Questify_Vanilla` folder must sit directly inside `AddOns`).
+2. Install [**QuestieDB**](https://www.curseforge.com/wow/addons/questiedb) from CurseForge: it is a
+   required dependency (quest data comes from it).
+3. Optional: install [**ShortestPath Forever**](https://www.curseforge.com/wow/addons/shortest-path-forever)
+   (routing), [**WaypointUI**](https://www.curseforge.com/wow/addons/waypointui) or
+   [**TomTom**](https://www.curseforge.com/wow/addons/tomtom) (destination display).
+
+### Dependencies
+| Addon | Role | Required |
+|---|---|---|
+| QuestieDB | Quest, NPC and object data | yes |
+| ShortestPath Forever | Routing between zones (flights, boats) | no |
+| WaypointUI | Destination marker | no |
+| TomTom | Destination arrow | no |
+
+Without a navigation addon, Questify uses the game's native 3D waypoint.
+
+### First launch: checklist
+These can only be checked in game (the Forever client cannot be simulated). If one fails, note the
+exact error message.
+- [ ] The addon shows in the addon list with no Lua error on load (the client recognizes
+      `Questify_Vanilla_Camelot.toc`; QuestieDB is loaded, otherwise the client or Questify warns you).
+- [ ] The navigation wizard opens about 3 seconds after the first login, applies your choice at once
+      and does not reopen after Finish or close.
+- [ ] The native marker shows on the current step (and TomTom, WaypointUI or ShortestPath Forever
+      when installed); it disappears or changes when the step changes.
+- [ ] Steps tick themselves off: quest accept and turn-in, discovered flight path, bound
+      hearthstone. The 15-yard radius of `goto` steps is not too tight.
+- [ ] `/tm` works solo: clicking a mob in the panel targets the nearest one and puts a skull on it,
+      once per click, with `ActionButtonUseKeyDown` set to 0 and then 1.
+- [ ] Automatic accept and turn-in work on route quests, and Shift pauses them.
+- [ ] Automatic reward choice picks an upgrade or, failing that, the item with the highest vendor
+      price; it picks nothing while the reward items are not loaded yet.
+- [ ] No errors in combat: no "Interface action failed because of an AddOn" message, the tracker can
+      grow in combat, the mob panel rebuilds after combat.
+- [ ] No errors with secret values in combat, or inside instances (forbidden nameplates).
+- [ ] The tracker is well placed at 1080p, with UI scale 1 and 0.8: readable, long texts wrap,
+      drag and lock work, the position survives `/reload`, the size buttons work, no overlap with
+      Blizzard's tracker.
+- [ ] The mob panel: 3D model on hover (question mark when the model is not cached), icon bounces on
+      the right nameplates and disappears when the objective is complete.
+- [ ] The journal: frame, title, tabs, Escape closes it, mouse-wheel scrolling, item tooltips; the
+      class quest popup (class icon, items, starting zone).
+- [ ] Commands: `/qf`, `/questify`, the addon compartment button, `/qf reset` asks for confirmation,
+      `/qf export` selects the text for Ctrl + C.
+- [ ] French client: no truncated buttons (for example "Réinitialiser la progression du chapitre"),
+      correct quest and mob names, targeting by name works.
+- [ ] Quests with several objective sites (for example 3361 in chapter 1) point to the right objective.
+
+### Commands
+- `/questify` or `/qf`: open or close the journal.
+- `/qf skip`: skip the current step; `/qf back`: go back one step.
+- `/qf options`: options; `/qf wizard`: navigation wizard.
+- `/qf export`: export the per-step timing data (nothing is ever sent automatically).
+- `/qf debug`: debug mode; `/qf reset`: reset this character's progress.
+
+In the tracker: right-click skips a step, Shift + right-click goes back.
+Holding Shift pauses automatic accept and turn-in.
+
+### License
+GPL-3.0-or-later (see `LICENSE`). QuestieDB data is not redistributed: it is read in game from the
+QuestieDB addon.
+
+---
+
+## Développement / Development
+
+- Tests: `luajit tests/run.lua [pattern]` (WoW API mock in `tests/wow_mock.lua`).
+- Syntax check: `tools/check_syntax.sh`.
+- Release check and zip: `tools/package.sh` runs the syntax check, the tests and `tools/validate_guides.lua`,
+  then writes `dist/Questify_Vanilla-<version>.zip` (version read from `## Version:` in the TOC).
+  Changes are listed in `CHANGELOG.md`.

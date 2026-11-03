@@ -1,0 +1,49 @@
+## Interface: 11508, 11509
+## Title: Questify Vanilla
+## Notes: Free leveling guide for World of Warcraft: Forever (1-30). Classic Era test route: Dwarf/Gnome 1-12.
+## Notes-frFR: Guide de leveling gratuit pour World of Warcraft: Forever (1-30). Route de test Classic Era : Nain/Gnome 1-12.
+## Author: Questify Vanilla contributors
+## Version: 0.1.0
+## IconTexture: Interface\Icons\INV_Misc_Book_09
+## Dependencies: QuestieDB
+## OptionalDeps: QuestieDB, TomTom, WaypointUI, ShortestPathForever
+## SavedVariables: QuestifyVanillaDB
+## SavedVariablesPerCharacter: QuestifyVanillaCharDB
+## AddonCompartmentFunc: QuestifyVanilla_OnAddonCompartmentClick
+## X-License: GPL-3.0-or-later
+
+Locales\Locale.lua
+Locales\StringsCore.lua
+Locales\StringsNav.lua
+Locales\StringsUI.lua
+
+Core\Init.lua
+Core\Util.lua
+Core\Compat.lua
+Core\Settings.lua
+
+Data\Constants.lua
+Data\QDB.lua
+Data\Maps.lua
+
+Engine\Guides.lua
+Engine\Progress.lua
+Engine\Targets.lua
+Engine\Format.lua
+Engine\ClassQuests.lua
+Engine\Telemetry.lua
+
+Nav\Navigation.lua
+
+Automation\Rewards.lua
+Automation\AutoQuest.lua
+
+UI\Tracker.lua
+UI\MobPanel.lua
+UI\Nameplates.lua
+UI\ClassQuestPopup.lua
+UI\Journal.lua
+UI\Wizard.lua
+UI\Slash.lua
+
+Guides\GuidesEra.xml

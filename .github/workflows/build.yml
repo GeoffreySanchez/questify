@@ -1,0 +1,56 @@
+# Construit les deux zips de l'addon (Forever et Classic Era) à chaque push sur main
+# et les publie dans la release « latest » du dépôt, prête à télécharger.
+# Un tag vX.Y.Z publie en plus une release versionnée.
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installer LuaJIT et zip
+        run: sudo apt-get update && sudo apt-get install -y luajit zip unzip
+
+      - name: Construire les zips
+        env:
+          # La validation des guides lit un clone QuestieDB local (.cache/) absent en CI ;
+          # les guides sont validés avant chaque commit sur le poste de dev.
+          SKIP_GUIDE_VALIDATION: "1"
+        run: bash tools/package.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: questify-vanilla-zips
+          path: dist/*.zip
+
+      - name: Publier la release « latest » (main)
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest dist/*.zip \
+            --prerelease \
+            --target "$GITHUB_SHA" \
+            --title "Dernier build (main)" \
+            --notes "Build automatique du commit $GITHUB_SHA. Forever : Questify_Vanilla-*-forever.zip. Classic Era : Questify_Vanilla-*-era.zip."
+
+      - name: Publier la release versionnée (tag)
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/*.zip --title "$GITHUB_REF_NAME" --generate-notes

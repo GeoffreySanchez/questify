@@ -7,7 +7,7 @@ local Nav = {}
 Q.Nav = Nav
 
 local OWNER = "QuestifyVanilla"     -- propriétaire déclaré auprès de ShortestPath
-local RECOMPUTE_EVERY = 5           -- secondes : cible d'un « complete » sans `at`
+local RECOMPUTE_EVERY = 3           -- secondes : cible d'un « complete » (monstre le plus proche)
 
 local target        -- dernière cible demandée : { mapId, x, y, title }
 local applied       -- ce qui est posé chez le fournisseur : { provider, key }
@@ -210,11 +210,12 @@ function Nav:Refresh(entry)
 end
 
 ---------------------------------------------------------------------------
--- Minuterie : la cible d'un « complete » sans `at` suit le monstre le plus proche
+-- Minuterie : la cible d'un « complete » suit le monstre le plus proche (dans la zone d'objectif
+-- quand l'étape en a une, voir Q.Targets)
 ---------------------------------------------------------------------------
 local function needsTicker()
   local cur = Q.Progress:IsEnabled() and Q.Progress:Current()
-  return cur and cur.step.action == "complete" and not cur.step.at
+  return cur and cur.step.action == "complete"
 end
 
 local function syncTicker()

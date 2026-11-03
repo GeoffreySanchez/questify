@@ -16,6 +16,7 @@ Settings.defaults = {
   upgradePopup = true,
   sellJunk = true,
   talentAlert = true,
+  questItemButton = true,
   telemetry = true,
 }
 

@@ -15,6 +15,7 @@ local QUEST_FIELDS = {
   "name", "questLevel", "requiredLevel", "requiredRaces", "requiredClasses",
   "startedBy", "finishedBy", "objectives", "preQuestSingle", "preQuestGroup", "exclusiveTo",
   "nextQuestInChain", "breadcrumbForQuestId", "specialFlags", "requiredSkill",
+  "sourceItemId", "requiredSourceItems",
 }
 local NPC_FIELDS = { "name", "minLevel", "maxLevel", "spawns", "subName", "npcFlags" }
 local OBJECT_FIELDS = { "name", "spawns" }
@@ -188,6 +189,8 @@ function QDB:Quest(id)
     breadcrumbFor = nz(v[13]),
     specialFlags = type(v[14]) == "number" and v[14] or 0,
     requiredSkill = type(skill) == "table" and nz(skill[1]) or nil,
+    sourceItem = type(v[16]) == "number" and nz(v[16]) or nil,   -- objet donné à la prise
+    sourceItems = ids(v[17]),                                      -- objets requis (non ramassés)
   }
   questCache[id] = q
   return q

@@ -896,6 +896,8 @@ end
 function Tracker:AfterLayout()
   local P = Q.UI.MobPanel
   if P and P.Attach then P:Attach(self.mobSlots) end
+  local B = Q.UI.QuestItemButton
+  if B and B.Reposition then B:Reposition() end
 end
 
 ---------------------------------------------------------------------------

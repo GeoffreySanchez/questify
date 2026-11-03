@@ -606,7 +606,7 @@ local OPTION_GROUPS = {
     { "talentAlert", "UI_OPT_TALENTS" } } },
   { title = "UI_OPT_ROUTE", checks = { { "dungeonQuests", "UI_OPT_DUNGEON" } } },
   { title = "UI_OPT_DISPLAY", checks = { { "nameplates", "UI_OPT_NAMEPLATES" },
-    { "objectGlow", "UI_OPT_OBJECTGLOW" }, { "tracker.locked", "UI_OPT_LOCKED" },
+    { "objectGlow", "UI_OPT_OBJECTGLOW" }, { "questItemButton", "UI_OPT_QUESTITEM" }, { "tracker.locked", "UI_OPT_LOCKED" },
     { "tracker.showMobs", "UI_OPT_SHOWMOBS" } }, scale = true },
   { title = "UI_OPT_TOOLS", checks = { { "telemetry", "UI_OPT_TELEMETRY" } }, tools = true },
 }

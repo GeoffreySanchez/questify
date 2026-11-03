@@ -602,7 +602,8 @@ end
 local OPTION_GROUPS = {
   { title = "UI_OPT_AUTOMATION", checks = { { "autoQuest", "UI_OPT_AUTOQUEST" }, { "autoReward", "UI_OPT_AUTOREWARD" },
     { "upgradePopup", "UI_OPT_UPGRADE" }, { "sellJunk", "UI_OPT_SELLJUNK" },
-    { "tracker.autoTarget", "UI_OPT_AUTOTARGET" }, { "trainerAlert", "UI_OPT_TRAINER" } } },
+    { "tracker.autoTarget", "UI_OPT_AUTOTARGET" }, { "trainerAlert", "UI_OPT_TRAINER" },
+    { "talentAlert", "UI_OPT_TALENTS" } } },
   { title = "UI_OPT_ROUTE", checks = { { "dungeonQuests", "UI_OPT_DUNGEON" } } },
   { title = "UI_OPT_DISPLAY", checks = { { "nameplates", "UI_OPT_NAMEPLATES" },
     { "objectGlow", "UI_OPT_OBJECTGLOW" }, { "tracker.locked", "UI_OPT_LOCKED" },
@@ -737,6 +738,10 @@ function Journal:BuildOptions(parent)
         if Q.UI.ProfessionPicker then Q.UI.ProfessionPicker:Show() end
       end)
       self.profButton:SetPoint("TOPLEFT", panel, "TOPLEFT", 12, -y)
+      self.talentButton = toolButton(L.UI_OPT_TALENT_BUILD, 250, function()
+        if Q.UI.TalentPicker then Q.UI.TalentPicker:Show() end
+      end)
+      self.talentButton:SetPoint("LEFT", self.profButton, "RIGHT", 8, 0)
       y = y + 28
       self.exportButton = toolButton(L.UI_OPT_EXPORT, 200, function() Journal:ShowExport() end)
       self.exportButton:SetPoint("TOPLEFT", panel, "TOPLEFT", 12, -y)

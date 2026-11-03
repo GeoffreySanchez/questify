@@ -338,6 +338,36 @@ function Tracker:Create()
   tr:Hide()
   self.trainerAlert, self.trainerText, self.trainerPulse = tr, trText, trPulse
 
+  -- Alerte des talents (point à dépenser, talent conseillé) : clic = fenêtre des talents
+  local ta = CreateFrame("Button", nil, f)
+  ta:SetHeight(20)
+  ta:RegisterForClicks("LeftButtonUp")
+  local taGlow = ta:CreateTexture(nil, "BACKGROUND")
+  taGlow:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
+  taGlow:SetBlendMode("ADD")
+  taGlow:SetVertexColor(0.3, 1, 0.4)
+  taGlow:SetAllPoints(ta)
+  local taPulse = taGlow:CreateAnimationGroup()
+  taPulse:SetLooping("BOUNCE")
+  local taFade = taPulse:CreateAnimation("Alpha")
+  taFade:SetFromAlpha(0.15)
+  taFade:SetToAlpha(0.9)
+  taFade:SetDuration(0.8)
+  local taIcon = ta:CreateTexture(nil, "ARTWORK")
+  taIcon:SetSize(16, 16)
+  taIcon:SetPoint("LEFT", ta, "LEFT", 2, 0)
+  local taText = ta:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+  taText:SetPoint("LEFT", taIcon, "RIGHT", 4, 0)
+  taText:SetPoint("RIGHT", ta, "RIGHT", -2, 0)
+  taText:SetJustifyH("LEFT")
+  taText:SetWordWrap(false)
+  taText:SetTextColor(0.45, 1, 0.5)
+  ta:SetScript("OnClick", function() Q.SafeCall(function() Q.Talents:OpenFrame() end) end)
+  ta:SetScript("OnEnter", function(btn) Q.SafeCall(Tracker.TalentTooltip, Tracker, btn) end)
+  ta:SetScript("OnLeave", hideTooltip)
+  ta:Hide()
+  self.talentAlert, self.talentText, self.talentIcon, self.talentPulse = ta, taText, taIcon, taPulse
+
   -- Étape courante
   local cur = CreateFrame("Button", nil, f)
   cur:RegisterForClicks("LeftButtonUp", "RightButtonUp")
@@ -521,10 +551,53 @@ function Tracker:TrainerTooltip(owner)
     lines[#lines + 1] = "- " .. name
   end
   if alert.known and alert.cost > 0 then lines[#lines + 1] = string.format(L.UI_TRAINER_COST, money(alert.cost)) end
+  if alert.known and alert.missing > 0 then
+    lines[#lines + 1] = string.format(L.UI_TRAINER_MISSING, alert.total - alert.count, money(alert.missing))
+  end
   if not alert.known then lines[#lines + 1] = L.UI_TRAINER_HINT_MAYBE end
   lines[#lines + 1] = L.UI_TRAINER_HINT_GO
   lines[#lines + 1] = L.UI_TRAINER_HINT_SNOOZE
   showTooltip(owner, lines)
+end
+
+local TALENT_ICON = "Interface\\Icons\\Ability_Marksmanship"
+
+function Tracker:TalentTooltip(owner)
+  local alert = Q.Talents and Q.Talents:Alert()
+  if not alert then return end
+  local lines = { string.format(L.UI_TALENT_ALERT, alert.unspent) }
+  local advice = Q.Talents:Advice(alert.next)
+  if advice then
+    lines[#lines + 1] = string.format(L.UI_TALENT_NEXT, advice)
+  elseif not Q.Talents:Chosen() then
+    lines[#lines + 1] = L.UI_TALENT_NO_PRESET
+  end
+  lines[#lines + 1] = L.UI_TALENT_HINT
+  showTooltip(owner, lines)
+end
+
+function Tracker:LayoutTalentAlert(y)
+  local alert = Q.Talents and Q.Talents:Alert()
+  if not alert then
+    self.talentAlert:Hide()
+    self.talentPulse:Stop()
+    return y
+  end
+  local nxt = alert.next
+  if nxt and nxt.name then
+    self.talentText:SetFormattedText(L.UI_TALENT_ALERT_NEXT, nxt.name)
+    self.talentIcon:SetTexture(nxt.icon or TALENT_ICON)
+  else
+    self.talentText:SetFormattedText(L.UI_TALENT_ALERT, alert.unspent)
+    self.talentIcon:SetTexture(TALENT_ICON)
+  end
+  local f = self.frame
+  self.talentAlert:ClearAllPoints()
+  self.talentAlert:SetPoint("TOPLEFT", f, "TOPLEFT", PAD, -y)
+  self.talentAlert:SetPoint("TOPRIGHT", f, "TOPRIGHT", -PAD, -y)
+  self.talentAlert:Show()
+  if not self.talentPulse:IsPlaying() then self.talentPulse:Play() end
+  return y + 20 + 4
 end
 
 -- Place l'alerte à la hauteur y si elle doit s'afficher ; -> nouvelle hauteur.
@@ -560,8 +633,9 @@ end
 function Tracker:ShowMessage(text)
   local f = self.frame
   self.entry, self.target = nil, nil
-  for _, r in ipairs({ self.title, self.levels, self.bar, self.alert, self.trainerAlert, self.current }) do r:Hide() end
+  for _, r in ipairs({ self.title, self.levels, self.bar, self.alert, self.trainerAlert, self.talentAlert, self.current }) do r:Hide() end
   self.trainerPulse:Stop()
+  self.talentPulse:Stop()
   self.mobSlots = {}
   for _, line in ipairs(self.nextLines) do line.icon:Hide(); line.text:Hide() end
   self.alertPulse:Stop()
@@ -753,6 +827,7 @@ function Tracker:Refresh()
     self.alertPulse:Stop()
   end
   y = self:LayoutTrainerAlert(y)
+  y = self:LayoutTalentAlert(y)
 
   -- Étape courante
   local entries = Q.Progress:Entries()
@@ -837,6 +912,7 @@ Q:On("STEP_CHANGED", refresh)
 Q:On("GUIDE_CHANGED", refresh)
 Q:On("CLASSQUESTS_CHANGED", refresh)
 Q:On("TRAINER_CHANGED", refresh)
+Q:On("TALENTS_CHANGED", refresh)
 Q:On("SETTINGS_CHANGED", function(path)
   if not Tracker.frame then return end
   if path == "tracker.point" and not Tracker.moving then applyPosition(Tracker.frame) end

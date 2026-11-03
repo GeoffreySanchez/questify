@@ -26,6 +26,7 @@ Data\Constants.lua
 Data\QDB.lua
 Data\Maps.lua
 Data\ClassTrainers.lua
+Data\TalentBuilds.lua
 
 Engine\Guides.lua
 Engine\Progress.lua
@@ -34,6 +35,7 @@ Engine\Format.lua
 Engine\ClassQuests.lua
 Engine\Trainer.lua
 Engine\Professions.lua
+Engine\Talents.lua
 Engine\Telemetry.lua
 
 Nav\Navigation.lua
@@ -48,6 +50,7 @@ UI\Nameplates.lua
 UI\ObjectGlow.lua
 UI\UpgradePopup.lua
 UI\ProfessionPicker.lua
+UI\TalentPicker.lua
 UI\ClassQuestPopup.lua
 UI\Journal.lua
 UI\Wizard.lua

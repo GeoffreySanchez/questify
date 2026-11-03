@@ -37,9 +37,13 @@ local function installTrainerApi()
   IsTradeskillTrainer = function() return trainer.tradeskill end
 end
 
+local money = 100000
+
 local function load()
   Ext.install()
   installTrainerApi()
+  money = 100000
+  GetMoney = function() return money end
   return Mock.loadAddon(TOC, { extraFiles = { GUIDES }, skipGuides = true, qdb = { npcs = TRAINERS } })
 end
 
@@ -177,5 +181,33 @@ return {
     Mock.player.faction = "Horde"
     Mock.fire("PLAYER_LEVEL_UP", 1)
     t.ok(not Q.Trainer:IsClassTrainer(912), "Alliance trainer for a Horde warrior")
+  end,
+
+  only_affordable_spells_counted = function(t)
+    local Q = load()
+    levelUp(4)
+    money = 150
+    talkTo(912, SERVICES_L2)
+    local a = Q.Trainer:Alert()
+    t.eq(a.count, 1, "one spell at 100 c out of two")
+    t.eq(a.total, 2)
+    t.eq(a.missing, 100)
+    money = 50
+    Mock.fire("PLAYER_MONEY")
+    t.eq(Q.Trainer:Alert(), nil, "not enough gold: no alert")
+    t.ok(not Q.UI.Tracker.trainerAlert:IsShown())
+    money = 500
+    Mock.fire("PLAYER_MONEY")
+    t.eq(Q.Trainer:Alert().count, 2)
+  end,
+
+  guess_needs_estimated_gold = function(t)
+    local Q = load()
+    money = 5
+    levelUp(2)
+    t.eq(Q.Trainer:Alert(), nil, "5 c: not even the cheapest spell")
+    money = 20
+    Mock.fire("PLAYER_MONEY")
+    t.ok(Q.Trainer:Alert(), "10 c estimated at level 2")
   end,
 }

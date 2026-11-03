@@ -15,6 +15,7 @@ Settings.defaults = {
   trainerAlert = true,
   upgradePopup = true,
   sellJunk = true,
+  talentAlert = true,
   telemetry = true,
 }
 

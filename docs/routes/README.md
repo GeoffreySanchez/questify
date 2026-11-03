@@ -107,10 +107,10 @@ on any step that is invalid for a race it applies to.
 | H_Undead_03 | Silverpine Forest (+ Undercity) | 12-15 | 12.94 -> 16.23 | 22 354 | 93 | 115 min |
 | H_Skyborne_01 | Zephras Isle | 1-15 | 1.00 -> 17.94 | 31 501 | 205 | 239 min |
 | H_01 | The Barrens (trunk) | 12-17 | 12.91 -> 17.79 | 23 114 | 134 | 181 min |
-| H_02 | Stonetalon Mountains and The Barrens | 17-21 | 17.79 -> 21.13 | 25 499 | 95 | 166 min |
-| H_03 | Ashenvale and Stonetalon Mountains | 21-25 | 21.13 -> 25.00 | 32 302 | 97 | 205 min |
-| H_04 | Southern Barrens and Thousand Needles | 25-28 | 25.00 -> 28.00 | 29 108 | 102 | 225 min |
-| H_05 | Hillsbrad Foothills | 28-30 | 28.00 -> 30.11 | 30 188 | 52 | 180 min |
+| H_02 | Stonetalon Mountains and The Barrens | 17-21 | 17.79 -> 21.11 | 24 733 | 95 | 171 min |
+| H_03 | Ashenvale and Stonetalon Mountains | 21-25 | 21.11 -> 25.00 | 31 143 | 97 | 213 min |
+| H_04 | Southern Barrens and Thousand Needles | 25-28 | 25.00 -> 28.00 | 27 973 | 104 | 235 min |
+| H_05 | Hillsbrad Foothills | 28-30 | 28.00 -> 30.12 | 28 278 | 58 | 194 min |
 
 Race paths:
 
@@ -149,7 +149,7 @@ Race paths:
 
 ### Known limits
 
-- About 121 mobs of grinding at the end of H_04. The Southern Barrens and Needles quests of the
+- About 95 mobs of grinding at the end of H_04 (and 25 at the end of H_03). The Southern Barrens and Needles quests of the
   band are not enough.
 - Barrens chapters walk a lot: about 80 min in H_01 and 96 min in H_02. The zone is large, and
   flights are used only when they are clearly faster.

@@ -5,14 +5,15 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Item | Value |
 |---|---|
 | Level band | 11-14 |
-| Simulated level | 11.00 -> 15.20 |
-| Time | 104 min |
-| XP gained | 37540 |
-| XP/h | 21595 |
-| Steps | 68 |
+| Simulated level | 12.00 -> 15.31 |
+| Time | 111 min |
+| XP gained | 38573 |
+| XP/h | 20907 |
+| Steps | 72 |
 | Quests turned in | 25 |
 | Hubs | 9 |
 | Median ratio (XP/s) | 4.99 |
+| Grinding (level steps) | ~7 mobs |
 
 ## Kept quests (turn-in order)
 
@@ -20,30 +21,30 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 
 | # | Quest | Name | Lvl | XP | Sim lvl |
 |---|---|---|---|---|---|
-| 1 | 298 | Excavation Progress Report | 15 | 270 | 12 |
-| 2 | 6387 | Honor Students | 10 | 210 | 12 |
-| 3 | 1339 | Mountaineer Stormpike's Task | 15 | 540 | 12 |
-| 4 | 307 | Filthy Paws | 15 | 1350 | 12 |
-| 5 | 301 | Report to Ironforge | 15 | 540 | 12 |
-| 6 | 6391 | Ride to Ironforge | 10 | 420 | 12 |
-| 7 | 6388 | Gryth Thurden | 10 | 210 | 12 |
-| 8 | 224 | In Defense of the King's Lands | 12 | 910 | 13 |
-| 9 | 237 | In Defense of the King's Lands | 15 | 1050 | 13 |
-| 10 | 263 | In Defense of the King's Lands | 15 | 1050 | 13 |
-| 11 | 267 | The Trogg Threat | 12 | 910 | 13 |
-| 12 | 86585 | Banner of the Fallen | 17 | 1250 est. | 13 |
-| 13 | 217 | In Defense of the King's Lands | 17 | 1600 | 14 |
-| 14 | 416 | Rat Catching | 11 | 880 | 14 |
-| 15 | 6392 | Return to Brock | 10 | 1050 | 14 |
-| 16 | 302 | Powder to Ironband | 15 | 270 | 14 |
-| 17 | 273 | Resupplying the Excavation | 15 | 270 | 14 |
-| 18 | 454 | After the Ambush | 15 | 105 | 14 |
-| 19 | 309 | Protecting the Shipment | 15 | 1050 | 14 |
-| 20 | 2039 | Find Bingles | 15 | 270 | 14 |
-| 21 | 385 | Crocolisk Hunting | 15 | 1050 | 14 |
-| 22 | 86758 | Twisting the Knife | 16 | 1150 est. | 14 |
-| 23 | 257 | A Hunter's Boast | 16 | 880 | 15 |
-| 24 | 258 | A Hunter's Challenge | 17 | 950 | 15 |
+| 1 | 224 | In Defense of the King's Lands | 12 | 910 | 12 |
+| 2 | 237 | In Defense of the King's Lands | 15 | 1050 | 12 |
+| 3 | 263 | In Defense of the King's Lands | 15 | 1050 | 13 |
+| 4 | 267 | The Trogg Threat | 12 | 910 | 13 |
+| 5 | 257 | A Hunter's Boast | 16 | 880 | 13 |
+| 6 | 258 | A Hunter's Challenge | 17 | 950 | 13 |
+| 7 | 298 | Excavation Progress Report | 15 | 270 | 14 |
+| 8 | 6387 | Honor Students | 10 | 210 | 14 |
+| 9 | 1339 | Mountaineer Stormpike's Task | 15 | 540 | 14 |
+| 10 | 307 | Filthy Paws | 15 | 1350 | 14 |
+| 11 | 301 | Report to Ironforge | 15 | 540 | 14 |
+| 12 | 6391 | Ride to Ironforge | 10 | 420 | 14 |
+| 13 | 6388 | Gryth Thurden | 10 | 210 | 14 |
+| 14 | 217 | In Defense of the King's Lands | 17 | 1600 | 14 |
+| 15 | 86585 | Banner of the Fallen | 17 | 1250 est. | 14 |
+| 16 | 6392 | Return to Brock | 10 | 1050 | 14 |
+| 17 | 302 | Powder to Ironband | 15 | 270 | 14 |
+| 18 | 273 | Resupplying the Excavation | 15 | 270 | 14 |
+| 19 | 454 | After the Ambush | 15 | 105 | 14 |
+| 20 | 309 | Protecting the Shipment | 15 | 1050 | 15 |
+| 21 | 385 | Crocolisk Hunting | 15 | 1050 | 15 |
+| 22 | 86758 | Twisting the Knife | 16 | 1150 est. | 15 |
+| 23 | 2039 | Find Bingles | 15 | 270 | 15 |
+| 24 | 418 | Thelsamar Blood Sausages | 11 | 880 | 15 |
 | 25 | 1338 | Stormpike's Order | 14 | 980 | 15 |
 
 ## Dropped quests
@@ -373,7 +374,7 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 97263 | Your Package Has Arrived | 2 | quest level 2 below the band |
 | 98895 | Darkspear Islands Clash | 39 | quest level 39 above the band |
 | 98896 | Darkspear Islands Clash | 39 | quest level 39 above the band |
-| 418 | Thelsamar Blood Sausages | 11 | level band reached |
+| 416 | Rat Catching | 11 | level band reached |
 | 2038 | Bingles' Missing Supplies | 15 | level band reached |
 
 ## Candidate ratios
@@ -384,32 +385,32 @@ below 0.35 × the median ratio, or when an objective is more than 900 yd from ev
 
 | Quest | Name | Lvl | Value | Bonus | Isolated s | Marginal s | Ratio | Marginal ratio | Sites | Dropped |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 217 | In Defense of the King's Lands | 17 | 1980 | 0 | 201 | 77 | 9.84 | 25.53 | 1 |  |
-| 224 | In Defense of the King's Lands | 12 | 2910 | 0 | 497 | 430 | 6.26 | 7.70 | 1 |  |
+| 217 | In Defense of the King's Lands | 17 | 1983 | 0 | 201 | 77 | 9.85 | 25.56 | 1 |  |
+| 224 | In Defense of the King's Lands | 12 | 2730 | 0 | 497 | 430 | 6.11 | 7.51 | 1 |  |
 | 237 | In Defense of the King's Lands | 15 | 3250 | 0 | 531 | 447 | 6.54 | 8.43 | 1 |  |
-| 257 | A Hunter's Boast | 16 | 1600 | 0 | 206 | 206 | 6.29 | 8.54 | 1 |  |
-| 258 | A Hunter's Challenge | 17 | 1575 | 0 | 319 | 157 | 4.93 | 10.00 | 1 |  |
+| 257 | A Hunter's Boast | 16 | 1600 | 0 | 206 | 206 | 6.30 | 8.55 | 1 |  |
+| 258 | A Hunter's Challenge | 17 | 1580 | 0 | 319 | 157 | 4.94 | 10.03 | 1 |  |
 | 263 | In Defense of the King's Lands | 15 | 3450 | 0 | 549 | 429 | 7.01 | 9.99 | 1 |  |
-| 267 | The Trogg Threat | 12 | 3110 | 0 | 528 | 455 | 6.72 | 8.81 | 1 |  |
+| 267 | The Trogg Threat | 12 | 2912 | 0 | 528 | 455 | 6.43 | 8.43 | 1 |  |
 | 273 | Resupplying the Excavation | 15 | 390 | 0 | 133 | 58 | 5.49 | 12.43 | 1 |  |
 | 298 | Excavation Progress Report | 15 | 270 | 0 | 139 | 23 | 2.07 | 14.18 | 0 |  |
 | 301 | Report to Ironforge | 15 | 540 | 0 | 283 | 23 | 2.12 | 15.36 | 0 |  |
 | 302 | Powder to Ironband | 15 | 270 | 0 | 283 | 23 | 2.34 | 12.14 | 0 |  |
-| 307 | Filthy Paws | 15 | 1350 | 0 | 146 | 55 | 9.23 | 24.29 | 1 |  |
+| 307 | Filthy Paws | 15 | 1350 | 0 | 146 | 146 | 9.23 | 9.23 | 1 |  |
 | 309 | Protecting the Shipment | 15 | 1050 | 0 | 75 | 26 | 13.97 | 39.28 | 1 |  |
-| 385 | Crocolisk Hunting | 15 | 3786 | 0 | 666 | 514 | 5.68 | 7.36 | 1 |  |
-| 416 | Rat Catching | 11 | 3980 | 0 | 803 | 680 | 4.95 | 5.85 | 1 |  |
-| 418 | Thelsamar Blood Sausages | 11 | 3936 | 0 | 952 | 714 | 4.13 | 5.51 | 3 | level band reached |
+| 385 | Crocolisk Hunting | 15 | 3810 | 0 | 666 | 514 | 5.72 | 7.41 | 1 |  |
+| 416 | Rat Catching | 11 | 3701 | 0 | 803 | 680 | 4.61 | 5.44 | 1 | level band reached |
+| 418 | Thelsamar Blood Sausages | 11 | 3953 | 0 | 952 | 683 | 4.15 | 5.78 | 3 |  |
 | 454 | After the Ambush | 15 | 105 | 0 | 10 | 10 | 13.29 | 28.66 | 0 |  |
-| 1338 | Stormpike's Order | 14 | 5438 | 4458 | 1000010 | 10 | 0.01 | 543.82 | 0 |  |
-| 1339 | Mountaineer Stormpike's Task | 15 | 975 | 435 | 110 | 35 | 0.01 | 113.41 | 0 |  |
+| 1338 | Stormpike's Order | 14 | 5429 | 4449 | 1000010 | 10 | 0.01 | 542.94 | 0 |  |
+| 1339 | Mountaineer Stormpike's Task | 15 | 975 | 435 | 110 | 35 | 0.01 | 113.25 | 0 |  |
 | 2038 | Bingles' Missing Supplies | 15 | 1050 | 0 | 248 | 248 | 4.22 | 4.22 | 3 | level band reached |
-| 2039 | Find Bingles | 15 | 2069 | 1799 | 387 | 37 | 4.99 | 13.22 | 0 |  |
+| 2039 | Find Bingles | 15 | 2065 | 1795 | 387 | 37 | 4.99 | 13.21 | 0 |  |
 | 6387 | Honor Students | 10 | 210 | 0 | 39 | 39 | 2.53 | 8.59 | 0 |  |
 | 6388 | Gryth Thurden | 10 | 210 | 0 | 45 | 45 | 3.72 | 14.16 | 0 |  |
 | 6391 | Ride to Ironforge | 10 | 420 | 0 | 311 | 57 | 2.21 | 10.35 | 0 |  |
 | 6392 | Return to Brock | 10 | 1050 | 0 | 297 | 29 | 3.53 | 35.08 | 0 |  |
-| 86585 | Banner of the Fallen | 17 | 2250 | 0 | 274 | 192 | 8.20 | 11.71 | 1 |  |
+| 86585 | Banner of the Fallen | 17 | 2258 | 0 | 274 | 192 | 8.23 | 11.75 | 1 |  |
 | 86758 | Twisting the Knife | 16 | 2590 | 0 | 425 | 274 | 6.09 | 9.45 | 1 |  |
 
 ## Itinerary
@@ -420,75 +421,79 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 
 | # | Task | Quest | Name | Map | x, y | Leg yd | Return |
 |---|---|---|---|---|---|---|---|
-| 1 | A | 416 | Rat Catching | 1432 | 32.6, 49.7 | 0 |  |
-| 2 | A | 1339 | Mountaineer Stormpike's Task | 1432 | 32.6, 49.7 | 0 |  |
-| 3 | A | 298 | Excavation Progress Report | 1432 | 65.9, 65.6 | 963 |  |
-| 4 | T | 298 | Excavation Progress Report | 1432 | 37.2, 47.4 | 859 | near #2 (went 859 yd away) |
-| 5 | A | 301 | Report to Ironforge | 1432 | 37.2, 47.4 | 0 | near #2 (went 859 yd away) |
-| 6 | A | 6387 | Honor Students | 1432 | 37.0, 47.8 | 9 |  |
-| 7 | T | 6387 | Honor Students | 1432 | 33.9, 51.0 | 102 |  |
-| 8 | A | 6391 | Ride to Ironforge | 1432 | 33.9, 51.0 | 0 |  |
-| 9 | A | 307 | Filthy Paws | 1432 | 24.8, 18.4 | 650 |  |
-| 10 | T | 1339 | Mountaineer Stormpike's Task | 1432 | 24.8, 18.4 | 0 |  |
-| 11 | O | 307 | Filthy Paws | 1432 | 35.5, 24.6 | 317 |  |
-| 12 | O | 416 | Rat Catching | 1432 | 36.8, 22.2 | 56 |  |
-| 13 | T | 307 | Filthy Paws | 1432 | 24.8, 18.4 | 338 |  |
-| 14 | A | 1338 | Stormpike's Order | 1432 | 24.8, 18.4 | 0 |  |
-| 15 | T | 301 | Report to Ironforge | 1455 | 74.6, 11.7 | 1386 |  |
-| 16 | A | 302 | Powder to Ironband | 1455 | 74.6, 11.7 | 0 |  |
-| 17 | T | 6391 | Ride to Ironforge | 1455 | 51.5, 26.3 | 198 |  |
-| 18 | A | 6388 | Gryth Thurden | 1455 | 51.5, 26.3 | 0 |  |
-| 19 | T | 6388 | Gryth Thurden | 1455 | 55.5, 47.7 | 117 |  |
-| 20 | A | 6392 | Return to Brock | 1455 | 55.5, 47.7 | 0 |  |
-| 21 | A | 2039 | Find Bingles | 1455 | 69.2, 50.5 | 109 |  |
-| 22 | A | 224 | In Defense of the King's Lands | 1432 | 22.1, 73.1 | 1671 |  |
-| 23 | A | 267 | The Trogg Threat | 1432 | 23.2, 73.7 | 33 |  |
-| 24 | O | 267 | The Trogg Threat | 1432 | 32.8, 73.8 | 263 |  |
-| 25 | O | 224 | In Defense of the King's Lands | 1432 | 31.8, 73.6 | 27 |  |
-| 26 | T | 224 | In Defense of the King's Lands | 1432 | 22.1, 73.1 | 268 |  |
-| 27 | A | 237 | In Defense of the King's Lands | 1432 | 23.5, 76.4 | 72 |  |
-| 28 | O | 237 | In Defense of the King's Lands | 1432 | 35.7, 85.0 | 370 |  |
-| 29 | T | 237 | In Defense of the King's Lands | 1432 | 23.5, 76.4 | 370 |  |
-| 30 | A | 263 | In Defense of the King's Lands | 1432 | 23.5, 74.5 | 34 |  |
-| 31 | A | 86585 | Banner of the Fallen | 1432 | 31.8, 86.3 | 315 |  |
-| 32 | O | 263 | In Defense of the King's Lands | 1432 | 36.0, 91.8 | 154 |  |
-| 33 | O | 86585 | Banner of the Fallen | 1432 | 32.9, 87.0 | 123 |  |
-| 34 | T | 263 | In Defense of the King's Lands | 1432 | 23.5, 74.5 | 346 |  |
-| 35 | T | 267 | The Trogg Threat | 1432 | 23.2, 73.7 | 16 |  |
-| 36 | A | 217 | In Defense of the King's Lands | 1432 | 23.2, 73.7 | 0 |  |
-| 37 | O | 217 | In Defense of the King's Lands | 1432 | 34.8, 90.5 | 443 |  |
-| 38 | T | 86585 | Banner of the Fallen | 1432 | 23.2, 73.7 | 443 |  |
-| 39 | T | 217 | In Defense of the King's Lands | 1432 | 23.2, 73.7 | 0 |  |
-| 40 | T | 416 | Rat Catching | 1432 | 32.6, 49.7 | 511 | near #8 (went 1904 yd away) |
-| 41 | T | 6392 | Return to Brock | 1432 | 37.0, 47.8 | 126 | near #8 (went 2005 yd away) |
-| 42 | T | 302 | Powder to Ironband | 1432 | 37.2, 47.4 | 9 |  |
-| 43 | A | 273 | Resupplying the Excavation | 1432 | 37.2, 47.4 | 0 |  |
-| 44 | O | 273 | Resupplying the Excavation | 1432 | 52.2, 69.4 | 577 |  |
-| 45 | T | 273 | Resupplying the Excavation | 1432 | 52.2, 69.3 | 1 |  |
-| 46 | A | 454 | After the Ambush | 1432 | 52.2, 69.3 | 0 |  |
-| 47 | T | 454 | After the Ambush | 1432 | 52.2, 69.4 | 2 |  |
-| 48 | A | 309 | Protecting the Shipment | 1432 | 52.2, 69.4 | 0 |  |
-| 49 | O | 309 | Protecting the Shipment | 1432 | 65.1, 65.8 | 362 | near #3 (went 2846 yd away) |
-| 50 | T | 309 | Protecting the Shipment | 1432 | 65.9, 65.6 | 22 | near #3 (went 2866 yd away) |
-| 51 | A | 86758 | Twisting the Knife | 1432 | 81.8, 61.7 | 442 |  |
-| 52 | A | 385 | Crocolisk Hunting | 1432 | 81.8, 61.7 | 0 |  |
-| 53 | T | 2039 | Find Bingles | 1432 | 63.6, 47.9 | 562 |  |
-| 54 | O | 385 | Crocolisk Hunting | 1432 | 63.2, 47.6 | 12 |  |
-| 55 | O | 86758 | Twisting the Knife | 1432 | 63.3, 47.6 | 2 |  |
-| 56 | T | 385 | Crocolisk Hunting | 1432 | 81.8, 61.7 | 571 |  |
-| 57 | T | 86758 | Twisting the Knife | 1432 | 81.8, 61.7 | 0 |  |
-| 58 | C | 257 | A Hunter's Boast | 1432 | 83.5, 65.5 | 84 |  |
-| 59 | C | 258 | A Hunter's Challenge | 1432 | 83.5, 65.5 | 0 |  |
-| 60 | T | 1338 | Stormpike's Order | 1453 | 64.6, 37.2 |  |  |
+| 1 | A | 1339 | Mountaineer Stormpike's Task | 1432 | 32.6, 49.7 | 0 |  |
+| 2 | A | 418 | Thelsamar Blood Sausages | 1432 | 34.8, 49.3 | 61 |  |
+| 3 | A | 224 | In Defense of the King's Lands | 1432 | 22.1, 73.1 | 562 |  |
+| 4 | A | 267 | The Trogg Threat | 1432 | 23.2, 73.7 | 33 |  |
+| 5 | O | 267 | The Trogg Threat | 1432 | 32.8, 73.8 | 263 |  |
+| 6 | O | 224 | In Defense of the King's Lands | 1432 | 31.8, 73.6 | 27 |  |
+| 7 | T | 224 | In Defense of the King's Lands | 1432 | 22.1, 73.1 | 268 |  |
+| 8 | A | 237 | In Defense of the King's Lands | 1432 | 23.5, 76.4 | 72 |  |
+| 9 | O | 237 | In Defense of the King's Lands | 1432 | 35.7, 85.0 | 370 |  |
+| 10 | T | 237 | In Defense of the King's Lands | 1432 | 23.5, 76.4 | 370 |  |
+| 11 | A | 263 | In Defense of the King's Lands | 1432 | 23.5, 74.5 | 34 |  |
+| 12 | A | 86585 | Banner of the Fallen | 1432 | 31.8, 86.3 | 315 |  |
+| 13 | O | 263 | In Defense of the King's Lands | 1432 | 36.0, 91.8 | 154 |  |
+| 14 | T | 263 | In Defense of the King's Lands | 1432 | 23.5, 74.5 | 470 |  |
+| 15 | T | 267 | The Trogg Threat | 1432 | 23.2, 73.7 | 16 |  |
+| 16 | A | 217 | In Defense of the King's Lands | 1432 | 23.2, 73.7 | 0 |  |
+| 17 | O | 217 | In Defense of the King's Lands | 1432 | 34.8, 90.5 | 443 |  |
+| 18 | O | 86585 | Banner of the Fallen | 1432 | 32.9, 87.0 | 81 |  |
+| 19 | O | 418 | Thelsamar Blood Sausages | 1432 | 65.5, 73.4 | 934 |  |
+| 20 | A | 298 | Excavation Progress Report | 1432 | 65.9, 65.6 | 143 |  |
+| 21 | C | 257 | A Hunter's Boast | 1432 | 83.5, 65.5 | 483 |  |
+| 22 | C | 258 | A Hunter's Challenge | 1432 | 83.5, 65.5 | 0 |  |
+| 23 | A | 86758 | Twisting the Knife | 1432 | 81.8, 61.7 | 84 |  |
+| 24 | A | 385 | Crocolisk Hunting | 1432 | 81.8, 61.7 | 0 |  |
+| 25 | O | 418 | Thelsamar Blood Sausages | 1432 | 75.6, 36.4 | 493 |  |
+| 26 | O | 86758 | Twisting the Knife | 1432 | 63.3, 47.6 | 398 |  |
+| 27 | O | 385 | Crocolisk Hunting | 1432 | 63.2, 47.6 | 2 |  |
+| 28 | T | 298 | Excavation Progress Report | 1432 | 37.2, 47.4 | 715 | near #2 (went 1317 yd away) |
+| 29 | A | 301 | Report to Ironforge | 1432 | 37.2, 47.4 | 0 | near #2 (went 1317 yd away) |
+| 30 | A | 6387 | Honor Students | 1432 | 37.0, 47.8 | 9 |  |
+| 31 | T | 6387 | Honor Students | 1432 | 33.9, 51.0 | 102 |  |
+| 32 | A | 6391 | Ride to Ironforge | 1432 | 33.9, 51.0 | 0 |  |
+| 33 | A | 307 | Filthy Paws | 1432 | 24.8, 18.4 | 650 |  |
+| 34 | T | 1339 | Mountaineer Stormpike's Task | 1432 | 24.8, 18.4 | 0 |  |
+| 35 | O | 307 | Filthy Paws | 1432 | 35.5, 24.6 | 317 |  |
+| 36 | A | 1338 | Stormpike's Order | 1432 | 24.8, 18.4 | 317 |  |
+| 37 | T | 307 | Filthy Paws | 1432 | 24.8, 18.4 | 0 |  |
+| 38 | T | 301 | Report to Ironforge | 1455 | 74.6, 11.7 | 1386 |  |
+| 39 | A | 302 | Powder to Ironband | 1455 | 74.6, 11.7 | 0 |  |
+| 40 | T | 6391 | Ride to Ironforge | 1455 | 51.5, 26.3 | 198 |  |
+| 41 | A | 6388 | Gryth Thurden | 1455 | 51.5, 26.3 | 0 |  |
+| 42 | T | 6388 | Gryth Thurden | 1455 | 55.5, 47.7 | 117 |  |
+| 43 | A | 6392 | Return to Brock | 1455 | 55.5, 47.7 | 0 |  |
+| 44 | A | 2039 | Find Bingles | 1455 | 69.2, 50.5 | 109 |  |
+| 45 | T | 217 | In Defense of the King's Lands | 1432 | 23.2, 73.7 | 1703 | near #16 (went 1891 yd away) |
+| 46 | T | 86585 | Banner of the Fallen | 1432 | 23.2, 73.7 | 0 | near #16 (went 1891 yd away) |
+| 47 | T | 6392 | Return to Brock | 1432 | 37.0, 47.8 | 609 | near #32 (went 2005 yd away) |
+| 48 | T | 302 | Powder to Ironband | 1432 | 37.2, 47.4 | 9 | near #32 (went 2008 yd away) |
+| 49 | A | 273 | Resupplying the Excavation | 1432 | 37.2, 47.4 | 0 |  |
+| 50 | O | 273 | Resupplying the Excavation | 1432 | 52.2, 69.4 | 577 |  |
+| 51 | T | 273 | Resupplying the Excavation | 1432 | 52.2, 69.3 | 1 |  |
+| 52 | A | 454 | After the Ambush | 1432 | 52.2, 69.3 | 0 |  |
+| 53 | T | 454 | After the Ambush | 1432 | 52.2, 69.4 | 2 |  |
+| 54 | A | 309 | Protecting the Shipment | 1432 | 52.2, 69.4 | 0 |  |
+| 55 | O | 418 | Thelsamar Blood Sausages | 1432 | 61.5, 61.1 | 297 | near #20 (went 2723 yd away) |
+| 56 | O | 309 | Protecting the Shipment | 1432 | 65.1, 65.8 | 131 | near #20 (went 2846 yd away) |
+| 57 | T | 309 | Protecting the Shipment | 1432 | 65.9, 65.6 | 22 |  |
+| 58 | T | 385 | Crocolisk Hunting | 1432 | 81.8, 61.7 | 442 | near #24 (went 3258 yd away) |
+| 59 | T | 86758 | Twisting the Knife | 1432 | 81.8, 61.7 | 0 | near #24 (went 3258 yd away) |
+| 60 | T | 2039 | Find Bingles | 1432 | 63.6, 47.9 | 562 | near #27 (went 2707 yd away) |
+| 61 | T | 418 | Thelsamar Blood Sausages | 1432 | 34.8, 49.3 | 792 | near #49 (went 1314 yd away) |
+| 62 | T | 1338 | Stormpike's Order | 1453 | 64.6, 37.2 |  |  |
 
-Walking between tasks: 13357 yd (~32 min at 7 yd/s).
+Walking between tasks: 15167 yd (~36 min at 7 yd/s).
 
 ## Logistics
 
-- step 22: `goto 1455 55.5 47.74` — Flight master
-- step 23: `fly 1432` — Thelsamar, Loch Modan
-- step 66: `hearth 1426`
-- step 67: `boat 1455 78 51.4` — Take the Deeprun Tram to Stormwind
+- step 31: `level 14` — About 7 mobs here (Stonesplinter Seer, level 13)
+- step 50: `goto 1455 55.5 47.74` — Flight master
+- step 51: `fly 1432` — Thelsamar, Loch Modan
+- step 69: `goto 1432 33.94 50.95` — Flight master
+- step 70: `fly 1455` — Ironforge, Dun Morogh
+- step 71: `boat 1455 78 51.4` — Take the Deeprun Tram to Stormwind
 
 ## Warnings
 

@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 38 étapes, niveau final 16.61, ~17154 xp/h, 74 min.
+-- Simulation : 38 étapes, niveau final 16.71, ~17115 xp/h, 74 min.
 Q:RegisterGuide({
   id = "A_DwarfGnome_04",
   title = "Westfall",
@@ -32,11 +32,11 @@ Q:RegisterGuide({
     { "accept", 92745 }, -- The State of the Mines (lvl 14, ~980 xp, sim lvl 15)
     { "complete", 13, at = { 1436, 43.7, 68.91 } }, -- The People's Militia (lvl 14, ~980 xp, sim lvl 15)
     { "turnin", 136, xp = 580 }, -- Captain Sander's Hidden Treasure (lvl 16, ~580 xp, sim lvl 15)
-    { "accept", 138 }, -- Captain Sander's Hidden Treasure (lvl 16, ~580 xp, sim lvl 15)
-    { "complete", 92745, obj = 2, at = { 1436, 29.98, 47.26 } }, -- The State of the Mines (lvl 14, ~980 xp, sim lvl 15)
-    { "turnin", 138, xp = 580 }, -- Captain Sander's Hidden Treasure (lvl 16, ~580 xp, sim lvl 15)
-    { "accept", 139 }, -- Captain Sander's Hidden Treasure (lvl 16, ~580 xp, sim lvl 15)
-    { "turnin", 139, xp = 580 }, -- Captain Sander's Hidden Treasure (lvl 16, ~580 xp, sim lvl 15)
+    { "accept", 138 }, -- Captain Sander's Hidden Treasure (lvl 16, ~580 xp, sim lvl 16)
+    { "complete", 92745, obj = 2, at = { 1436, 29.98, 47.26 } }, -- The State of the Mines (lvl 14, ~980 xp, sim lvl 16)
+    { "turnin", 138, xp = 580 }, -- Captain Sander's Hidden Treasure (lvl 16, ~580 xp, sim lvl 16)
+    { "accept", 139 }, -- Captain Sander's Hidden Treasure (lvl 16, ~580 xp, sim lvl 16)
+    { "turnin", 139, xp = 580 }, -- Captain Sander's Hidden Treasure (lvl 16, ~580 xp, sim lvl 16)
     { "complete", 92745, at = { 1436, 45.29, 20.05 } }, -- The State of the Mines (lvl 14, ~980 xp, sim lvl 16)
     { "turnin", 13, xp = 980 }, -- The People's Militia (lvl 14, ~980 xp, sim lvl 16)
     { "accept", 14 }, -- The People's Militia (lvl 17, ~1600 xp, sim lvl 16)

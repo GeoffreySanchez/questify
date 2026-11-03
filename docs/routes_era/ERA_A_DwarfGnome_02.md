@@ -5,16 +5,16 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Item | Value |
 |---|---|
 | Level band | 6-12 |
-| Simulated level | 6.00 -> 12.01 |
-| Time | 132 min |
-| XP gained | 36433 |
-| XP/h | 16601 |
-| Steps | 63 |
+| Simulated level | 6.00 -> 12.00 |
+| Time | 140 min |
+| XP gained | 36369 |
+| XP/h | 15565 |
+| Steps | 65 |
 | Quests turned in | 22 |
 | Hubs | 6 |
 | Median ratio (XP/s) | 3.86 |
-| Grinding (level steps) | ~133 mobs |
-| Level band | grinding 133 mobs with quests up to level 15: band widened to level 18 |
+| Grinding (level steps) | ~145 mobs |
+| Level band | grinding 145 mobs with quests up to level 15: band widened to level 18 |
 
 ## Kept quests (turn-in order)
 
@@ -23,22 +23,22 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | # | Quest | Name | Lvl | XP | Sim lvl |
 |---|---|---|---|---|---|
 | 1 | 5541 | Ammo for Rumbleshot | 6 | 540 | 6 |
-| 2 | 317 | Stocking Jetsteam | 6 | 680 | 6 |
-| 3 | 384 | Beer Basted Boar Ribs | 7 | 630 | 7 |
-| 4 | 318 | Evershine | 7 | 160 | 8 |
-| 5 | 315 | The Perfect Stout | 9 | 780 | 8 |
-| 6 | 319 | A Favor for Evershine | 8 | 530 | 8 |
+| 2 | 384 | Beer Basted Boar Ribs | 7 | 630 | 6 |
+| 3 | 317 | Stocking Jetsteam | 6 | 680 | 7 |
+| 4 | 318 | Evershine | 7 | 160 | 7 |
+| 5 | 319 | A Favor for Evershine | 8 | 530 | 8 |
+| 6 | 315 | The Perfect Stout | 9 | 780 | 8 |
 | 7 | 310 | Bitter Rivals | 6 | 135 | 8 |
-| 8 | 287 | Frostmane Hold | 9 | 590 | 8 |
-| 9 | 312 | Tundra MacGrann's Stolen Stash | 12 | 910 | 9 |
-| 10 | 415 | Rejold's New Brew | 10 | 85 | 9 |
-| 11 | 311 | Return to Marleth | 7 | 630 | 9 |
+| 8 | 415 | Rejold's New Brew | 10 | 85 | 8 |
+| 9 | 311 | Return to Marleth | 7 | 630 | 8 |
+| 10 | 312 | Tundra MacGrann's Stolen Stash | 12 | 910 | 9 |
+| 11 | 287 | Frostmane Hold | 9 | 590 | 9 |
 | 12 | 412 | Operation Recombobulation | 10 | 840 | 9 |
-| 13 | 320 | Return to Bellowfiz | 8 | 880 | 9 |
-| 14 | 313 | The Grizzled Den | 7 | 630 | 9 |
-| 15 | 400 | Tools for Steelgrill | 5 | 110 | 9 |
-| 16 | 291 | The Reports | 10 | 420 | 9 |
-| 17 | 314 | Protecting the Herd | 12 | 910 | 9 |
+| 13 | 320 | Return to Bellowfiz | 8 | 880 | 10 |
+| 14 | 313 | The Grizzled Den | 7 | 630 | 10 |
+| 15 | 400 | Tools for Steelgrill | 5 | 110 | 10 |
+| 16 | 291 | The Reports | 10 | 420 | 10 |
+| 17 | 314 | Protecting the Herd | 12 | 910 | 10 |
 | 18 | 433 | The Public Servant | 11 | 660 | 10 |
 | 19 | 432 | Those Blasted Troggs! | 9 | 590 | 10 |
 | 20 | 413 | Shimmer Stout | 10 | 420 | 10 |
@@ -412,44 +412,44 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 3 | A | 5541 | Ammo for Rumbleshot | 1426 | 50.1, 49.4 | 34 |  |
 | 4 | A | 384 | Beer Basted Boar Ribs | 1426 | 46.8, 52.4 | 186 |  |
 | 5 | O | 5541 | Ammo for Rumbleshot | 1426 | 44.1, 57.0 | 200 |  |
-| 6 | O | 384 | Beer Basted Boar Ribs | 1426 | 45.9, 63.6 | 235 |  |
-| 7 | O | 317 | Stocking Jetsteam | 1426 | 45.9, 63.6 | 0 |  |
-| 8 | T | 5541 | Ammo for Rumbleshot | 1426 | 40.7, 65.1 | 259 |  |
-| 9 | O | 317 | Stocking Jetsteam | 1426 | 42.3, 59.9 | 188 |  |
-| 10 | O | 384 | Beer Basted Boar Ribs | 1426 | 47.4, 52.5 | 350 |  |
-| 11 | T | 317 | Stocking Jetsteam | 1426 | 49.4, 48.4 | 168 | near #3 (went 697 yd away) |
-| 12 | A | 318 | Evershine | 1426 | 49.4, 48.4 | 0 | near #3 (went 697 yd away) |
-| 13 | T | 384 | Beer Basted Boar Ribs | 1426 | 46.8, 52.4 | 182 |  |
-| 14 | A | 287 | Frostmane Hold | 1426 | 46.7, 53.8 | 48 |  |
-| 15 | A | 412 | Operation Recombobulation | 1426 | 45.9, 49.4 | 152 |  |
-| 16 | A | 312 | Tundra MacGrann's Stolen Stash | 1426 | 34.6, 51.6 | 560 |  |
-| 17 | O | 287 | Frostmane Hold | 1426 | 23.5, 51.6 | 542 |  |
-| 18 | O | 412 | Operation Recombobulation | 1426 | 25.2, 42.3 | 314 |  |
-| 19 | T | 318 | Evershine | 1426 | 30.2, 45.7 | 270 |  |
-| 20 | A | 315 | The Perfect Stout | 1426 | 30.2, 45.7 | 0 |  |
-| 21 | A | 319 | A Favor for Evershine | 1426 | 30.2, 45.7 | 0 |  |
-| 22 | A | 310 | Bitter Rivals | 1426 | 30.2, 45.5 | 6 |  |
-| 23 | O | 319 | A Favor for Evershine | 1426 | 36.6, 35.8 | 448 |  |
-| 24 | O | 315 | The Perfect Stout | 1426 | 41.8, 35.4 | 256 |  |
-| 25 | O | 319 | A Favor for Evershine | 1426 | 38.1, 42.4 | 295 |  |
-| 26 | T | 315 | The Perfect Stout | 1426 | 30.2, 45.7 | 403 | near #22 (went 664 yd away) |
-| 27 | T | 319 | A Favor for Evershine | 1426 | 30.2, 45.7 | 0 | near #22 (went 664 yd away) |
-| 28 | A | 400 | Tools for Steelgrill | 1426 | 46.0, 51.7 | 803 | near #15 (went 1106 yd away) |
-| 29 | A | 415 | Rejold's New Brew | 1426 | 46.0, 51.7 | 0 | near #15 (went 1106 yd away) |
-| 30 | T | 310 | Bitter Rivals | 1426 | 47.7, 52.7 | 90 |  |
-| 31 | A | 311 | Return to Marleth | 1426 | 47.7, 52.7 | 0 |  |
-| 32 | T | 287 | Frostmane Hold | 1426 | 46.7, 53.8 | 61 |  |
-| 33 | A | 291 | The Reports | 1426 | 46.7, 53.8 | 0 |  |
-| 34 | O | 312 | Tundra MacGrann's Stolen Stash | 1426 | 38.5, 53.9 | 404 |  |
-| 35 | T | 312 | Tundra MacGrann's Stolen Stash | 1426 | 34.6, 51.6 | 207 | near #16 (went 648 yd away) |
-| 36 | T | 415 | Rejold's New Brew | 1426 | 30.2, 45.7 | 290 | near #27 (went 893 yd away) |
-| 37 | A | 413 | Shimmer Stout | 1426 | 30.2, 45.7 | 0 | near #27 (went 893 yd away) |
-| 38 | A | 320 | Return to Bellowfiz | 1426 | 30.2, 45.7 | 0 |  |
-| 39 | T | 311 | Return to Marleth | 1426 | 30.2, 45.5 | 6 |  |
-| 40 | O | 313 | The Grizzled Den | 1426 | 41.0, 47.7 | 538 |  |
-| 41 | T | 412 | Operation Recombobulation | 1426 | 45.9, 49.4 | 244 | near #31 (went 781 yd away) |
-| 42 | T | 320 | Return to Bellowfiz | 1426 | 49.4, 48.4 | 179 | near #12 (went 1278 yd away) |
-| 43 | T | 313 | The Grizzled Den | 1426 | 49.6, 48.6 | 11 | near #12 (went 1287 yd away) |
+| 6 | O | 317 | Stocking Jetsteam | 1426 | 42.3, 59.9 | 134 |  |
+| 7 | T | 5541 | Ammo for Rumbleshot | 1426 | 40.7, 65.1 | 188 |  |
+| 8 | O | 384 | Beer Basted Boar Ribs | 1426 | 45.9, 63.6 | 259 |  |
+| 9 | O | 317 | Stocking Jetsteam | 1426 | 45.9, 63.6 | 0 |  |
+| 10 | O | 384 | Beer Basted Boar Ribs | 1426 | 47.4, 52.5 | 372 |  |
+| 11 | T | 384 | Beer Basted Boar Ribs | 1426 | 46.8, 52.4 | 27 |  |
+| 12 | T | 317 | Stocking Jetsteam | 1426 | 49.4, 48.4 | 182 | near #3 (went 697 yd away) |
+| 13 | A | 318 | Evershine | 1426 | 49.4, 48.4 | 0 | near #3 (went 697 yd away) |
+| 14 | A | 412 | Operation Recombobulation | 1426 | 45.9, 49.4 | 179 |  |
+| 15 | A | 312 | Tundra MacGrann's Stolen Stash | 1426 | 34.6, 51.6 | 560 |  |
+| 16 | O | 312 | Tundra MacGrann's Stolen Stash | 1426 | 38.5, 53.9 | 207 |  |
+| 17 | T | 318 | Evershine | 1426 | 30.2, 45.7 | 490 |  |
+| 18 | A | 315 | The Perfect Stout | 1426 | 30.2, 45.7 | 0 |  |
+| 19 | A | 319 | A Favor for Evershine | 1426 | 30.2, 45.7 | 0 |  |
+| 20 | A | 310 | Bitter Rivals | 1426 | 30.2, 45.5 | 6 |  |
+| 21 | O | 319 | A Favor for Evershine | 1426 | 36.6, 35.8 | 448 |  |
+| 22 | O | 315 | The Perfect Stout | 1426 | 41.8, 35.4 | 256 |  |
+| 23 | O | 319 | A Favor for Evershine | 1426 | 38.1, 42.4 | 295 |  |
+| 24 | T | 319 | A Favor for Evershine | 1426 | 30.2, 45.7 | 403 | near #20 (went 664 yd away) |
+| 25 | T | 315 | The Perfect Stout | 1426 | 30.2, 45.7 | 0 | near #20 (went 664 yd away) |
+| 26 | A | 287 | Frostmane Hold | 1426 | 46.7, 53.8 | 856 | near #11 (went 858 yd away) |
+| 27 | T | 310 | Bitter Rivals | 1426 | 47.7, 52.7 | 61 | near #14 (went 894 yd away) |
+| 28 | A | 311 | Return to Marleth | 1426 | 47.7, 52.7 | 0 |  |
+| 29 | A | 415 | Rejold's New Brew | 1426 | 46.0, 51.7 | 90 |  |
+| 30 | A | 400 | Tools for Steelgrill | 1426 | 46.0, 51.7 | 0 |  |
+| 31 | O | 313 | The Grizzled Den | 1426 | 41.0, 47.7 | 279 |  |
+| 32 | T | 415 | Rejold's New Brew | 1426 | 30.2, 45.7 | 537 | near #25 (went 893 yd away) |
+| 33 | A | 320 | Return to Bellowfiz | 1426 | 30.2, 45.7 | 0 | near #25 (went 893 yd away) |
+| 34 | A | 413 | Shimmer Stout | 1426 | 30.2, 45.7 | 0 |  |
+| 35 | T | 311 | Return to Marleth | 1426 | 30.2, 45.5 | 6 |  |
+| 36 | O | 412 | Operation Recombobulation | 1426 | 25.2, 42.3 | 267 |  |
+| 37 | O | 287 | Frostmane Hold | 1426 | 23.5, 51.6 | 314 |  |
+| 38 | T | 312 | Tundra MacGrann's Stolen Stash | 1426 | 34.6, 51.6 | 542 | near #15 (went 648 yd away) |
+| 39 | T | 287 | Frostmane Hold | 1426 | 46.7, 53.8 | 603 | near #30 (went 1144 yd away) |
+| 40 | A | 291 | The Reports | 1426 | 46.7, 53.8 | 0 | near #30 (went 1144 yd away) |
+| 41 | T | 412 | Operation Recombobulation | 1426 | 45.9, 49.4 | 152 | near #30 (went 1100 yd away) |
+| 42 | T | 320 | Return to Bellowfiz | 1426 | 49.4, 48.4 | 179 | near #13 (went 1278 yd away) |
+| 43 | T | 313 | The Grizzled Den | 1426 | 49.6, 48.6 | 11 | near #13 (went 1287 yd away) |
 | 44 | T | 400 | Tools for Steelgrill | 1426 | 50.4, 49.1 | 43 |  |
 | 45 | T | 291 | The Reports | 1455 | 39.5, 57.5 | 705 |  |
 | 46 | F |  | flight path | 1455 | 55.5, 47.7 | 136 |  |
@@ -469,13 +469,15 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 60 | O | 417 | A Pilot's Revenge | 1426 | 78.3, 37.8 | 84 |  |
 | 61 | T | 417 | A Pilot's Revenge | 1426 | 83.9, 39.2 | 278 |  |
 
-Walking between tasks: 12877 yd (~31 min at 7 yd/s).
+Walking between tasks: 13271 yd (~32 min at 7 yd/s).
 
 ## Logistics
 
 - step 11: `sethearth 1426 47.38 52.52`
-- step 46: `fp 1455 55.5 47.74`
-- step 63: `level 12` — About 133 more mobs here (Rockjaw Backbreaker, level 11)
+- step 23: `level 8` — About 41 mobs here (Wendigo, level 6)
+- step 38: `level 9` — About 10 mobs here (Frostmane Hideskinner, level 9)
+- step 48: `fp 1455 55.5 47.74`
+- step 65: `level 12` — About 94 more mobs here (Rockjaw Backbreaker, level 11)
 
 ## Warnings
 

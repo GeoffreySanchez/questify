@@ -5,10 +5,10 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Item | Value |
 |---|---|
 | Level band | 1-6 |
-| Simulated level | 1.00 -> 6.06 |
+| Simulated level | 1.00 -> 6.08 |
 | Time | 38 min |
-| XP gained | 7804 |
-| XP/h | 12178 |
+| XP gained | 7893 |
+| XP/h | 12415 |
 | Steps | 40 |
 | Quests turned in | 15 |
 | Hubs | 2 |
@@ -21,19 +21,19 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | # | Quest | Name | Lvl | XP | Sim lvl |
 |---|---|---|---|---|---|
 | 1 | 4641 | Your Place In The World | 1 | 40 | 1 |
-| 2 | 97279 | Wayward Weapons | 2 | 170 est. | 2 |
-| 3 | 788 | Cutting Teeth | 2 | 170 | 2 |
-| 4 | 790 | Sarkoth | 5 | 450 | 3 |
-| 5 | 789 | Sting of the Scorpid | 3 | 250 | 3 |
-| 6 | 804 | Sarkoth | 5 | 110 | 4 |
-| 7 | 5441 | Lazy Peons | 4 | 445 | 4 |
-| 8 | 792 | Vile Familiars | 4 | 445 | 4 |
-| 9 | 4402 | Galgar's Cactus Apple Surprise | 3 | 380 | 4 |
+| 2 | 788 | Cutting Teeth | 2 | 170 | 2 |
+| 3 | 5441 | Lazy Peons | 4 | 445 | 4 |
+| 4 | 792 | Vile Familiars | 4 | 445 | 4 |
+| 5 | 97279 | Wayward Weapons | 2 | 170 est. | 4 |
+| 6 | 790 | Sarkoth | 5 | 450 | 4 |
+| 7 | 4402 | Galgar's Cactus Apple Surprise | 3 | 380 | 4 |
+| 8 | 804 | Sarkoth | 5 | 110 | 4 |
+| 9 | 789 | Sting of the Scorpid | 3 | 250 | 4 |
 | 10 | 794 | Burning Blade Medallion | 5 | 670 | 5 |
 | 11 | 6394 | Thazz'ril's Pick | 4 | 445 | 5 |
 | 12 | 96652 | The Adventurer | 6 | 135 est. | 5 |
 | 13 | 96876 | Ukor's Lost Pack | 8 | 530 est. | 5 |
-| 14 | 99123 | Lost in the Shadows | 8 | 700 est. | 5 |
+| 14 | 99123 | Lost in the Shadows | 8 | 700 est. | 6 |
 | 15 | 805 | Report to Sen'jin Village | 5 | 225 | 6 |
 
 ## Dropped quests
@@ -99,35 +99,35 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | # | Task | Quest | Name | Map | x, y | Leg yd | Return |
 |---|---|---|---|---|---|---|---|
 | 1 | A | 4641 | Your Place In The World | 1411 | 43.3, 68.5 | 63 |  |
-| 2 | A | 97279 | Wayward Weapons | 1411 | 42.1, 68.3 | 65 |  |
-| 3 | T | 4641 | Your Place In The World | 1411 | 42.1, 68.3 | 0 |  |
-| 4 | A | 788 | Cutting Teeth | 1411 | 42.1, 68.3 | 0 |  |
-| 5 | O | 97279 | Wayward Weapons | 1411 | 44.3, 64.2 | 186 |  |
-| 6 | O | 788 | Cutting Teeth | 1411 | 43.4, 62.5 | 76 |  |
-| 7 | A | 790 | Sarkoth | 1411 | 40.6, 62.6 | 145 |  |
-| 8 | O | 790 | Sarkoth | 1411 | 40.5, 66.8 | 149 |  |
-| 9 | T | 97279 | Wayward Weapons | 1411 | 40.5, 68.0 | 41 |  |
-| 10 | T | 788 | Cutting Teeth | 1411 | 42.1, 68.3 | 84 |  |
-| 11 | A | 789 | Sting of the Scorpid | 1411 | 42.1, 68.3 | 0 |  |
-| 12 | O | 789 | Sting of the Scorpid | 1411 | 40.6, 62.4 | 222 |  |
-| 13 | T | 790 | Sarkoth | 1411 | 40.6, 62.6 | 5 |  |
-| 14 | A | 804 | Sarkoth | 1411 | 40.6, 62.6 | 0 |  |
-| 15 | T | 789 | Sting of the Scorpid | 1411 | 42.1, 68.3 | 216 |  |
-| 16 | T | 804 | Sarkoth | 1411 | 42.1, 68.3 | 0 |  |
-| 17 | A | 792 | Vile Familiars | 1411 | 42.9, 69.2 | 50 |  |
-| 18 | A | 5441 | Lazy Peons | 1411 | 44.6, 68.7 | 95 |  |
-| 19 | A | 4402 | Galgar's Cactus Apple Surprise | 1411 | 42.7, 67.2 | 112 |  |
-| 20 | O | 5441 | Lazy Peons | 1411 | 41.7, 58.9 | 300 |  |
-| 21 | O | 792 | Vile Familiars | 1411 | 44.7, 55.7 | 197 |  |
-| 22 | O | 4402 | Galgar's Cactus Apple Surprise | 1411 | 45.3, 62.5 | 241 |  |
-| 23 | T | 5441 | Lazy Peons | 1411 | 44.6, 68.7 | 221 |  |
-| 24 | A | 6394 | Thazz'ril's Pick | 1411 | 44.6, 68.7 | 0 |  |
-| 25 | T | 792 | Vile Familiars | 1411 | 42.9, 69.2 | 95 |  |
-| 26 | A | 794 | Burning Blade Medallion | 1411 | 42.9, 69.2 | 0 |  |
-| 27 | O | 6394 | Thazz'ril's Pick | 1411 | 43.7, 53.8 | 543 |  |
-| 28 | O | 794 | Burning Blade Medallion | 1411 | 42.7, 53.0 | 61 |  |
-| 29 | T | 4402 | Galgar's Cactus Apple Surprise | 1411 | 42.7, 67.2 | 503 |  |
-| 30 | T | 794 | Burning Blade Medallion | 1411 | 42.9, 69.2 | 67 |  |
+| 2 | T | 4641 | Your Place In The World | 1411 | 42.1, 68.3 | 65 |  |
+| 3 | A | 788 | Cutting Teeth | 1411 | 42.1, 68.3 | 0 |  |
+| 4 | A | 97279 | Wayward Weapons | 1411 | 42.1, 68.3 | 0 |  |
+| 5 | O | 788 | Cutting Teeth | 1411 | 43.4, 62.5 | 217 |  |
+| 6 | T | 788 | Cutting Teeth | 1411 | 42.1, 68.3 | 217 |  |
+| 7 | A | 789 | Sting of the Scorpid | 1411 | 42.1, 68.3 | 0 |  |
+| 8 | A | 790 | Sarkoth | 1411 | 40.6, 62.6 | 216 |  |
+| 9 | O | 789 | Sting of the Scorpid | 1411 | 40.6, 62.4 | 5 |  |
+| 10 | A | 4402 | Galgar's Cactus Apple Surprise | 1411 | 42.7, 67.2 | 203 |  |
+| 11 | A | 792 | Vile Familiars | 1411 | 42.9, 69.2 | 67 |  |
+| 12 | A | 5441 | Lazy Peons | 1411 | 44.6, 68.7 | 95 |  |
+| 13 | O | 4402 | Galgar's Cactus Apple Surprise | 1411 | 45.3, 62.5 | 221 |  |
+| 14 | O | 792 | Vile Familiars | 1411 | 44.7, 55.7 | 241 |  |
+| 15 | O | 5441 | Lazy Peons | 1411 | 41.7, 58.9 | 197 |  |
+| 16 | O | 97279 | Wayward Weapons | 1411 | 44.3, 64.2 | 231 |  |
+| 17 | T | 5441 | Lazy Peons | 1411 | 44.6, 68.7 | 158 |  |
+| 18 | A | 6394 | Thazz'ril's Pick | 1411 | 44.6, 68.7 | 0 |  |
+| 19 | T | 792 | Vile Familiars | 1411 | 42.9, 69.2 | 95 |  |
+| 20 | A | 794 | Burning Blade Medallion | 1411 | 42.9, 69.2 | 0 |  |
+| 21 | T | 97279 | Wayward Weapons | 1411 | 40.5, 68.0 | 132 |  |
+| 22 | O | 790 | Sarkoth | 1411 | 40.5, 66.8 | 41 |  |
+| 23 | T | 790 | Sarkoth | 1411 | 40.6, 62.6 | 149 |  |
+| 24 | A | 804 | Sarkoth | 1411 | 40.6, 62.6 | 0 |  |
+| 25 | O | 794 | Burning Blade Medallion | 1411 | 42.7, 53.0 | 357 |  |
+| 26 | O | 6394 | Thazz'ril's Pick | 1411 | 43.7, 53.8 | 61 |  |
+| 27 | T | 4402 | Galgar's Cactus Apple Surprise | 1411 | 42.7, 67.2 | 476 |  |
+| 28 | T | 804 | Sarkoth | 1411 | 42.1, 68.3 | 52 |  |
+| 29 | T | 789 | Sting of the Scorpid | 1411 | 42.1, 68.3 | 0 |  |
+| 30 | T | 794 | Burning Blade Medallion | 1411 | 42.9, 69.2 | 50 |  |
 | 31 | A | 805 | Report to Sen'jin Village | 1411 | 42.9, 69.2 | 0 |  |
 | 32 | A | 96652 | The Adventurer | 1411 | 42.8, 69.1 | 3 |  |
 | 33 | T | 6394 | Thazz'ril's Pick | 1411 | 44.6, 68.7 | 98 |  |
@@ -139,7 +139,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 39 | T | 99123 | Lost in the Shadows | 1411 | 55.9, 74.4 | 296 |  |
 | 40 | T | 805 | Report to Sen'jin Village | 1411 | 56.0, 74.7 | 11 |  |
 
-Walking between tasks: 6668 yd (~16 min at 7 yd/s).
+Walking between tasks: 6541 yd (~16 min at 7 yd/s).
 
 ## Logistics
 

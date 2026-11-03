@@ -5,14 +5,15 @@ Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Item | Value |
 |---|---|
 | Level band | 1-6 |
-| Simulated level | 1.00 -> 6.92 |
-| Time | 46 min |
-| XP gained | 10913 |
-| XP/h | 14149 |
-| Steps | 44 |
+| Simulated level | 1.00 -> 7.14 |
+| Time | 54 min |
+| XP gained | 11813 |
+| XP/h | 13032 |
+| Steps | 48 |
 | Quests turned in | 17 |
 | Hubs | 5 |
 | Median ratio (XP/s) | 2.90 |
+| Grinding (level steps) | ~15 mobs |
 
 ## Kept quests (turn-in order)
 
@@ -21,22 +22,22 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | # | Quest | Name | Lvl | XP | Sim lvl |
 |---|---|---|---|---|---|
 | 1 | 752 | A Humble Task | 2 | 85 | 1 |
-| 2 | 753 | A Humble Task | 3 | 250 | 1 |
+| 2 | 753 | A Humble Task | 3 | 250 | 2 |
 | 3 | 755 | Rites of the Earthmother | 3 | 250 | 2 |
-| 4 | 95805 | Grace of An'she and Mu'sha | 4 | 180 est. | 2 |
-| 5 | 3376 | Break Sharptusk! | 5 | 670 | 3 |
-| 6 | 757 | Rite of Strength | 4 | 445 | 4 |
-| 7 | 763 | Rites of the Earthmother | 5 | 335 | 4 |
-| 8 | 761 | Swoop Hunting | 6 | 680 | 5 |
-| 9 | 96659 | The Adventurer | 6 | 135 est. | 5 |
-| 10 | 96605 | The Great Outdoors | 6 | 540 est. | 5 |
-| 11 | 99079 | Longwalker Malah | 9 | 780 est. | 5 |
+| 4 | 757 | Rite of Strength | 4 | 445 | 4 |
+| 5 | 96659 | The Adventurer | 6 | 135 est. | 4 |
+| 6 | 763 | Rites of the Earthmother | 5 | 335 | 4 |
+| 7 | 99079 | Longwalker Malah | 9 | 780 est. | 4 |
+| 8 | 99081 | Grim Tidings | 9 | 780 est. | 5 |
+| 9 | 96605 | The Great Outdoors | 6 | 540 est. | 5 |
+| 10 | 3376 | Break Sharptusk! | 5 | 670 | 5 |
+| 11 | 95805 | Grace of An'she and Mu'sha | 4 | 180 est. | 5 |
 | 12 | 99108 | Sparring Match | 6 | 540 est. | 6 |
-| 13 | 743 | Dangers of the Windfury | 8 | 700 | 6 |
-| 14 | 99081 | Grim Tidings | 9 | 780 est. | 6 |
-| 15 | 99101 | Our Ancient Enemy | 9 | 780 est. | 6 |
-| 16 | 767 | Rite of Vision | 6 | 55 | 6 |
-| 17 | 749 | The Ravaged Caravan | 8 | 530 | 6 |
+| 13 | 761 | Swoop Hunting | 6 | 680 | 6 |
+| 14 | 99101 | Our Ancient Enemy | 9 | 780 est. | 6 |
+| 15 | 743 | Dangers of the Windfury | 8 | 700 | 6 |
+| 16 | 767 | Rite of Vision | 6 | 55 | 7 |
+| 17 | 749 | The Ravaged Caravan | 8 | 530 | 7 |
 
 ## Dropped quests
 
@@ -142,46 +143,50 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 6 | A | 755 | Rites of the Earthmother | 1412 | 43.9, 76.7 | 0 |  |
 | 7 | T | 755 | Rites of the Earthmother | 1412 | 42.5, 90.1 | 558 |  |
 | 8 | A | 757 | Rite of Strength | 1412 | 42.5, 90.1 | 0 |  |
-| 9 | C | 95805 | Grace of An'she and Mu'sha | 1412 | 42.5, 90.1 | 0 |  |
-| 10 | O | 757 | Rite of Strength | 1412 | 60.9, 78.4 | 496 |  |
-| 11 | A | 3376 | Break Sharptusk! | 1412 | 44.2, 77.0 | 1029 | near #6 (went 1029 yd away) |
-| 12 | O | 3376 | Break Sharptusk! | 1412 | 61.0, 78.0 | 1037 | near #10 (went 1037 yd away) |
-| 13 | T | 3376 | Break Sharptusk! | 1412 | 44.2, 77.0 | 1037 | near #11 (went 1037 yd away) |
-| 14 | T | 757 | Rite of Strength | 1412 | 43.9, 76.7 | 23 | near #11 (went 1055 yd away) |
-| 15 | A | 763 | Rites of the Earthmother | 1412 | 43.9, 76.7 | 0 |  |
-| 16 | A | 96659 | The Adventurer | 1412 | 43.9, 76.7 | 0 |  |
-| 17 | A | 98430 | The Longwalkers | 1412 | 33.1, 65.9 | 795 |  |
-| 18 | O | 98430 | The Longwalkers | 1412 | 37.2, 64.6 | 255 |  |
-| 19 | T | 763 | Rites of the Earthmother | 1412 | 46.7, 63.4 | 585 |  |
-| 20 | A | 767 | Rite of Vision | 1412 | 46.7, 63.4 | 0 |  |
-| 21 | A | 761 | Swoop Hunting | 1412 | 47.7, 62.7 | 67 |  |
-| 22 | A | 99108 | Sparring Match | 1412 | 48.4, 63.7 | 60 |  |
-| 23 | O | 99108 | Sparring Match | 1412 | 48.7, 63.7 | 19 |  |
-| 24 | O | 761 | Swoop Hunting | 1412 | 52.0, 62.1 | 213 |  |
-| 25 | T | 761 | Swoop Hunting | 1412 | 47.7, 62.7 | 266 |  |
-| 26 | A | 99079 | Longwalker Malah | 1412 | 46.7, 63.8 | 77 |  |
-| 27 | A | 743 | Dangers of the Windfury | 1412 | 46.5, 64.9 | 49 |  |
-| 28 | T | 96659 | The Adventurer | 1412 | 46.2, 67.3 | 99 |  |
-| 29 | A | 96605 | The Great Outdoors | 1412 | 46.2, 67.3 | 0 |  |
-| 30 | O | 96605 | The Great Outdoors | 1412 | 46.2, 67.3 | 3 |  |
-| 31 | T | 96605 | The Great Outdoors | 1412 | 46.2, 67.3 | 3 |  |
-| 32 | O | 743 | Dangers of the Windfury | 1412 | 62.4, 71.6 | 1015 |  |
-| 33 | T | 99079 | Longwalker Malah | 1412 | 57.6, 63.2 | 453 |  |
-| 34 | A | 99081 | Grim Tidings | 1412 | 57.6, 63.2 | 0 |  |
-| 35 | A | 749 | The Ravaged Caravan | 1412 | 54.8, 64.3 | 181 |  |
-| 36 | T | 99108 | Sparring Match | 1412 | 48.4, 63.7 | 395 | near #27 (went 923 yd away) |
-| 37 | T | 743 | Dangers of the Windfury | 1412 | 46.5, 64.9 | 121 | near #31 (went 1014 yd away) |
-| 38 | T | 99081 | Grim Tidings | 1412 | 46.7, 63.8 | 46 |  |
-| 39 | A | 99101 | Our Ancient Enemy | 1412 | 46.7, 63.8 | 0 |  |
-| 40 | T | 99101 | Our Ancient Enemy | 1412 | 46.7, 63.4 | 18 |  |
-| 41 | T | 767 | Rite of Vision | 1412 | 46.9, 61.2 | 90 |  |
+| 9 | O | 757 | Rite of Strength | 1412 | 60.9, 78.4 | 1227 |  |
+| 10 | A | 3376 | Break Sharptusk! | 1412 | 44.2, 77.0 | 1029 | near #6 (went 1029 yd away) |
+| 11 | T | 757 | Rite of Strength | 1412 | 43.9, 76.7 | 23 | near #6 (went 1048 yd away) |
+| 12 | A | 96659 | The Adventurer | 1412 | 43.9, 76.7 | 0 |  |
+| 13 | A | 763 | Rites of the Earthmother | 1412 | 43.9, 76.7 | 0 |  |
+| 14 | T | 96659 | The Adventurer | 1412 | 46.2, 67.3 | 408 |  |
+| 15 | A | 96605 | The Great Outdoors | 1412 | 46.2, 67.3 | 0 |  |
+| 16 | A | 99079 | Longwalker Malah | 1412 | 46.7, 63.8 | 145 |  |
+| 17 | T | 763 | Rites of the Earthmother | 1412 | 46.7, 63.4 | 55 |  |
+| 18 | A | 761 | Swoop Hunting | 1412 | 47.7, 62.7 | 67 |  |
+| 19 | A | 99108 | Sparring Match | 1412 | 48.4, 63.7 | 60 |  |
+| 20 | T | 99079 | Longwalker Malah | 1412 | 57.6, 63.2 | 570 |  |
+| 21 | A | 99081 | Grim Tidings | 1412 | 57.6, 63.2 | 0 |  |
+| 22 | O | 3376 | Break Sharptusk! | 1412 | 61.0, 78.0 | 642 | near #9 (went 1067 yd away) |
+| 23 | T | 99081 | Grim Tidings | 1412 | 46.7, 63.8 | 1056 | near #19 (went 1056 yd away) |
+| 24 | A | 99101 | Our Ancient Enemy | 1412 | 46.7, 63.8 | 0 | near #19 (went 1056 yd away) |
+| 25 | A | 743 | Dangers of the Windfury | 1412 | 46.5, 64.9 | 46 |  |
+| 26 | O | 96605 | The Great Outdoors | 1412 | 46.2, 67.3 | 99 |  |
+| 27 | T | 96605 | The Great Outdoors | 1412 | 46.2, 67.3 | 3 |  |
+| 28 | T | 3376 | Break Sharptusk! | 1412 | 44.2, 77.0 | 417 | near #13 (went 1037 yd away) |
+| 29 | C | 95805 | Grace of An'she and Mu'sha | 1412 | 42.5, 90.1 | 546 | near #8 (went 1443 yd away) |
+| 30 | O | 743 | Dangers of the Windfury | 1412 | 62.4, 71.6 | 788 |  |
+| 31 | A | 749 | The Ravaged Caravan | 1412 | 54.8, 64.3 | 558 |  |
+| 32 | O | 761 | Swoop Hunting | 1412 | 52.0, 62.1 | 191 |  |
+| 33 | O | 99108 | Sparring Match | 1412 | 48.7, 63.7 | 213 | near #25 (went 1148 yd away) |
+| 34 | T | 99108 | Sparring Match | 1412 | 48.4, 63.7 | 19 | near #25 (went 1140 yd away) |
+| 35 | T | 761 | Swoop Hunting | 1412 | 47.7, 62.7 | 60 |  |
+| 36 | A | 767 | Rite of Vision | 1412 | 46.7, 63.4 | 67 |  |
+| 37 | T | 99101 | Our Ancient Enemy | 1412 | 46.7, 63.4 | 0 |  |
+| 38 | T | 743 | Dangers of the Windfury | 1412 | 46.5, 64.9 | 64 |  |
+| 39 | A | 98430 | The Longwalkers | 1412 | 33.1, 65.9 | 826 |  |
+| 40 | O | 98430 | The Longwalkers | 1412 | 37.2, 64.6 | 255 |  |
+| 41 | T | 767 | Rite of Vision | 1412 | 46.9, 61.2 | 612 | near #37 (went 868 yd away) |
 | 42 | T | 749 | The Ravaged Caravan | 1412 | 51.9, 53.4 | 444 |  |
 
-Walking between tasks: 10176 yd (~24 min at 7 yd/s).
+Walking between tasks: 11793 yd (~28 min at 7 yd/s).
 
 ## Logistics
 
-- step 28: `sethearth 1412 45.93 64.16`
+- step 4: `level 2` — About 7 mobs
+- step 10: `level 3` — About 7 mobs here (Bristleback Quilboar, level 3)
+- step 19: `sethearth 1412 45.93 64.16`
+- step 26: `hearth 1412`
+- step 45: `level 7` — About 1 mobs here (Palemane Poacher, level 7)
 
 ## Warnings
 

@@ -132,21 +132,49 @@ local function serviceLabel(s)
   return s.name
 end
 
--- Learnable() -> { count, cost, names, known, since } ou nil si rien à apprendre à ce niveau.
--- since = niveau où le dernier de ces sorts est devenu disponible (une annonce par vague).
--- known = faux : pas encore de visite, supposition des niveaux pairs (count et cost inconnus).
+-- Coût estimé du sort le moins cher par niveau pair (cuivre, ordre de grandeur de Classic) :
+-- avant la première visite, l'alerte attend au moins cette somme.
+local GUESS_COST = { [2] = 10, [4] = 100, [6] = 100, [8] = 200, [10] = 300, [12] = 800, [14] = 900, [16] = 1500,
+  [18] = 1800, [20] = 2000, [22] = 3000, [24] = 4000, [26] = 5000, [28] = 6000, [30] = 7000 }
+
+local function playerMoney()
+  if type(GetMoney) ~= "function" then return math.huge end
+  local ok, m = pcall(GetMoney)
+  if not ok or Q.Util.IsSecret(m) then return math.huge end
+  return tonumber(m) or math.huge
+end
+Trainer.GUESS_COST = GUESS_COST
+
+-- Learnable() -> { count, total, cost, missing, names, known, since } ou nil si rien d'apprenable
+-- et payable à ce niveau.
+--   count / cost / names : sorts que l'or du joueur permet de payer (les moins chers d'abord) ;
+--   total : sorts disponibles à ce niveau ; missing : coût des sorts restants (or manquant).
+--   since : niveau où le dernier sort payable est devenu disponible (une annonce par vague).
+--   known = faux : pas encore de visite, supposition des niveaux pairs (coût estimé).
 function Trainer:Learnable()
   local t = state()
   if not t then return nil end
   local lvl = playerLevel()
+  local money = playerMoney()
   if type(t.services) == "table" then
-    local out = { count = 0, cost = 0, names = {}, known = true, since = 0 }
+    local avail = {}
     for _, s in ipairs(t.services) do
-      if type(s) == "table" and s.level and s.level <= lvl then
+      if type(s) == "table" and s.level and s.level <= lvl then avail[#avail + 1] = s end
+    end
+    table.sort(avail, function(a, b)
+      if (a.cost or 0) ~= (b.cost or 0) then return (a.cost or 0) < (b.cost or 0) end
+      return (a.level or 0) < (b.level or 0)
+    end)
+    local out = { count = 0, total = #avail, cost = 0, missing = 0, names = {}, known = true, since = 0 }
+    for _, s in ipairs(avail) do
+      local c = s.cost or 0
+      if out.cost + c <= money then
         out.count = out.count + 1
+        out.cost = out.cost + c
         out.since = math.max(out.since, s.level)
-        out.cost = out.cost + (s.cost or 0)
         out.names[#out.names + 1] = serviceLabel(s)
+      else
+        out.missing = out.missing + c
       end
     end
     if out.count == 0 then return nil end
@@ -154,7 +182,9 @@ function Trainer:Learnable()
   end
   local lastEven = lvl - lvl % 2
   if lastEven >= 2 and lastEven > (t.visitLevel or 1) then
-    return { count = 0, cost = 0, names = {}, known = false, since = lastEven }
+    local need = GUESS_COST[lastEven] or 0
+    if money < need then return nil end
+    return { count = 0, total = 0, cost = 0, missing = 0, names = {}, known = false, since = lastEven }
   end
   return nil
 end
@@ -225,6 +255,11 @@ Q:RegisterEvent("TRAINER_SHOW", function()
   end
 end)
 Q:RegisterEvent("TRAINER_UPDATE", function() Trainer:OnTrainer() end)
+-- l'or change : l'alerte apparaît ou disparaît
+Q:RegisterEvent("PLAYER_MONEY", function()
+  Trainer:Sync()
+  Q:Fire("TRAINER_CHANGED")
+end)
 Q:On("PROGRESS_UPDATED", function() Trainer:Sync() end)
 Q:On("LOGIN", function() Trainer:Sync() end)
 Q:On("SETTINGS_CHANGED", function(path)

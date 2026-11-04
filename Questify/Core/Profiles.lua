@@ -1,19 +1,21 @@
 local addonName, Q = ...
 
 -- Profils d'options (QuestifyDB.profiles[nom]) : chaque profil garde toutes les valeurs de
--- Q.Settings (dont la position, la taille, la largeur, le thème et l'opacité du suivi) et le
--- profil de butin de chaque classe :
---   QuestifyDB.profiles[nom] = { settings = { ... arbre de Q.Settings ... }, rewardRole = { [classe] = rôle } }
+-- Q.Settings (dont la position, la taille, la largeur, le thème et l'opacité du suivi) :
+--   QuestifyDB.profiles[nom] = { settings = { ... arbre de Q.Settings ... } }
 --   QuestifyDB.profileKeys["Nom - Royaume"] = nom du profil de ce personnage
 --   QuestifyDB.profileMode = "account" | "character" : choix appliqué aux personnages vus pour la
 --   première fois (« Par compte » : le profil partagé « Default » ; « Par personnage » : un
 --   profil à son nom, copié du profil partagé).
--- L'état de progression du personnage (chapitre, étapes cochées ou passées, quêtes de classe,
--- mesures…) reste dans QuestifyCharDB, hors des profils.
--- Migration (premier chargement) : QuestifyDB.settings devient le profil « Default », puis le
--- profil de butin de chaque personnage (Q.char.rewardRole) passe dans le profil actif, pour sa classe.
+-- Restent dans QuestifyCharDB, hors des profils : l'état de progression du personnage (chapitre,
+-- étapes cochées ou passées, quêtes de classe, mesures…) et son profil de butin (rewardRole,
+-- rewardRoleChosen, specRoleAnswered) : jamais partagé, exporté, importé ni changé par un profil.
+-- Migration (premier chargement) : QuestifyDB.settings devient le profil « Default ». Un profil qui
+-- garde encore une table de profils de butin par classe (version de développement) : à la
+-- connexion, un personnage sans profil de butin prend une fois celui de sa classe, puis ces
+-- tables sont retirées de tous les profils.
 -- Changer de profil (ou le copier, le réinitialiser, l'importer) réapplique tout à chaud : un
--- SETTINGS_CHANGED par réglage dont la valeur change (et "rewardRole"), puis PROFILE_CHANGED(nom).
+-- SETTINGS_CHANGED par réglage dont la valeur change, puis PROFILE_CHANGED(nom).
 -- Partage : « QFY1: » + base64 d'une table sérialisée de façon déterministe (sérialiseur et
 -- base64 en Lua pur). L'import n'utilise jamais loadstring : lecture stricte du format, chaque
 -- valeur contrôlée par le schéma (Core/OptionsSchema.lua), clés inconnues ignorées, nombres
@@ -89,11 +91,10 @@ local function playerClass()
   return nil
 end
 
--- Profil bien formé : { settings = {}, rewardRole = {} }.
+-- Profil bien formé : { settings = {} }.
 local function normalizeProfile(p)
   if type(p) ~= "table" then p = {} end
   if type(p.settings) ~= "table" then p.settings = {} end
-  if type(p.rewardRole) ~= "table" then p.rewardRole = {} end
   return p
 end
 
@@ -113,17 +114,34 @@ end
 ---------------------------------------------------------------------------
 -- Mise en place et migration (ADDON_LOADED, avant l'INIT des modules)
 ---------------------------------------------------------------------------
--- Profil de butin du personnage (ancien réglage Q.char.rewardRole) : passé dans le profil actif
--- pour sa classe, sauf si ce profil en a déjà un. Rien à faire tant que la classe est inconnue.
-local function migrateCharRole()
+-- Profils de butin par classe laissés dans les profils (version de développement) : un personnage
+-- sans profil de butin (Q.char.rewardRole nil) prend une fois celui de sa classe (profil actif,
+-- sinon « Default »), puis ces tables sont retirées de tous les profils. Rien à faire tant que la
+-- classe est inconnue (nouvel essai à la connexion).
+local function migrateLegacyRoles()
   local c, d = Q.char, db()
-  if type(c) ~= "table" or not d or c.rewardRole == nil then return end
+  if type(c) ~= "table" or not (d and type(d.profiles) == "table") then return end
+  local found = false
+  for _, p in pairs(d.profiles) do
+    if type(p) == "table" and p.rewardRole ~= nil then found = true end
+  end
+  if not found then return end
   local cf = playerClass()
   if not cf then return end
-  local p = normalizeProfile(d.profiles[active])
-  d.profiles[active] = p
-  if type(c.rewardRole) == "string" and p.rewardRole[cf] == nil then p.rewardRole[cf] = c.rewardRole end
-  c.rewardRole = nil
+  if c.rewardRole == nil then
+    for _, name in ipairs({ active, DEFAULT }) do
+      local p = d.profiles[name]
+      local roles = type(p) == "table" and p.rewardRole
+      local role = type(roles) == "table" and roles[cf]
+      if type(role) == "string" then
+        c.rewardRole = role
+        break
+      end
+    end
+  end
+  for _, p in pairs(d.profiles) do
+    if type(p) == "table" then p.rewardRole = nil end
+  end
 end
 
 -- Profil du personnage d'après profileKeys ; personnage vu pour la première fois : selon
@@ -151,7 +169,7 @@ function Profiles:Setup()
   if type(d.profiles) ~= "table" then
     -- première fois : les anciens réglages du compte deviennent le profil « Default »
     d.profiles = {}
-    d.profiles[DEFAULT] = { settings = type(d.settings) == "table" and deepcopy(d.settings) or {}, rewardRole = {} }
+    d.profiles[DEFAULT] = { settings = type(d.settings) == "table" and deepcopy(d.settings) or {} }
     d.settings = nil
   end
   for name, p in pairs(d.profiles) do
@@ -162,7 +180,7 @@ function Profiles:Setup()
   if d.profileMode ~= "character" then d.profileMode = "account" end
   active = resolveCharacter()
   self.keyKnown = self:CharKey() ~= nil
-  migrateCharRole()
+  migrateLegacyRoles()
 end
 
 -- À la connexion : nom du personnage enfin connu, ou classe connue pour la migration.
@@ -173,7 +191,7 @@ Q:On("LOGIN", function()
     local name = resolveCharacter()
     if name ~= active then Profiles:SetActive(name) end
   end
-  migrateCharRole()
+  migrateLegacyRoles()
 end)
 
 ---------------------------------------------------------------------------
@@ -235,22 +253,6 @@ function Profiles:Mode()
   return "custom"
 end
 
--- Profil de butin d'une classe dans le profil actif (nil : aucun choix).
-function Profiles:RewardRole(classFile)
-  local p = self:Data()
-  if not (p and classFile) then return nil end
-  local role = p.rewardRole[classFile]
-  if type(role) == "string" then return role end
-  return nil
-end
-
-function Profiles:SetRewardRole(classFile, role)
-  local p = self:Data()
-  if not (p and type(classFile) == "string" and type(role) == "string") then return false end
-  p.rewardRole[classFile] = role
-  return true
-end
-
 ---------------------------------------------------------------------------
 -- Réapplication à chaud
 ---------------------------------------------------------------------------
@@ -278,7 +280,6 @@ Profiles.KnownPaths = knownPaths
 local function snapshot()
   local snap = { values = {} }
   for _, path in ipairs(knownPaths()) do snap.values[path] = deepcopy(Q.Settings:Get(path)) end
-  snap.role = Q.Rewards and Q.Rewards:Role() or nil
   return snap
 end
 
@@ -293,8 +294,6 @@ local function withChanges(fn)
       local now = Q.Settings:Get(path)
       if not deepEqual(before.values[path], now) then Q:Fire("SETTINGS_CHANGED", path, now) end
     end
-    local role = Q.Rewards and Q.Rewards:Role() or nil
-    if role ~= before.role then Q:Fire("SETTINGS_CHANGED", "rewardRole", role) end
   end)
   Profiles.applying = false
   if not ok then Q:ReportError(err) end
@@ -584,8 +583,8 @@ end
 ---------------------------------------------------------------------------
 -- Export et import
 ---------------------------------------------------------------------------
--- Payload(nom) -> table exportée : version, toutes les valeurs du schéma (position comprise si
--- elle est enregistrée) et les profils de butin.
+-- Payload(nom) -> table exportée : version et toutes les valeurs du schéma (position comprise si
+-- elle est enregistrée). Jamais le profil de butin ni la progression (propres au personnage).
 function Profiles:Payload(name)
   local p = self:Data(name)
   if not p then return nil end
@@ -596,11 +595,7 @@ function Profiles:Payload(name)
     if v == nil then v = walk(Q.Settings.defaults, path) end
     if v ~= nil then setPath(settings, path, deepcopy(v)) end
   end
-  local roles = {}
-  for cf, role in pairs(p.rewardRole) do
-    if type(cf) == "string" and type(role) == "string" then roles[cf] = role end
-  end
-  return { v = FORMAT_VERSION, settings = settings, rewardRole = roles }
+  return { v = FORMAT_VERSION, settings = settings }
 end
 
 -- Export(nom) -> chaîne « QFY1:… » du profil (actif par défaut).
@@ -624,17 +619,9 @@ local function countLeaves(t, depth)
   return n
 end
 
--- Profil de butin importé : classe connue et rôle de cette classe (ou "auto").
-local function validRole(cf, role)
-  local roles = Q.Rewards and Q.Rewards.CLASS_ROLES
-  if type(cf) ~= "string" or type(role) ~= "string" or not (roles and roles[cf]) then return false end
-  if role == "auto" then return true end
-  for _, r in ipairs(roles[cf]) do if r == role then return true end end
-  return false
-end
-
--- Decode(texte) -> profil propre { settings, rewardRole }, nombre de valeurs gardées, nombre de
--- valeurs ignorées ; ou nil et un message clair (jamais d'erreur Lua).
+-- Decode(texte) -> profil propre { settings }, nombre de valeurs gardées, nombre de valeurs
+-- ignorées ; ou nil et un message clair (jamais d'erreur Lua). Toute autre clé (un profil de butin,
+-- par exemple) est ignorée et comptée.
 function Profiles:Decode(text)
   local L = Q.L
   if type(text) ~= "string" then return nil, L.PROFILE_ERR_EMPTY end
@@ -648,7 +635,7 @@ function Profiles:Decode(text)
   if type(data) ~= "table" then return nil, L.PROFILE_ERR_CORRUPT end
   if data.v ~= FORMAT_VERSION then return nil, L.PROFILE_ERR_VERSION end
   local S = Q.OptionsSchema
-  local clean = { settings = {}, rewardRole = {} }
+  local clean = { settings = {} }
   local kept, dropped = 0, 0
   local settings = type(data.settings) == "table" and data.settings or {}
   local consumed = 0
@@ -666,18 +653,8 @@ function Profiles:Decode(text)
     end
   end
   dropped = dropped + math.max(0, countLeaves(settings) - consumed)
-  if type(data.rewardRole) == "table" then
-    for cf, role in pairs(data.rewardRole) do
-      if validRole(cf, role) then
-        clean.rewardRole[cf] = role
-        kept = kept + 1
-      else
-        dropped = dropped + 1
-      end
-    end
-  end
   for k in pairs(data) do
-    if k ~= "v" and k ~= "settings" and k ~= "rewardRole" then dropped = dropped + 1 end
+    if k ~= "v" and k ~= "settings" then dropped = dropped + 1 end
   end
   if kept == 0 then return nil, L.PROFILE_ERR_NOTHING end
   return clean, kept, dropped

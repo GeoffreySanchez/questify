@@ -150,17 +150,18 @@ addons périmés ».
 - `/qf options` : fenêtre d'options (sections à gauche, recherche, icône « i » sur chaque option) ;
   `/qf options <mot>` l'ouvre sur une recherche. Aussi dans Échap > Options > AddOns > Questify.
   `/qf wizard` : assistant de démarrage (reprend à la page laissée).
-
-Profils (section Profils des options) : par compte (profil partagé « Par défaut ») ou par personnage.
-Un profil garde les options, la position, la taille, la largeur et le thème du suivi, et le profil de
-butin de chaque classe ; « Exporter » donne une chaîne `QFY1:…` à partager, « Importer » la reprend
-après confirmation (valeurs inconnues ou invalides ignorées). La progression n'est jamais dans un profil.
 - `/qf export` : exporter les mesures de temps par étape (rien n'est envoyé automatiquement).
 - `/qf check` : autodiagnostic (fonctions du jeu, QuestieDB, repère, navigation, route, erreurs).
 - `/qf bug` (ou `/qf report`) : rapport de bug prêt à copier (bouton « Rapport de bug » dans les
   options) ; `/qf bug clear` vide les erreurs enregistrées.
 - `/qf talents` : relevé des arbres de talents du client (pour écrire les builds).
 - `/qf debug` : mode débogage ; `/qf reset` : réinitialiser la progression du personnage.
+
+Profils (section Profils des options) : par compte (profil partagé « Par défaut ») ou par personnage.
+Un profil garde les options et la position, la taille, la largeur et le thème du suivi ; « Exporter »
+donne une chaîne `QFY1:…` à partager, « Importer » la reprend après confirmation (valeurs inconnues ou
+invalides ignorées). La progression et le profil de butin restent propres à chaque personnage, hors
+profils : ils ne sont jamais partagés, exportés ni changés par un profil.
 
 Dans le suivi : clic droit pour passer une étape, Maj + clic droit pour revenir en arrière.
 Maintenir Maj (Shift) suspend l'acceptation et le rendu automatiques.
@@ -287,17 +288,18 @@ date AddOns".
 - `/qf options`: options window (sections on the left, search, "i" icon on every option);
   `/qf options <word>` opens it on a search. Also in Esc > Options > AddOns > Questify.
   `/qf wizard`: first-launch wizard (resumes on the page you left).
-
-Profiles (Profiles section of the options): per account (shared "Default" profile) or per character.
-A profile holds the options, the tracker position, size, width and theme, and the loot profile of
-each class; "Export" gives a `QFY1:…` string to share, "Import" takes it back after a confirmation
-(unknown or invalid values are ignored). Progress is never stored in a profile.
 - `/qf export`: export the per-step timing data (nothing is ever sent automatically).
 - `/qf check`: self-check (game functions, QuestieDB, map pin, navigation, route, errors).
 - `/qf bug` (or `/qf report`): bug report ready to copy ("Bug report" button in the options);
   `/qf bug clear` empties the saved errors.
 - `/qf talents`: records the client's talent trees (to write builds).
 - `/qf debug`: debug mode; `/qf reset`: reset this character's progress.
+
+Profiles (Profiles section of the options): per account (shared "Default" profile) or per character.
+A profile holds the options and the tracker position, size, width and theme; "Export" gives a
+`QFY1:…` string to share, "Import" takes it back after a confirmation (unknown or invalid values are
+ignored). Progress and the loot profile stay specific to each character, outside profiles: they are
+never shared, exported or changed by a profile.
 
 In the tracker: right-click skips a step, Shift + right-click goes back.
 Holding Shift pauses automatic accept and turn-in.

@@ -72,7 +72,9 @@ Schema.SECTIONS = {
     { id = "share", label = "OPT_CAT_PROFILES_SHARE" } } },
 }
 
--- État de progression du personnage (QuestifyCharDB) : jamais dans un profil.
+-- État de progression du personnage (QuestifyCharDB) : jamais dans un profil. Le profil de butin
+-- (Q.char.rewardRole, entrée « rewardRole ») est lui aussi propre au personnage : son entrée n'a pas
+-- de chemin de réglage, il n'est donc ni exporté ni changé par un changement de profil.
 Schema.CHAR_STATE = {
   guideId = true, manual = true, skipped = true, inserted = true, classQuests = true, telemetry = true,
   wizardDone = true, specRoleAnswered = true,
@@ -205,8 +207,9 @@ add({ id = "autoReward", section = "loot", category = "auto", type = "toggle", p
 add({ id = "upgradePopup", section = "loot", category = "auto", type = "toggle", path = "upgradePopup",
   label = "UI_OPT_UPGRADE", tip = "OPT_TIP_UPGRADE",
   keywords = "butin loot amelioration equipement upgrade gear annonce popup" })
+-- Propre au personnage (Q.char.rewardRole, par Q.Rewards), hors profils d'options.
 add({ id = "rewardRole", section = "loot", category = "profile", type = "select", style = "dropdown",
-  label = "OPT_REWARD_ROLE", tip = "OPT_TIP_REWARD_ROLE",
+  label = "OPT_REWARD_ROLE", tip = "OPT_TIP_REWARD_ROLE", perCharacter = true, noExport = true,
   keywords = "butin loot recompense reward profil role specialisation spec statistiques stats",
   visible = hasRoleChoice,
   choices = function(player)

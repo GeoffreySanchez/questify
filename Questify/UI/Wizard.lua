@@ -698,6 +698,7 @@ function Wizard:Finish()
   Q.Settings:Set("autoQuest", c.autoQuest)
   Q.Settings:Set("autoReward", c.autoReward)
   Q.Settings:Set("sellJunk", c.sellJunk)
+  -- profil de butin : propre au personnage (Q.char.rewardRole), hors profils d'options
   if Q.Rewards and c.rewardRole then Q.Rewards:SetRole(c.rewardRole) end
   if Q.char and Q.Rewards and Q.Rewards:HasChoice(Q.Player and Q.Player.classFile) then Q.char.rewardRoleChosen = true end
   if Q.char then

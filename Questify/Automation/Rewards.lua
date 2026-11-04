@@ -63,8 +63,8 @@ local WEIGHTS = {
 }
 
 ---------------------------------------------------------------------------
--- Profils de rôle (dans le profil d'options actif, un par classe : Q.Profiles:RewardRole ;
--- "auto" = table de classe ci-dessus)
+-- Profils de rôle (réglage propre au personnage, Q.char.rewardRole, hors profils d'options : jamais
+-- partagé, exporté ni changé par un changement de profil ; absent = "auto", table de classe ci-dessus)
 ---------------------------------------------------------------------------
 -- DPS_RANGED / DPS_MELEE : poids du DPS d'arme à distance (emplacement 18) / de mêlée, si présents ;
 -- sinon DPS s'applique aux deux.
@@ -119,22 +119,20 @@ local function validRole(classFile, role)
   return false
 end
 
--- Role(classFile) -> profil choisi pour cette classe dans le profil d'options actif, "auto" s'il
--- manque ou ne convient pas à la classe.
+-- Role(classFile) -> profil choisi pour ce personnage, "auto" s'il manque ou ne convient pas à la classe.
 function Rewards:Role(classFile)
   classFile = classFile or (Q.Player and Q.Player.classFile)
-  local P = Q.Profiles
-  local role = P and P.RewardRole and P:RewardRole(classFile)
+  local role = Q.char and Q.char.rewardRole
   if type(role) == "string" and validRole(classFile, role) then return role end
   return "auto"
 end
 
--- SetRole(role) : enregistre le profil de la classe du joueur dans le profil d'options actif
--- (ignoré s'il ne convient pas à la classe).
+-- SetRole(role) : enregistre le profil du personnage dans Q.char (ignoré s'il ne convient pas à la
+-- classe).
 function Rewards:SetRole(role)
   local classFile = Q.Player and Q.Player.classFile
-  local P = Q.Profiles
-  if not (classFile and validRole(classFile, role) and P and P:SetRewardRole(classFile, role)) then return false end
+  if not (Q.char and validRole(classFile, role)) then return false end
+  Q.char.rewardRole = role
   Q:Fire("SETTINGS_CHANGED", "rewardRole", role)
   return true
 end

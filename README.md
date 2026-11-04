@@ -41,9 +41,11 @@ Sans addon de navigation, Questify utilise le marqueur 3D natif du jeu.
 Ces points ne se vérifient que dans le jeu (le client Forever n'est pas simulable). Commence par
 `/qf check` : l'addon vérifie seul les fonctions du jeu qu'il utilise, QuestieDB, le repère, la
 navigation et la route, et affiche une ligne par point. Si quelque chose échoue (ici ou dans la
-liste ci-dessous), tape `/qf report`, copie le texte (Ctrl + A puis Ctrl + C) et colle-le dans une
-issue GitHub : il contient la version, le client, le personnage, l'étape, les réglages et les
-erreurs Lua avec leur pile d'appels (gardées même après `/reload`).
+liste ci-dessous), tape `/qf bug`, copie le texte (il est déjà sélectionné : Ctrl + C) et colle-le
+dans une issue GitHub : il contient la version, le client, le personnage, la route (étape courante
+et suivantes, cible), la position, la navigation, le journal de quêtes, les réglages, le résultat
+de `/qf check` et les erreurs Lua avec leur pile d'appels (gardées même après `/reload`, y compris
+celles du chargement).
 Si le jeu indique l'addon « périmé » (numéro d'interface changé par un patch), coche « Charger les
 addons périmés ».
 - [ ] L'addon apparaît dans la liste des addons, sans message d'erreur Lua au chargement (le client
@@ -88,8 +90,9 @@ addons périmés ».
 - `/qf options` : options ; `/qf wizard` : assistant de navigation.
 - `/qf export` : exporter les mesures de temps par étape (rien n'est envoyé automatiquement).
 - `/qf check` : autodiagnostic (fonctions du jeu, QuestieDB, repère, navigation, route, erreurs).
-- `/qf report` : rapport de bug prêt à copier (bouton « Rapport de bug » dans les options) ;
-  `/qf report clear` vide les erreurs enregistrées.
+- `/qf bug` (ou `/qf report`) : rapport de bug prêt à copier (bouton « Rapport de bug » dans les
+  options) ; `/qf bug clear` vide les erreurs enregistrées.
+- `/qf talents` : relevé des arbres de talents du client (pour écrire les builds).
 - `/qf debug` : mode débogage ; `/qf reset` : réinitialiser la progression du personnage.
 
 Dans le suivi : clic droit pour passer une étape, Maj + clic droit pour revenir en arrière.
@@ -136,9 +139,10 @@ Without a navigation addon, Questify uses the game's native 3D waypoint.
 These can only be checked in game (the Forever client cannot be simulated). Start with `/qf check`:
 the addon checks on its own the game functions it uses, QuestieDB, the map pin, navigation and the
 route, and prints one line per item. If something fails (there or in the list below), type
-`/qf report`, copy the text (Ctrl + A, then Ctrl + C) and paste it in a GitHub issue: it holds the
-version, client, character, step, settings and the Lua errors with their call stack (kept even after
-`/reload`).
+`/qf bug`, copy the text (it is already selected: Ctrl + C) and paste it in a GitHub issue: it holds
+the version, client, character, route (current and next steps, target), position, navigation, quest
+log, settings, the `/qf check` results and the Lua errors with their call stack (kept even after
+`/reload`, including those raised while loading).
 If the game says the addon is out of date (interface number changed by a patch), tick "Load out of
 date AddOns".
 - [ ] The addon shows in the addon list with no Lua error on load (the client recognizes
@@ -176,8 +180,9 @@ date AddOns".
 - `/qf options`: options; `/qf wizard`: navigation wizard.
 - `/qf export`: export the per-step timing data (nothing is ever sent automatically).
 - `/qf check`: self-check (game functions, QuestieDB, map pin, navigation, route, errors).
-- `/qf report`: bug report ready to copy ("Bug report" button in the options);
-  `/qf report clear` empties the saved errors.
+- `/qf bug` (or `/qf report`): bug report ready to copy ("Bug report" button in the options);
+  `/qf bug clear` empties the saved errors.
+- `/qf talents`: records the client's talent trees (to write builds).
 - `/qf debug`: debug mode; `/qf reset`: reset this character's progress.
 
 In the tracker: right-click skips a step, Shift + right-click goes back.

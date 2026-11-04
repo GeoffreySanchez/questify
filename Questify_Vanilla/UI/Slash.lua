@@ -8,7 +8,7 @@ local addonName, Q = ...
 --   /qf wizard     assistant de navigation
 --   /qf export     mesures de temps, prêtes à copier
 --   /qf debug      messages de débogage (QuestifyVanillaDB.debug)
---   /qf check      autodiagnostic du client (API, QuestieDB, navigation, route)
+--   /qf check      autodiagnostic du client (API, QuestieDB, navigation, route) ; alias /qf diag
 --   /qf bug        rapport de bug prêt à copier (alias /qf report) ; /qf bug clear vide les erreurs gardées
 --   /qf talents    relevé des arbres de talents du client
 --   /qf reset      efface la progression du personnage (après confirmation)

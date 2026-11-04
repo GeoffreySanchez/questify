@@ -46,14 +46,14 @@ end
 ---------------------------------------------------------------------------
 -- Erreurs : chaque erreur distincte n'est affichée qu'une fois dans la discussion.
 -- Elles sont aussi gardées, avec leur pile d'appels, dans QuestifyVanillaDB.errors
--- (les 20 plus récentes) : /qf report les retrouve après /reload ou une déconnexion.
+-- (les 20 plus récentes) : /qf bug les retrouve après /reload ou une déconnexion.
 ---------------------------------------------------------------------------
 local MAX_SAVED_ERRORS = 20
 local MAX_STACK_CHARS = 2000
 
 local reported = {}     -- [msg] = entrée de la session
 local lastStack         -- pile capturée par errorHandler, reprise par ReportError
-local hintShown         -- conseil « /qf report » : une fois par session
+local hintShown         -- conseil « /qf bug » : une fois par session
 Q.errorLog = {}         -- erreurs de la session : { msg, stack, count, time, saved }
 
 local function now()
@@ -134,7 +134,7 @@ function Q:SavedErrors()
   return self.errorLog
 end
 
--- Vide la liste sauvegardée (/qf report clear). Les erreurs déjà vues restent muettes jusqu'au
+-- Vide la liste sauvegardée (/qf bug clear). Les erreurs déjà vues restent muettes jusqu'au
 -- prochain /reload ; une répétition est de nouveau enregistrée.
 function Q:ClearErrors()
   local db = QuestifyVanillaDB

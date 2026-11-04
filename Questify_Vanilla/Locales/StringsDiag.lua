@@ -1,16 +1,16 @@
 local addonName, Q = ...
 
--- Textes du diagnostic (/qf check), du rapport de bug (/qf report) et du journal d'erreurs.
+-- Textes du diagnostic (/qf check), du rapport de bug (/qf bug, alias /qf report) et du journal d'erreurs.
 Q:RegisterStrings({
   enUS = {
-    ERROR_REPORT_HINT = "Type /qf report to copy a bug report with this error.",
+    ERROR_REPORT_HINT = "Type /qf bug to copy a bug report with this error.",
 
     DIAG_YES = "yes",
     DIAG_NO = "no",
     DIAG_NONE = "none",
     DIAG_OFF = "turned off in the options",
     DIAG_SUMMARY_OK = "Self-check: %d checks, no problem found.",
-    DIAG_SUMMARY_PROBLEMS = "Self-check: %d problem(s) in %d checks. /qf report gives a text you can copy.",
+    DIAG_SUMMARY_PROBLEMS = "Self-check: %d problem(s) in %d checks. /qf bug gives a text you can copy.",
     DIAG_API_OK = "%d game functions found",
     DIAG_API_MISSING = "missing game functions: %s",
 
@@ -42,29 +42,29 @@ Q:RegisterStrings({
     DIAG_ROUTE_STEP = "%s, step %d of %d",
     DIAG_ROUTE_INSERTED = "%s, added steps (%s)",
     DIAG_TARGETING = "Mob targeting",
-    DIAG_TARGETING_INFO = "/targetexact: %s, /tm: %s, ActionButtonUseKeyDown = %s (click a mob in the panel to test)",
+    DIAG_TARGETING_INFO = "/targetexact: %s, /tm: %s, ActionButtonUseKeyDown = %s (click a mob under the objective in the tracker to test)",
     DIAG_NAMEPLATES = "Nameplate icons",
     DIAG_SECRETS = "Secret values",
     DIAG_SECRETS_ON = "this client hides some unit values in combat (handled)",
     DIAG_SECRETS_OFF = "this client has no secret values",
     DIAG_ERRORS = "Errors",
     DIAG_ERRORS_NONE = "none saved for this version",
-    DIAG_ERRORS_SOME = "%d saved for this version: /qf report shows them",
+    DIAG_ERRORS_SOME = "%d saved for this version: /qf bug shows them",
 
     REPORT_TITLE = "Questify Vanilla: bug report",
-    REPORT_HINT = "Ctrl+A then Ctrl+C to copy, then paste it in a GitHub issue. /qf report clear empties the saved errors.",
+    REPORT_HINT = "The text is selected: Ctrl + C, then paste it where you report the bug (GitHub issue). /qf bug clear empties the saved errors.",
     REPORT_CLEARED = "Saved errors cleared.",
     REPORT_BUTTON = "Bug report",
   },
   frFR = {
-    ERROR_REPORT_HINT = "Tape /qf report pour copier un rapport de bug avec cette erreur.",
+    ERROR_REPORT_HINT = "Tape /qf bug pour copier un rapport de bug avec cette erreur.",
 
     DIAG_YES = "oui",
     DIAG_NO = "non",
     DIAG_NONE = "aucun",
     DIAG_OFF = "désactivé dans les options",
     DIAG_SUMMARY_OK = "Autodiagnostic : %d vérifications, aucun problème.",
-    DIAG_SUMMARY_PROBLEMS = "Autodiagnostic : %d problème(s) sur %d vérifications. /qf report donne un texte à copier.",
+    DIAG_SUMMARY_PROBLEMS = "Autodiagnostic : %d problème(s) sur %d vérifications. /qf bug donne un texte à copier.",
     DIAG_API_OK = "%d fonctions du jeu trouvées",
     DIAG_API_MISSING = "fonctions du jeu absentes : %s",
 
@@ -96,17 +96,17 @@ Q:RegisterStrings({
     DIAG_ROUTE_STEP = "%s, étape %d sur %d",
     DIAG_ROUTE_INSERTED = "%s, étapes ajoutées (%s)",
     DIAG_TARGETING = "Ciblage des monstres",
-    DIAG_TARGETING_INFO = "/targetexact : %s, /tm : %s, ActionButtonUseKeyDown = %s (clique sur un monstre du panneau pour tester)",
+    DIAG_TARGETING_INFO = "/targetexact : %s, /tm : %s, ActionButtonUseKeyDown = %s (clique sur un monstre sous l'objectif dans le suivi pour tester)",
     DIAG_NAMEPLATES = "Icônes des barres de nom",
     DIAG_SECRETS = "Valeurs secrètes",
     DIAG_SECRETS_ON = "ce client cache certaines valeurs des unités en combat (pris en charge)",
     DIAG_SECRETS_OFF = "ce client n'a pas de valeurs secrètes",
     DIAG_ERRORS = "Erreurs",
     DIAG_ERRORS_NONE = "aucune enregistrée pour cette version",
-    DIAG_ERRORS_SOME = "%d enregistrée(s) pour cette version : /qf report les affiche",
+    DIAG_ERRORS_SOME = "%d enregistrée(s) pour cette version : /qf bug les affiche",
 
     REPORT_TITLE = "Questify Vanilla : rapport de bug",
-    REPORT_HINT = "Ctrl + A puis Ctrl + C pour copier, puis colle-le dans une issue GitHub. /qf report clear vide les erreurs enregistrées.",
+    REPORT_HINT = "Le texte est sélectionné : Ctrl + C, puis colle-le là où tu signales le bug (issue GitHub). /qf bug clear vide les erreurs enregistrées.",
     REPORT_CLEARED = "Erreurs enregistrées effacées.",
     REPORT_BUTTON = "Rapport de bug",
   },

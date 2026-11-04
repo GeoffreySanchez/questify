@@ -1,7 +1,7 @@
 local addonName, Q = ...
 
--- Spécialisation du joueur et profil de butin (Q.Rewards, gardé par classe dans le profil
--- d'options actif). Option specRolePrompt : sans elle, aucune proposition.
+-- Spécialisation du joueur et profil de butin (Q.Rewards, réglage par personnage Q.char.rewardRole,
+-- hors profils d'options). Option specRolePrompt : sans elle, aucune proposition.
 -- Le profil se choisit à la création du personnage (assistant) ; à partir du niveau 10, quand le
 -- joueur choisit une spécialisation dont le profil diffère du sien, une fenêtre propose de passer
 -- au profil de la spécialisation : « Oui » ou « Non, garder <profil actuel> ».

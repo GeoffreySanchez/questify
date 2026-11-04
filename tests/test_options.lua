@@ -93,8 +93,9 @@ return {
     for key in pairs(Q.charDefaults) do
       t.ok(S.CHAR_STATE[key] or S:Entry(key), "char default not covered: " .. key)
     end
-    t.eq(Q.charDefaults.rewardRole, nil, "loot profile lives in the profiles")
     t.ok(S:Entry("rewardRole"), "loot profile has an entry")
+    t.eq(S:Entry("rewardRole").path, nil, "loot profile is not a profile setting (Q.char)")
+    t.eq(paths.rewardRole, nil)
   end,
 
   schema_entries_are_well_formed = function(t)
@@ -526,20 +527,89 @@ return {
     noErrors(t)
   end,
 
-  reward_role_belongs_to_the_profile = function(t)
+  reward_role_is_per_character_and_survives_profile_switch = function(t)
     Mock.player.classFile = "SHAMAN"
     local Q = load()
     local P = Q.Profiles
     Q.Rewards:SetRole("healer")
+    t.eq(Q.char.rewardRole, "healer", "stored for this character")
     P:Create("Other")
     local fired
     Q:On("SETTINGS_CHANGED", function(path, v) if path == "rewardRole" then fired = v end end)
     P:SetActive("Other")
-    t.eq(Q.Rewards:Role(), "auto", "the other profile has its own loot profile")
-    t.eq(fired, "auto", "rewardRole fired on switch")
-    t.eq(Q.UI.MinimapButton.icon:GetTexture(), Q.UI.MinimapButton.ICONS.auto, "minimap icon follows")
-    P:SetActive("Default")
-    t.eq(Q.Rewards:Role(), "healer")
+    t.eq(Q.Rewards:Role(), "healer", "switching profiles keeps the loot profile")
+    t.eq(fired, nil, "no rewardRole change fired")
+    t.eq(Q.UI.MinimapButton.icon:GetTexture(), Q.UI.MinimapButton.ICONS.healer, "minimap icon unchanged")
+    P:CopyFrom("Default")
+    P:Reset()
+    t.eq(Q.Rewards:Role(), "healer", "copy and reset keep it too")
+    for name, prof in pairs(QuestifyDB.profiles) do t.eq(prof.rewardRole, nil, "no loot data in " .. name) end
+    -- la fenêtre écrit dans Q.char
+    local O = Q.UI.Options
+    O:Open("loot")
+    local w = O:Widget("rewardRole")
+    for _, r in ipairs(w.radios) do if r.value == "caster" then Mock.click(r, "LeftButton") end end
+    t.eq(Q.char.rewardRole, "caster")
+    t.eq(QuestifyDB.profiles.Other.rewardRole, nil)
+    t.ok(Q.L.OPT_TIP_REWARD_ROLE:find("outside profiles", 1, true), "tooltip says it is per character")
+    noErrors(t)
+  end,
+
+  same_class_characters_keep_their_own_loot_profile_in_account_mode = function(t)
+    Mock.player.classFile = "SHAMAN"
+    Mock.player.name = "Premier"
+    local Q = load()
+    t.eq(Q.Profiles:Mode(), "account")
+    Q.Rewards:SetRole("healer")
+    local first = QuestifyCharDB
+    -- deuxième chaman sur le même compte (ses propres SavedVariables de personnage)
+    Mock.player.name = "Second"
+    QuestifyCharDB = { wizardDone = true }
+    local Q2 = Mock.reload()
+    t.eq(Q2.Profiles:Active(), "Default", "same shared profile")
+    t.eq(Q2.Rewards:Role(), "auto", "not shared with the other shaman")
+    Q2.Rewards:SetRole("caster")
+    local second = QuestifyCharDB
+    -- retour au premier
+    Mock.player.name = "Premier"
+    QuestifyCharDB = first
+    local Q3 = Mock.reload()
+    t.eq(Q3.Rewards:Role(), "healer")
+    t.eq(second.rewardRole, "caster")
+    noErrors(t)
+  end,
+
+  legacy_profile_roles_are_taken_once_then_removed = function(t)
+    -- profils d'une version de développement : une table de profils de butin par classe
+    local Q = load({ savedVariables = {
+      QuestifyDB = {
+        profiles = {
+          Default = { settings = { autoQuest = false }, rewardRole = { WARRIOR = "tank", SHAMAN = "healer" } },
+          Raid = { settings = {}, rewardRole = { WARRIOR = "melee" } },
+        },
+        profileKeys = { ["Testeur - Testrealm"] = "Default" }, profileMode = "account",
+      },
+      QuestifyCharDB = { wizardDone = true },
+    } })
+    t.eq(Q.char.rewardRole, "tank", "taken for this character's class from the active profile")
+    t.eq(Q.Rewards:Role(), "tank")
+    t.eq(QuestifyDB.profiles.Default.rewardRole, nil, "removed from every profile")
+    t.eq(QuestifyDB.profiles.Raid.rewardRole, nil)
+    t.eq(Q.Settings:Get("autoQuest"), false, "options kept")
+    -- un autre personnage ensuite : plus rien à reprendre
+    Mock.player.name = "Shamy"
+    Mock.player.classFile = "SHAMAN"
+    QuestifyCharDB = { wizardDone = true }
+    local Q2 = Mock.reload()
+    t.eq(Q2.Rewards:Role(), "auto", "taken once only")
+    -- un personnage qui a déjà son profil de butin le garde
+    Mock.player.name = "Garde"
+    Mock.player.classFile = "WARRIOR"
+    QuestifyDB.profiles.Default.rewardRole = { WARRIOR = "tank" }
+    QuestifyCharDB = { wizardDone = true, rewardRole = "melee" }
+    local Q3 = Mock.reload()
+    t.eq(Q3.Rewards:Role(), "melee")
+    t.eq(QuestifyDB.profiles.Default.rewardRole, nil)
     noErrors(t)
   end,
 
@@ -591,9 +661,9 @@ return {
     t.eq(Q.Settings:Get("tracker.point")[4], 20)
     t.eq(Q.Settings:Get("tracker.locked"), true)
     t.eq(Q.UI.Tracker.themeKey, "dark", "tracker starts with the migrated theme")
-    t.eq(Q.Rewards:Role(), "tank", "warrior loot profile moved into the profile")
-    t.eq(d.profiles.Default.rewardRole.WARRIOR, "tank")
-    t.eq(Q.char.rewardRole, nil)
+    t.eq(Q.Rewards:Role(), "tank", "loot profile kept for this character")
+    t.eq(Q.char.rewardRole, "tank", "still in the character data")
+    t.eq(d.profiles.Default.rewardRole, nil, "never in a profile")
     t.eq(Q.char.manual["g:x:1"], true, "progress stays in the character data")
     t.eq(Q.char.wizardDone, true)
     t.eq(d.minimapAngle, 123, "account data kept")
@@ -604,7 +674,7 @@ return {
     QuestifyCharDB = { rewardRole = "caster", wizardDone = true }
     local Q2 = Mock.reload()
     t.eq(Q2.Rewards:Role(), "caster")
-    t.eq(QuestifyDB.profiles.Default.rewardRole.WARRIOR, "tank")
+    t.eq(QuestifyDB.profiles.Default.rewardRole, nil)
     -- une migration ne se refait pas
     local Q3 = Mock.reload()
     t.eq(Q3.Settings:Get("autoQuest"), false)
@@ -669,7 +739,11 @@ return {
     local s = P:Export()
     t.eq(s:sub(1, 5), "QFY1:")
     t.eq(P:Export(), s, "same export twice")
-    t.ok(not s:find("manual", 1, true), "no progress inside")
+    local raw = P.Base64Decode(s:sub(6))
+    t.ok(not raw:find("manual", 1, true), "no progress inside")
+    t.ok(not raw:find("rewardRole", 1, true) and not raw:find("healer", 1, true), "no loot profile inside")
+    t.eq(P:Payload().rewardRole, nil)
+    Q.Rewards:SetRole("caster")   -- changé après l'export : l'import n'y touche pas
     -- dans un nouveau profil
     local ok, msg = P:Import(s, "Copie")
     t.ok(ok, msg)
@@ -677,7 +751,7 @@ return {
     t.eq(P:Payload("Copie"), P:Payload("Default"), "identical values")
     t.eq(Q.Settings:Get("tracker.theme"), "transparent")
     t.eq(Q.UI.Tracker.themeKey, "transparent", "applied live")
-    t.eq(Q.Rewards:Role(), "healer")
+    t.eq(Q.Rewards:Role(), "caster", "import never sets the loot profile")
     t.ok(plain(msg):find("Copie", 1, true))
     -- dans le profil actuel
     P:Create("Vide")
@@ -741,11 +815,15 @@ return {
     t.eq(clean.settings.tracker.opacity, nil)
     t.eq(clean.settings.tracker.point, nil)
     t.eq(clean.settings.unknownOption, nil)
-    t.eq(clean.rewardRole, { PALADIN = "tank" })
-    t.eq(kept, 6)
-    t.ok(dropped >= 10, "dropped values counted: " .. tostring(dropped))
-    -- rien n'a changé dans le profil actif
+    t.eq(clean.rewardRole, nil, "a loot profile in the string is ignored")
+    t.eq(kept, 5)
+    t.eq(dropped, 9, "dropped values counted (each bad value, unknown key and the loot profile)")
+    -- rien n'a changé dans le profil actif ; l'import d'une chaîne avec un profil de butin n'y touche pas
     t.eq(P:Payload(), before)
+    Q.Rewards:SetRole("melee")
+    t.ok(P:Import(encode({ v = 1, settings = { autoReward = false }, rewardRole = { WARRIOR = "tank" } })))
+    t.eq(Q.Rewards:Role(), "melee")
+    t.eq(QuestifyDB.profiles.Default.rewardRole, nil)
     noErrors(t)
   end,
 

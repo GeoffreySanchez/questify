@@ -325,7 +325,7 @@ return {
 
   caster_shaman_prefers_int_over_str_and_dps = function(t)
     local Q = load()
-    Q.Profiles:SetRewardRole("SHAMAN", "caster")   -- profil de butin du chaman (profil d'options actif)
+    Q.char.rewardRole = "caster"   -- profil de butin du personnage (Q.char, hors profils d'options)
     local int = item(9001, { equipLoc = "INVTYPE_CHEST", classID = 4, subclassID = 2,
       stats = { [INT] = 8, [STA] = 4, [ARMOR] = 60 } })
     local str = item(9002, { equipLoc = "INVTYPE_CHEST", classID = 4, subclassID = 3,
@@ -350,7 +350,7 @@ return {
     item(9102, { equipLoc = "INVTYPE_CHEST", classID = 4, subclassID = 2, stats = { [STR] = 9, [STA] = 4, [ARMOR] = 120 } })
     local choices = { choiceOf(Mock.items[9101], 1), choiceOf(Mock.items[9102], 2) }
     local auto = Q.Rewards:Pick(choices, shaman)
-    Q.Profiles:SetRewardRole("SHAMAN", "melee")
+    Q.char.rewardRole = "melee"
     t.eq(Q.Rewards:Pick(choices, shaman), auto, "melee = auto for a shaman")
     t.eq(auto, 2, "STR mail still wins")
     t.eq(Q.Rewards:Weights("SHAMAN", "melee"), Q.Rewards:Weights("SHAMAN", "auto"))
@@ -358,7 +358,7 @@ return {
 
   hunter_ranged_prefers_bow_upgrade = function(t)
     local Q = load()
-    Q.Profiles:SetRewardRole("HUNTER", "ranged")
+    Q.char.rewardRole = "ranged"
     Mock.inventory[18] = item(9201, { equipLoc = "INVTYPE_RANGED", classID = 2, subclassID = 2, stats = { [DPS] = 5 } })
     Mock.inventory[16] = item(9202, { equipLoc = "INVTYPE_WEAPON", classID = 2, subclassID = 7, stats = { [DPS] = 5 } })
     item(9203, { equipLoc = "INVTYPE_RANGED", classID = 2, subclassID = 2, stats = { [DPS] = 8 } })
@@ -375,7 +375,7 @@ return {
     Q.Player.classFile = "SHAMAN"
     t.eq(Q.Rewards:Role(), "auto", "default")
     t.ok(Q.Rewards:SetRole("caster"))
-    t.eq(Q.Profiles:RewardRole("SHAMAN"), "caster", "saved for the class in the active profile")
+    t.eq(Q.char.rewardRole, "caster", "saved for this character")
     t.eq(Q.Rewards:Role(), "caster")
     t.ok(not Q.Rewards:SetRole("tank"), "tank is not a shaman profile")
     t.eq(Q.Rewards:Role(), "caster")
@@ -389,8 +389,7 @@ return {
     local old = 4 * 0.8 + 3 * 0.8 + 2 * 0.5 + 1 * 0.4 + 5 * 0.3 + 100 * 0.015 + 7 * 2.5
     t.near(Q.Rewards:Score(stats, "SHAMAN"), old, 1e-9)
     -- un profil enregistré qui ne convient pas à la classe retombe sur auto
-    Q.Profiles:SetRewardRole("SHAMAN", "tank")
-    Q.Profiles:SetRewardRole("WARRIOR", "tank")
+    Q.char.rewardRole = "tank"
     t.eq(Q.Rewards:Role("SHAMAN"), "auto")
     t.eq(Q.Rewards:Role("WARRIOR"), "tank")
   end,

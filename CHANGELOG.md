@@ -10,12 +10,12 @@
   - L'onglet Options du journal est remplacé par un bouton « Options… ».
 - Section Thème : aperçu de chaque thème du suivi, et curseur d'opacité du fond de 0 à 100 %.
 - Profils d'options, par compte (profil partagé « Par défaut ») ou par personnage.
-  - Un profil garde toutes les options, la position, la taille, la largeur et le thème du suivi, et le profil de butin de chaque classe.
+  - Un profil garde toutes les options et la position, la taille, la largeur et le thème du suivi.
   - Boutons Nouveau, Copier depuis…, Supprimer…, Réinitialiser.
   - Exporter et Importer une chaîne de texte (`QFY1:…`), contrôlée valeur par valeur.
   - Changer de profil applique tout de suite.
   - Les options existantes deviennent le profil « Par défaut » ; la progression des personnages ne change pas.
-- Le profil de butin est désormais gardé par classe dans le profil d'options actif. `/qf reset` ne le remet plus à zéro.
+- Le profil de butin reste propre à chaque personnage, hors profils d'options : jamais partagé, exporté ni importé, et changer de profil n'y touche pas.
 - Nouvelle option « Proposer le profil de butin de la spécialisation quand j'en choisis une » (activée par défaut).
 - Le rapport de bug indique le profil d'options actif.
 - Thèmes du suivi : Parchemin (par défaut), Noir, Transparent, Fondu de gris, et transparence du fond
@@ -135,12 +135,12 @@
   - The journal's Options tab is replaced by an "Options…" button.
 - Theme section: a preview of each tracker theme, and a background opacity slider from 0 to 100 %.
 - Option profiles, per account (shared "Default" profile) or per character.
-  - A profile holds every option, the tracker position, size, width and theme, and the loot profile of each class.
+  - A profile holds every option and the tracker position, size, width and theme.
   - New, Copy from…, Delete… and Reset buttons.
   - Export and Import as a text string (`QFY1:…`), checked value by value.
   - Switching profiles applies everything at once.
   - Existing options become the "Default" profile; character progress is unchanged.
-- The loot profile is now stored per class in the active option profile. `/qf reset` no longer resets it.
+- The loot profile stays specific to each character, outside option profiles: never shared, exported or imported, and switching profiles leaves it alone.
 - New option "Offer the matching loot profile when I pick a specialization" (on by default).
 - The bug report names the active option profile.
 - Tracker themes: Parchment (default), Black, Transparent, Grey fade, with adjustable background

@@ -167,7 +167,8 @@ end
 ---------------------------------------------------------------------------
 -- Actions
 ---------------------------------------------------------------------------
--- SelectRole(role) : enregistre le profil, met l'icône à jour et l'écrit dans la discussion.
+-- SelectRole(role) : enregistre le profil de butin du personnage (Q.char.rewardRole, hors profils
+-- d'options), met l'icône à jour et l'écrit dans la discussion.
 function Button:SelectRole(role)
   local Rw = Q.Rewards
   if not Rw then return false end

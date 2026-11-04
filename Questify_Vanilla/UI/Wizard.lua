@@ -699,6 +699,7 @@ function Wizard:Finish()
   Q.Settings:Set("autoReward", c.autoReward)
   Q.Settings:Set("sellJunk", c.sellJunk)
   if Q.Rewards and c.rewardRole then Q.Rewards:SetRole(c.rewardRole) end
+  if Q.char and Q.Rewards and Q.Rewards:HasChoice(Q.Player and Q.Player.classFile) then Q.char.rewardRoleChosen = true end
   if Q.char then
     Q.char.wizardDone = true
     Q.char.wizardPage = nil

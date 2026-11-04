@@ -254,6 +254,7 @@ Q.charDefaults = {
   telemetry = {},
   wizardDone = nil,
   rewardRole = "auto",   -- Automation/Rewards.lua : profil de récompense du personnage
+  specRoleAnswered = {}, -- Automation/SpecRole.lua : spécialisations pour lesquelles « Non » a été répondu
 }
 
 local function onAddonLoaded(event, name)

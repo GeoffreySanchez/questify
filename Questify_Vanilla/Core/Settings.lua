@@ -30,6 +30,8 @@ Settings.defaults = {
   mapPins = true,           -- UI/MapPins.lua
   -- Objectifs proches de plusieurs quêtes regroupés en une seule visite
   zoneMode = true,          -- Engine/ZoneMode.lua
+  -- Bouton de la minicarte (profil de butin, choix rapides, journal)
+  minimapButton = true,     -- UI/MinimapButton.lua
 }
 
 local function split(path)

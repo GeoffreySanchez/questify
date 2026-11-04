@@ -27,6 +27,7 @@ Locales\StringsDungeons.lua
 Locales\StringsMap.lua
 Locales\StringsZone.lua
 Locales\StringsVersion.lua
+Locales\StringsMinimap.lua
 
 Core\Init.lua
 Core\Util.lua
@@ -61,6 +62,7 @@ Engine\Dungeons.lua
 Nav\Navigation.lua
 
 Automation\Rewards.lua
+Automation\SpecRole.lua
 Automation\AutoQuest.lua
 Automation\SellJunk.lua
 Automation\Taxi.lua
@@ -75,6 +77,7 @@ UI\TalentPicker.lua
 UI\ClassQuestPopup.lua
 UI\DungeonPopup.lua
 UI\MapPins.lua
+UI\MinimapButton.lua
 UI\Journal.lua
 UI\Wizard.lua
 UI\QuestItemButton.lua

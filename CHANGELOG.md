@@ -3,6 +3,14 @@
 ## Non publié
 
 ### Français
+- Bouton de la minicarte (option « Bouton de la minicarte », activée par défaut) : son icône montre le
+  profil de butin de quête. Clic gauche : choix rapides (profil de butin de la classe, accepter / rendre
+  automatiquement, choisir la récompense, mode zone, épingles sur la carte, puis Options…, Journal,
+  Assistant de démarrage, Signaler un bug). Clic droit : journal ; Ctrl+clic : assistant ; se déplace en
+  le glissant autour de la minicarte (position gardée).
+- Spécialisation : à partir du niveau 10, quand tu choisis une spécialisation dont le profil de butin
+  diffère du tien, une fenêtre propose de l'utiliser (« Oui » ou « Non, garder X » ; « Non » n'est plus
+  redemandé pour cette spécialisation). Jamais en combat. `/qf bug` indique la spécialisation détectée.
 - Choix de la récompense par rôle (Élémentaire, Amélioration, Restauration, tank, distance…),
   par personnage, dans les options et l'assistant ; « Automatique » garde le comportement de classe.
 - Maître de classe : lecture des sorts dans l'ordre de Forever (niveau requis, rang) ; l'alerte
@@ -103,6 +111,13 @@
 - Carte du monde et minicarte : repères numérotés de l'étape courante et des 5 suivantes (option).
 
 ### English
+- Minimap button ("Minimap button" option, on by default): its icon shows the quest loot profile.
+  Left-click: quick choices (the class's loot profiles, auto accept / turn in, choose the reward, zone
+  mode, map pins, then Options…, Journal, Setup wizard, Report a bug). Right-click: journal;
+  Ctrl+click: wizard; drag it around the minimap to move it (position kept).
+- Specialization: from level 10, when you pick a specialization whose loot profile differs from yours,
+  a window offers to use it ("Yes" or "No, keep X"; "No" is not asked again for that
+  specialization). Never in combat. `/qf bug` shows the detected specialization.
 - Reward choice by role (Elemental, Enhancement, Restoration, tank, ranged…), per character, in the
   options and the wizard; "Automatic" keeps the class behaviour.
 - Class trainer: reads spells in Forever's order; the alert comes back at every level; the trainer

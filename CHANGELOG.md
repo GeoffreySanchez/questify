@@ -3,6 +3,8 @@
 ## Non publié
 
 ### Français
+- Thèmes du suivi : Parchemin (par défaut), Noir, Transparent, Fondu de gris, et transparence du fond
+  réglable (le texte reste opaque) ; `/qf theme <nom>` et `/qf opacity <0-100>`.
 - Bouton de la minicarte (option « Bouton de la minicarte », activée par défaut) : son icône montre le
   profil de butin de quête. Clic gauche : choix rapides (profil de butin de la classe, accepter / rendre
   automatiquement, choisir la récompense, mode zone, épingles sur la carte, puis Options…, Journal,
@@ -111,6 +113,8 @@
 - Carte du monde et minicarte : repères numérotés de l'étape courante et des 5 suivantes (option).
 
 ### English
+- Tracker themes: Parchment (default), Black, Transparent, Grey fade, with adjustable background
+  opacity (text stays opaque); `/qf theme <name>` and `/qf opacity <0-100>`.
 - Minimap button ("Minimap button" option, on by default): its icon shows the quest loot profile.
   Left-click: quick choices (the class's loot profiles, auto accept / turn in, choose the reward, zone
   mode, map pins, then Options…, Journal, Setup wizard, Report a bug). Right-click: journal;

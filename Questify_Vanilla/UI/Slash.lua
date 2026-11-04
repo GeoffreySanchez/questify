@@ -11,6 +11,8 @@ local addonName, Q = ...
 --   /qf check      autodiagnostic du client (API, QuestieDB, navigation, route) ; alias /qf diag
 --   /qf bug        rapport de bug prêt à copier (alias /qf report) ; /qf bug clear vide les erreurs gardées
 --   /qf talents    relevé des arbres de talents du client
+--   /qf theme <clé>     thème du suivi (parchment, dark, transparent, gradient) ; seul : la liste
+--   /qf opacity <0-100> opacité du fond et de la bordure du suivi ; seul : la valeur actuelle
 --   /qf reset      efface la progression du personnage (après confirmation)
 local L = Q.L
 
@@ -102,6 +104,42 @@ end
 COMMANDS.talents = function()
   local n = Q.Talents and Q.Talents:Dump() or 0
   if n > 0 then Q:Print(L.UI_SLASH_TALENTS_DUMPED, n) end
+end
+
+-- Réglages rapides du suivi (UI/Themes.lua), en attendant la fenêtre d'options.
+local function themeList()
+  local parts = {}
+  for _, th in ipairs(Q.Themes:List()) do parts[#parts + 1] = th.key .. " (" .. th.label .. ")" end
+  return table.concat(parts, ", ")
+end
+
+COMMANDS.theme = function(rest)
+  local T = Q.Themes
+  if not T then return end
+  if rest == "" then
+    Q:Print(L.UI_SLASH_THEME_LIST, themeList(), L[T:Current().label])
+    return
+  end
+  local key = T:Find(rest)
+  if not key then
+    Q:Print(L.UI_SLASH_THEME_UNKNOWN, rest, themeList())
+    return
+  end
+  Q.Settings:Set("tracker.theme", key)
+  Q:Print(L.UI_SLASH_THEME_SET, L[T:Get(key).label])
+end
+
+COMMANDS.opacity = function(rest)
+  local T = Q.Themes
+  if not T then return end
+  local n = tonumber((rest:gsub("%%", "")))
+  if not n then
+    Q:Print(L.UI_SLASH_OPACITY_HELP, math.floor(T:Opacity(Q.Settings:Get("tracker.opacity")) * 100 + 0.5))
+    return
+  end
+  n = math.max(0, math.min(100, math.floor(n + 0.5)))
+  Q.Settings:Set("tracker.opacity", n / 100)
+  Q:Print(L.UI_SLASH_OPACITY_SET, n)
 end
 
 COMMANDS.check = function()

@@ -1,22 +1,22 @@
 local addonName, Q = ...
 
 -- Journal principal (spec § 5.8), ouvert par /questify, /qf ou le compartiment d'addons.
--- Trois onglets :
+-- Deux onglets :
 --   « Route » : chapitres de la faction à gauche, étapes du chapitre à droite (icône d'état,
 --               clic = étape courante) ;
 --   « Quêtes de classe » : une ligne par chaîne avec son état et Ajouter / Ignorer / Réactiver,
---                          puis la section « Donjons » (même principe, Engine/Dungeons.lua) ;
---   « Options » : réglages, taille du suivi, assistant, réinitialisation, export des mesures.
+--                          puis la section « Donjons » (même principe, Engine/Dungeons.lua).
+-- Le bouton « Options… » en bas à droite ouvre la fenêtre d'options (UI/Options.lua).
 Q.UI = Q.UI or {}
-local Journal = { tab = "route", panels = {}, tabs = {}, chapterRows = {}, stepRows = {}, classRows = {}, checks = {} }
+local Journal = { tab = "route", panels = {}, tabs = {}, chapterRows = {}, stepRows = {}, classRows = {} }
 Q.UI.Journal = Journal
 
 local L = Q.L
 
 local FRAME_NAME = "QuestifyJournal"
 local WIDTH, HEIGHT = 520, 560
-local TAB_NAMES = { "route", "class", "options" }
-local TAB_INDEX = { route = 1, class = 2, options = 3 }
+local TAB_NAMES = { "route", "class" }
+local TAB_INDEX = { route = 1, class = 2 }
 
 local CHAPTER_W, CHAPTER_ROW_H = 150, 20
 local STEP_W, STEP_ROW_H = 290, 18
@@ -117,7 +117,7 @@ function Journal:Create()
   content:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -10, 30)
   self.content = content
 
-  local labels = { L.UI_TAB_ROUTE, L.UI_TAB_CLASS, L.UI_TAB_OPTIONS }
+  local labels = { L.UI_TAB_ROUTE, L.UI_TAB_CLASS }
   for i, name in ipairs(TAB_NAMES) do
     local tab = CreateFrame("Button", FRAME_NAME .. "Tab" .. i, f, "PanelTabButtonTemplate")
     tab:SetID(i)
@@ -144,7 +144,16 @@ function Journal:Create()
 
   self:BuildRoute(self.panels.route)
   self:BuildClass(self.panels.class)
-  self:BuildOptions(self.panels.options)
+  -- Options : fenêtre à part (UI/Options.lua)
+  local opt = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
+  opt:SetSize(120, 22)
+  opt:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -8, 4)
+  opt:SetText(L.OPT_JOURNAL_OPTIONS)
+  opt:SetScript("OnClick", safe(function()
+    playSound("IG_MAINMENU_OPTION_CHECKBOX_ON")
+    if Q.UI.Options then Q.UI.Options:Open() end
+  end))
+  self.optionsButton = opt
   f:Hide()
   -- Sons d'ouverture et de fermeture branchés après le Hide() initial (pas de son à la création).
   f:HookScript("OnShow", function() playSound("IG_CHARACTER_INFO_OPEN") end)
@@ -165,8 +174,13 @@ function Journal:Toggle()
   end
 end
 
--- ShowTab("route" | "class" | "options") : ouvre le journal sur cet onglet.
+-- ShowTab("route" | "class") : ouvre le journal sur cet onglet. "options" ouvre la fenêtre
+-- d'options (l'ancien onglet Options).
 function Journal:ShowTab(name)
+  if name == "options" then
+    if Q.UI.Options then Q.UI.Options:Open() end
+    return
+  end
   if not TAB_INDEX[name] then name = "route" end
   self:Create()
   self.tab = name
@@ -183,8 +197,6 @@ function Journal:RefreshTab(name, scroll)
     self:RefreshRoute(scroll)
   elseif name == "class" then
     self:RefreshClass()
-  elseif name == "options" then
-    self:RefreshOptions()
   end
 end
 
@@ -753,220 +765,10 @@ function Journal:RefreshDungeons(top, qdbOk)
 end
 
 ---------------------------------------------------------------------------
--- Onglet Options
+-- Export des mesures (ancien onglet Options) : dans la fenêtre d'options, section Outils.
 ---------------------------------------------------------------------------
-local OPTION_GROUPS = {
-  { title = "UI_OPT_AUTOMATION", checks = { { "autoQuest", "UI_OPT_AUTOQUEST" }, { "autoReward", "UI_OPT_AUTOREWARD" },
-    { "upgradePopup", "UI_OPT_UPGRADE" }, { "sellJunk", "UI_OPT_SELLJUNK" },
-    { "tracker.autoTarget", "UI_OPT_AUTOTARGET" }, { "trainerAlert", "UI_OPT_TRAINER" },
-    { "talentAlert", "UI_OPT_TALENTS" } }, rewardRole = true },
-  { title = "UI_OPT_ROUTE", checks = { { "dungeonQuests", "UI_OPT_DUNGEON" },
-    { "dungeonSuggest", "DUNGEON_OPT_SUGGEST" }, { "zoneMode", "ZONE_OPT" } } },
-  { title = "UI_OPT_DISPLAY", checks = { { "nameplates", "UI_OPT_NAMEPLATES" },
-    { "objectGlow", "UI_OPT_OBJECTGLOW" }, { "questItemButton", "UI_OPT_QUESTITEM" }, { "tracker.locked", "UI_OPT_LOCKED" },
-    { "tracker.showMobs", "UI_OPT_SHOWMOBS" }, { "mapPins", "MAP_OPT_PINS" }, { "minimapButton", "MINIMAP_OPT" } },
-    scale = true },
-  { title = "COMFORT_OPT_TITLE", checks = { { "autoFly", "COMFORT_OPT_AUTOFLY" },
-    { "hearthHints", "COMFORT_OPT_HEARTH" }, { "dangerAlert", "COMFORT_OPT_DANGER" },
-    { "supplyReminders", "COMFORT_OPT_SUPPLIES" }, { "showXPRate", "COMFORT_OPT_XPRATE" } } },
-  { title = "UI_OPT_TOOLS", checks = { { "telemetry", "UI_OPT_TELEMETRY" }, { "versionCheck", "VERSION_OPT" } }, tools = true },
-}
-local SCALE_MIN, SCALE_MAX, SCALE_STEP = 0.6, 1.6, 0.1
-
-local checkSeq = 0
-local function newCheck(parent, path, label)
-  checkSeq = checkSeq + 1
-  local cb = CreateFrame("CheckButton", "QuestifyJournalCheck" .. checkSeq, parent, "UICheckButtonTemplate")
-  cb:SetSize(26, 26)
-  local text = cb:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-  text:SetPoint("LEFT", cb, "RIGHT", 2, 1)
-  text:SetWidth(CLASS_W - 40)
-  text:SetJustifyH("LEFT")
-  text:SetText(label)
-  cb.label, cb.path = text, path
-  cb:SetScript("OnClick", safe(function(self)
-    local on = self:GetChecked() and true or false
-    playSound(on and "IG_MAINMENU_OPTION_CHECKBOX_ON" or "IG_MAINMENU_OPTION_CHECKBOX_OFF")
-    Q.Settings:Set(self.path, on)
-  end))
-  return cb
-end
-
-local function scaleValue()
-  return tonumber(Q.Settings:Get("tracker.scale")) or 1
-end
-
-local function changeScale(delta)
-  local v = Q.Util.Round(scaleValue() + delta, 2)
-  v = math.max(SCALE_MIN, math.min(SCALE_MAX, v))
-  Q.Settings:Set("tracker.scale", v)
-end
-
-local function resetChapter()
-  local guide = Q.Progress:Guide()
-  if not (guide and Q.char) then return end
-  -- ResetGuide (flux A) efface aussi les validations de position de la session.
-  if Q.Progress.ResetGuide then
-    Q.Progress:ResetGuide(guide.id)
-    Q:Print(L.UI_OPT_RESET_DONE, guide.title or guide.id)
-    return
-  end
-  local prefix = "g:" .. guide.id .. ":"
-  for _, t in ipairs({ Q.char.manual or {}, Q.char.skipped or {} }) do
-    local keys = {}
-    for k in pairs(t) do
-      if type(k) == "string" and k:sub(1, #prefix) == prefix then keys[#keys + 1] = k end
-    end
-    for _, k in ipairs(keys) do t[k] = nil end
-  end
-  if Q.Progress.Invalidate then Q.Progress.Invalidate() end
-  Q.Progress:Update()
-  Q:Print(L.UI_OPT_RESET_DONE, guide.title or guide.id)
-end
-
--- Texte des mesures, ou un message si le module n'est pas là.
-local function exportText()
-  local tm = Q.Telemetry
-  if tm and tm.Export then
-    local ok, s = pcall(tm.Export, tm)
-    if ok and type(s) == "string" then return s end
-    if not ok then Q:ReportError(s) end
-  end
-  return L.UI_TELEMETRY_UNAVAILABLE
-end
-
 function Journal:ShowExport()
-  self:ShowTab("options")
-  local box = self.exportBox
-  box.value = exportText()
-  box:SetText(box.value)
-  box:Show()
-  self.exportHint:Show()
-  box:SetFocus()
-  box:HighlightText()
-end
-
-function Journal:BuildOptions(parent)
-  -- options dans une liste défilante : elles ne tiennent plus toutes dans la hauteur du journal
-  local scroll, panel = newScroll(parent, "QuestifyJournalOptionsScroll", CLASS_W, LIST_H + 20)
-  scroll:SetPoint("TOPLEFT", parent, "TOPLEFT", 0, 0)
-  self.optionsScroll, self.optionsChild = scroll, panel
-  local y = 4
-  for _, group in ipairs(OPTION_GROUPS) do
-    local h = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    h:SetPoint("TOPLEFT", panel, "TOPLEFT", 6, -y)
-    h:SetText(L[group.title])
-    y = y + 18
-    for _, def in ipairs(group.checks) do
-      local cb = newCheck(panel, def[1], L[def[2]])
-      cb:SetPoint("TOPLEFT", panel, "TOPLEFT", 10, -y)
-      self.checks[def[1]] = cb
-      y = y + 24
-    end
-    if group.rewardRole then
-      -- Profil de récompense : bouton qui fait défiler les profils de la classe (rien si un seul).
-      local b = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-      b:SetSize(CLASS_W - 40, 22)
-      b:SetPoint("TOPLEFT", panel, "TOPLEFT", 14, -y - 2)
-      b:SetScript("OnClick", safe(function()
-        local Rw = Q.Rewards
-        if not Rw then return end
-        playSound("IG_MAINMENU_OPTION_CHECKBOX_ON")
-        Rw:SetRole(Rw:NextRole(Rw:Role()))
-      end))
-      self.rewardRoleButton = b
-      y = y + 28
-    end
-    if group.scale then
-      local down = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-      down:SetSize(26, 22)
-      down:SetPoint("TOPLEFT", panel, "TOPLEFT", 14, -y - 2)
-      down:SetText("-")
-      down:SetScript("OnClick", safe(function() changeScale(-SCALE_STEP) end))
-      local up = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-      up:SetSize(26, 22)
-      up:SetPoint("LEFT", down, "RIGHT", 4, 0)
-      up:SetText("+")
-      up:SetScript("OnClick", safe(function() changeScale(SCALE_STEP) end))
-      local txt = panel:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-      txt:SetPoint("LEFT", up, "RIGHT", 8, 0)
-      self.scaleDown, self.scaleUp, self.scaleText = down, up, txt
-      y = y + 28
-    end
-    if group.tools then
-      y = y + 4
-      local function toolButton(label, width, onClick)
-        local b = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-        b:SetSize(width, 22)
-        b:SetText(label)
-        b:SetScript("OnClick", safe(onClick))
-        return b
-      end
-      self.wizardButton = toolButton(L.UI_OPT_WIZARD, 200, function()
-        if Q.UI.Wizard then Q.UI.Wizard:Show() end
-      end)
-      self.wizardButton:SetPoint("TOPLEFT", panel, "TOPLEFT", 12, -y)
-      self.resetButton = toolButton(L.UI_OPT_RESET_CHAPTER, 250, resetChapter)
-      self.resetButton:SetPoint("LEFT", self.wizardButton, "RIGHT", 8, 0)
-      y = y + 28
-      self.profButton = toolButton(L.UI_OPT_PROFESSIONS, 200, function()
-        if Q.UI.ProfessionPicker then Q.UI.ProfessionPicker:Show() end
-      end)
-      self.profButton:SetPoint("TOPLEFT", panel, "TOPLEFT", 12, -y)
-      self.talentButton = toolButton(L.UI_OPT_TALENT_BUILD, 250, function()
-        if Q.UI.TalentPicker then Q.UI.TalentPicker:Show() end
-      end)
-      self.talentButton:SetPoint("LEFT", self.profButton, "RIGHT", 8, 0)
-      y = y + 28
-      self.exportButton = toolButton(L.UI_OPT_EXPORT, 200, function() Journal:ShowExport() end)
-      self.exportButton:SetPoint("TOPLEFT", panel, "TOPLEFT", 12, -y)
-      self.reportButton = toolButton(L.REPORT_BUTTON, 200, function()
-        if Q.UI.Report then Q.UI.Report:Show() end
-      end)
-      self.reportButton:SetPoint("LEFT", self.exportButton, "RIGHT", 8, 0)
-      y = y + 30
-      local box = CreateFrame("EditBox", "QuestifyJournalExportBox", panel, "InputBoxTemplate")
-      box:SetSize(CLASS_W - 20, 20)
-      box:SetPoint("TOPLEFT", panel, "TOPLEFT", 18, -y)
-      box:SetAutoFocus(false)
-      box:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
-      box:SetScript("OnEditFocusGained", function(self) self:HighlightText() end)
-      -- Texte en lecture seule : toute frappe remet le texte exporté.
-      box:SetScript("OnTextChanged", function(self, userInput)
-        if userInput and self.value then self:SetText(self.value); self:HighlightText() end
-      end)
-      box:Hide()
-      self.exportBox = box
-      local hint = panel:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
-      hint:SetPoint("TOPLEFT", box, "BOTTOMLEFT", -4, -4)
-      hint:SetText(L.UI_OPT_EXPORT_HINT)
-      hint:Hide()
-      self.exportHint = hint
-      y = y + 40
-    end
-    y = y + 8
-  end
-  panel:SetHeight(y)
-end
-
-function Journal:RefreshOptions()
-  if not self.frame then return end
-  for path, cb in pairs(self.checks) do
-    cb:SetChecked(Q.Settings:Get(path) == true)
-  end
-  local rb, Rw = self.rewardRoleButton, Q.Rewards
-  if rb and Rw then
-    local classFile = Q.Player and Q.Player.classFile
-    if Rw:HasChoice(classFile) then
-      rb:SetText(string.format(L.UI_OPT_REWARD_ROLE, Rw:RoleLabel(Rw:Role(classFile), classFile)))
-      rb:Show()
-    else
-      rb:Hide()
-    end
-  end
-  if self.scaleText then
-    self.scaleText:SetFormattedText(L.UI_OPT_SCALE, math.floor(scaleValue() * 100 + 0.5))
-  end
+  if Q.UI.Options then return Q.UI.Options:ShowTelemetryExport() end
 end
 
 ---------------------------------------------------------------------------
@@ -977,4 +779,3 @@ Q:On("GUIDE_CHANGED", function() refreshIfShown("route", true) end)
 Q:On("STEP_CHANGED", function() refreshIfShown("route", true) end)
 Q:On("CLASSQUESTS_CHANGED", function() refreshIfShown("class") end)
 Q:On("DUNGEONS_CHANGED", function() refreshIfShown("class") end)
-Q:On("SETTINGS_CHANGED", function() refreshIfShown("options") end)

@@ -4,7 +4,7 @@ local addonName, Q = ...
 --   /qf            ouvre ou ferme le journal
 --   /qf skip       passe l'étape courante
 --   /qf back       rouvre l'étape précédente
---   /qf options    journal, onglet Options
+--   /qf options    fenêtre d'options (/qf options <texte> : avec cette recherche)
 --   /qf wizard     assistant de navigation
 --   /qf export     mesures de temps, prêtes à copier
 --   /qf debug      messages de débogage (QuestifyDB.debug)
@@ -74,9 +74,11 @@ COMMANDS.back = function()
   if not Q.Progress:Back() then Q:Print(L.UI_SLASH_NO_BACK) end
 end
 
-COMMANDS.options = function()
-  local J = journal()
-  if J then J:ShowTab("options") end
+COMMANDS.options = function(rest)
+  local O = Q.UI and Q.UI.Options
+  if not O then return end
+  O:Open()
+  if rest and rest ~= "" then O:SetSearch(rest) end
 end
 COMMANDS.config = COMMANDS.options
 
@@ -85,9 +87,9 @@ COMMANDS.wizard = function()
 end
 
 COMMANDS.export = function()
-  local J = journal()
-  if J then
-    J:ShowExport()
+  local O = Q.UI and Q.UI.Options
+  if O then
+    O:ShowTelemetryExport()
     Q:Print(L.UI_SLASH_EXPORTED)
   end
 end
@@ -106,7 +108,7 @@ COMMANDS.talents = function()
   if n > 0 then Q:Print(L.UI_SLASH_TALENTS_DUMPED, n) end
 end
 
--- Réglages rapides du suivi (UI/Themes.lua), en attendant la fenêtre d'options.
+-- Réglages rapides du suivi (UI/Themes.lua), aussi dans la fenêtre d'options (section Thème).
 local function themeList()
   local parts = {}
   for _, th in ipairs(Q.Themes:List()) do parts[#parts + 1] = th.key .. " (" .. th.label .. ")" end

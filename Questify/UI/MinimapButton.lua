@@ -9,7 +9,7 @@ local addonName, Q = ...
 --   Clic gauche : menu des choix rapides (MenuUtil.CreateContextMenu de Blizzard_Menu, sinon un
 --     petit menu maison) : profil de butin de la classe (le profil actuel coché), quatre
 --     interrupteurs (autoQuest, autoReward, zoneMode, mapPins, par Q.Settings:Set), puis
---     « Options… », « Journal », « Assistant de démarrage », « Signaler un bug ».
+--     « Options… » (fenêtre d'options), « Journal », « Assistant de démarrage », « Signaler un bug ».
 --   Ctrl+clic : assistant de démarrage. Clic droit : journal (ouvre ou ferme).
 -- Option « minimapButton » (cachée si désactivée). Le bouton n'est pas sécurisé : l'afficher ou le
 -- cacher en combat ne pose pas de problème, et rien de protégé n'est appelé.
@@ -185,6 +185,12 @@ function Button:Toggle(path)
   return not on
 end
 
+-- OpenOptions() : fenêtre d'options (UI/Options.lua).
+function Button:OpenOptions()
+  local O = Q.UI.Options
+  if O then O:Open() end
+end
+
 function Button:OpenJournal(tab)
   local J = Q.UI.Journal
   if J then J:ShowTab(tab or "route") end
@@ -233,7 +239,7 @@ function Button:MenuEntries()
   end
   out[#out + 1] = { kind = "divider" }
   out[#out + 1] = { kind = "button", key = "options", text = L.MINIMAP_MENU_OPTIONS,
-    run = function() Button:OpenJournal("options") end }
+    run = function() Button:OpenOptions() end }
   out[#out + 1] = { kind = "button", key = "journal", text = L.MINIMAP_MENU_JOURNAL,
     run = function() Button:OpenJournal("route") end }
   out[#out + 1] = { kind = "button", key = "wizard", text = L.MINIMAP_MENU_WIZARD,

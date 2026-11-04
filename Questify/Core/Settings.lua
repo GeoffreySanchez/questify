@@ -3,7 +3,9 @@ local addonName, Q = ...
 local Settings = {}
 Q.Settings = Settings
 
--- Valeurs par défaut (copiées dans QuestifyDB.settings à l'INIT).
+-- Valeurs par défaut. Les valeurs choisies sont gardées dans le profil actif
+-- (Core/Profiles.lua : QuestifyDB.profiles[nom].settings) ; une valeur absente du profil vaut
+-- sa valeur par défaut. Chaque valeur a son entrée dans Core/OptionsSchema.lua (vérifié par un test).
 Settings.defaults = {
   autoQuest = true,
   autoReward = true,
@@ -33,6 +35,8 @@ Settings.defaults = {
   zoneMode = true,          -- Engine/ZoneMode.lua
   -- Bouton de la minicarte (profil de butin, choix rapides, journal)
   minimapButton = true,     -- UI/MinimapButton.lua
+  -- Proposition du profil de butin de la spécialisation choisie
+  specRolePrompt = true,    -- Automation/SpecRole.lua
 }
 
 local function split(path)
@@ -49,10 +53,19 @@ local function walk(t, parts)
   return t
 end
 
--- Get("nav.display") : valeur enregistrée, sinon valeur par défaut.
+-- Arbre des valeurs enregistrées : celui du profil actif (nil avant le chargement des
+-- SavedVariables).
+function Settings:Store()
+  if not Q.db then return nil end
+  local P = Q.Profiles
+  if P and P.Store then return P:Store() end
+  return nil
+end
+
+-- Get("nav.display") : valeur enregistrée dans le profil actif, sinon valeur par défaut.
 function Settings:Get(path)
   local parts = split(path)
-  local saved = Q.db and Q.db.settings
+  local saved = self:Store()
   if saved then
     local v = walk(saved, parts)
     if v ~= nil then return v end
@@ -60,13 +73,14 @@ function Settings:Get(path)
   return walk(self.defaults, parts)
 end
 
--- Set("nav.display", "tomtom") : enregistre puis envoie "SETTINGS_CHANGED"(path, value).
+-- Set("nav.display", "tomtom") : enregistre dans le profil actif puis envoie
+-- "SETTINGS_CHANGED"(path, value).
 function Settings:Set(path, value)
-  if not Q.db then return end
-  Q.db.settings = Q.db.settings or {}
+  local store = self:Store()
+  if not store then return end
   local parts = split(path)
   if #parts == 0 then return end
-  local t = Q.db.settings
+  local t = store
   for i = 1, #parts - 1 do
     local p = parts[i]
     if type(t[p]) ~= "table" then t[p] = {} end

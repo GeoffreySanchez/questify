@@ -3,6 +3,21 @@
 ## Non publié
 
 ### Français
+- Nouvelle fenêtre d'options (`/qf options`, « Options… » du bouton de la minicarte et du journal, ou Échap > Options > AddOns > Questify).
+  - Les sections sont à gauche : Route, Navigation, Automatisation, Butin, Classe et donjons, Carte et repères, Suivi, Thème, Confort, Outils, Profils.
+  - Dans chaque section, des catégories, et une icône « i » sur chaque option qui explique ce qu'elle fait.
+  - Une recherche sans accents ni majuscules (« butin », « thème »…) trouve les options de toutes les sections. `/qf options <mot>` l'ouvre directement sur une recherche.
+  - L'onglet Options du journal est remplacé par un bouton « Options… ».
+- Section Thème : aperçu de chaque thème du suivi, et curseur d'opacité du fond de 0 à 100 %.
+- Profils d'options, par compte (profil partagé « Par défaut ») ou par personnage.
+  - Un profil garde toutes les options, la position, la taille, la largeur et le thème du suivi, et le profil de butin de chaque classe.
+  - Boutons Nouveau, Copier depuis…, Supprimer…, Réinitialiser.
+  - Exporter et Importer une chaîne de texte (`QFY1:…`), contrôlée valeur par valeur.
+  - Changer de profil applique tout de suite.
+  - Les options existantes deviennent le profil « Par défaut » ; la progression des personnages ne change pas.
+- Le profil de butin est désormais gardé par classe dans le profil d'options actif. `/qf reset` ne le remet plus à zéro.
+- Nouvelle option « Proposer le profil de butin de la spécialisation quand j'en choisis une » (activée par défaut).
+- Le rapport de bug indique le profil d'options actif.
 - Thèmes du suivi : Parchemin (par défaut), Noir, Transparent, Fondu de gris, et transparence du fond
   réglable (le texte reste opaque) ; `/qf theme <nom>` et `/qf opacity <0-100>`.
 - Bouton de la minicarte (option « Bouton de la minicarte », activée par défaut) : son icône montre le
@@ -113,6 +128,21 @@
 - Carte du monde et minicarte : repères numérotés de l'étape courante et des 5 suivantes (option).
 
 ### English
+- New options window (`/qf options`, "Options…" in the minimap button menu and the journal, or Esc > Options > AddOns > Questify).
+  - Sections on the left: Route, Navigation, Automation, Loot, Class and dungeons, Map and markers, Tracker, Theme, Comfort, Tools, Profiles.
+  - Each section has categories, and each option has an "i" icon that explains what it does.
+  - A search that ignores accents and case ("loot", "theme"…) finds options in every section. `/qf options <word>` opens the window on a search.
+  - The journal's Options tab is replaced by an "Options…" button.
+- Theme section: a preview of each tracker theme, and a background opacity slider from 0 to 100 %.
+- Option profiles, per account (shared "Default" profile) or per character.
+  - A profile holds every option, the tracker position, size, width and theme, and the loot profile of each class.
+  - New, Copy from…, Delete… and Reset buttons.
+  - Export and Import as a text string (`QFY1:…`), checked value by value.
+  - Switching profiles applies everything at once.
+  - Existing options become the "Default" profile; character progress is unchanged.
+- The loot profile is now stored per class in the active option profile. `/qf reset` no longer resets it.
+- New option "Offer the matching loot profile when I pick a specialization" (on by default).
+- The bug report names the active option profile.
 - Tracker themes: Parchment (default), Black, Transparent, Grey fade, with adjustable background
   opacity (text stays opaque); `/qf theme <name>` and `/qf opacity <0-100>`.
 - Minimap button ("Minimap button" option, on by default): its icon shows the quest loot profile.

@@ -27,21 +27,31 @@ return {
     t.eq(#Mock.errors, 0)
   end,
 
-  slash_options_opens_tab = function(t)
+  slash_options_opens_the_options_window = function(t)
     local Q = load()
     qf("options")
-    t.ok(QuestifyJournal:IsShown())
-    t.eq(Q.UI.Journal.tab, "options")
+    t.ok(QuestifyOptions and QuestifyOptions:IsShown(), "options window")
+    t.ok(not (QuestifyJournal and QuestifyJournal:IsShown()), "not the journal")
     qf("options")
-    t.ok(QuestifyJournal:IsShown(), "stays open")
+    t.ok(QuestifyOptions:IsShown(), "stays open")
+    qf("config")
+    t.ok(QuestifyOptions:IsShown(), "alias")
+    -- /qf options <texte> : ouverte sur cette recherche
+    qf("options butin")
+    t.eq(Q.UI.Options.query, "butin")
+    t.ok(Q.UI.Options:Widget("autoReward"):IsShown(), "search result shown")
+    t.eq(#Mock.errors, 0)
   end,
 
   slash_export = function(t)
     local Q = load()
     Ext.fakeTelemetry(Q, "QV1;A:1=3")
     qf("export")
-    t.eq(Q.UI.Journal.tab, "options")
-    t.eq(Q.UI.Journal.exportBox:GetText(), "QV1;A:1=3")
+    t.ok(QuestifyOptions:IsShown())
+    t.eq(Q.UI.Options.section, "tools")
+    local w = Q.UI.Options:Widget("exportTelemetry")
+    t.ok(w.box:IsShown(), "export box open")
+    t.eq(w.box:GetText(), "QV1;A:1=3")
     t.ok(Mock.printed(Q.L.UI_SLASH_EXPORTED))
   end,
 
@@ -87,8 +97,8 @@ return {
       return original(self, id)
     end
     -- « Réinitialiser la progression du chapitre » : chapitre courant seulement
-    Q.UI.Journal:ShowTab("options")
-    Mock.click(Q.UI.Journal.resetButton, "LeftButton")
+    Q.UI.Options:Open("route")
+    Mock.click(Q.UI.Options:Widget("resetChapter").button, "LeftButton")
     t.eq(seen, { "A_DwarfGnome_01" })
     -- /qf reset : toutes les validations de session des chapitres sont effacées
     seen = {}

@@ -1,6 +1,7 @@
 local addonName, Q = ...
 
--- Spécialisation du joueur et profil de butin (Q.Rewards, réglage par personnage Q.char.rewardRole).
+-- Spécialisation du joueur et profil de butin (Q.Rewards, gardé par classe dans le profil
+-- d'options actif). Option specRolePrompt : sans elle, aucune proposition.
 -- Le profil se choisit à la création du personnage (assistant) ; à partir du niveau 10, quand le
 -- joueur choisit une spécialisation dont le profil diffère du sien, une fenêtre propose de passer
 -- au profil de la spécialisation : « Oui » ou « Non, garder <profil actuel> ».
@@ -171,6 +172,8 @@ end
 function SpecRole:Offer()
   local Rw = Q.Rewards
   if not (Q.char and Rw) then return nil end
+  -- option « Proposer le profil de la spécialisation » (Butin > Profil de butin)
+  if Q.Settings:Get("specRolePrompt") == false then return nil end
   local classFile = playerClass()
   if not classFile or not Rw:HasChoice(classFile) then return nil end
   if playerLevel() < self.MIN_LEVEL then return nil end
@@ -384,7 +387,8 @@ Q:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", function() SpecRole:ScheduleCheck
 Q:RegisterEvent("PLAYER_REGEN_DISABLED", function() SpecRole:Suspend() end)
 Q:RegisterEvent("PLAYER_REGEN_ENABLED", function() SpecRole:Resume() end)
 
--- Profil changé ailleurs (bouton de la minicarte, journal) pendant que la fenêtre est ouverte.
+-- Profil changé ailleurs (bouton de la minicarte, options, profil) pendant que la fenêtre est
+-- ouverte, ou proposition désactivée.
 Q:On("SETTINGS_CHANGED", function(path)
-  if path == "rewardRole" and SpecRole.current then SpecRole:Check() end
+  if (path == "rewardRole" or path == "specRolePrompt") and SpecRole.current then SpecRole:Check() end
 end)

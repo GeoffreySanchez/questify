@@ -4,7 +4,7 @@
 local emit = {}
 
 -- Ordre d'écriture des champs nommés d'une étape.
-local FIELD_ORDER = { "obj", "at", "xp", "race", "class", "optional", "dungeon", "note" }
+local FIELD_ORDER = { "obj", "at", "xp", "race", "class", "optional", "dungeon", "node", "note" }
 
 local function num(v)
   if v == math.floor(v) and math.abs(v) < 1e15 then return ("%d"):format(v) end

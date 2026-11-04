@@ -1,8 +1,8 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 48 étapes, niveau final 7.14, ~13032 xp/h, 54 min.
+-- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-04.
+-- Simulation : 48 étapes, niveau final 7.14, ~13031 xp/h, 54 min.
 Q:RegisterGuide({
   id = "H_Tauren_01",
   title = "Camp Narache",
@@ -31,6 +31,7 @@ Q:RegisterGuide({
     { "accept", 99079 }, -- Longwalker Malah (lvl 9, ~780 xp, sim lvl 4)
     { "sethearth", 1412, 45.93, 64.16 }, -- lier la pierre de foyer
     { "turnin", 763, xp = 335 }, -- Rites of the Earthmother (lvl 5, ~335 xp, sim lvl 4)
+    { "accept", 767 }, -- Rite of Vision (lvl 6, ~55 xp, sim lvl 4)
     { "accept", 761 }, -- Swoop Hunting (lvl 6, ~680 xp, sim lvl 4)
     { "accept", 99108 }, -- Sparring Match (lvl 6, ~540 xp, sim lvl 4)
     { "turnin", 99079, xp = 780 }, -- Longwalker Malah (lvl 9, ~780 xp, sim lvl 4)
@@ -39,6 +40,7 @@ Q:RegisterGuide({
     { "hearth", 1412 }, -- pierre de foyer
     { "turnin", 99081, xp = 780 }, -- Grim Tidings (lvl 9, ~780 xp, sim lvl 4)
     { "accept", 99101 }, -- Our Ancient Enemy (lvl 9, ~780 xp, sim lvl 5)
+    { "turnin", 99101, xp = 780 }, -- Our Ancient Enemy (lvl 9, ~780 xp, sim lvl 5)
     { "accept", 743 }, -- Dangers of the Windfury (lvl 8, ~700 xp, sim lvl 5)
     { "complete", 96605, at = { 1412, 46.21, 67.31 } }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 5)
     { "turnin", 96605, xp = 540 }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 5)
@@ -51,8 +53,6 @@ Q:RegisterGuide({
     { "complete", 99108, at = { 1412, 48.67, 63.68 } }, -- Sparring Match (lvl 6, ~540 xp, sim lvl 6)
     { "turnin", 99108, xp = 540 }, -- Sparring Match (lvl 6, ~540 xp, sim lvl 6)
     { "turnin", 761, xp = 680 }, -- Swoop Hunting (lvl 6, ~680 xp, sim lvl 6)
-    { "accept", 767 }, -- Rite of Vision (lvl 6, ~55 xp, sim lvl 6)
-    { "turnin", 99101, xp = 780 }, -- Our Ancient Enemy (lvl 9, ~780 xp, sim lvl 6)
     { "turnin", 743, xp = 700 }, -- Dangers of the Windfury (lvl 8, ~700 xp, sim lvl 6)
     { "accept", 98430 }, -- The Longwalkers (lvl 8, ~0 xp, sim lvl 6)
     { "level", 7, at = { 1412, 32.97, 64.01 }, note = "About 1 mobs here (Palemane Poacher, level 7)" }, -- farm de niveau

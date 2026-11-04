@@ -1,14 +1,14 @@
 # A_Human_01 — Northshire
 
-Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: Human.
+Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: Human.
 
 | Item | Value |
 |---|---|
 | Level band | 1-6 |
-| Simulated level | 1.00 -> 6.25 |
+| Simulated level | 1.00 -> 6.27 |
 | Time | 44 min |
-| XP gained | 8509 |
-| XP/h | 11706 |
+| XP gained | 8571 |
+| XP/h | 11675 |
 | Steps | 52 |
 | Quests turned in | 21 |
 | Hubs | 2 |
@@ -24,13 +24,13 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 2 | 7 | Kobold Camp Cleanup | 2 | 170 | 2 |
 | 3 | 91741 | Nibbled-On Book | 2 | 85 est. | 2 |
 | 4 | 92124 | Book Inventory | 2 | 85 est. | 2 |
-| 5 | 91743 | Rascally Rodents | 2 | 170 est. | 4 |
-| 6 | 18 | Brotherhood of Thieves | 4 | 355 | 4 |
+| 5 | 5261 | Eagan Peltskinner | 2 | 85 | 2 |
+| 6 | 91743 | Rascally Rodents | 2 | 170 est. | 4 |
 | 7 | 15 | Investigate Echo Ridge | 3 | 250 | 4 |
-| 8 | 5261 | Eagan Peltskinner | 2 | 85 | 4 |
-| 9 | 91745 | Mining Consultant | 3 | 250 est. | 5 |
-| 10 | 3903 | Milly Osworth | 4 | 35 | 5 |
-| 11 | 33 | Wolves Across the Border | 2 | 170 | 5 |
+| 8 | 33 | Wolves Across the Border | 2 | 170 | 4 |
+| 9 | 18 | Brotherhood of Thieves | 4 | 355 | 5 |
+| 10 | 91745 | Mining Consultant | 3 | 250 est. | 5 |
+| 11 | 3903 | Milly Osworth | 4 | 35 | 5 |
 | 12 | 91752 | The Big Picture | 3 | 250 est. | 5 |
 | 13 | 21 | Skirmish at Echo Ridge | 5 | 450 | 5 |
 | 14 | 91758 | Follow That Kobold! | 4 | 180 est. | 5 |
@@ -99,37 +99,37 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 1 | A | 783 | A Threat Within | 1429 | 48.2, 42.9 | 40 |  |
 | 2 | T | 783 | A Threat Within | 1429 | 48.9, 41.6 | 40 |  |
 | 3 | A | 7 | Kobold Camp Cleanup | 1429 | 48.9, 41.6 | 0 |  |
-| 4 | O | 7 | Kobold Camp Cleanup | 1429 | 48.8, 36.2 | 125 |  |
-| 5 | A | 91741 | Nibbled-On Book | 1429 | 48.5, 34.6 | 38 |  |
-| 6 | A | 18 | Brotherhood of Thieves | 1429 | 48.2, 42.9 | 193 |  |
-| 7 | A | 5261 | Eagan Peltskinner | 1429 | 48.2, 42.9 | 0 |  |
+| 4 | A | 5261 | Eagan Peltskinner | 1429 | 48.2, 42.9 | 40 |  |
+| 5 | O | 7 | Kobold Camp Cleanup | 1429 | 48.8, 36.2 | 158 |  |
+| 6 | A | 91741 | Nibbled-On Book | 1429 | 48.5, 34.6 | 38 |  |
+| 7 | A | 18 | Brotherhood of Thieves | 1429 | 48.2, 42.9 | 193 |  |
 | 8 | T | 7 | Kobold Camp Cleanup | 1429 | 48.9, 41.6 | 40 |  |
 | 9 | A | 15 | Investigate Echo Ridge | 1429 | 48.9, 41.6 | 0 |  |
 | 10 | T | 91741 | Nibbled-On Book | 1429 | 49.6, 40.4 | 36 |  |
 | 11 | A | 92124 | Book Inventory | 1429 | 49.6, 40.4 | 0 |  |
 | 12 | T | 92124 | Book Inventory | 1429 | 49.5, 40.7 | 7 |  |
 | 13 | A | 91743 | Rascally Rodents | 1429 | 49.6, 40.4 | 7 |  |
-| 14 | O | 15 | Investigate Echo Ridge | 1429 | 48.3, 34.0 | 154 |  |
-| 15 | O | 91743 | Rascally Rodents | 1429 | 48.5, 34.6 | 14 |  |
-| 16 | T | 91743 | Rascally Rodents | 1429 | 49.6, 40.4 | 139 |  |
-| 17 | A | 91745 | Mining Consultant | 1429 | 49.6, 40.4 | 0 |  |
-| 18 | O | 18 | Brotherhood of Thieves | 1429 | 54.0, 47.7 | 226 |  |
-| 19 | T | 18 | Brotherhood of Thieves | 1429 | 48.2, 42.9 | 229 |  |
-| 20 | A | 6 | Bounty on Garrick Padfoot | 1429 | 48.2, 42.9 | 0 |  |
-| 21 | A | 3903 | Milly Osworth | 1429 | 48.2, 42.9 | 0 |  |
-| 22 | T | 15 | Investigate Echo Ridge | 1429 | 48.9, 41.6 | 40 |  |
-| 23 | A | 21 | Skirmish at Echo Ridge | 1429 | 48.9, 41.6 | 0 |  |
-| 24 | T | 5261 | Eagan Peltskinner | 1429 | 48.9, 40.2 | 33 |  |
-| 25 | A | 33 | Wolves Across the Border | 1429 | 48.9, 40.2 | 0 |  |
-| 26 | O | 33 | Wolves Across the Border | 1429 | 47.0, 37.2 | 96 |  |
-| 27 | T | 91745 | Mining Consultant | 1429 | 47.2, 32.2 | 116 |  |
-| 28 | A | 91752 | The Big Picture | 1429 | 47.2, 32.2 | 0 |  |
-| 29 | O | 21 | Skirmish at Echo Ridge | 1429 | 48.9, 28.3 | 105 |  |
-| 30 | O | 91752 | The Big Picture | 1429 | 49.2, 28.0 | 14 |  |
-| 31 | T | 3903 | Milly Osworth | 1429 | 50.7, 39.4 | 267 |  |
-| 32 | A | 3904 | Milly's Harvest | 1429 | 50.7, 39.4 | 0 |  |
-| 33 | T | 33 | Wolves Across the Border | 1429 | 48.9, 40.2 | 63 |  |
-| 34 | T | 91752 | The Big Picture | 1429 | 48.9, 41.6 | 33 |  |
+| 14 | T | 5261 | Eagan Peltskinner | 1429 | 48.9, 40.2 | 23 |  |
+| 15 | A | 33 | Wolves Across the Border | 1429 | 48.9, 40.2 | 0 |  |
+| 16 | O | 15 | Investigate Echo Ridge | 1429 | 48.3, 34.0 | 143 |  |
+| 17 | O | 91743 | Rascally Rodents | 1429 | 48.5, 34.6 | 14 |  |
+| 18 | O | 33 | Wolves Across the Border | 1429 | 47.0, 37.2 | 79 |  |
+| 19 | T | 91743 | Rascally Rodents | 1429 | 49.6, 40.4 | 117 |  |
+| 20 | A | 91745 | Mining Consultant | 1429 | 49.6, 40.4 | 0 |  |
+| 21 | T | 15 | Investigate Echo Ridge | 1429 | 48.9, 41.6 | 36 |  |
+| 22 | A | 21 | Skirmish at Echo Ridge | 1429 | 48.9, 41.6 | 0 |  |
+| 23 | T | 33 | Wolves Across the Border | 1429 | 48.9, 40.2 | 33 |  |
+| 24 | O | 18 | Brotherhood of Thieves | 1429 | 54.0, 47.7 | 246 |  |
+| 25 | T | 18 | Brotherhood of Thieves | 1429 | 48.2, 42.9 | 229 |  |
+| 26 | A | 6 | Bounty on Garrick Padfoot | 1429 | 48.2, 42.9 | 0 |  |
+| 27 | A | 3903 | Milly Osworth | 1429 | 48.2, 42.9 | 0 |  |
+| 28 | T | 91745 | Mining Consultant | 1429 | 47.2, 32.2 | 251 |  |
+| 29 | A | 91752 | The Big Picture | 1429 | 47.2, 32.2 | 0 |  |
+| 30 | O | 21 | Skirmish at Echo Ridge | 1429 | 48.9, 28.3 | 105 |  |
+| 31 | O | 91752 | The Big Picture | 1429 | 49.2, 28.0 | 14 |  |
+| 32 | T | 3903 | Milly Osworth | 1429 | 50.7, 39.4 | 267 |  |
+| 33 | A | 3904 | Milly's Harvest | 1429 | 50.7, 39.4 | 0 |  |
+| 34 | T | 91752 | The Big Picture | 1429 | 48.9, 41.6 | 80 |  |
 | 35 | T | 21 | Skirmish at Echo Ridge | 1429 | 48.9, 41.6 | 0 |  |
 | 36 | A | 96627 | The Adventurer | 1429 | 48.9, 41.6 | 0 |  |
 | 37 | A | 54 | Report to Goldshire | 1429 | 48.9, 41.6 | 0 |  |
@@ -149,7 +149,23 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 51 | T | 91772 | Shhh! We're Hunting Kobolds | 1429 | 42.1, 65.9 | 57 |  |
 | 52 | T | 54 | Report to Goldshire | 1429 | 42.1, 65.9 | 0 |  |
 
-Walking between tasks: 3513 yd (~8 min at 7 yd/s).
+Walking between tasks: 3694 yd (~9 min at 7 yd/s).
+
+## Qualité
+
+Checks of the itinerary (see `tools/routebuilder/quality.lua`): avoidable revisits (a place left,
+then returned to only for accepts or turn-ins possible on the earlier visit), missed pickups
+(within 40 yd), missed passing turn-ins (within 60 yd) and split objective areas (within 120 yd).
+A place counts as left when the route went more than 150 yd away (220 yd for an objective area).
+Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint later in the route),
+`free` (no constraint: a defect).
+
+| Check | Count |
+|---|---|
+| Avoidable revisits | 0 |
+| Missed pickups | 0 |
+| Split areas | 0 |
+| Missed passing turn-ins | 0 |
 
 ## Logistics
 

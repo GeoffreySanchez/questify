@@ -1,14 +1,14 @@
 # H_Undead_01 — Deathknell
 
-Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: Undead.
+Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: Undead.
 
 | Item | Value |
 |---|---|
 | Level band | 1-6 |
 | Simulated level | 1.00 -> 6.03 |
-| Time | 48 min |
+| Time | 49 min |
 | XP gained | 7702 |
-| XP/h | 9530 |
+| XP/h | 9442 |
 | Steps | 38 |
 | Quests turned in | 14 |
 | Hubs | 2 |
@@ -25,11 +25,11 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 3 | 376 | The Damned | 2 | 170 | 3 |
 | 4 | 3901 | Rattling the Rattlecages | 3 | 250 | 4 |
 | 5 | 6395 | Marla's Last Wish | 5 | 450 | 4 |
-| 6 | 98389 | A Light in the Darkness | 4 | 355 est. | 4 |
-| 7 | 380 | Night Web's Hollow | 4 | 355 | 5 |
-| 8 | 381 | The Scarlet Crusade | 4 | 355 | 5 |
-| 9 | 382 | The Red Messenger | 5 | 670 | 5 |
-| 10 | 3902 | Scavenging Deathknell | 3 | 315 | 5 |
+| 6 | 3902 | Scavenging Deathknell | 3 | 315 | 4 |
+| 7 | 98389 | A Light in the Darkness | 4 | 355 est. | 5 |
+| 8 | 380 | Night Web's Hollow | 4 | 355 | 5 |
+| 9 | 381 | The Scarlet Crusade | 4 | 355 | 5 |
+| 10 | 382 | The Red Messenger | 5 | 670 | 5 |
 | 11 | 8 | A Rogue's Deal | 5 | 110 | 5 |
 | 12 | 590 | A Rogue's Deal | 5 | 110 | 5 |
 | 13 | 96656 | The Adventurer | 6 | 135 est. | 5 |
@@ -89,31 +89,31 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 5 | A | 376 | The Damned | 1420 | 30.9, 66.0 | 97 |  |
 | 6 | T | 364 | The Mindless Ones | 1420 | 30.8, 66.2 | 4 |  |
 | 7 | A | 3901 | Rattling the Rattlecages | 1420 | 30.8, 66.2 | 0 |  |
-| 8 | O | 376 | The Damned | 1420 | 35.7, 58.3 | 323 |  |
-| 9 | O | 3901 | Rattling the Rattlecages | 1420 | 33.2, 62.0 | 160 |  |
-| 10 | T | 376 | The Damned | 1420 | 30.9, 66.0 | 160 |  |
-| 11 | A | 6395 | Marla's Last Wish | 1420 | 30.9, 66.0 | 0 |  |
-| 12 | T | 3901 | Rattling the Rattlecages | 1420 | 30.8, 66.2 | 4 |  |
-| 13 | A | 98389 | A Light in the Darkness | 1420 | 31.1, 66.4 | 13 |  |
-| 14 | A | 380 | Night Web's Hollow | 1420 | 32.1, 66.0 | 48 |  |
-| 15 | A | 3902 | Scavenging Deathknell | 1420 | 31.6, 65.6 | 27 |  |
-| 16 | O | 6395 | Marla's Last Wish | 1420 | 31.2, 65.1 | 25 |  |
-| 17 | O | 380 | Night Web's Hollow | 1420 | 28.4, 58.1 | 245 |  |
-| 18 | O | 98389 | A Light in the Darkness | 1420 | 26.6, 59.7 | 94 |  |
-| 19 | T | 6395 | Marla's Last Wish | 1420 | 30.9, 66.0 | 270 |  |
-| 20 | T | 98389 | A Light in the Darkness | 1420 | 31.1, 66.4 | 15 |  |
-| 21 | T | 380 | Night Web's Hollow | 1420 | 32.1, 66.0 | 48 |  |
-| 22 | A | 381 | The Scarlet Crusade | 1420 | 32.1, 66.0 | 0 |  |
-| 23 | O | 381 | The Scarlet Crusade | 1420 | 37.5, 67.5 | 246 |  |
-| 24 | O | 3902 | Scavenging Deathknell | 1420 | 33.0, 64.3 | 223 |  |
-| 25 | T | 381 | The Scarlet Crusade | 1420 | 32.1, 66.0 | 65 |  |
-| 26 | A | 382 | The Red Messenger | 1420 | 32.1, 66.0 | 0 |  |
-| 27 | O | 382 | The Red Messenger | 1420 | 36.6, 68.5 | 213 |  |
-| 28 | T | 382 | The Red Messenger | 1420 | 32.1, 66.0 | 213 |  |
-| 29 | A | 383 | Vital Intelligence | 1420 | 32.1, 66.0 | 0 |  |
-| 30 | A | 96656 | The Adventurer | 1420 | 32.1, 66.0 | 0 |  |
-| 31 | T | 3902 | Scavenging Deathknell | 1420 | 31.6, 65.6 | 27 |  |
-| 32 | A | 8 | A Rogue's Deal | 1420 | 38.2, 56.8 | 399 |  |
+| 8 | A | 98389 | A Light in the Darkness | 1420 | 31.1, 66.4 | 13 |  |
+| 9 | O | 376 | The Damned | 1420 | 35.7, 58.3 | 320 |  |
+| 10 | O | 3901 | Rattling the Rattlecages | 1420 | 33.2, 62.0 | 160 |  |
+| 11 | T | 376 | The Damned | 1420 | 30.9, 66.0 | 160 |  |
+| 12 | A | 6395 | Marla's Last Wish | 1420 | 30.9, 66.0 | 0 |  |
+| 13 | T | 3901 | Rattling the Rattlecages | 1420 | 30.8, 66.2 | 4 |  |
+| 14 | A | 3902 | Scavenging Deathknell | 1420 | 31.6, 65.6 | 39 |  |
+| 15 | A | 380 | Night Web's Hollow | 1420 | 32.1, 66.0 | 27 |  |
+| 16 | O | 6395 | Marla's Last Wish | 1420 | 31.2, 65.1 | 52 |  |
+| 17 | T | 6395 | Marla's Last Wish | 1420 | 30.9, 66.0 | 32 |  |
+| 18 | O | 3902 | Scavenging Deathknell | 1420 | 33.0, 64.3 | 111 |  |
+| 19 | T | 3902 | Scavenging Deathknell | 1420 | 31.6, 65.6 | 75 |  |
+| 20 | O | 98389 | A Light in the Darkness | 1420 | 26.6, 59.7 | 286 |  |
+| 21 | O | 380 | Night Web's Hollow | 1420 | 28.4, 58.1 | 94 |  |
+| 22 | T | 98389 | A Light in the Darkness | 1420 | 31.1, 66.4 | 278 |  |
+| 23 | T | 380 | Night Web's Hollow | 1420 | 32.1, 66.0 | 48 |  |
+| 24 | A | 381 | The Scarlet Crusade | 1420 | 32.1, 66.0 | 0 |  |
+| 25 | O | 381 | The Scarlet Crusade | 1420 | 37.5, 67.5 | 246 |  |
+| 26 | T | 381 | The Scarlet Crusade | 1420 | 32.1, 66.0 | 246 |  |
+| 27 | A | 382 | The Red Messenger | 1420 | 32.1, 66.0 | 0 |  |
+| 28 | O | 382 | The Red Messenger | 1420 | 36.6, 68.5 | 213 |  |
+| 29 | T | 382 | The Red Messenger | 1420 | 32.1, 66.0 | 213 |  |
+| 30 | A | 383 | Vital Intelligence | 1420 | 32.1, 66.0 | 0 |  |
+| 31 | A | 96656 | The Adventurer | 1420 | 32.1, 66.0 | 0 |  |
+| 32 | A | 8 | A Rogue's Deal | 1420 | 38.2, 56.8 | 390 |  |
 | 33 | T | 8 | A Rogue's Deal | 1420 | 61.7, 52.0 | 1071 |  |
 | 34 | A | 590 | A Rogue's Deal | 1420 | 38.2, 56.8 | 1071 | near #32 (went 1071 yd away) |
 | 35 | O | 590 | A Rogue's Deal | 1420 | 38.2, 56.8 | 0 | near #32 (went 1071 yd away) |
@@ -121,7 +121,23 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 37 | T | 96656 | The Adventurer | 1420 | 57.3, 55.5 | 861 |  |
 | 38 | T | 383 | Vital Intelligence | 1420 | 60.6, 51.8 | 187 | near #33 (went 1021 yd away) |
 
-Walking between tasks: 6556 yd (~16 min at 7 yd/s).
+Walking between tasks: 6746 yd (~16 min at 7 yd/s).
+
+## Qualité
+
+Checks of the itinerary (see `tools/routebuilder/quality.lua`): avoidable revisits (a place left,
+then returned to only for accepts or turn-ins possible on the earlier visit), missed pickups
+(within 40 yd), missed passing turn-ins (within 60 yd) and split objective areas (within 120 yd).
+A place counts as left when the route went more than 150 yd away (220 yd for an objective area).
+Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint later in the route),
+`free` (no constraint: a defect).
+
+| Check | Count |
+|---|---|
+| Avoidable revisits | 0 |
+| Missed pickups | 0 |
+| Split areas | 0 |
+| Missed passing turn-ins | 0 |
 
 ## Logistics
 

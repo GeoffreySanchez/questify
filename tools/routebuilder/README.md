@@ -40,7 +40,8 @@ luajit tools/routebuilder/tests/run.lua [pattern]
 A_DwarfGnome_01    steps  40  quests  15  dropped   1  lvl  1.00 ->  6.01  xp/h  12569  36 min
 ```
 
-A chapter whose simulated end level is below `maxLevel - 1` is flagged `[below maxLevel-1]`.
+A chapter whose simulated end level is below `maxLevel - 1` is flagged `[below maxLevel-1]`. Each
+line ends with the quality counts `quality R<revisits> P<pickups> A<areas> T<turn-ins>` (see below).
 
 `Guides.xml` is rewritten with every guide file present under `--out` (plan order, then unknown
 files alphabetically), then `ClassQuestData.lua` last. Using `--only` therefore never drops the
@@ -54,7 +55,8 @@ other chapters from the XML.
 | `world.lua` | World geometry from `UiMapAssignment` bounds (map x grows towards world −Y, y towards world −X, checked against the Ironforge flight master), distances, taxi graph (`TaxiNodes`, `TaxiPath`) with Dijkstra flight times. |
 | `xp.lua` | Classic XP rules: level table, quest XP modifier, mob XP with zero difference and gray level, estimate for quests without a known value. |
 | `sim.lua` | Chapter simulation: candidates, objective sites, hubs, value / time ratios, drops, tasks, logistics (fp, sethearth, hearth, fly, level), XP simulation. |
-| `order.lua` | Task ordering: nearest feasible neighbour, then or-opt, with precedence, log cap and final tasks. |
+| `order.lua` | Task ordering: nearest feasible neighbour, then or-opt, with precedence, log cap and final tasks, then the hub / area sweep. |
+| `quality.lua` | Itinerary checker: avoidable revisits, missed pickups, split objective areas, missed passing turn-ins. |
 | `plans.lua` | Chapter plans per faction (spec § 6). |
 | `emit.lua` | Guide file writer (spec § 5.2 format, one step per line with a comment). |
 | `classquests.lua` | Class quest chains (level ≤ 30) for `ClassQuestData.lua`. |
@@ -84,9 +86,12 @@ other chapters from the XML.
   force = { [id] = true }, drop = { [id] = "reason" },
   levelSlack = 1,                        -- levels of overshoot allowed above maxLevel (XP budget)
   logCap = 20,
-  arrive = { steps = { { "boat", 1437, 4.6, 57.1, note = "..." } }, time = 300 },
+  strictLevel = true,                    -- grinding before a level-gated task counts in the ordering
+  arrive = { via = { 1453, 24.1, 55.4 }, steps = { { "boat", 1453, 24.1, 55.4, note = "..." } }, time = 300 },
                                          -- steps inserted when the character comes from another
-                                         -- continent or more than 1500 yd away
+                                         -- continent or more than 1500 yd away; `via` (optional):
+                                         -- computed travel (flights, tram) to that point first;
+                                         -- `time` covers the fixed steps only
 }
 ```
 
@@ -256,6 +261,8 @@ finisher spawn, objectives without a position, missing flight masters).
 | `far` | Distance in yards beyond which a quest is dropped as `far` (default 900). |
 | `dungeonReqSlack` | Dungeon quests accepted up to required level `maxLevel + n`. |
 | `dungeonLevelHigh` | Dungeon quests accepted up to quest level `maxLevel + n`. |
+| `strictLevel` | Ordering counts the grinding before a level-gated task (see below). |
+| `arrive.via` | Point reached by computed travel before the fixed `arrive` steps. |
 
 ### Reports
 
@@ -268,6 +275,67 @@ an earlier task after going more than 600 yd away), plus the total walking time.
 - Where the Forever data has no links:
   - a handoff (the next id, up to +3, starts at the previous quest's finisher) links the quests;
   - quests with the same title and the same race mask form one chain, ordered by level.
+
+## Changes from the player review (2026-11-04)
+
+### Level-gated tasks in the ordering (`strictLevel`)
+
+When the nearest-neighbour pass reaches a dead end (every remaining task needs a higher level), the
+blocked task with the lowest level is marked `needLevel`: the ordering assumes the character grinds
+to its level there. Before this change, or-opt and annealing could then move that task anywhere for
+free, for example from level 15 back to level 13, because only the walking time counted. The walk
+then found more than `SAFE_GATE_GRIND` mobs to farm and did the objective 2 to 4 levels too low.
+
+With `strictLevel = true` on a plan, `sim.lua` passes `grindCost(level, xp, target)` to
+`order.build` (mobs of the character's level, `KILL_TIME` each, as `sim.grindTo`). The cost of a
+sequence is then walking time plus the grinding of its `needLevel` tasks, so a gated task is only
+moved earlier when the walk saved is worth the extra grinding. Moves of a segment that holds a
+`needLevel` task are tried even when they lengthen the walk (they can save grinding). Without
+`strictLevel`, the ordering is unchanged.
+
+It is on for `A_DwarfGnome_03` only. On the Dwarf path it removes most objectives done 3 to 4
+levels too low in Loch Modan for a few minutes of grinding. On every chapter, it would add about 1 h
+of simulated time over the Dwarf path (more walking in the trunk), and on `A_DwarfGnome_02` it adds
+15 min for no safety gain.
+
+### Hub sweep, one pass per area, turn-in in passing (`order.lua` step 5)
+
+After the optimisation passes, the ordering walks the sequence; at each task it pulls in, right after
+it, every later task done at the same place, when the sequence stays feasible (precedence, log cap,
+levels, and no extra grinding with `strictLevel`):
+
+- accepts and flight paths within `SWEEP_HUB` (40 yd): everything a hub gives, including quests
+  unlocked by a turn-in made there;
+- turn-ins within `SWEEP_TURNIN` (60 yd): a finished quest is turned in when the route passes by;
+- objectives and item-started accepts within `SWEEP_AREA` (120 yd) of an objective: one pass per area.
+
+Inside an objective area, tasks are then ordered objects first, named or elite mobs next, regular mobs
+last (`t.cat` 1, 2, 3), keeping precedence. `ROUTEBUILDER_NO_SWEEP=1` turns the sweep off (comparison).
+
+### Locked chests (`sim.keyFor`)
+
+QuestieDB has no lock data. A start item looted from an object named `<Name>'s Chest` (Box, Strongbox,
+Footlocker, Coffer, Lockbox, Trunk, Cache, Crate, Safe) whose key `<Name>'s Key` drops from NPCs is
+treated as locked: the accept waits for the objective of another quest that kills the key holder, and
+its note says so. Example: 830 "The Admiral's Orders" (Benedict's Chest) after Lieutenant Benedict
+(784 "Vanquish the Betrayers"), in `H_OrcTroll_02`.
+
+### Quality checker (`quality.lua`)
+
+Run on the walked itinerary of each chapter (simulated race). For each task, it looks for an earlier
+pass within the same radius as the sweep, with the route gone more than 150 yd away in between
+(220 yd for an objective area), where the task was already possible (precedence done, level reached,
+log not full for an accept). It reports missed pickups, missed passing turn-ins, split areas, and
+avoidable revisits (a return made only of such accepts and turn-ins). Each item carries the reason the
+ordering kept it: `log cap`, `level` or `chain` (moving it breaks a constraint later in the route), or
+`free` (a defect). Reports get a "Qualité" section; the build prints the counts.
+
+### Flight node on `fly` steps
+
+Every `fly` step has `node = <TaxiNodes.ID>` (the `nodeID` of `C_TaxiMap`) of the destination flight
+master, written before `note`. Hand-written `fly` steps of a plan's `arrive` get the node whose
+name matches their `note`. `tools/validate_guides.lua` fails on a `fly` step without `node`, with an
+unknown node, or with a node that is not on the step's destination map.
 
 ## Known limits
 

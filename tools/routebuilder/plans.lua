@@ -6,7 +6,9 @@
 --   dungeons = {nom,...}|nil      -- quêtes de donjon prises au passage, en `optional`
 --   optional = { [questId] = "nom du donjon" }|nil  -- quêtes forcées, marquées optional + dungeon
 --   force = { [questId] = true }|nil, drop = { [questId] = "raison" }|nil
---   arrive = { steps = {...}, time = s }|nil  -- étapes d'arrivée quand on vient d'un autre continent
+--   arrive = { via = {mapId, x, y}|nil, steps = {...}, time = s }|nil  -- étapes d'arrivée quand on vient
+--                                    -- d'un autre continent ou de plus de 1500 yd (via : trajet calculé
+--                                    -- jusqu'à ce point avant les étapes fixes ; time = durée des étapes fixes)
 --   flightPaths = { "<nom TaxiNodes>", ... }|nil  -- points de vol à prendre dans ce chapitre (détour planifié)
 --   levelSlack = n|nil               -- niveaux de dépassement tolérés au-delà de maxLevel (défaut 1)
 --   levelBelow = n|nil               -- quêtes acceptées jusqu'à minLevel - n (défaut 3) : têtes de chaîne basses
@@ -14,6 +16,8 @@
 --   dungeonReqSlack = n|nil          -- quêtes de donjon prises jusqu'au niveau requis maxLevel + n (défaut 0)
 --   dungeonLevelHigh = n|nil         -- quêtes de donjon prises jusqu'au niveau de quête maxLevel + n
 --   logCap = n|nil                   -- plafond du journal (défaut 20)
+--   strictLevel = true|nil           -- farm des tâches bloquées par le niveau compté dans l'ordonnancement
+--                                    -- (objectifs jamais avancés vers un niveau plus bas ; plus de marche)
 --   next = id | nextByRace = { [raceKey] = id } }
 --
 -- Identifiants : A_<Start>_<NN>, A_<NN> (tronc commun), H_<Start>_<NN>, H_<NN>, A_Skyborne_<NN>, H_Skyborne_<NN>.
@@ -47,12 +51,15 @@ plans.Alliance = {
   {
     id = "A_DwarfGnome_03", title = "Loch Modan", faction = "Alliance", races = { "Dwarf", "Gnome" },
     zones = { LOCH_MODAN, IRONFORGE }, endZones = { STORMWIND },
-    minLevel = 11, maxLevel = 14, entry = { LOCH_MODAN, 33.9, 51.0 }, next = "A_DwarfGnome_04",
+    minLevel = 11, maxLevel = 14, entry = { LOCH_MODAN, 33.9, 51.0 }, next = "A_DwarfGnome_04", strictLevel = true,
     flightPaths = { "Thelsamar, Loch Modan" },
   },
   {
     id = "A_DwarfGnome_04", title = "Westfall", faction = "Alliance", races = { "Dwarf", "Gnome" },
-    zones = { WESTFALL }, endZones = { STORMWIND }, minLevel = 14, maxLevel = 16, levelSlack = 0,
+    -- Quartier des Nains de Stormwind (sortie du tram) : quêtes des Mortemines prises au passage
+    -- (Wilder Thistlenettle, Shoni the Shilent) ; second rectangle : maître de vol
+    zones = { WESTFALL, STORMWIND }, bounds = { [STORMWIND] = { { 62, 33, 71, 42 }, { 69, 70, 74, 75 } } }, endZones = { STORMWIND },
+    minLevel = 14, maxLevel = 16, levelSlack = 1, dungeonLevelHigh = 4,
     entry = { WESTFALL, 56.3, 47.5 }, next = "A_01",
     flightPaths = { "Stormwind, Elwynn", "Sentinel Hill, Westfall" },
     dungeons = { "The Deadmines" },
@@ -108,7 +115,7 @@ plans.Alliance = {
   -- et Les Paluns sont faites en une fois, avant les Contreforts d'Hautebrande (bateau Menethil -> Southshore).
   {
     id = "A_01", title = "Darkshore", faction = "Alliance", zones = { DARKSHORE },
-    minLevel = 16, maxLevel = 19, entry = { DARKSHORE, 37.0, 44.0 }, next = "A_02",
+    minLevel = 16, maxLevel = 19, entry = { DARKSHORE, 37.0, 44.0 }, next = "A_02", logCap = 18,
     flightPaths = { "Auberdine, Darkshore" },
     dungeons = { "Blackfathom Deeps" },
   },
@@ -120,20 +127,34 @@ plans.Alliance = {
   },
   {
     id = "A_03", title = "Redridge Mountains and Duskwood", faction = "Alliance", zones = { REDRIDGE, DUSKWOOD },
-    minLevel = 22, maxLevel = 26, levelSlack = 0, entry = { REDRIDGE, 30.6, 59.4 }, next = "A_04",
+    minLevel = 22, maxLevel = 26, levelSlack = 1, far = 1600, entry = { REDRIDGE, 30.6, 59.4 }, next = "A_04",
     flightPaths = { "Lakeshire, Redridge", "Darkshire, Duskwood" },
     dungeons = { "The Stockade" },
+    optional = { [253] = "Group quest: Eliza, level 31 elite" },
   },
   {
     id = "A_04", title = "Wetlands", faction = "Alliance", zones = { WETLANDS },
     minLevel = 26, maxLevel = 29, levelSlack = 0, entry = { WETLANDS, 9.5, 59.7 }, next = "A_05",
     flightPaths = { "Menethil Harbor, Wetlands" },
     dungeons = { "Excavation Site: Wetlands" },
+    optional = { [304] = "Group quest: Balgaras the Foul, level 34 elite",
+                 [474] = "Group quest: Chieftain Nek'rosh, level 32 elite",
+                 [98216] = "Group quest: Goaz Warder, level 32 elite" },
+    -- Les Paluns ne se rejoignent pas à pied depuis Ironforge en ligne droite (montagnes, Dun Algaz) :
+    -- trajet calculé jusqu'au port de Stormwind, puis bateaux Stormwind -> Auberdine -> Menethil.
+    arrive = { via = { STORMWIND, 24.1, 55.4 }, steps = {
+      { "boat", STORMWIND, 24.1, 55.4, note = "Take the boat to Auberdine (Stormwind Harbor)" },
+      { "boat", DARKSHORE, 32.4, 43.8, note = "Take the boat to Menethil Harbor" },
+    }, time = 720 },
   },
   {
     id = "A_05", title = "Hillsbrad Foothills", faction = "Alliance", zones = { HILLSBRAD },
     minLevel = 29, maxLevel = 30, levelSlack = 0, entry = { HILLSBRAD, 49.3, 52.3 },
     flightPaths = { "Southshore, Hillsbrad" },
+    -- bateau Menethil -> Southshore (sinon ligne droite par-dessus la mer)
+    arrive = { via = { WETLANDS, 4.9, 57.3 }, steps = {
+      { "boat", WETLANDS, 4.9, 57.3, note = "Take the boat to Southshore" },
+    }, time = 420 },
     dungeons = { "City of Dalaran", "Excavation Site: Wetlands" },
   },
 }

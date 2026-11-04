@@ -9,6 +9,7 @@
 local xpm = require("xp")
 local orderm = require("order")
 local qdb = require("qdb")
+local quality = require("quality")
 local transport = require("transport")
 
 local sim = {}
@@ -56,6 +57,9 @@ sim.CONST = {
   SAFE_QUEST_ABOVE = 1,   -- niveaux : objectifs faits au plus tôt au niveau de la quête - 1 (jamais orange)
   SAFE_GATE_GRIND = 60,   -- mobs à farmer acceptés pour atteindre le niveau « sûr » d'un objectif (au lieu de le sauter)
   SAFE_MOB_ABOVE = 1,     -- niveaux : monstres à tuer (niveau moyen) au plus 1 niveau au-dessus du personnage
+  SWEEP_HUB = 40,         -- yards : prises et points de vol faits au premier passage à moins de cette distance
+  SWEEP_TURNIN = 60,      -- yards : rendu au passage d'une quête terminée
+  SWEEP_AREA = 120,       -- yards : objectifs d'une même zone faits en un seul passage
   ROUTE_MIN = 90,         -- s : en dessous, marche directe sans chercher de vol ni de liaison
   BONUS_CAP = 900,        -- s, plafond du bonus « quête de transport »
 }
@@ -366,6 +370,28 @@ local function isTalkTarget(ctx, npcId)
   return (n.npcFlags or 0) > 0 or #(n.questStarts or {}) > 0 or #(n.questEnds or {}) > 0 or n.subName ~= nil
 end
 
+-- Clé d'un coffre : objet « <Nom>'s Chest » (Box, Strongbox, Footlocker...) ouvert par l'objet
+-- « <Nom>'s Key » qui tombe de PNJ (QuestieDB n'a pas les serrures : rapprochement par les noms).
+-- Renvoie { item = id, name = nom, npcs = {ids} } ou nil.
+local CONTAINERS = { Chest = true, Box = true, Strongbox = true, Footlocker = true, Coffer = true, Lockbox = true,
+                     Trunk = true, Cache = true, Crate = true, Safe = true }
+function sim.keyFor(D, objId)
+  local o = D.objects[objId]
+  local owner, kind = (o and o.name or ""):match("^(.-)'s%s+(%a+)$")
+  if not owner or not CONTAINERS[kind] then return nil end
+  if not D._itemByName then
+    D._itemByName = {}
+    for _, id in ipairs(qdb.sortedKeys(D.items)) do
+      local it = D.items[id]
+      if it.name and not D._itemByName[it.name] then D._itemByName[it.name] = id end
+    end
+  end
+  local keyId = D._itemByName[owner .. "'s Key"]
+  local key = keyId and D.items[keyId]
+  if not key or #(key.npcDrops or {}) == 0 then return nil end
+  return { item = keyId, name = key.name, npcs = key.npcDrops }
+end
+
 local function npcLevel(D, id)
   local n = D.npcs[id]
   if not n then return 1 end
@@ -393,7 +419,8 @@ local function objectiveSite(ctx, q, o, count, ref, warnings, nearRef)
     end
     local single = (totalSpawns(D, "npc", ids[1]) <= 3) or ((D.npcs[ids[1]] or {}).rank or 0) >= 1
     local n = count or (single and 1 or C.DEFAULT_KILLS)
-    return { pos = pos, dur = n * C.KILL_TIME, kills = { { npcLevel(D, ids[1]), n } }, objs = { o }, spread = spread }
+    return { pos = pos, dur = n * C.KILL_TIME, kills = { { npcLevel(D, ids[1]), n } }, objs = { o }, spread = spread,
+             single = single or nil }
   elseif o.kind == "object" then
     local pos, spread, pts = bestCluster(ctx, pointsOf(ctx, "object", o.id), ref, nearRef)
     if not pos then return nil, "objective object not in zone" end
@@ -437,7 +464,7 @@ local function objectiveSite(ctx, q, o, count, ref, warnings, nearRef)
       local n = count or (single and 1 or C.DEFAULT_ITEMS)
       local kills = single and n or math.ceil(n / rate)
       return { pos = pos, dur = kills * C.KILL_TIME, kills = { { math.floor(mobLevelSum / nMob), kills } },
-               objs = { o }, spread = spread, rate = rate }
+               objs = { o }, spread = spread, rate = rate, single = single or nil }
     end
     local n = count or (nObj <= 2 and 1 or C.DEFAULT_ITEMS)
     return { pos = pos, dur = n * C.OBJECT_TIME + n * spread / C.WALK, kills = {}, objs = { o }, spread = spread }
@@ -523,6 +550,16 @@ local function analyse(ctx, q)
           local rate, lvl = 0, 0
           for _, p in ipairs(chosen) do rate = rate + p.rate; lvl = lvl + (p.npc and npcLevel(D, p.npc) or 0) end
           itemStart = { item = itemId, pos = pos, rate = rate / #chosen, level = math.floor(lvl / #chosen) }
+          -- objet de départ dans un coffre fermé à clé : la clé tombe d'un PNJ à tuer avant
+          for _, p in ipairs(chosen) do
+            if not p.npc then
+              for _, objId in ipairs(it.objectDrops) do
+                local key = sim.keyFor(D, objId)
+                if key then itemStart.key, itemStart.container = key, D.objects[objId].name; break end
+              end
+              break
+            end
+          end
           break
         end
       end
@@ -798,9 +835,25 @@ function sim.chapter(D, W, plan, state, opts)
   local steps = {}
 
   -- arrivée dans le chapitre (bateau, tram, vol...) quand on vient d'un autre continent ou de loin :
-  -- étapes `arrive` du plan si elles existent, sinon trajet calculé (sim.route) jusqu'au point d'entrée
+  -- étapes `arrive` du plan si elles existent, sinon trajet calculé (sim.route) jusqu'au point d'entrée.
+  -- arrive.via = { mapId, x, y } : trajet calculé jusqu'à ce point (quai), puis les étapes fixes.
   if plan.arrive and cur and entryPos and (cur.c ~= entryPos.c or yards(cur, entryPos) > 1500) then
-    for _, s in ipairs(plan.arrive.steps or {}) do steps[#steps + 1] = s end
+    local via = plan.arrive.via and mkPos(W, plan.arrive.via[1], plan.arrive.via[2], plan.arrive.via[3])
+    if via then cur = sim.travel(ctx, steps, cur, via, sim.flightMasters(ctx)) end
+    for _, s in ipairs(plan.arrive.steps or {}) do
+      local step = {}
+      for k, v in pairs(s) do step[k] = v end
+      -- vol écrit à la main : nœud de destination retrouvé par son nom (TaxiNodes)
+      if step[1] == "fly" and not step.node and step.note then
+        for _, id in ipairs(qdb.sortedKeys(W.taxi.nodes)) do
+          if W.taxi.nodes[id].name == step.note then step.node = id; break end
+        end
+        if not step.node then
+          ctx.warnings[#ctx.warnings + 1] = ("arrive: no flight node named %q"):format(step.note)
+        end
+      end
+      steps[#steps + 1] = step
+    end
     state.time = state.time + (plan.arrive.time or 300)
     cur = entryPos
   elseif cur and entryPos and regionOf(cur) ~= regionOf(entryPos) then
@@ -1137,12 +1190,17 @@ function sim.chapter(D, W, plan, state, opts)
       taskOf["A" .. q.id], taskOf["T" .. q.id] = c, c
     else
       local a = addTask({ id = "A" .. q.id, kind = "A", q = q.id, pos = info.A, info = info, after = {},
-        dur = C.QUEST_ACTION + (info.itemStart and (1 / math.max(info.itemStart.rate, 0.05)) * C.KILL_TIME or 0) })
+        dur = C.QUEST_ACTION + (info.itemStart and (1 / math.max(info.itemStart.rate, 0.05)) * C.KILL_TIME or 0),
+        -- prise par un objet ramassé : tâche de zone d'objectifs (objet d'un coffre : catégorie 1)
+        itemStart = info.itemStart and true or nil,
+        cat = info.itemStart and (info.itemStart.level == 0 and 1 or 3) or nil })
       if not info.dungeonOnly then
         local prev = { a.id }
         for k, s in ipairs(info.sites or {}) do
+          -- ordre dans une zone : objets (1), mobs nommés ou élites (2), mobs ordinaires (3)
+          local cat = (#(s.kills or {}) == 0 and not s.talk and not s.vendor) and 1 or (s.single and 2 or 3)
           local o = addTask({ id = "O" .. q.id .. "_" .. k, kind = "O", q = q.id, pos = s.pos, dur = s.dur,
-            info = info, site = s, after = { a.id } })
+            info = info, site = s, after = { a.id }, cat = cat })
           prev[#prev + 1] = o.id
         end
         if not info.carry then
@@ -1203,6 +1261,28 @@ function sim.chapter(D, W, plan, state, opts)
       if nxt and nxt ~= t then addAfter(nxt, t.id) end
     end
   end
+  -- coffre fermé à clé : la prise (objet de départ dans le coffre) attend l'objectif d'une autre quête
+  -- qui tue le porteur de la clé (ex. 830 « The Admiral's Orders » après Lieutenant Benedict, de 784)
+  for _, t in ipairs(tasks) do
+    local key = t.kind == "A" and t.info and t.info.itemStart and t.info.itemStart.key
+    if key then
+      local holder = {}
+      for _, n in ipairs(key.npcs) do holder[n] = true end
+      for _, o in ipairs(tasks) do
+        if (o.kind == "O" or o.kind == "C") and o.q ~= t.q then
+          local sites = o.kind == "O" and { o.site } or o.info.sites or {}
+          for _, site in ipairs(sites) do
+            for _, obj in ipairs(site.objs or {}) do
+              local ids = (obj.kind == "kill" and { obj.id }) or obj.npcIds or {}
+              for _, n in ipairs(ids) do
+                if holder[n] then addAfter(t, o.id); t.info.itemStart.keyTask = o.id end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
 
   -- 6. Ordonnancement (avec le niveau simulé : une quête n'est prise qu'au niveau requis)
   for _, t in ipairs(tasks) do
@@ -1242,10 +1322,32 @@ function sim.chapter(D, W, plan, state, opts)
   for _ in pairs(state.log) do initialLog = initialLog + 1 end
   initialLog = initialLog + (state.logPad or 0) -- journal plus chargé sur un autre parcours de race (tronc)
   local finish = plan.exit and mkPos(W, plan.exit[1], plan.exit[2], plan.exit[3]) or nil
+  -- plan.strictLevel : le farm avant une tâche bloquée par le niveau (needLevel) compte dans le coût de
+  -- l'ordonnancement (mobs du niveau du personnage, KILL_TIME chacun, comme sim.grindTo) ; sinon
+  -- or-opt et recuit la déplacent librement, au risque de la faire 2 à 4 niveaux trop tôt.
+  local grindCost
+  if plan.strictLevel then
+    grindCost = function(level, xp, target)
+      local sec, l, x = 0, level, xp
+      while l < target and xpm.LEVEL_XP[l] do
+        sec = sec + math.max(xpm.LEVEL_XP[l] - x, 0) / math.max(xpm.mobXP(l, l), 1) * C.KILL_TIME
+        l, x = l + 1, 0
+      end
+      return sec
+    end
+  end
   local ordered, orderIssues = orderm.build(tasks, cur, walk, { logCap = ctx.logCap, initialLog = initialLog, finish = finish,
-    levelXP = xpm.LEVEL_XP, level = state.level, xp = state.xp, maxSegment = 6,
+    levelXP = xpm.LEVEL_XP, level = state.level, xp = state.xp, maxSegment = 6, grindCost = grindCost,
+    -- ROUTEBUILDER_NO_SWEEP=1 : sans balayage (comparaison avant / après dans les rapports)
+    sweep = not os.getenv("ROUTEBUILDER_NO_SWEEP")
+      and { hub = C.SWEEP_HUB / C.WALK, turnin = C.SWEEP_TURNIN / C.WALK, area = C.SWEEP_AREA / C.WALK } or nil,
     anneal = ctx.opts.anneal ~= false, seed = sim.seedOf(plan.id), T0 = 200, annealIters = 100 * #tasks * #tasks, annealMax = 1500000 })
   for _, msg in ipairs(orderIssues or {}) do ctx.warnings[#ctx.warnings + 1] = "ordering: " .. msg end
+  -- contraintes de l'ordonnancement, pour expliquer les éléments du contrôle qualité
+  local orderIds = {}
+  for _, t in ipairs(tasks) do orderIds[t.id] = true end
+  local orderOpts = { logCap = ctx.logCap, initialLog = initialLog, ids = orderIds, levelXP = xpm.LEVEL_XP,
+                      level = state.level, xp = state.xp }
 
   -- 7. Pierre de foyer : hub le plus fréquenté, si la route y revient après s'en être éloignée
   local sethearthAt = sim.planSethearth(ctx, ordered, hubs)
@@ -1309,8 +1411,11 @@ function sim.chapter(D, W, plan, state, opts)
     -- itinéraire du rapport : tâche, position, distance depuis la tâche précédente (même région)
     local from = cur
     local legYards = (from and regionOf(from) == regionOf(t.pos)) and yards(from, t.pos) or nil
+    local logNow = state.logPad or 0
+    for _ in pairs(state.log) do logNow = logNow + 1 end
     report.legs[#report.legs + 1] = { kind = t.kind, q = t.q, pos = t.pos, yards = legYards,
-      name = t.info and t.info.q and t.info.q.name or (t.fm and "flight path") or "" }
+      name = t.info and t.info.q and t.info.q.name or (t.fm and "flight path") or "",
+      id = t.id, task = t, level = state.level, log = logNow }
     cur = sim.travel(ctx, steps, cur, t.pos, fms)
     if t.kind == "F" then
       if not state.knownTaxi[t.fm.node] then
@@ -1340,6 +1445,13 @@ function sim.chapter(D, W, plan, state, opts)
           step.at = { t.pos.m, round2(t.pos.x), round2(t.pos.y) }
           local it = D.items[info.itemStart.item]
           step.note = ("Loot %s to start the quest"):format(it and it.name or ("item " .. info.itemStart.item))
+          local key = info.itemStart.key
+          if key then
+            local holder = D.npcs[key.npcs[1]]
+            step.note = ("Open %s with %s (dropped by %s) and loot %s to start the quest"):format(
+              info.itemStart.container or "the chest", key.name, holder and holder.name or "a nearby mob",
+              it and it.name or ("item " .. info.itemStart.item))
+          end
           if counted then for _, k in ipairs(info.kills or {}) do
             if k[1] == info.itemStart.level then for _ = 1, k[2] do xpm.addXP(state, xpm.mobXP(state.level, k[1])) end; break end
           end end
@@ -1439,6 +1551,18 @@ function sim.chapter(D, W, plan, state, opts)
     ctx.grindMobs = (ctx.grindMobs or 0) + n
   end
   report.grindMobs = ctx.grindMobs
+
+  -- contrôle qualité de l'itinéraire (allers-retours évitables)
+  report.quality = quality.check(report.legs, {
+    yards = yards, hub = C.SWEEP_HUB, turnin = C.SWEEP_TURNIN, area = C.SWEEP_AREA, logCap = ctx.logCap,
+    feasible = function(seq, relax)
+      local o = {}
+      for k, v in pairs(orderOpts) do o[k] = v end
+      if relax == "logCap" then o.logCap = (o.logCap or 20) + 100 end
+      if relax == "level" then o.levelXP = nil end
+      return orderm.feasible(seq, o)
+    end,
+  })
 
   -- fin d'un chapitre de départ qui rejoint le tronc ailleurs (autre région : zeppelin, bateau...)
   if opts.exitTo and cur then
@@ -1747,7 +1871,7 @@ function sim.travel(ctx, steps, cur, dest, fms)
         steps[#steps + 1] = { "goto", leg.from.m, round2(leg.from.x), round2(leg.from.y), note = "Flight master" }
       end
       local node = W.taxi.nodes[leg.fm.node]
-      steps[#steps + 1] = { "fly", leg.to.m, note = node and node.name or nil }
+      steps[#steps + 1] = { "fly", leg.to.m, node = leg.fm.node, note = node and node.name or nil }
       state.time = state.time + leg.time
       pos = leg.to
     elseif leg.kind == "link" then

@@ -5,7 +5,8 @@
 -- Chaque violation est affichée « <fichier>:<ligne> <message> » ; code de sortie 1 s'il y en a une.
 --
 -- Contrôles par étape : action valide ; quête connue ; quête éligible pour au moins une race du
--- chapitre (ou de la faction) ; coordonnées 0-100 sur une uiMap connue.
+-- chapitre (ou de la faction) ; coordonnées 0-100 sur une uiMap connue ; étape `fly` avec un `node`
+-- (TaxiNodes.ID) connu et situé sur la carte de destination.
 -- Contrôles par parcours de race (tools/routebuilder/paths.lua, chaque race de chaque chapitre de
 -- départ, en suivant next / nextByRace) : prérequis rendus avant l'accept, journal de 20 quêtes au
 -- plus, complete / turnin seulement pour une quête du journal, pas d'accept après le rendu ni de
@@ -200,6 +201,20 @@ function M.run(argv)
           if POINT_ACTIONS[action] then checkPoint(s[2], s[3], s[4], action) end
           if (action == "hearth" or action == "fly") and (type(s[2]) ~= "number" or not W.maps[s[2]]) then
             bad(path, line, action .. " to unknown uiMap " .. tostring(s[2]))
+          end
+          -- vol : nœud de destination (TaxiNodes.ID = nodeID de C_TaxiMap) présent sur la carte de destination
+          if action == "fly" then
+            local n = s.node
+            if n == nil then bad(path, line, "fly step without node")
+            elseif type(n) ~= "number" or not W.taxi.nodes[n] then bad(path, line, "fly to unknown flight node " .. tostring(n))
+            else
+              local node, m = W.taxi.nodes[n], W.maps[s[2]]
+              local x, y
+              if m and m.continent == node.continent then x, y = W.fromWorld(s[2], node.wx, node.wy) end
+              if not x or x < 0 or x > 100 or y < 0 or y > 100 then
+                bad(path, line, ("flight node %d (%s) is not on uiMap %s"):format(n, node.name, tostring(s[2])))
+              end
+            end
           end
           if action == "level" and type(s[2]) ~= "number" then bad(path, line, "level step without a level") end
           if action == "note" and type(s[2]) ~= "string" then bad(path, line, "note step without text") end

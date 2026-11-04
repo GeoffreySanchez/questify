@@ -26,6 +26,10 @@ function Ext.install()
     items[#items + 1] = id
     Mock.record("GameTooltip:SetItemByID", id)
   end)
+  rawset(tip, "SetSpellByID", function(_, id)
+    Mock.tooltip.lines = { "spell " .. tostring(id) }
+    Mock.record("GameTooltip:SetSpellByID", id)
+  end)
   rawset(tip, "Show", function() Mock.tooltip.shown = true end)
   rawset(tip, "Hide", function() Mock.tooltip.shown = false end)
 end

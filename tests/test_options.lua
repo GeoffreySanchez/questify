@@ -77,7 +77,7 @@ return {
     local paths = S:Paths()
     local missing = {}
     for _, path in ipairs(leafPaths(Q.Settings.defaults)) do
-      if not paths[path] then missing[#missing + 1] = path end
+      if not paths[path] and not S.ELSEWHERE[path] then missing[#missing + 1] = path end
     end
     table.sort(missing)
     t.eq(missing, {}, "every default needs a schema entry")

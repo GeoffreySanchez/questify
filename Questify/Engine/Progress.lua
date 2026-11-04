@@ -625,6 +625,25 @@ function Progress:InsertSteps(tag, steps)
   return true
 end
 
+-- Remonte le groupe d'étapes insérées `tag` en tête des étapes insérées (donc de la route).
+-- Les clés d'étapes portent le tag, pas la position : l'état des étapes se conserve.
+function Progress:MoveInsertedFirst(tag)
+  if type(tag) ~= "string" or not Q.char then return false end
+  local c = charState()
+  for i, group in ipairs(c.inserted) do
+    if group.tag == tag then
+      if i > 1 then
+        table.remove(c.inserted, i)
+        table.insert(c.inserted, 1, group)
+      end
+      invalidate()
+      self:Update()
+      return true
+    end
+  end
+  return false
+end
+
 function Progress:RemoveInserted(tag)
   if type(tag) ~= "string" or not Q.char then return false end
   local c = charState()

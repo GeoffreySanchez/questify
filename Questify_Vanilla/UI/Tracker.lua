@@ -7,6 +7,11 @@ local addonName, Q = ...
 --   étape courante en gros : icône d'action, texte coloré, distance (mise à jour toutes les 0,5 s),
 --   et sous chaque ligne d'objectif les monstres à tuer (crâne, nom, niveau) ;
 --   les étapes suivantes en petit et en gris.
+-- Mode zone (Engine/ZoneMode.lua) : l'étape qui porte la zone est remplacée par la zone (pastille
+-- verte). Hors de la zone : « Zone : <nom> — N objectifs (Q quêtes) » et les quêtes concernées ;
+-- dedans : tous les objectifs de la zone groupés par priorité (objets, élites et nommés,
+-- monstres), chacun avec son avancement, les monstres sous forme de lignes ciblables (nommés
+-- d'abord). Les étapes regroupées dans la zone ne sont pas répétées dans les étapes suivantes.
 -- Confort de jeu (Engine/XPRate, Hearth, Danger, Supplies) : ligne XP/h sous la barre, XP restante
 -- du chapitre dans la barre, lignes de la pierre de foyer sous l'étape, avertissements (danger,
 -- sacs, réparation) sous l'étape courante. Chaque module est lu sous pcall : absent ou en erreur,
@@ -40,6 +45,14 @@ local MOB_LEVEL_W = 62
 local SKULL_ICON = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_8"
 
 local REASON_COLOR = "|cffff5555"
+local ZONE_ICON = "Interface\\COMMON\\Indicator-Green"   -- pastille verte du mode zone
+local ZONE_COLOR = "|cff40e050"
+local ZONE_GROUP_COLOR = "|cffffd100"
+local ZONE_LEAD_COLOR = "|cffffffff"      -- objectif suivi par la flèche
+local ZONE_TODO_COLOR = "|cffc8c8c8"
+local ZONE_NOTE_COLOR = "|cff999999"
+local ZONE_QUEST_COLOR = "|cffffd100"
+Tracker.ZONE_ICON = ZONE_ICON
 local MOB_COLOR = "|cffff6060"
 local MOB_DONE_COLOR = "|cff808080"
 local LEVEL_COLOR = "|cffaaaaaa"
@@ -858,14 +871,123 @@ local function stepSegments(entry, mobs)
   return segs
 end
 
+---------------------------------------------------------------------------
+-- Mode zone
+---------------------------------------------------------------------------
+-- Zone portée par l'étape courante, ou nil (option coupée, pas de zone, erreur).
+local function zoneFor(cur)
+  local Z = Q.ZoneMode
+  if not (cur and Z and Z.Current and Z.IsOwner) then return nil end
+  local ok, z = pcall(Z.Current, Z)
+  if not ok or type(z) ~= "table" then return nil end
+  local ok2, owner = pcall(Z.IsOwner, Z, cur)
+  if ok2 and owner then return z end
+  return nil
+end
+Tracker.ZoneFor = function(_, cur) return zoneFor(cur) end
+
+local ZONE_GROUPS = { object = "ZONE_GROUP_OBJECTS", named = "ZONE_GROUP_NAMED", mob = "ZONE_GROUP_MOBS",
+  item = "ZONE_GROUP_MOBS" }
+local MAX_ZONE_ROWS = 6     -- lignes de monstres ciblables au plus (comme MobPanel), le reste en texte
+
+local function mobName(name)
+  if type(name) ~= "string" or name == "" or name:sub(1, 1) == "#" then return nil end
+  return (name:gsub("[\r\n]", " "))
+end
+
+-- Morceaux de la zone (même forme que stepSegments) : titre, puis hors de la zone les quêtes
+-- concernées, dedans les objectifs par priorité. Sous un monstre, l'avancement de son objectif.
+local function zoneSegments(z)
+  local Z = Q.ZoneMode
+  local F = Q.Format
+  local segs, buf = {}, { ZONE_COLOR .. Z:Headline(z) .. "|r" }
+  local function flush()
+    if #buf > 0 then segs[#segs + 1] = { text = table.concat(buf, "\n") } end
+    buf = {}
+  end
+  if not z.inside then
+    local seen = {}
+    for _, o in ipairs(z.objectives) do
+      if not seen[o.questId] then
+        seen[o.questId] = true
+        buf[#buf + 1] = F:ObjectiveLine(ZONE_QUEST_COLOR .. Q.QDB:QuestName(o.questId) .. "|r")
+      end
+    end
+    buf[#buf + 1] = ZONE_NOTE_COLOR .. L.ZONE_HINT_OUTSIDE .. "|r"
+    flush()
+    return segs
+  end
+  local rows = Q.UI.MobPanel and setting("tracker.showMobs") ~= false
+  -- Groupes dans l'ordre à suivre (celui de la flèche) ; dans un groupe, ordre stable (étapes puis
+  -- objectifs) : les lignes ciblables ne bougent pas à chaque pas du joueur, même en combat.
+  local ordered = Z:Objectives(z)
+  local lead = ordered[1]
+  local groupRank, list = {}, {}
+  for i, o in ipairs(ordered) do
+    local group = ZONE_GROUPS[o.kind] or "ZONE_GROUP_MOBS"
+    if not groupRank[group] then groupRank[group] = i end
+    list[i] = o
+  end
+  table.sort(list, function(a, b)
+    local ga = groupRank[ZONE_GROUPS[a.kind] or "ZONE_GROUP_MOBS"]
+    local gb = groupRank[ZONE_GROUPS[b.kind] or "ZONE_GROUP_MOBS"]
+    if ga ~= gb then return ga < gb end
+    return (a.seq or 0) < (b.seq or 0)
+  end)
+  local lastGroup
+  local shownMob, shownText, nRows = {}, {}, 0
+  for _, o in ipairs(list) do
+    local group = ZONE_GROUPS[o.kind] or "ZONE_GROUP_MOBS"
+    if group ~= lastGroup then
+      lastGroup = group
+      buf[#buf + 1] = ZONE_GROUP_COLOR .. L[group] .. "|r"
+    end
+    local color = o == lead and ZONE_LEAD_COLOR or ZONE_TODO_COLOR
+    local text = Z:ProgressText(o)
+    if o.blocked then
+      text = text .. " (" .. string.format(L.ZONE_NEEDS, Q.QDB:ItemName(o.blocked.item)) .. ")"
+    end
+    local name = o.targetKind == "npc" and mobName(o.name)
+    if rows and name and (shownMob[o.id] or nRows < MAX_ZONE_ROWS) then
+      -- ligne ciblable (bouton sécurisé de MobPanel), une par monstre
+      if not shownMob[o.id] then
+        shownMob[o.id] = true
+        nRows = nRows + 1
+        flush()
+        segs[#segs + 1] = { mob = { npcId = o.id, name = name, minLevel = o.minLevel, maxLevel = o.maxLevel,
+          questId = o.questId, objIndex = o.objIndex, done = false, viaItem = o.viaItem } }
+      end
+      local tk = o.questId .. ":" .. o.objIndex
+      if not shownText[tk] then
+        shownText[tk] = true
+        buf[#buf + 1] = F:ObjectiveLine(F:ObjectiveLine(color .. text .. "|r"))
+      end
+    else
+      if o.targetKind == "object" and not o.start and not text:find(o.name, 1, true) then
+        text = o.name .. " — " .. text
+      elseif o.targetKind == "npc" and not o.start and not o.key and not text:find(o.name, 1, true) then
+        text = o.name .. " — " .. text
+      end
+      buf[#buf + 1] = F:ObjectiveLine(color .. text .. "|r")
+    end
+  end
+  flush()
+  return segs
+end
+
 -- Met en page l'étape courante dans son bouton ; yTop = haut du bouton dans le suivi.
 -- -> hauteur du contenu ; remplit self.mobSlots pour les boutons de ciblage.
-function Tracker:LayoutCurrent(cur, yTop)
+function Tracker:LayoutCurrent(cur, yTop, zone)
   local segs
-  if cur then
+  if zone then
+    -- erreur dans la zone : signalée, puis l'étape s'affiche comme d'habitude
+    local ok, res = pcall(zoneSegments, zone)
+    if ok then segs = res else Q:ReportError(res) end
+  end
+  if not segs and cur then
     local mobs = Q.UI.MobPanel and Q.UI.MobPanel:MobsFor(cur) or {}
     segs = stepSegments(cur, mobs)
-  else
+  elseif not segs then
     segs = { { text = L.UI_TRACKER_DONE } }
   end
   local slots = {}
@@ -1082,8 +1204,10 @@ function Tracker:Refresh()
   cur_:ClearAllPoints()
   cur_:SetPoint("TOPLEFT", f, "TOPLEFT", PAD, -y)
   cur_:SetPoint("TOPRIGHT", f, "TOPRIGHT", -PAD, -y)
+  local zone = zoneFor(cur)
+  self.zone = zone
   if cur then
-    self.currentIcon:SetTexture(Q.Format:ActionIcon(cur.step.action))
+    self.currentIcon:SetTexture(zone and ZONE_ICON or Q.Format:ActionIcon(cur.step.action))
     self.currentIcon:Show()
     if changed or not self.target then self.target = Q.Targets:ForEntry(cur) end
   else
@@ -1091,7 +1215,7 @@ function Tracker:Refresh()
     self.target = nil
   end
   self:UpdateDistance(false)
-  local textH = self:LayoutCurrent(cur, y)
+  local textH = self:LayoutCurrent(cur, y, zone)
   local h = math.max(textH, cur and (ICON + 14) or 14)
   cur_:SetHeight(h)
   cur_:Show()
@@ -1106,7 +1230,7 @@ function Tracker:Refresh()
     for _, e in ipairs(entries) do
       if started then
         local s = Q.Progress:State(e)
-        if s ~= "done" and s ~= "skipped" then
+        if s ~= "done" and s ~= "skipped" and not (zone and zone.entryKeys[e.key]) then
           n = n + 1
           local line = self.nextLines[n]
           line.icon:SetTexture(Q.Format:ActionIcon(e.step.action))
@@ -1161,6 +1285,12 @@ Q:On("CLASSQUESTS_CHANGED", refresh)
 Q:On("DUNGEONS_CHANGED", refresh)
 Q:On("TRAINER_CHANGED", refresh)
 Q:On("TALENTS_CHANGED", refresh)
+-- Mode zone : entrée ou sortie, objectif en tête changé : nouvelle cible, nouvelle liste.
+Q:On("ZONEMODE_CHANGED", function()
+  if not Tracker.frame then return end
+  Tracker.target = nil
+  Tracker:Refresh()
+end)
 -- Confort : un nouveau texte XP/h se met à jour sur place ; le reste redessine le suivi.
 Q:On("COMFORT_CHANGED", function(kind)
   if not Tracker.frame then return end

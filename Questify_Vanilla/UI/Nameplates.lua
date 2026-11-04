@@ -3,11 +3,14 @@ local addonName, Q = ...
 -- Icône animée au-dessus des barres de nom des monstres d'objectif (spec § 5.5).
 -- Le npcID vient de UnitCreatureID, sinon du champ 6 du GUID. Toute valeur secrète
 -- (restrictions Midnight) est ignorée sans erreur.
+-- Mode zone (Engine/ZoneMode.lua) : tous les monstres de la zone ont une icône ; les élites et
+-- nommés ont la leur (crâne).
 Q.UI = Q.UI or {}
 local Nameplates = { icons = {} }
 Q.UI.Nameplates = Nameplates
 
 local ICON_TEXTURE = "Interface\\GossipFrame\\AvailableQuestIcon"
+local NAMED_TEXTURE = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_8"   -- élite ou nommé de la zone
 local ICON_SIZE = 24
 local BOUNCE_HEIGHT = 6
 local BOUNCE_TIME = 0.45
@@ -15,7 +18,8 @@ local BOUNCE_TIME = 0.45
 local icons = Nameplates.icons
 local pool = {}
 local tracked = {}       -- unités dont la barre de nom est affichée : [unit] = true
-local npcSet             -- cache de Q.Targets:ObjectiveNpcSet(), vidé à chaque PROGRESS_UPDATED
+local npcSet             -- cache : Q.Targets:ObjectiveNpcSet() et monstres de la zone ([npcId] = true
+                         -- ou "named"), vidé à chaque PROGRESS_UPDATED et ZONEMODE_CHANGED
 
 ---------------------------------------------------------------------------
 -- Lecture du npcID
@@ -65,11 +69,17 @@ local function acquire()
   return f
 end
 
-local function attach(unit, plate)
+local function attach(unit, plate, named)
   local f = icons[unit]
   if not f then
     f = acquire()
     icons[unit] = f
+  end
+  -- GetTexture() renvoie un fileID en jeu : on garde l'état de l'icône sur le cadre
+  named = named and true or false
+  if f.isNamed ~= named then
+    f.texture:SetTexture(named and NAMED_TEXTURE or ICON_TEXTURE)
+    f.isNamed = named
   end
   if f:GetParent() ~= plate then f:SetParent(plate) end
   f:ClearAllPoints()
@@ -97,7 +107,19 @@ local function enabled()
 end
 
 local function objectiveSet()
-  if not npcSet then npcSet = Q.Targets:ObjectiveNpcSet() end
+  if not npcSet then
+    local set = Q.Targets:ObjectiveNpcSet()
+    local Z = Q.ZoneMode
+    if Z and Z.NpcKinds then
+      local ok, kinds = pcall(Z.NpcKinds, Z)
+      if ok and type(kinds) == "table" then
+        for id, kind in pairs(kinds) do
+          if kind == "named" then set[id] = "named" elseif not set[id] then set[id] = true end
+        end
+      end
+    end
+    npcSet = set
+  end
   return npcSet
 end
 
@@ -113,8 +135,9 @@ function Nameplates:Update(unit)
   if not enabled() then return release(unit) end
   local plate = plateFor(unit)
   local id = plate and self:NpcId(unit)
-  if id and objectiveSet()[id] then
-    attach(unit, plate)
+  local mark = id and objectiveSet()[id]
+  if mark then
+    attach(unit, plate, mark == "named")
   else
     release(unit)
   end
@@ -154,6 +177,7 @@ Q:RegisterEvent("NAME_PLATE_UNIT_REMOVED", function(_, unit)
 end)
 
 Q:On("PROGRESS_UPDATED", function() Nameplates:Rescan() end)
+Q:On("ZONEMODE_CHANGED", function() Nameplates:Rescan() end)
 Q:On("GUIDE_CHANGED", function() npcSet = nil end)
 Q:On("SETTINGS_CHANGED", function(path)
   if path == "nameplates" or path == "dungeonQuests" then Nameplates:Rescan() end

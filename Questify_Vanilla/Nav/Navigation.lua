@@ -218,11 +218,20 @@ end
 
 ---------------------------------------------------------------------------
 -- Minuterie : la cible d'un « complete » suit le monstre le plus proche (dans la zone d'objectif
--- quand l'étape en a une, voir Q.Targets)
+-- quand l'étape en a une, voir Q.Targets) ; en mode zone (Engine/ZoneMode.lua), l'objectif
+-- prioritaire le plus proche, quelle que soit l'action de l'étape qui porte la zone.
 ---------------------------------------------------------------------------
+local function zoneOwner(cur)
+  local Z = Q.ZoneMode
+  if not (Z and Z.IsOwner) then return false end
+  local ok, owner = pcall(Z.IsOwner, Z, cur)
+  return ok and owner == true
+end
+
 local function needsTicker()
   local cur = Q.Progress:IsEnabled() and Q.Progress:Current()
-  return cur and cur.step.action == "complete"
+  if not cur then return false end
+  return cur.step.action == "complete" or zoneOwner(cur)
 end
 
 local function syncTicker()
@@ -253,6 +262,12 @@ end)
 -- Au cas où l'étape courante est déjà connue quand nous démarrons : la déduplication évite
 -- tout appel en double.
 Q:On("LOGIN", function()
+  if Q.Progress:IsEnabled() then Nav:Refresh() end
+  syncTicker()
+end)
+
+-- Mode zone : zone formée ou finie, entrée ou sortie, objectif en tête changé.
+Q:On("ZONEMODE_CHANGED", function()
   if Q.Progress:IsEnabled() then Nav:Refresh() end
   syncTicker()
 end)

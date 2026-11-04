@@ -205,9 +205,16 @@ local function compute(entry)
   return { mapId = mapId, x = x, y = y, kind = kind, id = id, title = title(entry) }
 end
 
--- Q.Targets:ForEntry(entry) -> { mapId, x, y, title, kind = "npc"|"object"|"area"|"point", id } | nil
+-- Q.Targets:ForEntry(entry) -> { mapId, x, y, title, kind = "npc"|"object"|"area"|"point"|"zone", id } | nil
+-- Étape qui porte une zone (Engine/ZoneMode.lua, option zoneMode) : centre de la zone hors de
+-- celle-ci, objectif prioritaire le plus proche dedans (kind = "zone"). Sinon, calcul habituel.
 function Targets:ForEntry(entry)
   if type(entry) ~= "table" or type(entry.step) ~= "table" then return nil end
+  local Z = Q.ZoneMode
+  if Z and Z.TargetFor then
+    local okZ, zt = Q.SafeCall(Z.TargetFor, Z, entry)
+    if okZ and zt then return zt end
+  end
   local ok, target = Q.SafeCall(compute, entry)
   if ok then return target end
   return nil

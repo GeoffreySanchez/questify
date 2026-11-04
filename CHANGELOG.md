@@ -3,6 +3,7 @@
 ## Non publié
 
 ### Français
+- Mode zone : quand plusieurs quêtes ont leurs objectifs au même endroit, un repère vert mène à la zone, puis le suivi et la flèche les enchaînent en une visite (objets, puis élites et nommés, puis monstres ; un coffre attend la clé de son monstre). Option, activée par défaut.
 - Vols automatiques : chez le maître de vol, l'étape « Prendre un vol vers X » choisit et prend le
   bon trajet (Maj pour choisir toi-même, jamais en combat).
 - Pierre de foyer dans le suivi : « Pierre prête » ou « Pierre dans 12 min », et sinon le trajet à
@@ -72,6 +73,7 @@
 - Carte du monde et minicarte : repères numérotés de l'étape courante et des 5 suivantes (option).
 
 ### English
+- Zone mode: when several quests have objectives in the same place, a green marker leads to the zone, then the tracker and the arrow chain them in one visit (objects, then elites and named mobs, then monsters; a chest waits for the key its mob drops). Option, on by default.
 - Automatic flights: at the flight master, a "Take a flight to X" step picks and takes the right
   route (hold Shift to choose yourself, never in combat).
 - Hearthstone in the tracker: "ready" or "ready in 12 min", otherwise the suggested walk or flight.

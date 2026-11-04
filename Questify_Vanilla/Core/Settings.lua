@@ -28,6 +28,8 @@ Settings.defaults = {
   dungeonSuggest = true,    -- Engine/Dungeons.lua
   -- Repères des étapes sur la carte du monde et la minicarte
   mapPins = true,           -- UI/MapPins.lua
+  -- Objectifs proches de plusieurs quêtes regroupés en une seule visite
+  zoneMode = true,          -- Engine/ZoneMode.lua
 }
 
 local function split(path)

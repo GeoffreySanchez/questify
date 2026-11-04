@@ -9,6 +9,8 @@ local addonName, Q = ...
 -- Chaque repère porte le numéro d'ordre de son étape ; ceux de l'étape courante sont un peu plus
 -- grands. La minicarte ne montre que l'étape courante. Survol : texte de l'étape ; clic : cible
 -- de navigation (Q.Nav:SetTarget).
+-- Mode zone (Engine/ZoneMode.lua) : un repère vert au centre de la zone, en plus des repères
+-- numérotés (sur la minicarte seulement hors de la zone).
 -- Rien ici n'est protégé, mais le calcul attend la fin du combat (rien d'utile à redessiner
 -- pendant). Option « mapPins ». Sans QuestieDB ou sans les bibliothèques : rien, en silence.
 -- Coordonnées : 0-100 dans l'addon, 0-1 chez HereBeDragons.
@@ -25,6 +27,8 @@ local REFRESH_DELAY = 0.2     -- secondes : plusieurs messages d'affilée, un se
 local SIZE_ICON, SIZE_ICON_CURRENT = 18, 22
 local SIZE_DOT, SIZE_DOT_CURRENT = 10, 13
 local SIZE_MINI_ICON, SIZE_MINI_DOT = 16, 11
+local SIZE_ZONE, SIZE_MINI_ZONE = 20, 15
+local ZONE_COLOR = { 0.25, 0.9, 0.3 }   -- vert du mode zone
 
 local QUEST_ICONS = {
   accept = "Interface\\GossipFrame\\AvailableQuestIcon",
@@ -220,6 +224,16 @@ local function onEnter(self)
   Q.SafeCall(function()
     local L = Q.L
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    if d.zone then
+      -- repère de zone : résumé (titre, quêtes concernées)
+      local lines = Q.ZoneMode:SummaryLines(d.zone)
+      GameTooltip:AddLine(lines[1] or d.title or "", ZONE_COLOR[1], ZONE_COLOR[2], ZONE_COLOR[3])
+      GameTooltip:AddLine(L.ZONE_PIN, 0.7, 0.7, 0.7)
+      for i = 2, #lines do GameTooltip:AddLine(lines[i], 1, 1, 1, true) end
+      GameTooltip:AddLine(L.MAP_PIN_CLICK, 0.4, 0.8, 1)
+      GameTooltip:Show()
+      return
+    end
     GameTooltip:AddLine(d.name or d.title or "", 1, 0.82, 0)
     if d.order == 1 then
       GameTooltip:AddLine(L.MAP_PIN_CURRENT, 0.7, 0.7, 0.7)
@@ -309,7 +323,15 @@ local function dress(f, style, action, order, onMinimap)
   icon:SetVertexColor(1, 1, 1, 1)
   border:Hide()
   local size
-  if style == "objective" then
+  if style == "zone" then
+    size = onMinimap and SIZE_MINI_ZONE or SIZE_ZONE
+    icon:SetTexture(DOT_TEXTURE)
+    icon:SetVertexColor(ZONE_COLOR[1], ZONE_COLOR[2], ZONE_COLOR[3], 1)
+    border:SetTexture(DOT_TEXTURE)
+    border:SetVertexColor(0, 0, 0, 0.85)
+    border:SetSize(size + 4, size + 4)
+    border:Show()
+  elseif style == "objective" then
     if onMinimap then size = SIZE_MINI_DOT else size = current and SIZE_DOT_CURRENT or SIZE_DOT end
     icon:SetTexture(DOT_TEXTURE)
     icon:SetVertexColor(1, 0.82, 0, 1)        -- jaune des quêtes
@@ -339,7 +361,7 @@ local function dress(f, style, action, order, onMinimap)
   end
   f:SetSize(size, size)
   f:SetAlpha(current and 1 or 0.85)
-  f.num:SetText(tostring(order))
+  f.num:SetText(style == "zone" and "" or tostring(order))
 end
 
 ---------------------------------------------------------------------------
@@ -362,7 +384,7 @@ local function place(lib, kind, entry, order, style, p, title, floatOnEdge)
   local f = acquire(kind)
   dress(f, style, entry.step.action, order, kind == "mini")
   f.pinData = { entry = entry, order = order, style = style, mapId = p.mapId, x = p.x, y = p.y,
-    name = p.name, title = title }
+    name = p.name, title = title, zone = p.zone }
   local ok
   if kind == "world" then
     ok = call(lib.AddWorldMapIconMap, lib, REF, f, p.mapId, p.x / 100, p.y / 100,
@@ -379,6 +401,21 @@ local function place(lib, kind, entry, order, style, p, title, floatOnEdge)
     mapId = p.mapId, x = p.x, y = p.y, frame = f }
 end
 
+-- Repère vert au centre de la zone portée par l'étape courante (Engine/ZoneMode.lua).
+function MapPins:PlaceZone(lib)
+  local Z = Q.ZoneMode
+  if not (Z and Z.Current and Z.IsOwner) then return end
+  local z = Z:Current()
+  local cur = Q.Progress:Current()
+  if type(z) ~= "table" or not cur or not Z:IsOwner(cur) then return end
+  local c = z.center
+  if type(c.mapId) ~= "number" or not validCoord(c.x) or not validCoord(c.y) then return end
+  local title = Z:Title(z)
+  local p = { mapId = c.mapId, x = c.x, y = c.y, name = title, zone = z }
+  place(lib, "world", cur, 1, "zone", p, title)
+  if not z.inside then place(lib, "mini", cur, 1, "zone", p, title, true) end
+end
+
 function MapPins:Refresh()
   self:Clear()
   if not enabled() then return end
@@ -386,6 +423,9 @@ function MapPins:Refresh()
   if not lib then return end
   if not (Q.QDB and Q.QDB:IsAvailable()) then return end
   if not (Q.Progress and Q.Progress:IsEnabled()) then return end
+  -- mode zone : repère vert au centre (minicarte : hors de la zone seulement, au bord)
+  local okZ, err = pcall(MapPins.PlaceZone, MapPins, lib)
+  if not okZ then Q:ReportError("MapPins: " .. tostring(err)) end
   for order, entry in ipairs(window()) do
     local pts, style = pointsFor(entry)
     if style and #pts > 0 then
@@ -427,7 +467,7 @@ MapPins.Schedule = function() schedule() end
 ---------------------------------------------------------------------------
 -- Messages
 ---------------------------------------------------------------------------
-for _, msg in ipairs({ "LOGIN", "PROGRESS_UPDATED", "STEP_CHANGED", "GUIDE_CHANGED" }) do
+for _, msg in ipairs({ "LOGIN", "PROGRESS_UPDATED", "STEP_CHANGED", "GUIDE_CHANGED", "ZONEMODE_CHANGED" }) do
   Q:On(msg, schedule)
 end
 

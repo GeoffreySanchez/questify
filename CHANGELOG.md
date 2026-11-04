@@ -26,6 +26,12 @@
 - Largeur du suivi réglable avec une poignée en bas à droite.
 - Routes : pierre de foyer liée au premier passage à l'auberge et utilisée ; objectifs faits à un
   niveau sûr (quête au plus +1, monstres au plus +1).
+- `/qf check` : autodiagnostic en jeu (fonctions du jeu utilisées, QuestieDB, repère natif et
+  marqueur 3D, navigation choisie et réellement utilisée, route du personnage, ciblage, erreurs).
+- `/qf report` (et bouton « Rapport de bug » des options) : rapport de bug à copier, avec version,
+  client, personnage, étape, cible, réglages, résultat du diagnostic et erreurs Lua.
+- Les erreurs Lua sont gardées avec leur pile d'appels (les 20 dernières, nombre de répétitions
+  compris) et survivent à `/reload` ; la première erreur d'une session indique `/qf report`.
 
 ### English
 - Test build for WoW Classic Era (1.15.8, 1.15.9): `Questify_Vanilla_Vanilla.toc`, compatibility
@@ -50,6 +56,12 @@
 - Tracker width adjustable with a grip in the bottom-right corner.
 - Routes: hearthstone bound on the first visit to the inn and actually used; objectives done at a
   safe level (quest at most +1, monsters at most +1).
+- `/qf check`: in-game self-check (game functions used, QuestieDB, native pin and 3D marker,
+  chosen and actually used navigation, character route, targeting, errors).
+- `/qf report` (and a "Bug report" button in the options): a bug report to copy, with version,
+  client, character, step, target, settings, self-check results and Lua errors.
+- Lua errors are kept with their call stack (the last 20, with repeat counts) and survive
+  `/reload`; the first error of a session points to `/qf report`.
 
 ## 0.1.0 (2026-11-03)
 

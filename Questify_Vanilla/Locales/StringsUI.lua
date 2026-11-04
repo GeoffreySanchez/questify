@@ -162,7 +162,7 @@ Q:RegisterStrings({
     UI_NAV_NATIVE_DESC = "The game's own map pin and 3D marker, always available.",
 
     -- Commandes
-    UI_SLASH_HELP = "/qf: journal. /qf skip, /qf back, /qf options, /qf wizard, /qf export, /qf bug, /qf talents, /qf debug, /qf reset.",
+    UI_SLASH_HELP = "/qf: journal. /qf skip, /qf back, /qf options, /qf wizard, /qf export, /qf check, /qf bug, /qf talents, /qf debug, /qf reset.",
     UI_SLASH_NO_STEP = "There is no current step.",
     UI_SLASH_NO_BACK = "There is no earlier step to reopen.",
     UI_SLASH_TALENTS_DUMPED = "%d talents recorded. Type /reload to save them.",
@@ -336,7 +336,7 @@ Q:RegisterStrings({
     UI_NAV_NATIVE_DESC = "Le repère de carte et le marqueur 3D du jeu, toujours disponibles.",
 
     -- Commandes
-    UI_SLASH_HELP = "/qf : journal. /qf skip, /qf back, /qf options, /qf wizard, /qf export, /qf bug, /qf talents, /qf debug, /qf reset.",
+    UI_SLASH_HELP = "/qf : journal. /qf skip, /qf back, /qf options, /qf wizard, /qf export, /qf check, /qf bug, /qf talents, /qf debug, /qf reset.",
     UI_SLASH_NO_STEP = "Aucune étape en cours.",
     UI_SLASH_NO_BACK = "Aucune étape précédente à rouvrir.",
     UI_SLASH_TALENTS_DUMPED = "%d talents relevés. Tape /reload pour les enregistrer.",

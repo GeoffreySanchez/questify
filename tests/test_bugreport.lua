@@ -8,7 +8,7 @@ return {
     Ext.install()
     local Q = Mock.loadAddon(TOC, { extraFiles = { GUIDES }, skipGuides = true })
     Q:ReportError("Interface/AddOns/Questify_Vanilla/X.lua:1: boom")
-    SlashCmdList.QUESTIFYVANILLA("bug")
+    Q.UI.BugReport:Show()
     local B = Q.UI.BugReport
     t.ok(B.frame:IsShown())
     local txt = B.box:GetText()

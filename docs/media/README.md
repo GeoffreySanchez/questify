@@ -78,5 +78,6 @@ l'interface » : ce ne sont pas des captures en jeu, à remplacer dès que les v
 - `apercus/11-zone-mode.png` : le suivi en mode zone.
 - `apercus/bonus-themes.png` : les quatre thèmes du suivi côte à côte.
 
+Ils sont affichés dans la page Galerie du wiki (`docs/wiki/Galerie.md`, section « Aperçus de l'interface »).
 Sources HTML dans `apercus/src/` ; nouveau rendu avec `sh docs/media/apercus/src/render.sh` (Chrome
 sans interface, connexion nécessaire : les icônes viennent de wow.zamimg.com au rendu).

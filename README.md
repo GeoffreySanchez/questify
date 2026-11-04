@@ -3,6 +3,32 @@
 Guide de leveling **gratuit et open source** pour **World of Warcraft: Forever** (niveaux 1 à 30).
 *A **free and open-source** leveling guide for **World of Warcraft: Forever** (levels 1 to 30).*
 
+## Installation rapide / Quick install
+
+| Addon | Statut / Status | Lien / Link |
+|---|---|---|
+| **Questify Vanilla** | requis / required | [Télécharger / Download](https://github.com/questify-addon/questify/releases/tag/latest) (`Questify_Vanilla-<version>-forever.zip`) |
+| **QuestieDB** | **requis / required** | [CurseForge](https://www.curseforge.com/wow/addons/questiedb) |
+| ShortestPath Forever | optionnel / optional | [CurseForge](https://www.curseforge.com/wow/addons/shortest-path-forever) |
+| WaypointUI | optionnel / optional | [CurseForge](https://www.curseforge.com/wow/addons/waypointui) |
+| TomTom | optionnel / optional | [CurseForge](https://www.curseforge.com/wow/addons/tomtom) |
+
+Décompresse chaque zip dans `World of Warcraft\_forever_\Interface\AddOns\`, relance le jeu, puis suis
+l'assistant. *Unzip each zip into `World of Warcraft\_forever_\Interface\AddOns\`, restart the game,
+then follow the wizard.* Guide complet / full guide : [docs/wiki/Installation.md](docs/wiki/Installation.md).
+
+## Galerie / Gallery
+
+Captures et vidéos à venir : liste des prises de vue dans [docs/media/README.md](docs/media/README.md).
+*Screenshots and videos coming soon.*
+
+<!-- Quand les fichiers existent, décommenter / When the files exist, uncomment:
+![Suivi / Tracker](docs/media/01-tracker.png)
+![Mode zone / Zone mode](docs/media/03-zone-mode.gif)
+![Ciblage / Targeting](docs/media/04-mobs-target.gif)
+![Carte / Map pins](docs/media/05-map-pins.png)
+-->
+
 ---
 
 ## Français

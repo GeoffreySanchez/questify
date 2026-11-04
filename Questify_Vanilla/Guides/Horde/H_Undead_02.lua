@@ -1,8 +1,8 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 132 étapes, niveau final 13.05, ~15804 xp/h, 179 min.
+-- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-04.
+-- Simulation : 133 étapes, niveau final 13.06, ~15511 xp/h, 182 min.
 Q:RegisterGuide({
   id = "H_Undead_02",
   title = "Tirisfal Glades",
@@ -13,10 +13,11 @@ Q:RegisterGuide({
   steps = {
     { "accept", 99134 }, -- Discipline (lvl 6, ~540 xp, sim lvl 6)
     { "accept", 427 }, -- At War With The Scarlet Crusade (lvl 8, ~700 xp, sim lvl 6)
-    { "complete", 99134, at = { 1420, 60.34, 51.97 } }, -- Discipline (lvl 6, ~540 xp, sim lvl 6)
-    { "turnin", 99134, xp = 540 }, -- Discipline (lvl 6, ~540 xp, sim lvl 6)
+    { "accept", 398 }, -- WANTED: Maggot Eye (lvl 10, ~840 xp, sim lvl 6)
     { "accept", 358 }, -- Graverobbers (lvl 8, ~700 xp, sim lvl 6)
     { "sethearth", 1420, 61.72, 52.05 }, -- lier la pierre de foyer
+    { "complete", 99134, at = { 1420, 60.34, 51.97 } }, -- Discipline (lvl 6, ~540 xp, sim lvl 6)
+    { "turnin", 99134, xp = 540 }, -- Discipline (lvl 6, ~540 xp, sim lvl 6)
     { "accept", 86784 }, -- Sticks and Bones (lvl 7, ~630 xp, sim lvl 6)
     { "accept", 404 }, -- A Putrid Task (lvl 6, ~405 xp, sim lvl 6)
     { "complete", 86784, at = { 1420, 55.74, 52.39 } }, -- Sticks and Bones (lvl 7, ~630 xp, sim lvl 6)
@@ -26,18 +27,18 @@ Q:RegisterGuide({
     { "complete", 365, at = { 1420, 35.9, 50.57 } }, -- Fields of Grief (lvl 7, ~630 xp, sim lvl 6)
     { "complete", 404, at = { 1420, 53.26, 56.49 } }, -- A Putrid Task (lvl 6, ~405 xp, sim lvl 6)
     { "accept", 96607 }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 6)
+    { "turnin", 86784, xp = 630 }, -- Sticks and Bones (lvl 7, ~630 xp, sim lvl 6)
     { "complete", 96607, at = { 1420, 57.17, 55.55 } }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 6)
     { "turnin", 96607, xp = 540 }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 6)
     { "accept", 96658 }, -- Camping 101: Cooking (lvl 6, ~540 xp, sim lvl 6)
-    { "turnin", 86784, xp = 630 }, -- Sticks and Bones (lvl 7, ~630 xp, sim lvl 6)
     { "turnin", 365, xp = 630 }, -- Fields of Grief (lvl 7, ~630 xp, sim lvl 6)
     { "accept", 407 }, -- Fields of Grief (lvl 7, ~160 xp, sim lvl 6)
     { "turnin", 404, xp = 405 }, -- A Putrid Task (lvl 6, ~405 xp, sim lvl 6)
     { "accept", 426 }, -- The Mills Overrun (lvl 8, ~880 xp, sim lvl 7)
     { "turnin", 5481, xp = 225 }, -- Gordo's Task (lvl 5, ~225 xp, sim lvl 7)
     { "accept", 5482 }, -- Doom Weed (lvl 6, ~540 xp, sim lvl 7)
-    { "complete", 358, at = { 1420, 55.87, 42.53 } }, -- Graverobbers (lvl 8, ~700 xp, sim lvl 7)
     { "complete", 5482, at = { 1420, 57.24, 40.45 } }, -- Doom Weed (lvl 6, ~540 xp, sim lvl 7)
+    { "complete", 358, at = { 1420, 55.87, 42.53 } }, -- Graverobbers (lvl 8, ~700 xp, sim lvl 7)
     { "complete", 358, at = { 1420, 59.08, 36.79 } }, -- Graverobbers (lvl 8, ~700 xp, sim lvl 7)
     { "accept", 361, at = { 1420, 48.2, 34.79 }, note = "Loot A Letter to Yvette to start the quest" }, -- A Letter Undelivered (lvl 7, ~475 xp, sim lvl 7)
     { "complete", 426, at = { 1420, 48.17, 34.63 } }, -- The Mills Overrun (lvl 8, ~880 xp, sim lvl 7)
@@ -51,11 +52,13 @@ Q:RegisterGuide({
     { "accept", 370 }, -- At War With The Scarlet Crusade (lvl 9, ~780 xp, sim lvl 8)
     { "accept", 374 }, -- Proof of Demise (lvl 7, ~630 xp, sim lvl 8)
     { "turnin", 358, xp = 700 }, -- Graverobbers (lvl 8, ~700 xp, sim lvl 8)
-    { "accept", 359 }, -- Forsaken Duties (lvl 9, ~195 xp, sim lvl 8)
-    { "accept", 405 }, -- The Prodigal Lich (lvl 8, ~175 xp, sim lvl 8)
+    { "turnin", 361, xp = 475 }, -- A Letter Undelivered (lvl 7, ~475 xp, sim lvl 8)
+    { "turnin", 407, xp = 160 }, -- Fields of Grief (lvl 7, ~160 xp, sim lvl 8)
     { "accept", 362 }, -- The Haunted Mills (lvl 10, ~420 xp, sim lvl 8)
     { "accept", 354 }, -- Deaths in the Family (lvl 11, ~880 xp, sim lvl 8)
     { "accept", 375 }, -- The Chill of Death (lvl 8, ~700 xp, sim lvl 8)
+    { "accept", 359 }, -- Forsaken Duties (lvl 9, ~195 xp, sim lvl 8)
+    { "accept", 405 }, -- The Prodigal Lich (lvl 8, ~175 xp, sim lvl 8)
     { "turnin", 405, xp = 175 }, -- The Prodigal Lich (lvl 8, ~175 xp, sim lvl 8)
     { "accept", 357 }, -- The Lich's Identity (lvl 8, ~530 xp, sim lvl 8)
     { "fp", 1458, 63.25, 48.56 }, -- point de vol
@@ -64,15 +67,13 @@ Q:RegisterGuide({
     { "complete", 362, at = { 1420, 47.23, 40.02 } }, -- The Haunted Mills (lvl 10, ~420 xp, sim lvl 9)
     { "complete", 375, obj = 1, at = { 1420, 64.04, 38.56 } }, -- The Chill of Death (lvl 8, ~700 xp, sim lvl 9)
     { "complete", 357, at = { 1420, 67.96, 42.09 } }, -- The Lich's Identity (lvl 8, ~530 xp, sim lvl 9)
-    { "turnin", 407, xp = 160 }, -- Fields of Grief (lvl 7, ~160 xp, sim lvl 9)
     { "complete", 96658, at = { 1420, 61.75, 51.44 } }, -- Camping 101: Cooking (lvl 6, ~540 xp, sim lvl 9)
     { "turnin", 96658, xp = 540 }, -- Camping 101: Cooking (lvl 6, ~540 xp, sim lvl 9)
     { "turnin", 370, xp = 780 }, -- At War With The Scarlet Crusade (lvl 9, ~780 xp, sim lvl 9)
-    { "accept", 371 }, -- At War With The Scarlet Crusade (lvl 10, ~840 xp, sim lvl 9)
     { "turnin", 374, xp = 630 }, -- Proof of Demise (lvl 7, ~630 xp, sim lvl 9)
-    { "complete", 375, at = { 1420, 61.03, 52.37 } }, -- The Chill of Death (lvl 8, ~700 xp, sim lvl 9)
-    { "turnin", 361, xp = 475 }, -- A Letter Undelivered (lvl 7, ~475 xp, sim lvl 9)
     { "turnin", 362, xp = 420 }, -- The Haunted Mills (lvl 10, ~420 xp, sim lvl 9)
+    { "accept", 371 }, -- At War With The Scarlet Crusade (lvl 10, ~840 xp, sim lvl 9)
+    { "complete", 375, at = { 1420, 61.03, 52.37 } }, -- The Chill of Death (lvl 8, ~700 xp, sim lvl 9)
     { "turnin", 375, xp = 700 }, -- The Chill of Death (lvl 8, ~700 xp, sim lvl 9)
     { "turnin", 357, xp = 530 }, -- The Lich's Identity (lvl 8, ~530 xp, sim lvl 9)
     { "accept", 366 }, -- Return the Book (lvl 8, ~350 xp, sim lvl 9)
@@ -81,7 +82,8 @@ Q:RegisterGuide({
     { "accept", 356 }, -- Rear Guard Patrol (lvl 11, ~660 xp, sim lvl 9)
     { "accept", 97558 }, -- Hides for the Forsaken (lvl 11, ~770 xp, sim lvl 9)
     { "turnin", 366, xp = 350 }, -- Return the Book (lvl 8, ~350 xp, sim lvl 9)
-    { "accept", 409 }, -- Proving Allegiance (lvl 12, ~680 xp, sim lvl 10)
+    { "accept", 409 }, -- Proving Allegiance (lvl 12, ~680 xp, sim lvl 9)
+    { "level", 10, at = { 1420, 66.68, 27.54 }, note = "About 1 mobs here (Vile Fin Muckdweller, level 9)" }, -- farm de niveau
     { "complete", 97558, at = { 1420, 64.06, 38.45 } }, -- Hides for the Forsaken (lvl 11, ~770 xp, sim lvl 10)
     { "complete", 354, obj = 1, at = { 1420, 45.79, 29.39 } }, -- Deaths in the Family (lvl 11, ~880 xp, sim lvl 10)
     { "complete", 354, obj = 3, at = { 1420, 42.84, 32.54 } }, -- Deaths in the Family (lvl 11, ~880 xp, sim lvl 10)
@@ -89,10 +91,10 @@ Q:RegisterGuide({
     { "turnin", 354, xp = 880 }, -- Deaths in the Family (lvl 11, ~880 xp, sim lvl 10)
     { "accept", 355 }, -- Speak with Sevren (lvl 10, ~85 xp, sim lvl 10)
     { "turnin", 355, xp = 85 }, -- Speak with Sevren (lvl 10, ~85 xp, sim lvl 10)
+    { "turnin", 360, xp = 390 }, -- Return to the Magistrate (lvl 9, ~390 xp, sim lvl 10)
     { "accept", 408 }, -- The Family Crypt (lvl 13, ~910 xp, sim lvl 10)
-    { "complete", 408, at = { 1420, 52.8, 28.44 } }, -- The Family Crypt (lvl 13, ~910 xp, sim lvl 10)
-    { "accept", 398 }, -- WANTED: Maggot Eye (lvl 10, ~840 xp, sim lvl 10)
     { "accept", 96895 }, -- The Argent Emissary (lvl 13, ~455 xp, sim lvl 10)
+    { "complete", 408, at = { 1420, 52.8, 28.44 } }, -- The Family Crypt (lvl 13, ~910 xp, sim lvl 10)
     { "turnin", 96895, xp = 455 }, -- The Argent Emissary (lvl 13, ~455 xp, sim lvl 10)
     { "accept", 96898 }, -- Remnants of War (lvl 13, ~680 xp, sim lvl 10)
     { "accept", 96897 }, -- The Cult of the Damned (lvl 13, ~680 xp, sim lvl 10)
@@ -108,7 +110,6 @@ Q:RegisterGuide({
     { "accept", 99156 }, -- Rear Guard Patrol (lvl 13, ~680 xp, sim lvl 11)
     { "turnin", 371, xp = 840 }, -- At War With The Scarlet Crusade (lvl 10, ~840 xp, sim lvl 11)
     { "accept", 372 }, -- At War With The Scarlet Crusade (lvl 12, ~910 xp, sim lvl 11)
-    { "turnin", 360, xp = 390 }, -- Return to the Magistrate (lvl 9, ~390 xp, sim lvl 11)
     { "turnin", 408, xp = 910 }, -- The Family Crypt (lvl 13, ~910 xp, sim lvl 11)
     { "complete", 409, at = { 1420, 66.67, 44.97 } }, -- Proving Allegiance (lvl 12, ~680 xp, sim lvl 11)
     { "turnin", 409, xp = 680 }, -- Proving Allegiance (lvl 12, ~680 xp, sim lvl 11)

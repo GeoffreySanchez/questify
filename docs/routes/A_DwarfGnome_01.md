@@ -1,14 +1,14 @@
 # A_DwarfGnome_01 — Coldridge Valley
 
-Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: Dwarf.
+Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: Dwarf.
 
 | Item | Value |
 |---|---|
 | Level band | 1-6 |
-| Simulated level | 1.00 -> 6.02 |
+| Simulated level | 1.00 -> 6.01 |
 | Time | 36 min |
-| XP gained | 7672 |
-| XP/h | 12703 |
+| XP gained | 7640 |
+| XP/h | 12650 |
 | Steps | 40 |
 | Quests turned in | 15 |
 | Hubs | 5 |
@@ -24,11 +24,11 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 1 | 179 | Dwarven Outfitters | 1 | 80 | 2 |
 | 2 | 233 | Coldridge Valley Mail Delivery | 3 | 190 | 2 |
 | 3 | 183 | The Boar Hunter | 3 | 250 | 3 |
-| 4 | 182 | The Troll Cave | 4 | 355 | 4 |
-| 5 | 3364 | Scalding Mornbrew Delivery | 5 | 225 | 4 |
-| 6 | 3365 | Bring Back the Mug | 5 | 450 | 4 |
-| 7 | 218 | The Stolen Journal | 5 | 560 | 4 |
-| 8 | 234 | Coldridge Valley Mail Delivery | 4 | 270 | 5 |
+| 4 | 234 | Coldridge Valley Mail Delivery | 4 | 270 | 3 |
+| 5 | 182 | The Troll Cave | 4 | 355 | 4 |
+| 6 | 3364 | Scalding Mornbrew Delivery | 5 | 225 | 4 |
+| 7 | 3365 | Bring Back the Mug | 5 | 450 | 4 |
+| 8 | 218 | The Stolen Journal | 5 | 560 | 5 |
 | 9 | 97277 | Grund and Gozwin | 6 | 540 est. | 5 |
 | 10 | 3361 | A Refugee's Quandary | 3 | 250 | 5 |
 | 11 | 170 | A New Threat | 2 | 170 | 5 |
@@ -95,30 +95,30 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 2 | O | 179 | Dwarven Outfitters | 1426 | 28.9, 74.5 | 119 |  |
 | 3 | T | 179 | Dwarven Outfitters | 1426 | 29.9, 71.2 | 119 |  |
 | 4 | A | 233 | Coldridge Valley Mail Delivery | 1426 | 29.9, 71.2 | 0 |  |
-| 5 | T | 233 | Coldridge Valley Mail Delivery | 1426 | 22.6, 71.4 | 361 |  |
-| 6 | A | 234 | Coldridge Valley Mail Delivery | 1426 | 22.6, 71.4 | 0 |  |
-| 7 | A | 183 | The Boar Hunter | 1426 | 22.6, 71.4 | 0 |  |
-| 8 | O | 183 | The Boar Hunter | 1426 | 21.5, 71.1 | 56 |  |
-| 9 | T | 183 | The Boar Hunter | 1426 | 22.6, 71.4 | 56 |  |
-| 10 | A | 182 | The Troll Cave | 1426 | 25.1, 75.7 | 186 |  |
-| 11 | O | 182 | The Troll Cave | 1426 | 28.8, 80.3 | 236 |  |
-| 12 | T | 182 | The Troll Cave | 1426 | 25.1, 75.7 | 236 |  |
-| 13 | A | 218 | The Stolen Journal | 1426 | 25.1, 75.7 | 0 |  |
-| 14 | C | 3364 | Scalding Mornbrew Delivery | 1426 | 25.0, 76.0 | 9 |  |
-| 15 | A | 3365 | Bring Back the Mug | 1426 | 28.8, 66.4 | 0 |  |
-| 16 | A | 97277 | Grund and Gozwin | 1426 | 28.7, 67.5 | 38 |  |
-| 17 | A | 3361 | A Refugee's Quandary | 1426 | 28.6, 67.6 | 7 |  |
-| 18 | A | 170 | A New Threat | 1426 | 29.7, 71.2 | 131 |  |
-| 19 | O | 170 | A New Threat | 1426 | 31.0, 75.7 | 161 |  |
-| 20 | O | 218 | The Stolen Journal | 1426 | 30.5, 80.2 | 147 |  |
-| 21 | O | 3361 | A Refugee's Quandary | 1426 | 26.3, 79.3 | 206 |  |
-| 22 | O | 3361 | A Refugee's Quandary | 1426 | 22.8, 80.0 | 176 |  |
-| 23 | O | 3361 | A Refugee's Quandary | 1426 | 20.9, 76.1 | 159 |  |
-| 24 | T | 3365 | Bring Back the Mug | 1426 | 25.0, 76.0 | 201 |  |
-| 25 | T | 218 | The Stolen Journal | 1426 | 25.1, 75.7 | 9 |  |
-| 26 | T | 234 | Coldridge Valley Mail Delivery | 1426 | 25.1, 75.7 | 0 |  |
+| 5 | A | 170 | A New Threat | 1426 | 29.7, 71.2 | 10 |  |
+| 6 | T | 233 | Coldridge Valley Mail Delivery | 1426 | 22.6, 71.4 | 350 |  |
+| 7 | A | 234 | Coldridge Valley Mail Delivery | 1426 | 22.6, 71.4 | 0 |  |
+| 8 | A | 183 | The Boar Hunter | 1426 | 22.6, 71.4 | 0 |  |
+| 9 | O | 183 | The Boar Hunter | 1426 | 21.5, 71.1 | 56 |  |
+| 10 | T | 183 | The Boar Hunter | 1426 | 22.6, 71.4 | 56 |  |
+| 11 | A | 182 | The Troll Cave | 1426 | 25.1, 75.7 | 186 |  |
+| 12 | T | 234 | Coldridge Valley Mail Delivery | 1426 | 25.1, 75.7 | 0 |  |
+| 13 | O | 182 | The Troll Cave | 1426 | 28.8, 80.3 | 236 |  |
+| 14 | T | 182 | The Troll Cave | 1426 | 25.1, 75.7 | 236 |  |
+| 15 | A | 218 | The Stolen Journal | 1426 | 25.1, 75.7 | 0 |  |
+| 16 | C | 3364 | Scalding Mornbrew Delivery | 1426 | 25.0, 76.0 | 9 |  |
+| 17 | A | 3365 | Bring Back the Mug | 1426 | 28.8, 66.4 | 0 |  |
+| 18 | A | 97277 | Grund and Gozwin | 1426 | 28.7, 67.5 | 38 |  |
+| 19 | A | 3361 | A Refugee's Quandary | 1426 | 28.6, 67.6 | 7 |  |
+| 20 | O | 170 | A New Threat | 1426 | 31.0, 75.7 | 293 |  |
+| 21 | O | 218 | The Stolen Journal | 1426 | 30.5, 80.2 | 147 |  |
+| 22 | O | 3361 | A Refugee's Quandary | 1426 | 26.3, 79.3 | 206 |  |
+| 23 | O | 3361 | A Refugee's Quandary | 1426 | 22.8, 80.0 | 176 |  |
+| 24 | O | 3361 | A Refugee's Quandary | 1426 | 20.9, 76.1 | 159 |  |
+| 25 | T | 3365 | Bring Back the Mug | 1426 | 25.0, 76.0 | 201 |  |
+| 26 | T | 218 | The Stolen Journal | 1426 | 25.1, 75.7 | 9 |  |
 | 27 | A | 282 | Senir's Observations | 1426 | 25.1, 75.7 | 0 |  |
-| 28 | O | 97277 | Grund and Gozwin | 1426 | 27.3, 62.9 | 435 | near #15 (went 604 yd away) |
+| 28 | O | 97277 | Grund and Gozwin | 1426 | 27.3, 62.9 | 435 | near #17 (went 604 yd away) |
 | 29 | T | 97277 | Grund and Gozwin | 1426 | 28.7, 67.5 | 167 |  |
 | 30 | T | 3361 | A Refugee's Quandary | 1426 | 28.6, 67.6 | 7 |  |
 | 31 | T | 170 | A New Threat | 1426 | 29.7, 71.2 | 131 |  |
@@ -131,6 +131,22 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 38 | T | 2160 | Supplies to Tannok | 1426 | 47.2, 52.2 | 59 |  |
 
 Walking between tasks: 4507 yd (~11 min at 7 yd/s).
+
+## Qualité
+
+Checks of the itinerary (see `tools/routebuilder/quality.lua`): avoidable revisits (a place left,
+then returned to only for accepts or turn-ins possible on the earlier visit), missed pickups
+(within 40 yd), missed passing turn-ins (within 60 yd) and split objective areas (within 120 yd).
+A place counts as left when the route went more than 150 yd away (220 yd for an objective area).
+Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint later in the route),
+`free` (no constraint: a defect).
+
+| Check | Count |
+|---|---|
+| Avoidable revisits | 0 |
+| Missed pickups | 0 |
+| Split areas | 0 |
+| Missed passing turn-ins | 0 |
 
 ## Logistics
 

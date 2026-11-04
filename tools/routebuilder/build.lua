@@ -21,6 +21,7 @@ local plansm = require("plans")
 local emit = require("emit")
 local cq = require("classquests")
 local paths = require("paths")
+local quality = require("quality")
 
 local build = {}
 
@@ -427,6 +428,7 @@ function build.reportText(D, plan, steps, report, meta)
   w()
   w(("Walking between tasks: %d yd (~%d min at 7 yd/s)."):format(math.floor(total), math.floor(total / 7 / 60 + 0.5)))
   w()
+  w(quality.markdown(report.quality, legs))
   w("## Logistics")
   w()
   local any = false
@@ -534,9 +536,11 @@ function build.main(argv)
         writeFile(o.report .. "/" .. id .. ".md", build.reportText(d, r.plan, r.steps, r.report, meta))
         written = written + 1
         local rep = r.report
-        print(("%-18s steps %3d  quests %3d  dropped %3d  lvl %5.2f -> %5.2f  xp/h %6d  %s%s"):format(id, #r.steps,
+        local qa = rep.quality
+        print(("%-18s steps %3d  quests %3d  dropped %3d  lvl %5.2f -> %5.2f  xp/h %6d  %s  quality R%d P%d A%d T%d%s"):format(id, #r.steps,
           #rep.quests, #rep.dropped, rep.startLevel or 0, rep.endLevel or 0, math.floor(rep.xpPerHour + 0.5),
-          fmtTime(rep.time or 0), (rep.endLevel or 0) < r.plan.maxLevel - 1 and "  [below maxLevel-1]" or ""))
+          fmtTime(rep.time or 0), qa and #qa.revisits or 0, qa and #qa.pickups or 0, qa and #qa.areas or 0,
+          qa and #qa.turnins or 0, (rep.endLevel or 0) < r.plan.maxLevel - 1 and "  [below maxLevel-1]" or ""))
       end
     end
   end

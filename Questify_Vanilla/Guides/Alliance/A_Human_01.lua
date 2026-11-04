@@ -1,8 +1,8 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-03.
--- Simulation : 52 étapes, niveau final 6.25, ~11706 xp/h, 44 min.
+-- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-04.
+-- Simulation : 52 étapes, niveau final 6.27, ~11675 xp/h, 44 min.
 Q:RegisterGuide({
   id = "A_Human_01",
   title = "Northshire",
@@ -14,36 +14,36 @@ Q:RegisterGuide({
     { "accept", 783 }, -- A Threat Within (lvl 1, ~40 xp, sim lvl 1)
     { "turnin", 783, xp = 40 }, -- A Threat Within (lvl 1, ~40 xp, sim lvl 1)
     { "accept", 7 }, -- Kobold Camp Cleanup (lvl 2, ~170 xp, sim lvl 1)
+    { "accept", 5261 }, -- Eagan Peltskinner (lvl 2, ~85 xp, sim lvl 1)
     { "complete", 7, at = { 1429, 48.82, 36.18 } }, -- Kobold Camp Cleanup (lvl 2, ~170 xp, sim lvl 1)
     { "accept", 91741, at = { 1429, 48.47, 34.61 }, note = "Loot Nibbled-On Book to start the quest" }, -- Nibbled-On Book (lvl 2, ~85 xp, sim lvl 2)
     { "accept", 18 }, -- Brotherhood of Thieves (lvl 4, ~355 xp, sim lvl 2)
-    { "accept", 5261 }, -- Eagan Peltskinner (lvl 2, ~85 xp, sim lvl 2)
     { "turnin", 7, xp = 170 }, -- Kobold Camp Cleanup (lvl 2, ~170 xp, sim lvl 2)
     { "accept", 15 }, -- Investigate Echo Ridge (lvl 3, ~250 xp, sim lvl 2)
     { "turnin", 91741, xp = 85 }, -- Nibbled-On Book (lvl 2, ~85 xp, sim lvl 2)
     { "accept", 92124 }, -- Book Inventory (lvl 2, ~85 xp, sim lvl 2)
     { "turnin", 92124, xp = 85 }, -- Book Inventory (lvl 2, ~85 xp, sim lvl 2)
     { "accept", 91743 }, -- Rascally Rodents (lvl 2, ~170 xp, sim lvl 2)
+    { "turnin", 5261, xp = 85 }, -- Eagan Peltskinner (lvl 2, ~85 xp, sim lvl 2)
+    { "accept", 33 }, -- Wolves Across the Border (lvl 2, ~170 xp, sim lvl 2)
     { "complete", 15, at = { 1429, 48.3, 34.03 } }, -- Investigate Echo Ridge (lvl 3, ~250 xp, sim lvl 2)
     { "complete", 91743, at = { 1429, 48.47, 34.61 } }, -- Rascally Rodents (lvl 2, ~170 xp, sim lvl 3)
-    { "turnin", 91743, xp = 170 }, -- Rascally Rodents (lvl 2, ~170 xp, sim lvl 3)
+    { "complete", 33, at = { 1429, 46.98, 37.19 } }, -- Wolves Across the Border (lvl 2, ~170 xp, sim lvl 3)
+    { "turnin", 91743, xp = 170 }, -- Rascally Rodents (lvl 2, ~170 xp, sim lvl 4)
     { "accept", 91745 }, -- Mining Consultant (lvl 3, ~250 xp, sim lvl 4)
-    { "complete", 18, at = { 1429, 53.96, 47.73 } }, -- Brotherhood of Thieves (lvl 4, ~355 xp, sim lvl 4)
-    { "turnin", 18, xp = 355 }, -- Brotherhood of Thieves (lvl 4, ~355 xp, sim lvl 4)
-    { "accept", 6 }, -- Bounty on Garrick Padfoot (lvl 5, ~335 xp, sim lvl 4)
-    { "accept", 3903 }, -- Milly Osworth (lvl 4, ~35 xp, sim lvl 4)
     { "turnin", 15, xp = 250 }, -- Investigate Echo Ridge (lvl 3, ~250 xp, sim lvl 4)
     { "accept", 21 }, -- Skirmish at Echo Ridge (lvl 5, ~450 xp, sim lvl 4)
-    { "turnin", 5261, xp = 85 }, -- Eagan Peltskinner (lvl 2, ~85 xp, sim lvl 4)
-    { "accept", 33 }, -- Wolves Across the Border (lvl 2, ~170 xp, sim lvl 4)
-    { "complete", 33, at = { 1429, 46.98, 37.19 } }, -- Wolves Across the Border (lvl 2, ~170 xp, sim lvl 4)
+    { "turnin", 33, xp = 170 }, -- Wolves Across the Border (lvl 2, ~170 xp, sim lvl 4)
+    { "complete", 18, at = { 1429, 53.96, 47.73 } }, -- Brotherhood of Thieves (lvl 4, ~355 xp, sim lvl 4)
+    { "turnin", 18, xp = 355 }, -- Brotherhood of Thieves (lvl 4, ~355 xp, sim lvl 4)
+    { "accept", 6 }, -- Bounty on Garrick Padfoot (lvl 5, ~335 xp, sim lvl 5)
+    { "accept", 3903 }, -- Milly Osworth (lvl 4, ~35 xp, sim lvl 5)
     { "turnin", 91745, xp = 250 }, -- Mining Consultant (lvl 3, ~250 xp, sim lvl 5)
     { "accept", 91752 }, -- The Big Picture (lvl 3, ~250 xp, sim lvl 5)
     { "complete", 21, at = { 1429, 48.87, 28.34 } }, -- Skirmish at Echo Ridge (lvl 5, ~450 xp, sim lvl 5)
     { "complete", 91752, at = { 1429, 49.22, 28.01 } }, -- The Big Picture (lvl 3, ~250 xp, sim lvl 5)
     { "turnin", 3903, xp = 35 }, -- Milly Osworth (lvl 4, ~35 xp, sim lvl 5)
     { "accept", 3904 }, -- Milly's Harvest (lvl 4, ~180 xp, sim lvl 5)
-    { "turnin", 33, xp = 170 }, -- Wolves Across the Border (lvl 2, ~170 xp, sim lvl 5)
     { "turnin", 91752, xp = 250 }, -- The Big Picture (lvl 3, ~250 xp, sim lvl 5)
     { "turnin", 21, xp = 450 }, -- Skirmish at Echo Ridge (lvl 5, ~450 xp, sim lvl 5)
     { "accept", 96627 }, -- The Adventurer (lvl 6, ~135 xp, sim lvl 5)

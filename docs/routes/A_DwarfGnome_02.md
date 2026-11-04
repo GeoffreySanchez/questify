@@ -1,14 +1,14 @@
 # A_DwarfGnome_02 — Dun Morogh
 
-Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: Dwarf.
+Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: Dwarf.
 
 | Item | Value |
 |---|---|
 | Level band | 6-11 |
-| Simulated level | 6.00 -> 12.03 |
+| Simulated level | 6.00 -> 12.01 |
 | Time | 115 min |
-| XP gained | 36674 |
-| XP/h | 19153 |
+| XP gained | 36463 |
+| XP/h | 19079 |
 | Steps | 103 |
 | Quests turned in | 37 |
 | Hubs | 11 |
@@ -21,33 +21,33 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | # | Quest | Name | Lvl | XP | Sim lvl |
 |---|---|---|---|---|---|
 | 1 | 96608 | The Great Outdoors | 6 | 540 est. | 6 |
-| 2 | 98322 | Secure the Mountain | 8 | 530 est. | 6 |
-| 3 | 5541 | Ammo for Rumbleshot | 6 | 540 | 6 |
-| 4 | 98319 | Secure the Mountain | 8 | 700 est. | 7 |
-| 5 | 98323 | Secure the Mountain | 8 | 530 est. | 7 |
-| 6 | 96629 | Camping 101: Cooking | 6 | 540 est. | 7 |
-| 7 | 99158 | Dawn in the Mountains | 8 | 530 est. | 7 |
-| 8 | 99159 | Finding Warmth | 8 | 700 est. | 7 |
-| 9 | 317 | Stocking Jetsteam | 6 | 680 | 8 |
+| 2 | 96629 | Camping 101: Cooking | 6 | 540 est. | 6 |
+| 3 | 98322 | Secure the Mountain | 8 | 530 est. | 6 |
+| 4 | 5541 | Ammo for Rumbleshot | 6 | 540 | 6 |
+| 5 | 317 | Stocking Jetsteam | 6 | 680 | 7 |
+| 6 | 99158 | Dawn in the Mountains | 8 | 530 est. | 7 |
+| 7 | 99159 | Finding Warmth | 8 | 700 est. | 7 |
+| 8 | 99160 | Rime's Wrath | 8 | 700 est. | 7 |
+| 9 | 99161 | Rime's Wrath | 8 | 700 est. | 7 |
 | 10 | 318 | Evershine | 7 | 160 | 8 |
 | 11 | 319 | A Favor for Evershine | 8 | 530 | 8 |
 | 12 | 315 | The Perfect Stout | 9 | 780 | 8 |
-| 13 | 320 | Return to Bellowfiz | 8 | 880 | 9 |
-| 14 | 313 | The Grizzled Den | 7 | 630 | 9 |
-| 15 | 99160 | Rime's Wrath | 8 | 700 est. | 9 |
-| 16 | 99161 | Rime's Wrath | 8 | 700 est. | 9 |
-| 17 | 96408 | A Visitor to Dun Morogh | 13 | 455 est. | 9 |
-| 18 | 96392 | Farsen's Watch | 13 | 680 est. | 9 |
-| 19 | 95213 | Stolen Blasting Powder | 10 | 840 est. | 10 |
-| 20 | 95214 | Stolen Blasting Powder | 10 | 840 est. | 10 |
-| 21 | 432 | Those Blasted Troggs! | 9 | 590 | 10 |
-| 22 | 433 | The Public Servant | 11 | 660 | 11 |
-| 23 | 96391 | Underground Map | 15 | 405 est. | 11 |
-| 24 | 96390 | Nip 'Em in the Bud | 13 | 680 est. | 11 |
-| 25 | 314 | Protecting the Herd | 12 | 910 | 11 |
-| 26 | 95212 | Never Saddle on Quality | 10 | 840 est. | 11 |
-| 27 | 310 | Bitter Rivals | 6 | 135 | 11 |
-| 28 | 287 | Frostmane Hold | 9 | 590 | 11 |
+| 13 | 98319 | Secure the Mountain | 8 | 700 est. | 9 |
+| 14 | 98323 | Secure the Mountain | 8 | 530 est. | 9 |
+| 15 | 287 | Frostmane Hold | 9 | 590 | 9 |
+| 16 | 310 | Bitter Rivals | 6 | 135 | 9 |
+| 17 | 320 | Return to Bellowfiz | 8 | 880 | 9 |
+| 18 | 313 | The Grizzled Den | 7 | 630 | 9 |
+| 19 | 96408 | A Visitor to Dun Morogh | 13 | 455 est. | 9 |
+| 20 | 96392 | Farsen's Watch | 13 | 680 est. | 9 |
+| 21 | 95213 | Stolen Blasting Powder | 10 | 840 est. | 10 |
+| 22 | 432 | Those Blasted Troggs! | 9 | 590 | 10 |
+| 23 | 433 | The Public Servant | 11 | 660 | 10 |
+| 24 | 95214 | Stolen Blasting Powder | 10 | 840 est. | 11 |
+| 25 | 96391 | Underground Map | 15 | 405 est. | 11 |
+| 26 | 96390 | Nip 'Em in the Bud | 13 | 680 est. | 11 |
+| 27 | 95212 | Never Saddle on Quality | 10 | 840 est. | 11 |
+| 28 | 314 | Protecting the Herd | 12 | 910 | 11 |
 | 29 | 312 | Tundra MacGrann's Stolen Stash | 12 | 910 | 11 |
 | 30 | 415 | Rejold's New Brew | 10 | 85 | 11 |
 | 31 | 311 | Return to Marleth | 7 | 630 | 11 |
@@ -486,86 +486,86 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 7 | O | 96608 | The Great Outdoors | 1426 | 46.7, 53.8 | 3 |  |
 | 8 | T | 96608 | The Great Outdoors | 1426 | 46.7, 53.9 | 3 |  |
 | 9 | A | 96629 | Camping 101: Cooking | 1426 | 46.7, 53.9 | 0 |  |
-| 10 | O | 5541 | Ammo for Rumbleshot | 1426 | 44.1, 57.0 | 160 |  |
-| 11 | T | 98322 | Secure the Mountain | 1426 | 44.1, 57.1 | 4 |  |
-| 12 | A | 98319 | Secure the Mountain | 1426 | 44.1, 57.1 | 0 |  |
-| 13 | O | 317 | Stocking Jetsteam | 1426 | 42.3, 59.9 | 130 |  |
-| 14 | T | 5541 | Ammo for Rumbleshot | 1426 | 40.7, 65.1 | 188 |  |
-| 15 | O | 317 | Stocking Jetsteam | 1426 | 45.9, 63.6 | 259 |  |
-| 16 | O | 313 | The Grizzled Den | 1426 | 41.0, 47.6 | 577 |  |
-| 17 | O | 98319 | Secure the Mountain | 1426 | 43.0, 49.6 | 119 |  |
-| 18 | T | 98319 | Secure the Mountain | 1426 | 44.1, 57.1 | 250 |  |
-| 19 | A | 98323 | Secure the Mountain | 1426 | 44.1, 57.1 | 0 |  |
-| 20 | T | 98323 | Secure the Mountain | 1426 | 46.7, 53.8 | 167 |  |
-| 21 | A | 287 | Frostmane Hold | 1426 | 46.7, 53.8 | 0 |  |
-| 22 | O | 96629 | Camping 101: Cooking | 1426 | 47.7, 52.3 | 68 |  |
-| 23 | T | 96629 | Camping 101: Cooking | 1426 | 47.7, 52.3 | 0 |  |
-| 24 | T | 99158 | Dawn in the Mountains | 1426 | 57.7, 44.9 | 552 |  |
-| 25 | A | 99159 | Finding Warmth | 1426 | 57.7, 44.9 | 0 |  |
-| 26 | O | 99159 | Finding Warmth | 1426 | 57.0, 54.2 | 307 |  |
-| 27 | T | 99159 | Finding Warmth | 1426 | 57.7, 44.9 | 307 |  |
-| 28 | A | 99160 | Rime's Wrath | 1426 | 57.7, 44.9 | 0 |  |
-| 29 | O | 99160 | Rime's Wrath | 1426 | 55.5, 45.4 | 109 |  |
-| 30 | T | 317 | Stocking Jetsteam | 1426 | 49.4, 48.4 | 316 | near #3 (went 697 yd away) |
-| 31 | A | 318 | Evershine | 1426 | 49.4, 48.4 | 0 | near #3 (went 697 yd away) |
-| 32 | A | 312 | Tundra MacGrann's Stolen Stash | 1426 | 34.6, 51.6 | 739 |  |
-| 33 | O | 287 | Frostmane Hold | 1426 | 23.5, 51.6 | 542 |  |
-| 34 | A | 315 | The Perfect Stout | 1426 | 30.2, 45.7 | 379 |  |
-| 35 | T | 318 | Evershine | 1426 | 30.2, 45.7 | 0 |  |
-| 36 | A | 319 | A Favor for Evershine | 1426 | 30.2, 45.7 | 0 |  |
-| 37 | A | 98326 | Frosthowl | 1426 | 31.5, 44.6 | 74 |  |
-| 38 | O | 319 | A Favor for Evershine | 1426 | 38.1, 42.4 | 330 |  |
-| 39 | O | 315 | The Perfect Stout | 1426 | 41.8, 35.4 | 295 |  |
-| 40 | O | 319 | A Favor for Evershine | 1426 | 36.6, 35.8 | 256 |  |
-| 41 | A | 310 | Bitter Rivals | 1426 | 30.2, 45.5 | 448 | near #37 (went 661 yd away) |
-| 42 | T | 319 | A Favor for Evershine | 1426 | 30.2, 45.7 | 6 | near #37 (went 664 yd away) |
-| 43 | A | 320 | Return to Bellowfiz | 1426 | 30.2, 45.7 | 0 |  |
-| 44 | T | 315 | The Perfect Stout | 1426 | 30.2, 45.7 | 0 |  |
-| 45 | O | 98326 | Frosthowl | 1426 | 39.3, 48.8 | 461 | near #16 (went 915 yd away) |
-| 46 | A | 415 | Rejold's New Brew | 1426 | 46.0, 51.7 | 342 | near #23 (went 1106 yd away) |
-| 47 | T | 320 | Return to Bellowfiz | 1426 | 49.4, 48.4 | 199 | near #31 (went 1278 yd away) |
-| 48 | T | 313 | The Grizzled Den | 1426 | 49.6, 48.6 | 11 | near #31 (went 1287 yd away) |
-| 49 | A | 96408 | A Visitor to Dun Morogh | 1426 | 50.4, 49.1 | 43 |  |
-| 50 | T | 99160 | Rime's Wrath | 1426 | 57.7, 44.9 | 384 | near #29 (went 1697 yd away) |
-| 51 | A | 99161 | Rime's Wrath | 1426 | 57.7, 44.9 | 0 | near #29 (went 1697 yd away) |
-| 52 | O | 99161 | Rime's Wrath | 1426 | 58.3, 42.1 | 97 |  |
-| 53 | T | 99161 | Rime's Wrath | 1426 | 57.7, 44.9 | 97 |  |
-| 54 | A | 314 | Protecting the Herd | 1426 | 63.1, 49.9 | 309 |  |
-| 55 | A | 95212 | Never Saddle on Quality | 1426 | 63.1, 49.9 | 0 |  |
-| 56 | T | 96408 | A Visitor to Dun Morogh | 1426 | 64.9, 58.5 | 296 |  |
-| 57 | A | 96392 | Farsen's Watch | 1426 | 64.9, 58.5 | 0 |  |
-| 58 | O | 96392 | Farsen's Watch | 1426 | 64.9, 58.5 | 0 |  |
-| 59 | T | 96392 | Farsen's Watch | 1426 | 64.9, 58.5 | 0 |  |
-| 60 | A | 96390 | Nip 'Em in the Bud | 1426 | 64.9, 58.5 | 0 |  |
-| 61 | A | 433 | The Public Servant | 1426 | 68.7, 56.0 | 204 |  |
-| 62 | A | 432 | Those Blasted Troggs! | 1426 | 69.1, 56.3 | 23 |  |
-| 63 | O | 432 | Those Blasted Troggs! | 1426 | 69.0, 58.9 | 84 |  |
-| 64 | A | 96391 | Underground Map | 1426 | 77.6, 61.3 | 429 |  |
-| 65 | O | 96390 | Nip 'Em in the Bud | 1426 | 77.5, 61.2 | 2 |  |
-| 66 | O | 95212 | Never Saddle on Quality | 1426 | 77.4, 58.1 | 102 |  |
-| 67 | A | 95213 | Stolen Blasting Powder | 1426 | 71.5, 52.6 | 344 |  |
-| 68 | O | 95213 | Stolen Blasting Powder | 1426 | 71.5, 52.6 | 0 |  |
-| 69 | O | 433 | The Public Servant | 1426 | 71.4, 52.5 | 5 |  |
-| 70 | T | 95213 | Stolen Blasting Powder | 1426 | 69.2, 54.8 | 136 |  |
-| 71 | A | 95214 | Stolen Blasting Powder | 1426 | 69.2, 54.8 | 0 |  |
-| 72 | O | 95214 | Stolen Blasting Powder | 1426 | 72.2, 54.2 | 149 |  |
-| 73 | T | 95214 | Stolen Blasting Powder | 1426 | 69.2, 54.8 | 149 |  |
-| 74 | T | 432 | Those Blasted Troggs! | 1426 | 69.1, 56.3 | 50 |  |
-| 75 | T | 433 | The Public Servant | 1426 | 68.7, 56.0 | 23 |  |
-| 76 | T | 96391 | Underground Map | 1426 | 64.9, 58.5 | 204 | near #60 (went 631 yd away) |
-| 77 | T | 96390 | Nip 'Em in the Bud | 1426 | 64.9, 58.5 | 0 | near #60 (went 631 yd away) |
-| 78 | A | 96393 | Old Ironforge Incursion | 1426 | 64.9, 58.5 | 0 |  |
-| 79 | O | 314 | Protecting the Herd | 1426 | 62.6, 46.1 | 422 | near #55 (went 889 yd away) |
-| 80 | T | 314 | Protecting the Herd | 1426 | 63.1, 49.9 | 126 | near #55 (went 805 yd away) |
-| 81 | T | 95212 | Never Saddle on Quality | 1426 | 63.1, 49.9 | 0 |  |
-| 82 | T | 310 | Bitter Rivals | 1426 | 47.7, 52.7 | 762 | near #46 (went 1496 yd away) |
-| 83 | A | 311 | Return to Marleth | 1426 | 47.7, 52.7 | 0 | near #46 (went 1496 yd away) |
-| 84 | T | 287 | Frostmane Hold | 1426 | 46.7, 53.8 | 61 |  |
-| 85 | A | 291 | The Reports | 1426 | 46.7, 53.8 | 0 |  |
-| 86 | O | 312 | Tundra MacGrann's Stolen Stash | 1426 | 38.5, 53.9 | 404 |  |
-| 87 | T | 312 | Tundra MacGrann's Stolen Stash | 1426 | 34.6, 51.6 | 207 | near #32 (went 2140 yd away) |
-| 88 | T | 415 | Rejold's New Brew | 1426 | 30.2, 45.7 | 290 | near #44 (went 2387 yd away) |
-| 89 | A | 413 | Shimmer Stout | 1426 | 30.2, 45.7 | 0 | near #44 (went 2387 yd away) |
+| 10 | O | 96629 | Camping 101: Cooking | 1426 | 47.7, 52.3 | 71 |  |
+| 11 | T | 96629 | Camping 101: Cooking | 1426 | 47.7, 52.3 | 0 |  |
+| 12 | O | 5541 | Ammo for Rumbleshot | 1426 | 44.1, 57.0 | 231 |  |
+| 13 | T | 98322 | Secure the Mountain | 1426 | 44.1, 57.1 | 4 |  |
+| 14 | A | 98319 | Secure the Mountain | 1426 | 44.1, 57.1 | 0 |  |
+| 15 | O | 317 | Stocking Jetsteam | 1426 | 42.3, 59.9 | 130 |  |
+| 16 | T | 5541 | Ammo for Rumbleshot | 1426 | 40.7, 65.1 | 188 |  |
+| 17 | O | 317 | Stocking Jetsteam | 1426 | 45.9, 63.6 | 259 |  |
+| 18 | T | 317 | Stocking Jetsteam | 1426 | 49.4, 48.4 | 529 | near #3 (went 697 yd away) |
+| 19 | A | 318 | Evershine | 1426 | 49.4, 48.4 | 0 | near #3 (went 697 yd away) |
+| 20 | T | 99158 | Dawn in the Mountains | 1426 | 57.7, 44.9 | 424 |  |
+| 21 | A | 99159 | Finding Warmth | 1426 | 57.7, 44.9 | 0 |  |
+| 22 | O | 99159 | Finding Warmth | 1426 | 57.0, 54.2 | 307 |  |
+| 23 | T | 99159 | Finding Warmth | 1426 | 57.7, 44.9 | 307 |  |
+| 24 | A | 99160 | Rime's Wrath | 1426 | 57.7, 44.9 | 0 |  |
+| 25 | O | 99160 | Rime's Wrath | 1426 | 55.5, 45.4 | 109 |  |
+| 26 | T | 99160 | Rime's Wrath | 1426 | 57.7, 44.9 | 109 |  |
+| 27 | A | 99161 | Rime's Wrath | 1426 | 57.7, 44.9 | 0 |  |
+| 28 | O | 99161 | Rime's Wrath | 1426 | 58.3, 42.1 | 97 |  |
+| 29 | T | 99161 | Rime's Wrath | 1426 | 57.7, 44.9 | 97 |  |
+| 30 | A | 287 | Frostmane Hold | 1426 | 46.7, 53.8 | 616 | near #11 (went 690 yd away) |
+| 31 | O | 98319 | Secure the Mountain | 1426 | 43.0, 49.6 | 228 |  |
+| 32 | O | 313 | The Grizzled Den | 1426 | 41.0, 47.6 | 119 |  |
+| 33 | T | 318 | Evershine | 1426 | 30.2, 45.7 | 535 |  |
+| 34 | A | 315 | The Perfect Stout | 1426 | 30.2, 45.7 | 0 |  |
+| 35 | A | 319 | A Favor for Evershine | 1426 | 30.2, 45.7 | 0 |  |
+| 36 | A | 310 | Bitter Rivals | 1426 | 30.2, 45.5 | 6 |  |
+| 37 | O | 319 | A Favor for Evershine | 1426 | 36.6, 35.8 | 448 |  |
+| 38 | O | 315 | The Perfect Stout | 1426 | 41.8, 35.4 | 256 |  |
+| 39 | O | 319 | A Favor for Evershine | 1426 | 38.1, 42.4 | 295 |  |
+| 40 | A | 98326 | Frosthowl | 1426 | 31.5, 44.6 | 330 |  |
+| 41 | T | 319 | A Favor for Evershine | 1426 | 30.2, 45.7 | 74 | near #36 (went 664 yd away) |
+| 42 | A | 320 | Return to Bellowfiz | 1426 | 30.2, 45.7 | 0 |  |
+| 43 | T | 315 | The Perfect Stout | 1426 | 30.2, 45.7 | 0 |  |
+| 44 | O | 287 | Frostmane Hold | 1426 | 23.5, 51.6 | 379 |  |
+| 45 | A | 312 | Tundra MacGrann's Stolen Stash | 1426 | 34.6, 51.6 | 542 |  |
+| 46 | O | 98326 | Frosthowl | 1426 | 39.3, 48.8 | 252 | near #32 (went 782 yd away) |
+| 47 | T | 98319 | Secure the Mountain | 1426 | 44.1, 57.1 | 359 | near #15 (went 1028 yd away) |
+| 48 | A | 98323 | Secure the Mountain | 1426 | 44.1, 57.1 | 0 | near #15 (went 1028 yd away) |
+| 49 | T | 98323 | Secure the Mountain | 1426 | 46.7, 53.8 | 167 | near #30 (went 1144 yd away) |
+| 50 | T | 287 | Frostmane Hold | 1426 | 46.7, 53.8 | 0 | near #30 (went 1144 yd away) |
+| 51 | A | 291 | The Reports | 1426 | 46.7, 53.8 | 0 |  |
+| 52 | T | 310 | Bitter Rivals | 1426 | 47.7, 52.7 | 61 |  |
+| 53 | A | 311 | Return to Marleth | 1426 | 47.7, 52.7 | 0 |  |
+| 54 | T | 320 | Return to Bellowfiz | 1426 | 49.4, 48.4 | 164 | near #19 (went 1278 yd away) |
+| 55 | T | 313 | The Grizzled Den | 1426 | 49.6, 48.6 | 11 | near #19 (went 1287 yd away) |
+| 56 | A | 96408 | A Visitor to Dun Morogh | 1426 | 50.4, 49.1 | 43 |  |
+| 57 | A | 95212 | Never Saddle on Quality | 1426 | 63.1, 49.9 | 623 |  |
+| 58 | A | 314 | Protecting the Herd | 1426 | 63.1, 49.9 | 0 |  |
+| 59 | T | 96408 | A Visitor to Dun Morogh | 1426 | 64.9, 58.5 | 296 |  |
+| 60 | A | 96392 | Farsen's Watch | 1426 | 64.9, 58.5 | 0 |  |
+| 61 | O | 96392 | Farsen's Watch | 1426 | 64.9, 58.5 | 0 |  |
+| 62 | T | 96392 | Farsen's Watch | 1426 | 64.9, 58.5 | 0 |  |
+| 63 | A | 96390 | Nip 'Em in the Bud | 1426 | 64.9, 58.5 | 0 |  |
+| 64 | A | 433 | The Public Servant | 1426 | 68.7, 56.0 | 204 |  |
+| 65 | A | 432 | Those Blasted Troggs! | 1426 | 69.1, 56.3 | 23 |  |
+| 66 | O | 432 | Those Blasted Troggs! | 1426 | 69.0, 58.9 | 84 |  |
+| 67 | A | 96391 | Underground Map | 1426 | 77.6, 61.3 | 429 |  |
+| 68 | O | 96390 | Nip 'Em in the Bud | 1426 | 77.5, 61.2 | 2 |  |
+| 69 | O | 95212 | Never Saddle on Quality | 1426 | 77.4, 58.1 | 102 |  |
+| 70 | A | 95213 | Stolen Blasting Powder | 1426 | 71.5, 52.6 | 344 |  |
+| 71 | O | 95213 | Stolen Blasting Powder | 1426 | 71.5, 52.6 | 0 |  |
+| 72 | O | 433 | The Public Servant | 1426 | 71.4, 52.5 | 5 |  |
+| 73 | T | 95213 | Stolen Blasting Powder | 1426 | 69.2, 54.8 | 136 |  |
+| 74 | A | 95214 | Stolen Blasting Powder | 1426 | 69.2, 54.8 | 0 |  |
+| 75 | T | 432 | Those Blasted Troggs! | 1426 | 69.1, 56.3 | 50 |  |
+| 76 | T | 433 | The Public Servant | 1426 | 68.7, 56.0 | 23 |  |
+| 77 | O | 95214 | Stolen Blasting Powder | 1426 | 72.2, 54.2 | 181 |  |
+| 78 | T | 95214 | Stolen Blasting Powder | 1426 | 69.2, 54.8 | 149 |  |
+| 79 | T | 96391 | Underground Map | 1426 | 64.9, 58.5 | 243 | near #63 (went 631 yd away) |
+| 80 | T | 96390 | Nip 'Em in the Bud | 1426 | 64.9, 58.5 | 0 | near #63 (went 631 yd away) |
+| 81 | A | 96393 | Old Ironforge Incursion | 1426 | 64.9, 58.5 | 0 |  |
+| 82 | O | 314 | Protecting the Herd | 1426 | 62.6, 46.1 | 422 | near #58 (went 889 yd away) |
+| 83 | T | 95212 | Never Saddle on Quality | 1426 | 63.1, 49.9 | 126 | near #58 (went 805 yd away) |
+| 84 | T | 314 | Protecting the Herd | 1426 | 63.1, 49.9 | 0 |  |
+| 85 | A | 415 | Rejold's New Brew | 1426 | 46.0, 51.7 | 842 | near #53 (went 1584 yd away) |
+| 86 | O | 312 | Tundra MacGrann's Stolen Stash | 1426 | 38.5, 53.9 | 377 |  |
+| 87 | T | 312 | Tundra MacGrann's Stolen Stash | 1426 | 34.6, 51.6 | 207 | near #45 (went 2140 yd away) |
+| 88 | T | 415 | Rejold's New Brew | 1426 | 30.2, 45.7 | 290 | near #43 (went 2387 yd away) |
+| 89 | A | 413 | Shimmer Stout | 1426 | 30.2, 45.7 | 0 | near #43 (went 2387 yd away) |
 | 90 | T | 311 | Return to Marleth | 1426 | 30.2, 45.5 | 6 |  |
 | 91 | T | 98326 | Frosthowl | 1426 | 31.5, 44.6 | 72 |  |
 | 92 | T | 291 | The Reports | 1455 | 39.5, 57.5 | 1359 |  |
@@ -579,7 +579,23 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 100 | A | 414 | Stout to Kadrell | 1426 | 86.3, 48.8 | 0 |  |
 | 101 | T | 414 | Stout to Kadrell | 1432 | 32.6, 49.7 | 453 |  |
 
-Walking between tasks: 17850 yd (~43 min at 7 yd/s).
+Walking between tasks: 17759 yd (~42 min at 7 yd/s).
+
+## Qualité
+
+Checks of the itinerary (see `tools/routebuilder/quality.lua`): avoidable revisits (a place left,
+then returned to only for accepts or turn-ins possible on the earlier visit), missed pickups
+(within 40 yd), missed passing turn-ins (within 60 yd) and split objective areas (within 120 yd).
+A place counts as left when the route went more than 150 yd away (220 yd for an objective area).
+Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint later in the route),
+`free` (no constraint: a defect).
+
+| Check | Count |
+|---|---|
+| Avoidable revisits | 0 |
+| Missed pickups | 0 |
+| Split areas | 0 |
+| Missed passing turn-ins | 0 |
 
 ## Logistics
 

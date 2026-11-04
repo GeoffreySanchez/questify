@@ -16,7 +16,8 @@
 --   complete : quête dans le journal (pas après son rendu).
 --   turnin   : quête dans le journal (pas deux fois).
 --   obj      : index présent dans la liste des objectifs de la quête.
---   fly      : nœud de destination (nom dans note) découvert par une étape fp antérieure du parcours.
+--   fly      : nœud de destination (`node`, à défaut nom dans note) découvert par une étape fp antérieure
+--              du parcours.
 --   hearth   : pierre liée par une étape sethearth antérieure, sur la même carte.
 
 local qdb = require("qdb")
@@ -103,8 +104,10 @@ function paths.replay(D, W, faction, race, chapters, onIssue)
           local n = fpNode(W, faction, s[2], s[3], s[4])
           if n then known[n] = true end
         elseif act == "fly" then
-          local n = s.note and nodeByName(W, s.note)
-          if n and not known[n] then onIssue(ci, si, ("fly to %s: flight path not discovered on this path"):format(s.note)) end
+          local n = s.node or (s.note and nodeByName(W, s.note))
+          if n and not known[n] then
+            onIssue(ci, si, ("fly to %s: flight path not discovered on this path"):format(s.note or tostring(n)))
+          end
         elseif act == "sethearth" then
           hearthMap = s[2]
         elseif act == "hearth" then

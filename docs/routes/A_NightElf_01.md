@@ -1,14 +1,14 @@
 # A_NightElf_01 — Shadowglen
 
-Generated on 2026-11-03 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: NightElf.
+Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: NightElf.
 
 | Item | Value |
 |---|---|
 | Level band | 1-6 |
-| Simulated level | 1.00 -> 6.54 |
+| Simulated level | 1.00 -> 6.53 |
 | Time | 57 min |
-| XP gained | 9549 |
-| XP/h | 10120 |
+| XP gained | 9496 |
+| XP/h | 10037 |
 | Steps | 44 |
 | Quests turned in | 17 |
 | Hubs | 2 |
@@ -24,11 +24,11 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 2 | 458 | The Woodland Protector | 1 | 40 | 2 |
 | 3 | 4495 | A Good Friend | 4 | 270 | 4 |
 | 4 | 916 | Webwood Venom | 4 | 355 | 4 |
-| 5 | 3519 | A Friend in Need | 4 | 90 | 4 |
-| 6 | 917 | Webwood Egg | 5 | 560 | 5 |
-| 7 | 97236 | Fang of Githyiss | 5 | 225 est. | 5 |
+| 5 | 97236 | Fang of Githyiss | 5 | 225 est. | 4 |
+| 6 | 3519 | A Friend in Need | 4 | 90 | 4 |
+| 7 | 917 | Webwood Egg | 5 | 560 | 5 |
 | 8 | 459 | The Woodland Protector | 3 | 250 | 5 |
-| 9 | 97977 | Nature's Call | 3 | 250 est. | 6 |
+| 9 | 97977 | Nature's Call | 3 | 250 est. | 5 |
 | 10 | 457 | The Balance of Nature | 3 | 250 | 6 |
 | 11 | 3521 | Iverron's Antidote | 4 | 355 | 6 |
 | 12 | 920 | Tenaron's Summons | 5 | 45 | 6 |
@@ -98,20 +98,20 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 10 | O | 459 | The Woodland Protector | 1438 | 55.4, 45.1 | 121 |  |
 | 11 | A | 916 | Webwood Venom | 1438 | 57.8, 41.6 | 168 |  |
 | 12 | O | 916 | Webwood Venom | 1438 | 56.6, 27.5 | 482 |  |
-| 13 | T | 4495 | A Good Friend | 1438 | 54.6, 33.0 | 212 |  |
-| 14 | A | 3519 | A Friend in Need | 1438 | 54.6, 33.0 | 0 |  |
-| 15 | O | 97977 | Nature's Call | 1438 | 54.9, 38.8 | 199 |  |
-| 16 | T | 916 | Webwood Venom | 1438 | 57.8, 41.6 | 177 |  |
-| 17 | A | 917 | Webwood Egg | 1438 | 57.8, 41.6 | 0 |  |
-| 18 | T | 3519 | A Friend in Need | 1438 | 60.9, 42.0 | 157 |  |
-| 19 | A | 3521 | Iverron's Antidote | 1438 | 60.9, 42.0 | 0 |  |
-| 20 | O | 457 | The Balance of Nature | 1438 | 62.2, 37.2 | 176 |  |
-| 21 | O | 917 | Webwood Egg | 1438 | 56.8, 26.5 | 454 |  |
-| 22 | A | 97236 | Fang of Githyiss | 1438 | 56.6, 26.3 | 10 |  |
-| 23 | O | 3521 | Iverron's Antidote | 1438 | 56.9, 31.1 | 163 |  |
-| 24 | O | 3521 | Iverron's Antidote | 1438 | 57.6, 38.3 | 247 |  |
-| 25 | T | 917 | Webwood Egg | 1438 | 57.8, 41.6 | 113 |  |
-| 26 | T | 97236 | Fang of Githyiss | 1438 | 57.8, 41.6 | 0 |  |
+| 13 | A | 97236 | Fang of Githyiss | 1438 | 56.6, 26.3 | 42 |  |
+| 14 | T | 4495 | A Good Friend | 1438 | 54.6, 33.0 | 249 |  |
+| 15 | A | 3519 | A Friend in Need | 1438 | 54.6, 33.0 | 0 |  |
+| 16 | O | 97977 | Nature's Call | 1438 | 54.9, 38.8 | 199 |  |
+| 17 | T | 916 | Webwood Venom | 1438 | 57.8, 41.6 | 177 |  |
+| 18 | A | 917 | Webwood Egg | 1438 | 57.8, 41.6 | 0 |  |
+| 19 | T | 97236 | Fang of Githyiss | 1438 | 57.8, 41.6 | 0 |  |
+| 20 | T | 3519 | A Friend in Need | 1438 | 60.9, 42.0 | 157 |  |
+| 21 | A | 3521 | Iverron's Antidote | 1438 | 60.9, 42.0 | 0 |  |
+| 22 | O | 457 | The Balance of Nature | 1438 | 62.2, 37.2 | 176 |  |
+| 23 | O | 917 | Webwood Egg | 1438 | 56.8, 26.5 | 454 |  |
+| 24 | O | 3521 | Iverron's Antidote | 1438 | 56.9, 31.1 | 156 |  |
+| 25 | O | 3521 | Iverron's Antidote | 1438 | 57.6, 38.3 | 247 |  |
+| 26 | T | 917 | Webwood Egg | 1438 | 57.8, 41.6 | 113 |  |
 | 27 | A | 920 | Tenaron's Summons | 1438 | 57.8, 41.6 | 0 |  |
 | 28 | O | 3521 | Iverron's Antidote | 1438 | 55.5, 44.6 | 153 | near #10 (went 623 yd away) |
 | 29 | T | 459 | The Woodland Protector | 1438 | 57.8, 45.2 | 119 |  |
@@ -131,7 +131,23 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 43 | T | 2159 | Dolanaar Delivery | 1438 | 55.6, 59.8 | 146 |  |
 | 44 | T | 928 | Crown of the Earth | 1438 | 56.1, 61.7 | 70 |  |
 
-Walking between tasks: 5379 yd (~13 min at 7 yd/s).
+Walking between tasks: 5442 yd (~13 min at 7 yd/s).
+
+## Qualité
+
+Checks of the itinerary (see `tools/routebuilder/quality.lua`): avoidable revisits (a place left,
+then returned to only for accepts or turn-ins possible on the earlier visit), missed pickups
+(within 40 yd), missed passing turn-ins (within 60 yd) and split objective areas (within 120 yd).
+A place counts as left when the route went more than 150 yd away (220 yd for an objective area).
+Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint later in the route),
+`free` (no constraint: a defect).
+
+| Check | Count |
+|---|---|
+| Avoidable revisits | 0 |
+| Missed pickups | 0 |
+| Split areas | 0 |
+| Missed passing turn-ins | 0 |
 
 ## Logistics
 

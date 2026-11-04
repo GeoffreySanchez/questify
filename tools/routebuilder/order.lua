@@ -6,6 +6,8 @@
 --   start  = position de départ ; distFn(posA, posB) -> secondes de trajet
 --   opts   = { logCap = 20, initialLog = 0, finish = pos|nil, tieSeconds = 20/7, maxPasses = 200,
 --              levelXP = xp.LEVEL_XP|nil, level = n, xp = n, maxSegment = 3,
+--              grindCost = function(level, xp, targetLevel) -> s | nil,
+--              sweep = { hub = s, turnin = s, area = s } | nil,
 --              anneal = bool, seed = n, annealIters = n, annealMax = n, T0 = s, T1 = s }
 --   Facultatif sur une tâche : reqLevel (niveau requis pour une tâche A, C ou O) et gain(level) -> XP.
 --
@@ -14,6 +16,9 @@
 -- avec levelXP, une tâche A ou C attend que le niveau simulé atteigne son reqLevel. Quand plus rien
 -- n'est possible, la tâche bloquée par le plus petit niveau est marquée `needLevel` (farm avant) ;
 -- sinon une tâche finale est avancée, et en dernier recours le plafond est dépassé (signalé).
+-- Le farm d'une tâche `needLevel` (du niveau atteint à son reqLevel) est compté dans le coût avec
+-- opts.grindCost : or-opt et recuit ne l'avancent donc plus vers un niveau plus bas pour gagner
+-- quelques mètres de marche (le temps de farm en plus l'emporte), et peuvent la retarder.
 -- Renvoie seq, issues (liste de messages pour le rapport ; vide si tout est respecté).
 -- Méthode : plus proche voisin faisable (égalité à moins de 20 yd : T avant A avant O), puis or-opt
 -- (déplacement de segments de 1 à maxSegment tâches) tant que le temps total de trajet baisse, puis,
@@ -45,11 +50,12 @@ local function levelOk(t, level, levelXP)
 end
 
 -- Vérifie qu'une séquence respecte précédences, tâches finales, plafond du journal et niveaux.
-function order.feasible(seq, opts)
-  opts = opts or {}
+-- Renvoie aussi le coût du farm des tâches `needLevel` (opts.grindCost, en unités de opts.grindCost).
+local function check(seq, opts)
   local cap = opts.logCap or 20
   local log = opts.initialLog or 0
   local level, xp, levelXP = opts.level or 1, opts.xp or 0, opts.levelXP
+  local grindCost, grind = opts.grindCost, 0
   local placed, nonFinalLeft = {}, 0
   for _, t in ipairs(seq) do if not t.final then nonFinalLeft = nonFinalLeft + 1 end end
   for _, t in ipairs(seq) do
@@ -60,11 +66,18 @@ function order.feasible(seq, opts)
     if not levelOk(t, level, levelXP) then return false end
     log = log + logDelta(t)
     if log > cap then return false end
+    if grindCost and t.needLevel and t.reqLevel and levelXP and level < t.reqLevel then
+      grind = grind + grindCost(level, xp, t.reqLevel)
+    end
     level, xp = advance(t, level, xp, levelXP)
     placed[t.id] = true
     if not t.final then nonFinalLeft = nonFinalLeft - 1 end
   end
-  return true
+  return true, grind
+end
+
+function order.feasible(seq, opts)
+  return (check(seq, opts or {}))
 end
 
 local function cost(seq, start, distFn, finish)
@@ -89,8 +102,12 @@ function order.build(tasks, start, rawDist, opts)
   for _, t in ipairs(tasks) do ids[t.id] = t end
   local levelXP = opts.levelXP
   for _, t in ipairs(tasks) do t.needLevel = nil end
+  -- farm compté en centièmes de seconde entiers (comme les trajets)
+  local grindCost = opts.grindCost and levelXP and function(level, xp, target)
+    return math.floor(opts.grindCost(level, xp, target) * 100 + 0.5)
+  end or nil
   local fopts = { logCap = cap, initialLog = opts.initialLog or 0, ids = ids, levelXP = levelXP,
-                  level = opts.level or 1, xp = opts.xp or 0 }
+                  level = opts.level or 1, xp = opts.xp or 0, grindCost = grindCost }
 
   local issues = {}
   -- 1. Plus proche voisin faisable
@@ -216,6 +233,18 @@ function order.build(tasks, start, rawDist, opts)
     end
     return cand
   end
+  -- coût complet d'une séquence faisable : trajet + farm ; nil si infaisable
+  local function fullCost(cand)
+    local ok, grind = check(cand, fopts)
+    if not ok then return nil end
+    return cost(cand, start, distFn, finish) + grind, grind
+  end
+  -- segment qui contient une tâche à farmer : déplacement évalué même s'il allonge la marche
+  local function hasNeed(s, i, len)
+    if not grindCost then return false end
+    for k = i, i + len - 1 do if s[k].needLevel then return true end end
+    return false
+  end
   local function oropt(s, current)
     for _ = 1, maxPasses do
       local improved = false
@@ -224,14 +253,13 @@ function order.build(tasks, start, rawDist, opts)
         local i = 1
         while i + len - 1 <= n do
           local bestCand, bestCost
+          local need = hasNeed(s, i, len)
           for j = 0, n do
             -- insertion après l'élément j (hors segment et hors position actuelle)
-            if (j < i - 1 or j > i + len - 1) and moveDelta(s, i, len, j) < 0 then
+            if (j < i - 1 or j > i + len - 1) and (need or moveDelta(s, i, len, j) < 0) then
               local cand = moved(s, i, len, j)
-              if order.feasible(cand, fopts) then
-                local c = cost(cand, start, distFn, finish)
-                if c < current and (not bestCost or c < bestCost) then bestCand, bestCost = cand, c end
-              end
+              local c = fullCost(cand)
+              if c and c < current and (not bestCost or c < bestCost) then bestCand, bestCost = cand, c end
             end
           end
           if bestCand then
@@ -245,8 +273,8 @@ function order.build(tasks, start, rawDist, opts)
     end
     return s, current
   end
-  local current
-  seq, current = oropt(seq, cost(seq, start, distFn, finish))
+  local current = fullCost(seq) or cost(seq, start, distFn, finish)
+  seq, current = oropt(seq, current)
 
   -- 3. Recuit simulé (opts.anneal) : déplacements aléatoires de segments de 1 à 12 tâches, acceptés
   -- selon la température (secondes de trajet), en gardant la meilleure séquence faisable ; puis
@@ -263,6 +291,7 @@ function order.build(tasks, start, rawDist, opts)
     local T0, T1 = (opts.T0 or 60) * 100, (opts.T1 or 0.5) * 100
     local best, bestCost = seq, current
     local curSeq, curCost = seq, current
+    local curGrind = select(2, check(seq, fopts)) or 0
     local maxLen = math.min(12, n - 1)
     for it = 1, iters do
       local T = T0 * (T1 / T0) ^ (it / iters)
@@ -274,8 +303,11 @@ function order.build(tasks, start, rawDist, opts)
         -- déplacement neutre (delta = 0) refusé : il défait le regroupement des prises au hub
         if delta < 0 or (delta > 0 and rand() < math.exp(-delta / T)) then
           local cand = moved(curSeq, i, len, j)
-          if order.feasible(cand, fopts) then
-            curSeq, curCost = cand, cost(cand, start, distFn, finish)
+          local ok, grind = check(cand, fopts)
+          -- farm en plus : même règle d'acceptation sur le seul supplément de farm
+          if ok and grind > curGrind and rand() >= math.exp(-(grind - curGrind) / T) then ok = false end
+          if ok then
+            curSeq, curCost, curGrind = cand, cost(cand, start, distFn, finish) + grind, grind
             if curCost < bestCost then best, bestCost = curSeq, curCost end
           end
         end
@@ -289,6 +321,7 @@ function order.build(tasks, start, rawDist, opts)
   -- le trajet pas plus long. On ramasse ainsi toutes les quêtes d'un hub quand on y passe.
   local hoisted = true
   local guard = 0
+  local seqGrind = select(2, check(seq, fopts)) or 0
   while hoisted and guard < 5 * #seq do
     hoisted, guard = false, guard + 1
     for k = 2, #seq do
@@ -298,8 +331,9 @@ function order.build(tasks, start, rawDist, opts)
           if distFn(posAt(seq, j), t.pos) <= tie then
             if j < k - 1 and moveDelta(seq, k, 1, j) <= 0 then
               local cand = moved(seq, k, 1, j)
-              if order.feasible(cand, fopts) then
-                seq = cand
+              local ok, grind = check(cand, fopts)
+              if ok and grind <= seqGrind then
+                seq, seqGrind = cand, grind
                 hoisted = true
               end
             end
@@ -310,6 +344,93 @@ function order.build(tasks, start, rawDist, opts)
       end
     end
   end
+  -- 5. Balayage (opts.sweep, rayons en secondes de marche) : à chaque tâche de la séquence, les tâches
+  -- plus loin qui se font au même endroit sont ramenées juste après elle si la séquence reste
+  -- faisable (précédences, journal, niveaux ; farm pas plus long) :
+  --   * prises (A) et points de vol (F) à moins de sweep.hub : tout ce qui se prend au hub ;
+  --   * rendus (T) à moins de sweep.turnin : rendu au passage ;
+  --   * objectifs (O) et prises par objet ramassé (A itemStart) à moins de sweep.area d'un objectif :
+  --     un seul passage par zone d'objectifs.
+  -- Puis, dans chaque zone, ordre objets > mobs nommés ou élites > mobs ordinaires (t.cat 1, 2, 3),
+  -- dans le respect des précédences (clé lâchée par un mob nommé avant le coffre).
+  if opts.sweep then
+    local R = { hub = math.floor(opts.sweep.hub * 100 + 0.5), turnin = math.floor(opts.sweep.turnin * 100 + 0.5),
+                area = math.floor(opts.sweep.area * 100 + 0.5) }
+    local function isAreaTask(t) return t.kind == "O" or (t.kind == "A" and t.itemStart) end
+    local function radiusFor(t, anchor)
+      if t.final or t.kind == "C" then return nil end
+      if isAreaTask(t) and isAreaTask(anchor) then return R.area end
+      if t.kind == "A" or t.kind == "F" then return R.hub end
+      if t.kind == "T" then return R.turnin end
+      return nil
+    end
+    local seqGrind2 = select(2, check(seq, fopts)) or 0
+    local changed, rounds = true, 0
+    while changed and rounds < 8 do
+      changed, rounds = false, rounds + 1
+      local k = 1
+      while k <= #seq do
+        local anchor = seq[k]
+        local apos = anchor.endPos or anchor.pos
+        local ins = k
+        local j = k + 1
+        while j <= #seq do
+          local t = seq[j]
+          local r = radiusFor(t, anchor)
+          if r and distFn(apos, t.pos) <= r then
+            if j == ins + 1 then
+              ins = j
+            else
+              local cand = moved(seq, j, 1, ins)
+              local ok, grind = check(cand, fopts)
+              if ok and grind <= seqGrind2 then
+                seq, seqGrind2, ins, changed = cand, grind, ins + 1, true
+              end
+            end
+          end
+          j = j + 1
+        end
+        k = k + 1
+      end
+    end
+    -- ordre interne des zones d'objectifs
+    local i = 1
+    while i <= #seq do
+      local first = seq[i]
+      local e = i
+      if isAreaTask(first) then
+        while e + 1 <= #seq and isAreaTask(seq[e + 1]) and distFn(first.pos, seq[e + 1].pos) <= R.area do e = e + 1 end
+      end
+      if e > i then
+        local run, inRun = {}, {}
+        for k = i, e do run[#run + 1] = seq[k]; inRun[seq[k].id] = true end
+        local want, placed = {}, {}
+        while #want < #run do
+          local pick
+          for _, t in ipairs(run) do
+            if not placed[t.id] then
+              local ready = true
+              for _, a in ipairs(t.after or {}) do if inRun[a] and not placed[a] then ready = false end end
+              if ready and (not pick or (t.cat or 3) < (pick.cat or 3)) then pick = t end
+            end
+          end
+          if not pick then break end
+          placed[pick.id] = true
+          want[#want + 1] = pick
+        end
+        if #want == #run then
+          local cand = {}
+          for k = 1, i - 1 do cand[#cand + 1] = seq[k] end
+          for _, t in ipairs(want) do cand[#cand + 1] = t end
+          for k = e + 1, #seq do cand[#cand + 1] = seq[k] end
+          local ok, grind = check(cand, fopts)
+          if ok and grind <= seqGrind2 then seq, seqGrind2 = cand, grind end
+        end
+      end
+      i = e + 1
+    end
+  end
+
   for _, t in ipairs(tasks) do t._idx = nil end
   if not order.feasible(seq, fopts) then
     issues[#issues + 1] = "final task order breaks a constraint (precedence, final turn-ins, log cap or level)"

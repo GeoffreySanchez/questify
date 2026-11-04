@@ -761,7 +761,7 @@ local OPTION_GROUPS = {
     { "tracker.autoTarget", "UI_OPT_AUTOTARGET" }, { "trainerAlert", "UI_OPT_TRAINER" },
     { "talentAlert", "UI_OPT_TALENTS" } } },
   { title = "UI_OPT_ROUTE", checks = { { "dungeonQuests", "UI_OPT_DUNGEON" },
-    { "dungeonSuggest", "DUNGEON_OPT_SUGGEST" } } },
+    { "dungeonSuggest", "DUNGEON_OPT_SUGGEST" }, { "zoneMode", "ZONE_OPT" } } },
   { title = "UI_OPT_DISPLAY", checks = { { "nameplates", "UI_OPT_NAMEPLATES" },
     { "objectGlow", "UI_OPT_OBJECTGLOW" }, { "questItemButton", "UI_OPT_QUESTITEM" }, { "tracker.locked", "UI_OPT_LOCKED" },
     { "tracker.showMobs", "UI_OPT_SHOWMOBS" }, { "mapPins", "MAP_OPT_PINS" } }, scale = true },

@@ -17,6 +17,7 @@ Guide de leveling **gratuit et open source** pour **World of Warcraft: Forever**
 - Donjons conseillés selon ton niveau et ta faction (non publié) : un clic ajoute ses quêtes à prendre
   en ville, l'entrée et les rendus à la route (option pour couper l'alerte).
 - Repères numérotés de l'étape courante et des 5 suivantes sur la carte du monde et la minicarte (non publié, option).
+- Mode zone (non publié, option) : objectifs proches de plusieurs quêtes regroupés en une seule visite (repère vert, puis objets, nommés et monstres par priorité).
 - Un assistant de premier démarrage : addons installés ou manquants (avec leur lien CurseForge),
   itinéraire, repère, automatisations.
 
@@ -150,6 +151,7 @@ Bibliothèques incluses dans `Questify_Vanilla/Libs/`, copiées sans modificatio
 - Suggested dungeons for your level and faction (unreleased): one click adds its quests to pick up
   in town, the entrance and the turn-ins to the route (the alert can be turned off).
 - Numbered pins for the current step and the next 5 on the world map and minimap (unreleased, can be turned off).
+- Zone mode (unreleased, can be turned off): nearby objectives of several quests grouped into one visit (green marker, then objects, named mobs and monsters by priority).
 - A first-launch wizard: installed or missing addons (with their CurseForge link), routing, marker,
   automations.
 

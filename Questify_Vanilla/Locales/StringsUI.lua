@@ -178,8 +178,19 @@ Q:RegisterStrings({
     UI_NAV_NATIVE_DESC = "The game's own map pin and 3D marker, always available.",
 
     -- Commandes
-    UI_SLASH_HELP = "/qf: journal. /qf skip, /qf back, /qf options, /qf wizard, /qf export, /qf check, /qf bug, /qf talents, /qf debug, /qf reset.",
+    UI_SLASH_HELP = "/qf: journal. /qf skip, /qf back, /qf options, /qf wizard, /qf export, /qf check, /qf bug, /qf talents, /qf theme <name>, /qf opacity <0-100>, /qf debug, /qf reset.",
     UI_SLASH_NO_STEP = "There is no current step.",
+    UI_SLASH_THEME_SET = "Tracker theme: %s.",
+    UI_SLASH_THEME_LIST = "Tracker themes: %s. Current theme: %s. Type /qf theme <name>.",
+    UI_SLASH_THEME_UNKNOWN = "Unknown theme \"%s\". Themes: %s.",
+    UI_SLASH_OPACITY_SET = "Tracker background opacity: %d%%.",
+    UI_SLASH_OPACITY_HELP = "Tracker background opacity: %d%%. Type /qf opacity <0-100>.",
+
+    -- Thèmes du suivi (UI/Themes.lua)
+    UI_THEME_PARCHMENT = "Parchment",
+    UI_THEME_DARK = "Black",
+    UI_THEME_TRANSPARENT = "Transparent",
+    UI_THEME_GRADIENT = "Grey fade",
     UI_SLASH_NO_BACK = "There is no earlier step to reopen.",
     UI_SLASH_TALENTS_DUMPED = "%d talents recorded. Type /reload to save them.",
     TALENT_DUMP_NO_API = "Talent dump: this client has no C_ClassTalents / C_Traits talent API, nothing recorded.",
@@ -369,8 +380,19 @@ Q:RegisterStrings({
     UI_NAV_NATIVE_DESC = "Le repère de carte et le marqueur 3D du jeu, toujours disponibles.",
 
     -- Commandes
-    UI_SLASH_HELP = "/qf : journal. /qf skip, /qf back, /qf options, /qf wizard, /qf export, /qf check, /qf bug, /qf talents, /qf debug, /qf reset.",
+    UI_SLASH_HELP = "/qf : journal. /qf skip, /qf back, /qf options, /qf wizard, /qf export, /qf check, /qf bug, /qf talents, /qf theme <nom>, /qf opacity <0-100>, /qf debug, /qf reset.",
     UI_SLASH_NO_STEP = "Aucune étape en cours.",
+    UI_SLASH_THEME_SET = "Thème du suivi : %s.",
+    UI_SLASH_THEME_LIST = "Thèmes du suivi : %s. Thème actuel : %s. Tape /qf theme <nom>.",
+    UI_SLASH_THEME_UNKNOWN = "Thème « %s » inconnu. Thèmes : %s.",
+    UI_SLASH_OPACITY_SET = "Opacité du fond du suivi : %d %%.",
+    UI_SLASH_OPACITY_HELP = "Opacité du fond du suivi : %d %%. Tape /qf opacity <0-100>.",
+
+    -- Thèmes du suivi (UI/Themes.lua)
+    UI_THEME_PARCHMENT = "Parchemin",
+    UI_THEME_DARK = "Noir",
+    UI_THEME_TRANSPARENT = "Transparent",
+    UI_THEME_GRADIENT = "Fondu de gris",
     UI_SLASH_NO_BACK = "Aucune étape précédente à rouvrir.",
     UI_SLASH_TALENTS_DUMPED = "%d talents relevés. Tape /reload pour les enregistrer.",
     TALENT_DUMP_NO_API = "Relevé des talents : ce client n'a pas l'API de talents C_ClassTalents / C_Traits, rien n'est relevé.",

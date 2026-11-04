@@ -219,8 +219,12 @@ return {
     Mock.advance(0.3)
     local T = Q.UI.Tracker
     t.eq(shownMobLines(T), 2, "lines stay: no layout change mid-fight")
-    t.ok(T.mobRows[1].name:GetText():find("|cff808080", 1, true), "done mob greyed")
-    t.ok(T.mobRows[2].name:GetText():find("|cffff6060", 1, true), "remaining mob in red")
+    -- couleurs du thème courant (UI/Themes.lua : teintes foncées sur parchemin)
+    t.ok(T.mobRows[1].name:GetText():find(Q.Themes:Recolor("|cff808080"), 1, true), "done mob greyed")
+    t.ok(T.mobRows[2].name:GetText():find(Q.Themes:Recolor("|cffff6060"), 1, true), "remaining mob in red")
+    Q.Settings:Set("tracker.theme", "dark")
+    t.ok(T.mobRows[1].name:GetText():find("|cff808080", 1, true), "dark theme: original grey")
+    t.ok(T.mobRows[2].name:GetText():find("|cffff6060", 1, true), "dark theme: original red")
   end,
 
   hidden_when_off = function(t)

@@ -19,6 +19,9 @@ local addonName, Q = ...
 -- Le clic sur un monstre passe par les boutons sécurisés d'UI/MobPanel.lua, posés par-dessus ses
 -- lignes sans s'ancrer au suivi : un enfant sécurisé rendrait le suivi protégé (impossible à
 -- redimensionner en combat). Ici, les lignes de monstres ne sont que du texte et des textures.
+-- Apparence (UI/Themes.lua) : fond, bordure, couleurs du texte, de la barre et des lueurs selon
+-- tracker.theme et tracker.opacity, réappliqués à chaud ; les codes de couleur des textes passent
+-- par Q.Themes:Recolor (teintes foncées sur parchemin).
 Q.UI = Q.UI or {}
 local Tracker = {}
 Q.UI.Tracker = Tracker
@@ -61,6 +64,19 @@ local LEVEL_COLOR = "|cffaaaaaa"
 -- Outils
 ---------------------------------------------------------------------------
 local function setting(path) return Q.Settings:Get(path) end
+
+-- Codes de couleur d'un texte adaptés au thème courant.
+local function paint(text)
+  local T = Q.Themes
+  if not T then return text end
+  return T:Recolor(text, Tracker.theme)
+end
+
+-- Couleur et ombre d'une ligne de texte selon son rôle dans le thème courant.
+local function style(fs, role)
+  local T = Q.Themes
+  if T and fs then T:StyleText(fs, role, Tracker.theme) end
+end
 
 -- Largeur courante : celle de la poignée pendant un redimensionnement, sinon le réglage.
 local function curWidth()
@@ -261,16 +277,7 @@ function Tracker:Create()
   f:SetFrameStrata("LOW")
   f:SetClampedToScreen(true)
   if f.SetDontSavePosition then f:SetDontSavePosition(true) end
-  if f.SetBackdrop then
-    f:SetBackdrop({
-      bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
-      edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-      tile = true, tileSize = 16, edgeSize = 12,
-      insets = { left = 3, right = 3, top = 3, bottom = 3 },
-    })
-    f:SetBackdropColor(0, 0, 0, 0.55)
-    f:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.8)
-  end
+  -- fond et bordure : posés par le thème (ApplyTheme, en fin de construction)
   f:RegisterForDrag("LeftButton")
   f:SetScript("OnDragStart", function() Q.SafeCall(startMoving) end)
   f:SetScript("OnDragStop", function() Q.SafeCall(stopMoving) end)
@@ -299,21 +306,18 @@ function Tracker:Create()
   bar:SetPoint("TOPLEFT", PAD, -PAD - 18)
   bar:SetPoint("TOPRIGHT", -PAD, -PAD - 18)
   bar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
-  bar:SetStatusBarColor(0.26, 0.56, 0.95)
   bar:SetMinMaxValues(0, 1)
   bar:SetValue(0)
   local barBg = bar:CreateTexture(nil, "BACKGROUND")
   barBg:SetAllPoints(bar)
-  barBg:SetColorTexture(0, 0, 0, 0.5)
   local barText = bar:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   barText:SetPoint("CENTER", bar, "CENTER", 0, 0)
-  self.bar, self.barText = bar, barText
+  self.bar, self.barBg, self.barText = bar, barBg, barText
 
   -- XP/h et temps avant le prochain niveau (Engine/XPRate.lua)
   local xpLine = f:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   xpLine:SetJustifyH("LEFT")
   xpLine:SetWordWrap(false)
-  xpLine:SetTextColor(0.75, 0.85, 1)
   xpLine:Hide()
   self.xpLine = xpLine
 
@@ -374,7 +378,6 @@ function Tracker:Create()
   dgText:SetPoint("RIGHT", dg, "RIGHT", -2, 0)
   dgText:SetJustifyH("LEFT")
   dgText:SetWordWrap(false)
-  dgText:SetTextColor(1, 0.7, 0.4)
   dg:SetScript("OnClick", function() Q.SafeCall(function() Tracker:OpenDungeonAlert() end) end)
   dg:SetScript("OnEnter", function(btn) Q.SafeCall(showTooltip, btn, { dgText:GetText() or "", L.DUNGEON_ALERT_HINT }) end)
   dg:SetScript("OnLeave", hideTooltip)
@@ -405,7 +408,6 @@ function Tracker:Create()
   trText:SetPoint("RIGHT", tr, "RIGHT", -2, 0)
   trText:SetJustifyH("LEFT")
   trText:SetWordWrap(false)
-  trText:SetTextColor(0.5, 0.85, 1)
   tr:SetScript("OnClick", function(_, button)
     Q.SafeCall(function()
       if button == "RightButton" then Q.Trainer:Snooze() else Q.Trainer:Go() end
@@ -439,12 +441,12 @@ function Tracker:Create()
   taText:SetPoint("RIGHT", ta, "RIGHT", -2, 0)
   taText:SetJustifyH("LEFT")
   taText:SetWordWrap(false)
-  taText:SetTextColor(0.45, 1, 0.5)
   ta:SetScript("OnClick", function() Q.SafeCall(function() Q.Talents:OpenFrame() end) end)
   ta:SetScript("OnEnter", function(btn) Q.SafeCall(Tracker.TalentTooltip, Tracker, btn) end)
   ta:SetScript("OnLeave", hideTooltip)
   ta:Hide()
   self.talentAlert, self.talentText, self.talentIcon, self.talentPulse = ta, taText, taIcon, taPulse
+  self.glows = { glow, dgGlow, trGlow, taGlow }
 
   -- Étape courante
   local cur = CreateFrame("Button", nil, f)
@@ -503,8 +505,52 @@ function Tracker:Create()
     Q.SafeCall(function() Tracker:UpdateDistance(retarget) end)
   end)
 
+  self:ApplyTheme(true)
   applyPosition(f)
   return f
+end
+
+-- Rôle de couleur (UI/Themes.lua) de chaque ligne de texte fixe du suivi.
+local TEXT_ROLES = {
+  message = "body", title = "title", levels = "levels", barText = "bar", xpLine = "xp",
+  alertText = "classAlert", dungeonText = "dungeonAlert", trainerText = "trainerAlert",
+  talentText = "talentAlert", distance = "distance",
+}
+
+-- Thème du suivi : fond et bordure (opacité), couleurs du texte, de la barre et des lueurs.
+-- Sans changement de thème ni d'opacité, rien n'est refait (sauf force). -> vrai si appliqué.
+function Tracker:ApplyTheme(force)
+  local f, T = self.frame, Q.Themes
+  if not (f and T) then return false end
+  local key = T:Resolve(setting("tracker.theme"))
+  local opacity = T:Opacity(setting("tracker.opacity"))
+  if not force and key == self.themeKey and opacity == self.themeOpacity then return false end
+  local restyle = force or key ~= self.themeKey
+  self.theme = T:Apply(f, key, opacity)
+  self.themeKey, self.themeOpacity = key, opacity
+  if restyle then self:StyleAll() end
+  return true
+end
+
+-- Couleurs du thème sur toutes les lignes existantes (les lignes créées ensuite les prennent à
+-- leur création).
+function Tracker:StyleAll()
+  local th = self.theme
+  if not th then return end
+  for field, role in pairs(TEXT_ROLES) do style(self[field], role) end
+  for _, chunk in ipairs(self.textChunks) do style(chunk, "body") end
+  for _, row in ipairs(self.mobRows) do
+    style(row.name, "body")
+    style(row.level, "dim")
+  end
+  for _, line in ipairs(self.nextLines) do style(line.text, "dim") end
+  for _, line in ipairs(self.warnLines) do style(line, "warn") end
+  local bar = th.bar
+  if bar then
+    self.bar:SetStatusBarColor(bar.fill[1], bar.fill[2], bar.fill[3])
+    self.barBg:SetColorTexture(bar.bg[1], bar.bg[2], bar.bg[3], bar.bg[4] or 1)
+  end
+  for _, g in ipairs(self.glows) do g:SetBlendMode(th.glowBlend or "ADD") end
 end
 
 -- Morceau de texte de l'étape courante (créé à la demande).
@@ -516,6 +562,7 @@ function Tracker:TextChunk(i)
   chunk:SetJustifyV("TOP")
   chunk:SetWordWrap(true)
   chunk:Hide()
+  style(chunk, "body")
   self.textChunks[i] = chunk
   return chunk
 end
@@ -536,6 +583,8 @@ function Tracker:MobRow(i)
   row.level:SetJustifyH("RIGHT")
   row.level:SetWordWrap(false)
   row.level:SetWidth(MOB_LEVEL_W)
+  style(row.name, "body")
+  style(row.level, "dim")
   row.skull:Hide(); row.name:Hide(); row.level:Hide()
   self.mobRows[i] = row
   return row
@@ -797,7 +846,7 @@ function Tracker:ShowMessage(text)
   self.xpLine:Hide()
   for _, line in ipairs(self.warnLines) do line:Hide() end
   self.alertPulse:Stop()
-  self.message:SetText(text)
+  self.message:SetText(paint(text))
   self.message:Show()
   f:SetHeight(PAD * 2 + (self.message:GetStringHeight() or 12))
 end
@@ -1001,7 +1050,7 @@ function Tracker:LayoutCurrent(cur, yTop, zone)
       chunk:SetWidth(textWidth())
       chunk:ClearAllPoints()
       chunk:SetPoint("TOPLEFT", self.current, "TOPLEFT", ICON_COL + 2, -yy)
-      chunk:SetText(seg.text)
+      chunk:SetText(paint(seg.text))
       chunk:Show()
       yy = yy + (chunk:GetStringHeight() or 14)
     else
@@ -1016,12 +1065,12 @@ function Tracker:LayoutCurrent(cur, yTop, zone)
       row.name:SetWidth(textWidth() - MOB_INDENT - 16 - MOB_LEVEL_W)
       row.name:ClearAllPoints()
       row.name:SetPoint("TOPLEFT", self.current, "TOPLEFT", x + 16, -yy - 2)
-      row.name:SetText((mob.done and MOB_DONE_COLOR or MOB_COLOR) .. mob.name .. "|r")
+      row.name:SetText(paint((mob.done and MOB_DONE_COLOR or MOB_COLOR) .. mob.name .. "|r"))
       row.name:Show()
       local lvl = Q.UI.MobPanel:LevelText(mob)
       row.level:ClearAllPoints()
       row.level:SetPoint("TOPRIGHT", self.current, "TOPRIGHT", 0, -yy - 2)
-      row.level:SetText(lvl ~= "" and (LEVEL_COLOR .. lvl .. "|r") or "")
+      row.level:SetText(lvl ~= "" and paint(LEVEL_COLOR .. lvl .. "|r") or "")
       row.level:Show()
       row.mob = mob
       -- zone du bouton de ciblage, depuis le coin haut gauche du suivi
@@ -1054,7 +1103,7 @@ function Tracker:LayoutXPLine(y)
   line:ClearAllPoints()
   line:SetPoint("TOPLEFT", f, "TOPLEFT", PAD, -y)
   line:SetWidth(curWidth() - 2 * PAD)
-  line:SetText(text)
+  line:SetText(paint(text))
   line:Show()
   return y + XP_LINE_H
 end
@@ -1067,7 +1116,7 @@ function Tracker:UpdateXPLine()
   local text = comfort("XPRate", "Text")
   local has = type(text) == "string" and text ~= ""
   if has ~= line:IsShown() then return false end
-  if has then line:SetText(text) end
+  if has then line:SetText(paint(text)) end
   return true
 end
 
@@ -1078,6 +1127,7 @@ local function warnLine(self, i)
   line:SetJustifyH("LEFT")
   line:SetWordWrap(false)
   line:Hide()
+  style(line, "warn")
   self.warnLines[i] = line
   return line
 end
@@ -1108,7 +1158,7 @@ function Tracker:LayoutWarnings(y)
     line:ClearAllPoints()
     line:SetPoint("TOPLEFT", f, "TOPLEFT", PAD + 2, -y)
     line:SetWidth(curWidth() - 2 * PAD - 4)
-    line:SetText(text)
+    line:SetText(paint(text))
     line:Show()
     y = y + WARN_LINE_H
   end
@@ -1120,6 +1170,8 @@ end
 function Tracker:Refresh()
   local f = self.frame
   if not f then return end
+  -- thème et opacité à chaud (rien à faire s'ils n'ont pas changé)
+  self:ApplyTheme()
   -- Nouvelle taille : la position est réappliquée pour que le coin enregistré ne bouge pas.
   local scale = tonumber(setting("tracker.scale")) or 1
   if scale ~= self.appliedScale then
@@ -1302,5 +1354,6 @@ end)
 Q:On("SETTINGS_CHANGED", function(path)
   if not Tracker.frame then return end
   if path == "tracker.point" and not Tracker.moving then applyPosition(Tracker.frame) end
+  -- thème ou opacité changés (tracker.theme, tracker.opacity, profil) : Refresh les réapplique
   Tracker:Refresh()
 end)

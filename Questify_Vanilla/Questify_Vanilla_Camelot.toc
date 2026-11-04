@@ -67,6 +67,7 @@ Automation\AutoQuest.lua
 Automation\SellJunk.lua
 Automation\Taxi.lua
 
+UI\Themes.lua
 UI\Tracker.lua
 UI\MobPanel.lua
 UI\Nameplates.lua

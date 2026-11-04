@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Questify, aperçu 02 : assistant, page Addons</title>
+<link rel="stylesheet" href="apercu.css">
+<style>
+  /* Assistant (UI/Wizard.lua) : 520 x 560, contenu de (20, -70) à (-20, 58), INNER = 472 */
+  .wiz { width: 520px; height: 560px; }
+  .page { position: absolute; left: 20px; top: 70px; width: 480px; }
+  .addon { position: relative; width: 472px; height: 34px; margin-top: 8px; }
+  .addon.link { height: 60px; }
+  .addon .ico { position: absolute; left: 0; top: 0; width: 16px; height: 16px; }
+  .addon .line { position: absolute; left: 22px; top: 1px; }
+  .addon .status { margin-left: 8px; }
+  .addon .desc { position: absolute; left: 22px; top: 19px; width: 450px; }
+  .addon .input { left: 28px; top: 34px; width: 438px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap" style="width:560px">
+    <div class="brand">Questify</div>
+    <h1>L'assistant du premier lancement</h1>
+    <p>Page «&nbsp;Addons&nbsp;»&nbsp;: QuestieDB est le seul addon obligatoire, les autres améliorent la navigation. L'état de chacun est détecté.</p>
+    <p>Un addon absent affiche son lien CurseForge, à copier (Ctrl+C) puis coller dans le navigateur. Ensuite&nbsp;: itinéraire, repère, automatisations et récapitulatif.</p>
+  </div>
+
+  <div class="ui" style="left:760px; top:84px">
+    <div style="zoom:1.6">
+      <div class="bft wiz">
+        <div class="bft-top"></div>
+        <div class="bft-inset"></div>
+        <div class="bft-portrait"><img src="https://wow.zamimg.com/images/wow/icons/large/inv_misc_map_01.jpg" alt=""></div>
+        <div class="bft-title fn">Assistant de navigation</div>
+        <div class="bft-close"></div>
+        <div class="fds abs" style="right:16px; top:34px">Étape 1 sur 5</div>
+
+        <div class="page">
+          <div class="fnl wrap" style="width:472px">Bienvenue dans Questify</div>
+          <div class="fh wrap" style="width:472px; margin-top:8px">Questify te guide de quête en quête. Seul QuestieDB est obligatoire&nbsp;; les autres addons améliorent la navigation. Sans eux, Questify utilise le repère du jeu.</div>
+          <div class="fn wrap" style="width:472px; margin-top:12px">Addons sur cet ordinateur</div>
+
+          <div class="addon">
+            <span class="ico i-ready"></span>
+            <div class="line"><span class="fh">QuestieDB <span style="color:#ff8040">(obligatoire)</span></span><span class="fhs status" style="color:#40ff40">(installé)</span></div>
+            <div class="desc fds wrap">Données des quêtes : donneurs, objectifs et positions.</div>
+          </div>
+          <div class="addon">
+            <span class="ico i-ready"></span>
+            <div class="line"><span class="fh">ShortestPath Forever</span><span class="fhs status" style="color:#40ff40">(installé)</span></div>
+            <div class="desc fds wrap">Calcule le trajet entre les zones : vols, bateaux et portails.</div>
+          </div>
+          <div class="addon">
+            <span class="ico i-ready"></span>
+            <div class="line"><span class="fh">WaypointUI</span><span class="fhs status" style="color:#40ff40">(installé)</span></div>
+            <div class="desc fds wrap">Affiche un marqueur 3D et la distance dans le monde.</div>
+          </div>
+          <div class="addon link">
+            <span class="ico i-notready"></span>
+            <div class="line"><span class="fh">TomTom</span><span class="fhs status" style="color:#999999">(absent)</span></div>
+            <div class="desc fds wrap">Affiche une flèche qui pointe vers la destination.</div>
+            <div class="input"><span class="v fh">https://www.curseforge.com/wow/addons/tomtom</span></div>
+          </div>
+
+          <div class="fns wrap" style="width:472px; margin-top:6px">Ctrl+C pour copier, puis colle le lien dans ton navigateur.</div>
+          <div class="fds wrap" style="width:472px; margin-top:6px">Un addon tout juste téléchargé n'apparaît qu'après un redémarrage complet du jeu, pas après /reload.</div>
+        </div>
+
+        <div class="btn" style="left:165px; bottom:30px; width:190px">Recharger l'interface</div>
+        <div class="btn dis" style="left:8px; bottom:4px; width:110px">Précédent</div>
+        <div class="btn" style="right:124px; bottom:4px; width:110px">Ignorer</div>
+        <div class="btn" style="right:8px; bottom:4px; width:110px">Suivant</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="badge"><div class="t">Aperçu de l'interface</div><div class="s">Maquette tirée du code de Questify, pas une capture en jeu</div></div>
+</div>
+</body>
+</html>

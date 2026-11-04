@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Questify, aperçu 08 : journal, onglet Route</title>
+<link rel="stylesheet" href="apercu.css">
+<style>
+  /* Journal (UI/Journal.lua) : 520 x 560 ; contenu de (10, -64) à (-10, 30) ; chapitres 150 de large
+     (lignes de 20), étapes 290 de large (lignes de 18), listes de 432 de haut. */
+  .jr { width: 520px; height: 560px; }
+  .content { position: absolute; left: 10px; top: 64px; width: 500px; height: 466px; }
+  .list { position: absolute; top: 24px; height: 432px; overflow: hidden; }
+  .chap { position: relative; width: 150px; height: 20px; }
+  .chap .t { position: absolute; left: 4px; top: 4px; width: 110px; }
+  .chap .l { position: absolute; right: 4px; top: 4px; }
+  .step { position: relative; width: 290px; height: 18px; }
+  .step .st, .step .ac { position: absolute; top: 2px; width: 14px; height: 14px; }
+  .step .st { left: 2px; } .step .ac { left: 18px; }
+  .step .ac.done { filter: grayscale(1); }
+  .step .t { position: absolute; left: 36px; top: 3px; width: 252px; }
+  .done-t { color: #bfbfbf; } .cur-t { color: #ffd100; }
+  .tip.step-tip { left: 482px; bottom: 220px; width: 250px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap" style="width:540px">
+    <div class="brand">Questify</div>
+    <h1>Le journal (/qf), onglet Route</h1>
+    <p>Les chapitres de ta faction à gauche, les étapes du chapitre suivi à droite&nbsp;: faites, en cours, à venir.</p>
+    <p>Un clic sur un chapitre le suit ; un clic sur une étape en fait l'étape courante. L'onglet «&nbsp;Quêtes de classe&nbsp;» liste les suites de classe et les donjons.</p>
+  </div>
+
+  <div class="ui" style="left:688px; top:70px">
+    <div style="zoom:1.55; position:relative">
+      <div class="bft jr">
+        <div class="bft-top"></div>
+        <div class="bft-inset"></div>
+        <div class="bft-portrait"><img src="https://wow.zamimg.com/images/wow/icons/large/inv_misc_book_09.jpg" alt=""></div>
+        <div class="bft-title fn">Questify</div>
+        <div class="bft-close"></div>
+
+        <div class="content">
+          <div class="fn abs" style="left:4px; top:4px">Chapitres</div>
+          <div class="fn abs ell" style="left:184px; top:4px; width:290px">Étapes - Coldridge Valley</div>
+
+          <!-- Chapitres de l'Alliance, triés par niveau minimal puis identifiant -->
+          <div class="list" style="left:2px; width:150px">
+            <div class="chap"><div class="hl"></div><span class="t fhs ell" style="color:#ffd100">Coldridge Valley</span><span class="l fds">1-6</span></div>
+            <div class="chap"><span class="t fhs ell">Northshire</span><span class="l fds">1-6</span></div>
+            <div class="chap"><span class="t fhs ell">Shadowglen</span><span class="l fds">1-6</span></div>
+            <div class="chap"><span class="t fhs ell">Zephras Isle</span><span class="l fds">1-15</span></div>
+            <div class="chap"><span class="t fhs ell">Dun Morogh</span><span class="l fds">6-11</span></div>
+            <div class="chap"><span class="t fhs ell">Elwynn Forest</span><span class="l fds">6-11</span></div>
+            <div class="chap"><span class="t fhs ell">Teldrassil</span><span class="l fds">6-11</span></div>
+            <div class="chap"><span class="t fhs ell">Loch Modan</span><span class="l fds">11-14</span></div>
+            <div class="chap"><span class="t fhs ell">Westfall</span><span class="l fds">11-16</span></div>
+            <div class="chap"><span class="t fhs ell">Darkshore</span><span class="l fds">11-19</span></div>
+            <div class="chap"><span class="t fhs ell">Westfall</span><span class="l fds">14-16</span></div>
+            <div class="chap"><span class="t fhs ell">Darkshore</span><span class="l fds">16-19</span></div>
+            <div class="chap"><span class="t fhs ell">Ashenvale and Stonetalon Mountains</span><span class="l fds">20-22</span></div>
+            <div class="chap"><span class="t fhs ell">Redridge Mountains and Duskwood</span><span class="l fds">22-26</span></div>
+            <div class="chap"><span class="t fhs ell">Wetlands</span><span class="l fds">26-29</span></div>
+            <div class="chap"><span class="t fhs ell">Hillsbrad Foothills</span><span class="l fds">29-30</span></div>
+          </div>
+          <div class="sb" style="left:158px; top:24px; height:432px"><div class="arrow up dis"></div><div class="track"></div><div class="arrow down dis"></div></div>
+
+          <!-- Étapes du chapitre : 24 lignes visibles sur 40 -->
+          <div class="list" style="left:182px; width:290px">
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-accept done"></span><span class="t fhs ell done-t">Prendre : Tailleur chez les nains</span></div>
+            <div class="step"><span class="st ico i-ready"></span><img class="ac ico done" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="t fhs ell done-t">Tailleur chez les nains</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-turnin done"></span><span class="t fhs ell done-t">Rendre : Tailleur chez les nains</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-accept done"></span><span class="t fhs ell done-t">Prendre : La distribution du courrier de la Vallée des Frigères</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-accept done"></span><span class="t fhs ell done-t">Prendre : Une nouvelle menace</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-turnin done"></span><span class="t fhs ell done-t">Rendre : La distribution du courrier de la Vallée des Frigères</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-accept done"></span><span class="t fhs ell done-t">Prendre : La distribution du courrier de la Vallée des Frigères</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-accept done"></span><span class="t fhs ell done-t">Prendre : Chasseur de sangliers</span></div>
+            <div class="step"><span class="st ico i-ready"></span><img class="ac ico done" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="t fhs ell done-t">Chasseur de sangliers</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-turnin done"></span><span class="t fhs ell done-t">Rendre : Chasseur de sangliers</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-accept done"></span><span class="t fhs ell done-t">Prendre : La caverne des trolls</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-turnin done"></span><span class="t fhs ell done-t">Rendre : La distribution du courrier de la Vallée des Frigères</span></div>
+            <div class="step"><div class="hl"></div><span class="st ico i-current"></span><img class="ac ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="t fhs ell cur-t">La caverne des trolls</span></div>
+            <div class="step"><span class="ac ico i-turnin"></span><span class="t fhs ell">Rendre : La caverne des trolls</span></div>
+            <div class="step"><span class="ac ico i-accept"></span><span class="t fhs ell">Prendre : Le journal volé</span></div>
+            <div class="step"><span class="ac ico i-accept"></span><span class="t fhs ell">Prendre : Une livraison de thé brûlant</span></div>
+            <div class="step"><span class="ac ico i-turnin"></span><span class="t fhs ell">Rendre : Une livraison de thé brûlant</span></div>
+            <div class="step"><span class="ac ico i-accept"></span><span class="t fhs ell">Prendre : Rapporter la Tasse</span></div>
+            <div class="step"><span class="ac ico i-accept"></span><span class="t fhs ell">Prendre : Grund and Gozwin</span></div>
+            <div class="step"><span class="ac ico i-accept"></span><span class="t fhs ell">Prendre : Les malheurs d'un réfugié</span></div>
+            <div class="step"><img class="ac ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="t fhs ell">Une nouvelle menace</span></div>
+            <div class="step"><img class="ac ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="t fhs ell">Le journal volé</span></div>
+            <div class="step"><img class="ac ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="t fhs ell">Les malheurs d'un réfugié</span></div>
+            <div class="step"><img class="ac ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="t fhs ell">Les malheurs d'un réfugié</span></div>
+          </div>
+          <div class="sb" style="left:478px; top:24px; height:432px"><div class="arrow up dis"></div><div class="track"></div><div class="thumb" style="top:17px; height:24px"></div><div class="arrow down"></div></div>
+        </div>
+
+        <div class="btn" style="right:8px; bottom:4px; width:120px">Options…</div>
+
+        <!-- Infobulle d'une étape (survol) -->
+        <div class="tip step-tip">
+          <div class="tt">Prendre : Le journal volé</div>
+          <div class="tl">Prendre <span style="color:#ffd100">Le journal volé</span> auprès de <span style="color:#00ff96">Grelin Whitebeard</span></div>
+          <div class="tl" style="color:#aaaaaa">À faire</div>
+          <div class="tl" style="color:#66bbff">Clic : en faire l'étape courante</div>
+        </div>
+      </div>
+      <div class="tab on" style="left:12px; top:558px; width:76px"><span class="fns">Route</span></div>
+      <div class="tab" style="left:91px; top:558px; width:132px"><span class="fns">Quêtes de classe</span></div>
+    </div>
+  </div>
+
+  <div class="badge"><div class="t">Aperçu de l'interface</div><div class="s">Maquette tirée du code de Questify, pas une capture en jeu</div></div>
+</div>
+</body>
+</html>

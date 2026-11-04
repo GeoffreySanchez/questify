@@ -135,4 +135,4 @@ $bad"
 stageAddon forever
 zipAddon forever
 checkZip "$ADDON.toc" "${ADDON}_Camelot.toc" "Guides/Guides.xml" "Guides/ClassQuestData.lua" \
-  "Guides/Alliance/A_DwarfGnome_01.lua"
+  "Guides/DungeonData.lua" "Guides/Alliance/A_DwarfGnome_01.lua"

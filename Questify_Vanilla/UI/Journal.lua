@@ -4,7 +4,8 @@ local addonName, Q = ...
 -- Trois onglets :
 --   « Route » : chapitres de la faction à gauche, étapes du chapitre à droite (icône d'état,
 --               clic = étape courante) ;
---   « Quêtes de classe » : une ligne par chaîne avec son état et Ajouter / Ignorer / Réactiver ;
+--   « Quêtes de classe » : une ligne par chaîne avec son état et Ajouter / Ignorer / Réactiver,
+--                          puis la section « Donjons » (même principe, Engine/Dungeons.lua) ;
 --   « Options » : réglages, taille du suivi, assistant, réinitialisation, export des mesures.
 Q.UI = Q.UI or {}
 local Journal = { tab = "route", panels = {}, tabs = {}, chapterRows = {}, stepRows = {}, classRows = {}, checks = {} }
@@ -594,6 +595,161 @@ function Journal:RefreshClass()
   else
     self.classEmpty:Hide()
   end
+  -- Section « Donjons » sous les chaînes de classe (protégée : une erreur n'efface pas les chaînes)
+  local top = n * CLASS_ROW_H + (self.classEmpty:IsShown() and 30 or 0)
+  local ok, err = pcall(self.RefreshDungeons, self, top, qdbOk)
+  if not ok then Q:ReportError(err) end
+end
+
+---------------------------------------------------------------------------
+-- Section Donjons (onglet Quêtes de classe) : une ligne par donjon proposé à la faction, avec son
+-- état et Ajouter / Ignorer / Réactiver (Engine/Dungeons.lua).
+---------------------------------------------------------------------------
+local DG_ROW_H = 40
+local DG_STATE_TEXT = {
+  available = "DUNGEON_STATE_AVAILABLE", upcoming = "DUNGEON_STATE_UPCOMING", added = "DUNGEON_STATE_ADDED",
+  ignored = "DUNGEON_STATE_IGNORED", done = "DUNGEON_STATE_DONE", past = "DUNGEON_STATE_PAST",
+}
+local DG_STATE_COLOR = {
+  available = "|cff40ff40", upcoming = "|cffaaaaaa", added = "|cffffd100",
+  ignored = "|cff808080", done = "|cff808080", past = "|cff808080",
+}
+
+local function dungeonAction(method, key)
+  local D = Q.Dungeons
+  if not (D and D[method]) then return end
+  playSound("IG_MAINMENU_OPTION_CHECKBOX_ON")
+  D[method](D, key)
+  Journal:RefreshClass()
+end
+
+local function dungeonTooltip(row)
+  local d = row.dungeon
+  if not d then return end
+  local P = Q.UI.DungeonPopup
+  local lines = { P.DungeonName(d), string.format(L.DUNGEON_LEVELS, d.minLevel or 1, d.maxLevel or 60) }
+  if type(d.entrance) == "table" and type(d.entrance[1]) == "number" then
+    lines[#lines + 1] = string.format(L.DUNGEON_ENTRANCE, Q.Maps:MapName(d.entrance[1]))
+  end
+  local rows = Q.Dungeons and Q.Dungeons.Details and Q.Dungeons:Details(d) or {}
+  for _, r in ipairs(rows) do lines[#lines + 1] = "- " .. P.QuestLine(r) end
+  showTooltip(row, lines)
+end
+
+local function dungeonRow(i)
+  Journal.dungeonRows = Journal.dungeonRows or {}
+  local row = Journal.dungeonRows[i]
+  if row then return row end
+  local parent = Journal.classChild
+  row = CreateFrame("Button", nil, parent)
+  row:SetSize(CLASS_W, DG_ROW_H)
+  if i % 2 == 0 then
+    local stripe = row:CreateTexture(nil, "BACKGROUND")
+    stripe:SetAllPoints(row)
+    stripe:SetColorTexture(1, 1, 1, 0.04)
+  end
+  local title = row:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+  title:SetPoint("TOPLEFT", row, "TOPLEFT", 8, -5)
+  title:SetWidth(260)
+  title:SetJustifyH("LEFT")
+  title:SetWordWrap(false)
+  local info = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+  info:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -4)
+  info:SetWidth(260)
+  info:SetJustifyH("LEFT")
+  info:SetWordWrap(false)
+  row.title, row.info = title, info
+  local function button(label, width)
+    local b = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+    b:SetSize(width, 22)
+    b:SetText(label)
+    b:Hide()
+    return b
+  end
+  row.ignoreButton = button(L.UI_BTN_IGNORE, 80)
+  row.unignoreButton = button(L.UI_BTN_UNIGNORE, 80)
+  row.addButton = button(L.UI_BTN_ADD, 80)
+  row.ignoreButton:SetPoint("RIGHT", row, "RIGHT", -6, 0)
+  row.unignoreButton:SetPoint("RIGHT", row, "RIGHT", -6, 0)
+  row.addButton:SetPoint("RIGHT", row, "RIGHT", -90, 0)
+  row.addButton:SetScript("OnClick", safe(function() if row.dungeon then dungeonAction("Add", row.dungeon.key) end end))
+  row.ignoreButton:SetScript("OnClick", safe(function() if row.dungeon then dungeonAction("Ignore", row.dungeon.key) end end))
+  row.unignoreButton:SetScript("OnClick", safe(function() if row.dungeon then dungeonAction("Unignore", row.dungeon.key) end end))
+  row:SetScript("OnEnter", safe(dungeonTooltip))
+  row:SetScript("OnLeave", hideTooltip)
+  Journal.dungeonRows[i] = row
+  return row
+end
+
+-- top = hauteur déjà occupée par les chaînes de classe dans la liste défilante.
+function Journal:RefreshDungeons(top, qdbOk)
+  local child = self.classChild
+  if not self.dungeonHeader then
+    local h = child:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    h:SetJustifyH("LEFT")
+    h:SetText(L.DUNGEON_SECTION)
+    self.dungeonHeader = h
+    local empty = child:CreateFontString(nil, "OVERLAY", "GameFontDisable")
+    empty:SetJustifyH("LEFT")
+    empty:SetWidth(CLASS_W - 16)
+    empty:SetText(L.DUNGEON_EMPTY)
+    self.dungeonEmpty = empty
+  end
+  local rows = self.dungeonRows or {}
+  local D = Q.Dungeons
+  local list
+  if qdbOk and D and D.List then
+    local ok, res = pcall(D.List, D)
+    if ok and type(res) == "table" then list = res elseif not ok then Q:ReportError(res) end
+  end
+  if not list then
+    -- QuestieDB absent ou module en erreur : la section disparaît (le message des chaînes suffit)
+    self.dungeonHeader:Hide()
+    self.dungeonEmpty:Hide()
+    for _, r in ipairs(rows) do r.dungeon = nil; r:Hide() end
+    return
+  end
+  local y = top + 10
+  self.dungeonHeader:ClearAllPoints()
+  self.dungeonHeader:SetPoint("TOPLEFT", child, "TOPLEFT", 6, -y)
+  self.dungeonHeader:Show()
+  y = y + 20
+  local n = 0
+  for _, item in ipairs(list) do
+    if type(item) == "table" and type(item.dungeon) == "table" then
+      n = n + 1
+      local row = dungeonRow(n)
+      local d, state = item.dungeon, item.state
+      row.dungeon, row.dgState = d, state
+      row:ClearAllPoints()
+      row:SetPoint("TOPLEFT", child, "TOPLEFT", 0, -(y + (n - 1) * DG_ROW_H))
+      row.title:SetText(Q.UI.DungeonPopup.DungeonName(d))
+      local key = DG_STATE_TEXT[state]
+      row.info:SetText(string.format(L.DUNGEON_ROW_INFO, tonumber(d.minLevel) or 1, tonumber(d.maxLevel) or 60,
+        (DG_STATE_COLOR[state] or "|cffffffff") .. (key and L[key] or tostring(state)) .. "|r"))
+      local canAdd = state == "available" or state == "upcoming" or state == "past" or state == "ignored"
+      local canIgnore = state == "available" or state == "upcoming" or state == "past" or state == "added"
+      if canAdd then row.addButton:Show() else row.addButton:Hide() end
+      if canIgnore then row.ignoreButton:Show() else row.ignoreButton:Hide() end
+      if state == "ignored" then row.unignoreButton:Show() else row.unignoreButton:Hide() end
+      row:Show()
+    end
+  end
+  self.dungeonRows = self.dungeonRows or {}
+  for i = n + 1, #self.dungeonRows do
+    self.dungeonRows[i].dungeon = nil
+    self.dungeonRows[i]:Hide()
+  end
+  if n == 0 then
+    self.dungeonEmpty:ClearAllPoints()
+    self.dungeonEmpty:SetPoint("TOPLEFT", child, "TOPLEFT", 8, -y)
+    self.dungeonEmpty:Show()
+    y = y + 20
+  else
+    self.dungeonEmpty:Hide()
+    y = y + n * DG_ROW_H
+  end
+  child:SetHeight(math.max(1, y))
 end
 
 ---------------------------------------------------------------------------
@@ -604,10 +760,11 @@ local OPTION_GROUPS = {
     { "upgradePopup", "UI_OPT_UPGRADE" }, { "sellJunk", "UI_OPT_SELLJUNK" },
     { "tracker.autoTarget", "UI_OPT_AUTOTARGET" }, { "trainerAlert", "UI_OPT_TRAINER" },
     { "talentAlert", "UI_OPT_TALENTS" } } },
-  { title = "UI_OPT_ROUTE", checks = { { "dungeonQuests", "UI_OPT_DUNGEON" } } },
+  { title = "UI_OPT_ROUTE", checks = { { "dungeonQuests", "UI_OPT_DUNGEON" },
+    { "dungeonSuggest", "DUNGEON_OPT_SUGGEST" } } },
   { title = "UI_OPT_DISPLAY", checks = { { "nameplates", "UI_OPT_NAMEPLATES" },
     { "objectGlow", "UI_OPT_OBJECTGLOW" }, { "questItemButton", "UI_OPT_QUESTITEM" }, { "tracker.locked", "UI_OPT_LOCKED" },
-    { "tracker.showMobs", "UI_OPT_SHOWMOBS" } }, scale = true },
+    { "tracker.showMobs", "UI_OPT_SHOWMOBS" }, { "mapPins", "MAP_OPT_PINS" } }, scale = true },
   { title = "COMFORT_OPT_TITLE", checks = { { "autoFly", "COMFORT_OPT_AUTOFLY" },
     { "hearthHints", "COMFORT_OPT_HEARTH" }, { "dangerAlert", "COMFORT_OPT_DANGER" },
     { "supplyReminders", "COMFORT_OPT_SUPPLIES" }, { "showXPRate", "COMFORT_OPT_XPRATE" } } },
@@ -794,4 +951,5 @@ Q:On("PROGRESS_UPDATED", function() refreshIfShown("route", false) end)
 Q:On("GUIDE_CHANGED", function() refreshIfShown("route", true) end)
 Q:On("STEP_CHANGED", function() refreshIfShown("route", true) end)
 Q:On("CLASSQUESTS_CHANGED", function() refreshIfShown("class") end)
+Q:On("DUNGEONS_CHANGED", function() refreshIfShown("class") end)
 Q:On("SETTINGS_CHANGED", function() refreshIfShown("options") end)

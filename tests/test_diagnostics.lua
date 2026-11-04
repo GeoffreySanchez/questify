@@ -200,6 +200,12 @@ return {
     t.ok(text:find("Step: g:A_DwarfGnome_01:1", 1, true), "step line")
     t.ok(text:find("Target: Dun Morogh (1426)", 1, true), "target line")
     t.ok(text:find("nav.display=native", 1, true), "settings line")
+    -- toutes les autres options, en court (on/off)
+    for _, opt in ipairs({ "dungeonSuggest=on", "autoFly=on", "hearthHints=on", "dangerAlert=on",
+      "supplyReminders=on", "showXPRate=on", "sellJunk=on", "questItemButton=on", "tracker.autoTarget=off",
+      "tracker.width=260" }) do
+      t.ok(text:find(opt, 1, true), "options line: " .. opt)
+    end
     t.ok(text:find("[OK] QuestieDB", 1, true), "checks without colors")
     t.ok(not text:find("|c", 1, true), "plain text only")
     t.ok(text:find("Errors (1):", 1, true))

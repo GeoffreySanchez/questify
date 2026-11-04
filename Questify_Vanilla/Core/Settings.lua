@@ -24,6 +24,10 @@ Settings.defaults = {
   dangerAlert = true,       -- Engine/Danger.lua
   supplyReminders = true,   -- Engine/Supplies.lua
   showXPRate = true,        -- Engine/XPRate.lua
+  -- Donjons selon le niveau et la faction (alerte du suivi)
+  dungeonSuggest = true,    -- Engine/Dungeons.lua
+  -- Repères des étapes sur la carte du monde et la minicarte
+  mapPins = true,           -- UI/MapPins.lua
 }
 
 local function split(path)

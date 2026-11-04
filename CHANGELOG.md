@@ -3,6 +3,12 @@
 ## Non publié
 
 ### Français
+- Vérification de version entre joueurs : Questify envoie sa version par un message d'addon invisible à la
+  guilde (une fois, après la connexion) et au groupe (au plus une fois par minute, jamais en combat). Si un
+  joueur a une version plus récente, une ligne dans la discussion et un message à l'écran le disent une fois
+  par session : la mise à jour se fait via CurseForge. Option « versionCheck », activée par défaut.
+- Publication : un tag `vX.Y.Z` crée la release GitHub avec le zip et les notes du CHANGELOG, puis envoie le
+  même zip sur CurseForge quand les secrets `CF_API_KEY` et `CF_PROJECT_ID` sont réglés.
 - Mode zone : quand plusieurs quêtes ont leurs objectifs au même endroit, un repère vert mène à la zone, puis le suivi et la flèche les enchaînent en une visite (objets, puis élites et nommés, puis monstres ; un coffre attend la clé de son monstre). Option, activée par défaut.
 - Vols automatiques : chez le maître de vol, l'étape « Prendre un vol vers X » choisit et prend le
   bon trajet (Maj pour choisir toi-même, jamais en combat).
@@ -73,6 +79,12 @@
 - Carte du monde et minicarte : repères numérotés de l'étape courante et des 5 suivantes (option).
 
 ### English
+- Version check between players: Questify sends its version in a hidden addon message to your guild (once,
+  after login) and to your group (at most once a minute, never in combat). If a player has a newer version,
+  a chat line and an on-screen message tell you once per session: update via CurseForge. Option
+  "versionCheck", on by default.
+- Publishing: a `vX.Y.Z` tag creates the GitHub release with the zip and the CHANGELOG notes, then uploads
+  the same zip to CurseForge when the `CF_API_KEY` and `CF_PROJECT_ID` secrets are set.
 - Zone mode: when several quests have objectives in the same place, a green marker leads to the zone, then the tracker and the arrow chain them in one visit (objects, then elites and named mobs, then monsters; a chest waits for the key its mob drops). Option, on by default.
 - Automatic flights: at the flight master, a "Take a flight to X" step picks and takes the right
   route (hold Shift to choose yourself, never in combat).

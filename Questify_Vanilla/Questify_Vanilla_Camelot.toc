@@ -25,12 +25,15 @@ Locales\StringsWizard.lua
 Locales\StringsComfort.lua
 Locales\StringsDungeons.lua
 Locales\StringsMap.lua
+Locales\StringsZone.lua
+Locales\StringsVersion.lua
 
 Core\Init.lua
 Core\Util.lua
 Core\Compat.lua
 Core\Settings.lua
 Core\Diagnostics.lua
+Core\VersionCheck.lua
 
 Data\Constants.lua
 Data\QDB.lua
@@ -41,6 +44,7 @@ Data\TalentBuilds.lua
 Engine\Guides.lua
 Engine\Progress.lua
 Engine\Targets.lua
+Engine\ZoneMode.lua
 Engine\Format.lua
 Engine\ClassQuests.lua
 Engine\Trainer.lua

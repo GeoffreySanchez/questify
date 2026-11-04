@@ -1,0 +1,257 @@
+# Publication d'une version : release GitHub, puis envoi sur CurseForge.
+#
+# Déclenchement : uniquement le push d'un tag « v* » (seul le propriétaire du dépôt pousse des
+# tags ; une pull request ne déclenche jamais ce workflow, les secrets ne sortent donc pas).
+#
+# Pour publier la version X.Y.Z :
+#   1. mettre « ## Version: X.Y.Z » dans Questify_Vanilla/Questify_Vanilla.toc et dans
+#      Questify_Vanilla/Questify_Vanilla_Camelot.toc (identiques), et une section « ## X.Y.Z (date) »
+#      dans CHANGELOG.md ; fusionner dans main ;
+#   2. git tag vX.Y.Z && git push origin vX.Y.Z
+#   Suffixes admis : vX.Y.Z-beta.1 (bêta), vX.Y.Z-alpha.1 (alpha) ; le TOC porte alors X.Y.Z-beta.1.
+#
+# Job « release » :
+#   - vérifie que le tag sans le « v » est une version MAJOR.MINOR.PATCH[-suffixe] (format lu en jeu
+#     par Core/VersionCheck.lua) et qu'il est égal au « ## Version: » du TOC, sinon échoue ;
+#   - lance luajit tests/run.lua, puis SKIP_GUIDE_VALIDATION=1 bash tools/package.sh (la validation
+#     des routes lit un clone QuestieDB local, absent en CI ; elle est faite sur le poste de dev) ;
+#   - crée la release GitHub « vX.Y.Z » avec dist/*.zip. Notes : la section « ## X.Y.Z » de
+#     CHANGELOG.md (jusqu'au titre « ## » suivant), sinon les notes générées par GitHub
+#     (--generate-notes). Un tag avec suffixe donne une pré-release.
+#     Si la release existe déjà (build.yml en publie aussi une sur les tags), le zip y est remplacé
+#     et les notes du CHANGELOG y sont reportées.
+#
+# Job « curseforge » (après « release ») : envoie le même zip sur CurseForge, seulement si les deux
+# secrets CF_API_KEY et CF_PROJECT_ID existent ; sinon il s'arrête proprement et dit pourquoi.
+#   - Secrets à créer (Settings > Secrets and variables > Actions, dans le dépôt ou dans
+#     l'environnement « release ») :
+#       CF_API_KEY     jeton de l'API d'envoi, créé sur https://authors.curseforge.com/#/settings/api-tokens
+#       CF_PROJECT_ID  ID numérique du projet (encadré « About Project » de la page CurseForge)
+#   - Variable facultative CF_GAME_VERSION (onglet « Variables ») : nom de la version du jeu
+#     sur CurseForge, 1.60.1 par défaut (WoW: Forever). Les ID sont lus sur
+#     https://wow.curseforge.com/api/game/versions (en-tête X-Api-Token) : tous ceux dont le nom
+#     est égal à cette valeur. Aucun ID trouvé : le job échoue.
+#   - Pas de packager BigWigs : l'addon est dans le sous-dossier Questify_Vanilla/ et le packager
+#     cherche le TOC à la racine du dépôt. Le zip de tools/package.sh est envoyé tel quel par l'API
+#     d'envoi : POST https://wow.curseforge.com/api/projects/$CF_PROJECT_ID/upload-file, en-tête
+#     X-Api-Token, multipart « file » (le zip) + « metadata » (JSON) :
+#       changelog      notes de la release GitHub (section du CHANGELOG ou notes générées)
+#       changelogType  "markdown"
+#       displayName    "Questify Vanilla X.Y.Z"
+#       releaseType    "release" pour vX.Y.Z, "alpha" si le tag contient -alpha, "beta" s'il
+#                      contient -beta (ou tout autre suffixe)
+#       gameVersions   ID trouvés ci-dessus
+#       relations      dépendances lues dans .pkgmeta (required-dependencies et
+#                      optional-dependencies), comme le ferait le packager
+#   - Le job tourne dans l'environnement GitHub « release », créé automatiquement au premier
+#     passage. Le propriétaire peut y ajouter un relecteur obligatoire (Settings > Environments >
+#     release > Required reviewers) : l'envoi sur CurseForge attendra alors son accord. Si
+#     l'environnement limite les branches et tags autorisés, y ajouter le motif de tag « v* ».
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installer LuaJIT et zip
+        run: sudo apt-get update && sudo apt-get install -y luajit zip unzip
+
+      - name: Vérifier que le tag correspond à la version du TOC
+        id: version
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          if ! printf '%s\n' "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$'; then
+            echo "::error::Tag « $GITHUB_REF_NAME » : attendu vMAJOR.MINOR.PATCH ou vMAJOR.MINOR.PATCH-suffixe."
+            exit 1
+          fi
+          TOC=Questify_Vanilla/Questify_Vanilla.toc
+          TOC_VERSION="$(sed -n 's/^##[[:space:]]*Version:[[:space:]]*//p' "$TOC" | head -n 1 | tr -d '\r' | sed 's/[[:space:]]*$//')"
+          if [ "$VERSION" != "$TOC_VERSION" ]; then
+            echo "::error file=$TOC::Le tag $GITHUB_REF_NAME demande la version $VERSION, mais le TOC indique « ## Version: $TOC_VERSION ». Mettre le TOC à jour, ou retirer le tag."
+            exit 1
+          fi
+          echo "Version : $VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Tests
+        run: luajit tests/run.lua
+
+      - name: Construire le zip
+        env:
+          # La validation des guides lit un clone QuestieDB local (.cache/) absent en CI ;
+          # les guides sont validés avant chaque commit sur le poste de dev.
+          SKIP_GUIDE_VALIDATION: "1"
+        run: bash tools/package.sh
+
+      - name: Notes de version (CHANGELOG.md)
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          # Section « ## X.Y.Z … » (ou « ## vX.Y.Z », « ## [X.Y.Z] ») jusqu'au titre « ## » suivant.
+          awk -v ver="$VERSION" '
+            /^## / {
+              if (found) exit
+              h = $0; sub(/^## +/, "", h); sub(/[ \t(].*$/, "", h); gsub(/[][]/, "", h); sub(/^v/, "", h)
+              if (h == ver) found = 1
+              next
+            }
+            found { print }
+          ' CHANGELOG.md | sed -e '/./,$!d' > notes.md
+          if grep -q '[^[:space:]]' notes.md; then
+            echo "Notes : section $VERSION de CHANGELOG.md ($(wc -l < notes.md | tr -d ' ') lignes)."
+          else
+            echo "Pas de section « ## $VERSION » dans CHANGELOG.md : notes générées par GitHub."
+            rm -f notes.md
+          fi
+
+      - name: Publier la release GitHub
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          TAG="$GITHUB_REF_NAME"
+          ZIP="dist/Questify_Vanilla-$VERSION-forever.zip"
+          [ -f "$ZIP" ] || { echo "::error::$ZIP absent après tools/package.sh."; exit 1; }
+          PRE=()
+          case "$VERSION" in *-*) PRE=(--prerelease) ;; esac
+          if [ -f notes.md ]; then NOTES=(--notes-file notes.md); else NOTES=(--generate-notes); fi
+
+          # Release déjà créée (build.yml publie aussi sur les tags) : remplacer le zip, reporter les notes.
+          update_existing() {
+            gh release upload "$TAG" dist/*.zip --clobber
+            EDIT=("${PRE[@]}")
+            if [ -f notes.md ]; then EDIT+=(--notes-file notes.md); fi
+            if [ "${#EDIT[@]}" -gt 0 ]; then gh release edit "$TAG" "${EDIT[@]}"; fi
+          }
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            update_existing
+          elif ! gh release create "$TAG" dist/*.zip --verify-tag --title "$TAG" "${NOTES[@]}" "${PRE[@]}"; then
+            # création concurrente par build.yml entre les deux appels
+            gh release view "$TAG" >/dev/null 2>&1 || exit 1
+            update_existing
+          fi
+
+  curseforge:
+    needs: release
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: read
+    steps:
+      - name: Vérifier les secrets CurseForge
+        id: secrets
+        env:
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+          CF_PROJECT_ID: ${{ secrets.CF_PROJECT_ID }}
+        run: |
+          missing=()
+          [ -n "$CF_API_KEY" ] || missing+=(CF_API_KEY)
+          [ -n "$CF_PROJECT_ID" ] || missing+=(CF_PROJECT_ID)
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "::notice::Envoi CurseForge sauté : secret(s) absent(s) : ${missing[*]}. La release GitHub est publiée ; ajouter CF_API_KEY et CF_PROJECT_ID pour envoyer aussi sur CurseForge."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if ! printf '%s' "$CF_PROJECT_ID" | grep -Eq '^[0-9]+$'; then
+            echo "::error::CF_PROJECT_ID doit être l'ID numérique du projet CurseForge."
+            exit 1
+          fi
+          echo "enabled=true" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        if: steps.secrets.outputs.enabled == 'true'
+
+      - name: Récupérer le zip et les notes de la release
+        if: steps.secrets.outputs.enabled == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ needs.release.outputs.version }}
+        run: |
+          mkdir -p dist
+          gh release download "$GITHUB_REF_NAME" --pattern "Questify_Vanilla-$VERSION-forever.zip" --dir dist
+          gh release view "$GITHUB_REF_NAME" --json body --jq .body > changelog.md
+          if ! grep -q '[^[:space:]]' changelog.md; then
+            printf 'Questify Vanilla %s\n' "$VERSION" > changelog.md
+          fi
+
+      - name: Envoyer sur CurseForge
+        if: steps.secrets.outputs.enabled == 'true'
+        env:
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+          CF_PROJECT_ID: ${{ secrets.CF_PROJECT_ID }}
+          CF_GAME_VERSION: ${{ vars.CF_GAME_VERSION }}
+          VERSION: ${{ needs.release.outputs.version }}
+        run: |
+          set -euo pipefail
+          ZIP="dist/Questify_Vanilla-$VERSION-forever.zip"
+          GAME_VERSION="${CF_GAME_VERSION:-1.60.1}"
+
+          case "$GITHUB_REF_NAME" in
+            *-alpha*) RELEASE_TYPE=alpha ;;
+            *-beta*) RELEASE_TYPE=beta ;;
+            *-*) RELEASE_TYPE=beta ;;
+            *) RELEASE_TYPE=release ;;
+          esac
+
+          # ID CurseForge de la version du jeu (tous ceux qui portent ce nom).
+          if ! curl -sS --fail-with-body -H "X-Api-Token: $CF_API_KEY" -o game-versions.json \
+            https://wow.curseforge.com/api/game/versions; then
+            echo "::error::Lecture des versions du jeu sur CurseForge refusée (jeton CF_API_KEY ?)."
+            cat game-versions.json || true
+            exit 1
+          fi
+          GAME_IDS="$(jq -c --arg n "$GAME_VERSION" '[.[] | select(.name == $n) | .id]' game-versions.json)"
+          if [ "$GAME_IDS" = "[]" ]; then
+            echo "::error::Aucune version du jeu nommée « $GAME_VERSION » sur CurseForge. Régler la variable CF_GAME_VERSION."
+            exit 1
+          fi
+          jq -c --arg n "$GAME_VERSION" '[.[] | select(.name == $n) | {id, gameVersionTypeID, name}]' game-versions.json
+
+          # Dépendances de .pkgmeta (required-dependencies, optional-dependencies).
+          RELATIONS="$(awk '
+            /^required-dependencies:/ { t = "requiredDependency"; next }
+            /^optional-dependencies:/ { t = "optionalDependency"; next }
+            /^[^ \t#-]/ { t = "" }
+            t != "" && /^[ \t]*-[ \t]*[A-Za-z0-9_-]+/ { s = $0; sub(/^[ \t]*-[ \t]*/, "", s); sub(/[ \t#].*$/, "", s); print t, s }
+          ' .pkgmeta | jq -R -s -c '[split("\n")[] | select(length > 0) | split(" ") | {slug: .[1], type: .[0]}]')"
+
+          jq -n \
+            --rawfile changelog changelog.md \
+            --arg name "Questify Vanilla $VERSION" \
+            --arg type "$RELEASE_TYPE" \
+            --argjson versions "$GAME_IDS" \
+            --argjson relations "$RELATIONS" \
+            '{changelog: $changelog, changelogType: "markdown", displayName: $name, releaseType: $type,
+              gameVersions: $versions}
+             + (if ($relations | length) > 0 then {relations: {projects: $relations}} else {} end)' \
+            > metadata.json
+          jq 'del(.changelog)' metadata.json
+
+          if ! curl -sS --fail-with-body -X POST -o upload.json \
+            -H "X-Api-Token: $CF_API_KEY" \
+            -F "metadata=<metadata.json;type=application/json" \
+            -F "file=@$ZIP;type=application/zip" \
+            "https://wow.curseforge.com/api/projects/$CF_PROJECT_ID/upload-file"; then
+            echo "::error::Envoi refusé par CurseForge (réponse ci-dessous)."
+            cat upload.json || true
+            exit 1
+          fi
+          echo "Fichier CurseForge créé : $(jq -r '.id' upload.json) ($RELEASE_TYPE, jeu $GAME_VERSION)."

@@ -423,6 +423,7 @@ function Diag:Report()
     addons[#addons + 1] = name .. " " .. addonVersion(name)
   end
   add("Addons: %s", table.concat(addons, ", "))
+  add("Newest version seen: %s", tostring(Q.VersionCheck and Q.VersionCheck:NewestSeen() or "-"))
 
   local g = Q.Progress:IsEnabled() and Q.Progress:Guide() or nil
   local cur = g and Q.Progress:Current() or nil

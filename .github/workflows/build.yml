@@ -1,12 +1,11 @@
 # Construit le zip de l'addon (WoW: Forever) à chaque push sur main
 # et le publie dans la release « latest » du dépôt, prêt à télécharger.
-# Un tag vX.Y.Z publie en plus une release versionnée.
+# Les tags vX.Y.Z sont publiés par release.yml.
 name: Build
 
 on:
   push:
     branches: [main]
-    tags: ["v*"]
   workflow_dispatch:
 
 permissions:
@@ -49,8 +48,3 @@ jobs:
             --title "Dernier build (main)" \
             --notes "Build automatique du commit $GITHUB_SHA. WoW: Forever : Questify_Vanilla-*-forever.zip."
 
-      - name: Publier la release versionnée (tag)
-        if: startsWith(github.ref, 'refs/tags/v')
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" dist/*.zip --title "$GITHUB_REF_NAME" --generate-notes

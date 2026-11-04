@@ -33,6 +33,7 @@ function Popup.ChainTitle(chain)
 end
 
 local function firstQuest(chain)
+  if Q.ClassQuests and Q.ClassQuests.FirstQuest then return Q.ClassQuests:FirstQuest(chain) end
   local quests = type(chain.quests) == "table" and chain.quests or {}
   for _, id in ipairs(quests) do
     if not Q.Progress:IsTurnedIn(id) then return id end
@@ -71,32 +72,14 @@ local function objectivesOf(questId)
   return table.concat(lines, "\n")
 end
 
--- PNJ (ou objet) de départ et sa zone (le point le plus proche du joueur).
+-- Donneur (PNJ, objet du monde ou objet) le plus proche du joueur parmi ceux de la quête, et sa
+-- zone (Q.ClassQuests:Starter).
 local function starterOf(questId)
-  local q = questId and Q.QDB:Quest(questId)
-  if not q then return nil end
-  local name, spawns
-  local npcId = q.starters.npcs[1]
-  local objId = q.starters.objects[1]
-  if npcId then
-    name = Q.QDB:NpcName(npcId)
-    local n = Q.QDB:Npc(npcId)
-    spawns = n and n.spawns
-  elseif objId then
-    name = Q.QDB:ObjectName(objId)
-    local o = Q.QDB:Object(objId)
-    spawns = o and o.spawns
-  elseif q.starters.items[1] then
-    name = Q.QDB:ItemName(q.starters.items[1])
-  end
-  if not name then return nil end
-  local zone
-  if spawns then
-    local pm, px, py = Q.Maps:PlayerPos()
-    local m = Q.Maps:Nearest(spawns, pm, px, py)
-    if m then zone = Q.Maps:MapName(m) end
-  end
-  return name, zone
+  if not questId or not (Q.ClassQuests and Q.ClassQuests.Starter) then return nil end
+  local s = Q.ClassQuests:Starter(questId)
+  if not s then return nil end
+  local zone = s.mapId and Q.Maps:MapName(s.mapId) or nil
+  return s.name, zone
 end
 
 local function rewardsOf(chain)

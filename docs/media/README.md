@@ -60,3 +60,24 @@ Fichiers utilisés par le README, le wiki GitHub et la page CurseForge. Dépose-
 - README et wiki : 01, 03, 04, 05 (et le lien de la bande-annonce).
 - Galerie CurseForge (onglet « Images » du projet) : 01, 02, 05, 06, 07, 08, 10, 11 en PNG.
 - Vidéos CurseForge : liens YouTube de la bande-annonce et du tutoriel.
+
+## Aperçus (maquettes)
+En attendant les vraies captures, `apercus/` contient des maquettes de l'interface (PNG 1920×1080),
+dessinées d'après le code (`Questify/UI/*.lua`, textes de `Questify/Locales/`, noms français de
+QuestieDB) sur un fond neutre, sans décor de jeu. Chaque image porte la mention « Aperçu de
+l'interface » : ce ne sont pas des captures en jeu, à remplacer dès que les vraies sont là. Les
+écrans qui montrent le monde (05, GIF, vidéos) n'ont pas de maquette.
+
+- `apercus/01-tracker.png` : le suivi (Nain Chaman niveau 3, vallée des Frigères).
+- `apercus/02-wizard.png` : l'assistant, page Addons, TomTom absent avec son lien CurseForge.
+- `apercus/06-class-quest.png` : l'alerte de quête de classe et sa fenêtre (Nain Guerrier niveau 10).
+- `apercus/07-dungeon.png` : l'alerte « Donjon conseillé » et la fenêtre des Mortemines.
+- `apercus/08-journal-route.png` : le journal `/qf`, onglet Route.
+- `apercus/08b-journal-options.png` : la fenêtre d'options, section Profils, recherche et « i ».
+- `apercus/10-quest-item.png` : le bouton de l'objet de quête à gauche du suivi.
+- `apercus/11-zone-mode.png` : le suivi en mode zone.
+- `apercus/bonus-themes.png` : les quatre thèmes du suivi côte à côte.
+
+Ils sont affichés dans la page Galerie du wiki (`docs/wiki/Galerie.md`, section « Aperçus de l'interface »).
+Sources HTML dans `apercus/src/` ; nouveau rendu avec `sh docs/media/apercus/src/render.sh` (Chrome
+sans interface, connexion nécessaire : les icônes viennent de wow.zamimg.com au rendu).

@@ -45,6 +45,29 @@ local function turnIn(id)
   Mock.fire("QUEST_TURNED_IN", id)
 end
 
+-- Chaînes qui s'excluent (même étape chez deux maîtres) : 1598 commence chez Drusilla La Salle
+-- (Elwynn, loin), 1599 chez Alamar Grimm (Dun Morogh, à côté du joueur).
+local EXCLUSIVE = {
+  WARLOCK = {
+    { key = "WARLOCK_FAR", title = "Far", faction = "Alliance", races = ALLIANCE, level = 1, quests = { 1598 },
+      exclusive = { "WARLOCK_NEAR" }, rewards = {} },
+    { key = "WARLOCK_NEAR", title = "Near", faction = "Alliance", races = ALLIANCE, level = 1, quests = { 1599 },
+      exclusive = { "WARLOCK_FAR" }, rewards = {} },
+    { key = "WARLOCK_OTHER", title = "Other", level = 1, quests = { 9100 }, rewards = {} },
+  },
+}
+
+-- Quête à deux donneurs : le premier de la liste (Drusilla La Salle) est le plus loin.
+local TWO_GIVERS = { quests = { [9600] = {
+  name = "Two Givers", startedBy = { { 459, 460 } }, finishedBy = { { 460 } },
+  requiredLevel = 1, questLevel = 1, requiredRaces = ALLIANCE, objectivesText = { "Talk." },
+} } }
+
+local function loadWith(data, qdb)
+  return Mock.loadAddon(TOC, { extraFiles = { GUIDES }, qdb = qdb,
+    beforeLogin = function(Q) Q.ClassQuestData = data end })
+end
+
 local function noCQErrors(t)
   for _, e in ipairs(Mock.errors) do
     local s = tostring(e)
@@ -306,6 +329,45 @@ return {
     noCQErrors(t)
   end,
 
+  exclusive_chains_keep_the_nearest_giver = function(t)
+    warlock()
+    local Q = loadWith(EXCLUSIVE)
+    t.eq(keys(Q.ClassQuests:List()), { "WARLOCK_NEAR", "WARLOCK_OTHER" }, "one chain per exclusive group")
+    t.eq(keys(Q.ClassQuests:Alerts()), { "WARLOCK_NEAR", "WARLOCK_OTHER" })
+    local s = Q.ClassQuests:Starter(1599)
+    t.eq(s.name, "Alamar Grimm"); t.eq(s.kind, "npc"); t.ok(type(s.dist) == "number", "distance known")
+    noCQErrors(t)
+  end,
+
+  exclusive_group_keeps_the_chain_taken = function(t)
+    warlock()
+    local Q = loadWith(EXCLUSIVE)
+    t.ok(Q.ClassQuests:Add("WARLOCK_FAR"), "added")
+    t.eq(keys(Q.ClassQuests:List()), { "WARLOCK_FAR", "WARLOCK_OTHER" }, "the chain added wins over the nearest")
+    t.eq(keys(Q.ClassQuests:Alerts()), { "WARLOCK_OTHER" }, "no alert for the other chain of the group")
+    noCQErrors(t)
+  end,
+
+  exclusive_chains_without_position_keep_data_order = function(t)
+    warlock()
+    Mock.player.map = nil
+    local Q = loadWith(EXCLUSIVE)
+    t.eq(keys(Q.ClassQuests:List()), { "WARLOCK_FAR", "WARLOCK_OTHER" })
+    noCQErrors(t)
+  end,
+
+  starter_is_the_nearest_giver = function(t)
+    warlock()
+    local Q = loadWith(EXCLUSIVE, TWO_GIVERS)
+    local s = Q.ClassQuests:Starter(9600)
+    t.eq(s.name, "Alamar Grimm", "nearest of the two givers, not the first listed")
+    Q.UI.ClassQuestPopup:Show({ key = "WARLOCK_TWO", title = "Two Givers", level = 1, quests = { 9600 }, rewards = {} })
+    local text = Q.UI.ClassQuestPopup.start:GetText() or ""
+    t.ok(text:find("Alamar Grimm", 1, true), "popup names the nearest giver: " .. text)
+    t.ok(not text:find("Drusilla", 1, true), "not the first listed giver")
+    noCQErrors(t)
+  end,
+
   shipped_data_has_the_expected_shape = function(t)
     -- Le fichier livré (placeholder ou généré) respecte le contrat de données.
     local Q = Mock.loadAddon(TOC, { extraFiles = { GUIDES } })
@@ -321,6 +383,8 @@ return {
         t.ok(chain.races == nil or type(chain.races) == "number", "races")
         t.ok(type(chain.quests) == "table" and #chain.quests > 0, "quests")
         for _, id in ipairs(chain.quests) do t.eq(type(id), "number") end
+        t.ok(chain.exclusive == nil or type(chain.exclusive) == "table", "exclusive")
+        for _, k in ipairs(chain.exclusive or {}) do t.eq(type(k), "string") end
         t.eq(type(chain.rewards), "table")
         for id, reward in pairs(chain.rewards) do
           t.eq(type(id), "number"); t.eq(type(reward.items), "table")

@@ -136,6 +136,27 @@ return {
     t.ok(chainOf(94465) == fire and chainOf(94468) == fire and f2 < f5, "94449 > 94465 ... 94468")
   end,
 
+  -- Guerrier 10 de l'Alliance : trois branches parallèles (Bartleby à Hurlevent, Vejrek à Forgefer,
+  -- Vorlus à Darnassus). La 2e quête de chaque branche accepte n'importe quelle 1re partie
+  -- (preQuestSingle) : les branches ne doivent pas se fondre en une seule chaîne.
+  classquests_warrior10_branches_split = function(t)
+    local cq = require("classquests")
+    local data = cq.build(H.D("Alliance"))
+    local byKey = {}
+    for _, ch in ipairs(data.WARRIOR) do byKey[ch.key] = ch end
+    local function list(key)
+      local ch = byKey[key]
+      return ch and table.concat(ch.quests, ",") or "absent"
+    end
+    t.eq(list("WARRIOR_1638"), "1638,1639,1640,1665,1666,1667", "human branch")
+    t.eq(list("WARRIOR_1679"), "1679,1678,1680,1681,1682", "dwarf branch")
+    t.eq(list("WARRIOR_1684"), "1684,1683,1686,1692,1693", "night elf branch")
+    t.eq(byKey.WARRIOR_1683, nil, "Vorlus Vilehoof follows Elanaria, no chain of its own")
+    -- les trois branches s'excluent : chacune connaît les deux autres
+    t.eq(table.concat(byKey.WARRIOR_1679.exclusive or {}, ","), "WARRIOR_1638,WARRIOR_1684", "dwarf exclusive")
+    t.eq(table.concat(byKey.WARRIOR_1638.exclusive or {}, ","), "WARRIOR_1679,WARRIOR_1684", "human exclusive")
+  end,
+
   -- (a) un nom de quête avec un saut de ligne ne sort pas du commentaire
   emit_sanitises_names = function(t)
     local text = emit.guide({ id = "T_X", title = "X", faction = "Alliance", minLevel = 1, maxLevel = 2 },

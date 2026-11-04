@@ -1,6 +1,7 @@
 -- tools/routebuilder/classquests.lua : chaînes de quêtes de classe (niveau <= 30) pour
 -- Questify/Guides/ClassQuestData.lua (forme de la Task 7) :
 --   Q.ClassQuestData = { [classFile] = { { key, title, faction, races, level, quests = {...},
+--                                         exclusive = { clés des chaînes qui s'excluent avec celle-ci },
 --                                         rewards = { [questId] = { items = {...}, xp = n } } }, ... } }
 
 local qdb = require("qdb")
@@ -69,25 +70,82 @@ function cq.build(D)
       hasParent[b] = true
     end
     local ids = qdb.sortedKeys(set)
+    -- Parents directs : quêtes du lot dont la suite (nextQuestInChain) ou la lettre (breadcrumb)
+    -- mène à id.
+    local direct = {}
     for _, id in ipairs(ids) do
       local q = set[id]
-      for _, p in ipairs(q.preSingle) do link(p, id) end
+      for _, c in ipairs({ q.next or false, q.breadcrumbFor or false }) do
+        if c and c ~= id and set[c] then
+          direct[c] = direct[c] or {}
+          direct[c][id] = true
+        end
+      end
+      for _, b in ipairs(q.breadcrumbs or {}) do
+        if b ~= id and set[b] then
+          direct[id] = direct[id] or {}
+          direct[id][b] = true
+        end
+      end
+    end
+    for _, id in ipairs(ids) do
+      local q = set[id]
+      -- preQuestSingle = une au choix. Quand plusieurs choix existent et que la quête a déjà des
+      -- parents directs, les autres choix sont des branches parallèles (Guerrier 10 de l'Alliance :
+      -- « Beat Bartleby », « Tormus Deepforge » et « The Shade of Elura » acceptent chacune les trois
+      -- premières parties) : seuls les parents directs sont reliés, sinon les branches se fondent.
+      local only = #q.preSingle > 1 and direct[id] or nil
+      for _, p in ipairs(q.preSingle) do
+        if not only or only[p] then link(p, id) end
+      end
       for _, p in ipairs(q.preGroup) do link(p, id) end
       if q.next then link(id, q.next) end
       -- lettre / quête de transport vers la suite
       if q.breadcrumbFor then link(id, q.breadcrumbFor) end
       for _, b in ipairs(q.breadcrumbs or {}) do link(b, id) end
     end
-    -- Liens manquants dans les données Forever (nouvelles chaînes sans pré-requis) :
+    -- Liens manquants dans les données (chaînes sans pré-requis ni suite) :
     --   (a) passage de relais : B (id suivant, à +3 au plus) commence chez le PNJ qui termine A ;
+    --       B peut aussi précéder A (à -3 au plus) s'il ouvre lui-même une suite (« Elanaria » 1684
+    --       puis « Vorlus Vilehoof » 1683, suivi de 1686) ;
     --   (b) même titre, même masque de races : ordre par niveau puis id (« Call of Water » 1 à 9).
+    -- (a) seulement entre quêtes ouvertes à au moins une race commune ; (b) jamais entre deux quêtes
+    -- qui s'excluent (exclusiveTo) : ce sont des variantes de la même étape chez des maîtres
+    -- différents (« Returning Home », « Desperate Prayer » du Prêtre), pas une suite. (a) ne regarde
+    -- pas exclusiveTo : une lettre y est souvent marquée exclusive de sa propre suite (1638 et 1639).
+    local function sameRaces(a, b)
+      local ma, mb = set[a].races or 0, set[b].races or 0
+      if ma == 0 or mb == 0 then return true end
+      for _, bit in ipairs(RACE_LIST) do
+        if qdb.hasBit(ma, bit) and qdb.hasBit(mb, bit) then return true end
+      end
+      return false
+    end
+    local function excludes(a, b)
+      for _, x in ipairs(set[a].exclusiveTo or {}) do if x == b then return true end end
+      for _, x in ipairs(set[b].exclusiveTo or {}) do if x == a then return true end end
+      return false
+    end
     local function isolatedEnd(id) return not children[id] end
+    local function reaches(from, target)
+      local seen = {}
+      local function walk(x)
+        if x == target then return true end
+        if seen[x] then return false end
+        seen[x] = true
+        for _, c in ipairs(children[x] or {}) do if walk(c) then return true end end
+        return false
+      end
+      return walk(from)
+    end
     for _, a in ipairs(ids) do
       local qa = set[a]
       if isolatedEnd(a) then
-        for b = a + 1, a + 3 do
+        for _, d in ipairs({ 1, 2, 3, -1, -2, -3 }) do
+          local b = a + d
           local qb = set[b]
-          if qb and not hasParent[b] then
+          local opens = d > 0 or (qb and qb.next and set[qb.next])
+          if qb and opens and not hasParent[b] and sameRaces(a, b) and not reaches(b, a) then
             local hand = false
             for _, f in ipairs(qa.finishers.npcs or {}) do
               for _, st in ipairs(qb.starters.npcs or {}) do if f == st then hand = true end end
@@ -118,7 +176,10 @@ function cq.build(D)
           local tail = prev
           local guard = 0
           while children[tail] and #children[tail] == 1 and guard < 30 do tail = children[tail][1]; guard = guard + 1 end
-          if not hasParent[cur] and not children[tail] and tail ~= cur then link(tail, cur) end
+          if not hasParent[cur] and not children[tail] and tail ~= cur and not excludes(prev, cur)
+             and not excludes(tail, cur) then
+            link(tail, cur)
+          end
         end
       end
     end
@@ -161,6 +222,36 @@ function cq.build(D)
           races = (q.races ~= 0) and q.races or nil, level = (q.reqLevel > 0) and q.reqLevel or questLevel(q),
           quests = { id }, rewards = { [id] = { items = rewards[id] or {}, xp = D.xp[id] and D.xp[id][2] or nil } } }
       end
+    end
+    -- Chaînes qui s'excluent (exclusiveTo entre leurs quêtes) : une seule se fait, l'addon propose
+    -- celle dont le donneur est le plus proche.
+    local owner = {}
+    for _, ch in ipairs(chains) do
+      for _, q in ipairs(ch.quests) do
+        owner[q] = owner[q] or {}
+        owner[q][ch.key] = true
+      end
+    end
+    for _, ch in ipairs(chains) do
+      local ex, mine = {}, {}
+      for _, q in ipairs(ch.quests) do mine[q] = true end
+      local function mark(q)
+        for key in pairs(owner[q] or {}) do if key ~= ch.key then ex[key] = true end end
+      end
+      for _, q in ipairs(ch.quests) do
+        for _, x in ipairs(set[q].exclusiveTo or {}) do if not mine[x] then mark(x) end end
+      end
+      for _, other in ipairs(chains) do
+        if other.key ~= ch.key and not ex[other.key] then
+          for _, q in ipairs(other.quests) do
+            for _, x in ipairs(set[q].exclusiveTo or {}) do
+              if mine[x] and not owner[q][ch.key] then ex[other.key] = true end
+            end
+          end
+        end
+      end
+      local list = qdb.sortedKeys(ex)
+      if #list > 0 then ch.exclusive = list end
     end
     table.sort(chains, function(a, b)
       if a.level ~= b.level then return a.level < b.level end
@@ -218,6 +309,9 @@ function cq.emit(data, meta)
       if c.races then parts[#parts + 1] = ("races = %s"):format(racesValue(c.races)) end
       parts[#parts + 1] = ("level = %d"):format(c.level)
       parts[#parts + 1] = ("quests = %s"):format(emitm.value(c.quests))
+      if c.exclusive and #c.exclusive > 0 then
+        parts[#parts + 1] = ("exclusive = %s"):format(emitm.value(c.exclusive))
+      end
       local rw = {}
       for _, q in ipairs(c.quests) do
         local r = c.rewards[q] or { items = {} }

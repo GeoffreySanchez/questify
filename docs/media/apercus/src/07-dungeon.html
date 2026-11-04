@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Questify, aperçu 07 : donjon conseillé</title>
+<link rel="stylesheet" href="apercu.css">
+<style>
+  /* lueur de l'alerte de donjon : teinte (1, 0.5, 0.2), fondu BLEND sur parchemin */
+  .glow.dungeon { background: radial-gradient(ellipse 62% 95% at 42% 50%, rgba(255,128,51,.50) 0%, rgba(255,128,51,.20) 62%, rgba(255,128,51,0) 100%); }
+  .alert img.ico { position: absolute; left: 2px; top: 2px; width: 16px; height: 16px; }
+  .pop { position: relative; width: 380px; min-height: 220px; padding: 68px 16px 40px; }
+  .pop .content { position: relative; }
+  .ql { width: 340px; margin-bottom: 3px; }
+  .ok { color: #ffffff; } .giver { color: #00ff96; } .locked { color: #909090; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap" style="width:560px">
+    <div class="brand">Questify</div>
+    <h1>Donjon conseillé</h1>
+    <p>Le suivi propose les donjons adaptés à ton niveau et à ta faction. Un clic ouvre sa fenêtre&nbsp;: niveaux, entrée et quêtes à prendre en ville avant d'y aller.</p>
+    <p>Les quêtes pas encore accessibles restent grisées, avec la raison. «&nbsp;Ajouter à la route&nbsp;» insère les quêtes, l'entrée du donjon puis les rendus.</p>
+    <p>Nain niveau 17, Sombrivage.</p>
+  </div>
+
+  <!-- Fenêtre du donjon (UI/DungeonPopup.lua : 380 de large, ButtonFrameTemplate) -->
+  <div class="ui" style="left:706px; top:250px">
+    <div style="zoom:1.75">
+      <div class="bft pop">
+        <div class="bft-top"></div>
+        <div class="bft-inset"></div>
+        <div class="bft-portrait"><img src="https://wow.zamimg.com/images/wow/icons/large/inv_misc_bone_humanskull_01.jpg" alt=""></div>
+        <div class="bft-title fn">Donjon</div>
+        <div class="bft-close"></div>
+        <div class="content">
+          <div class="fnl wrap" style="width:270px; margin-bottom:4px">Les Mortemines</div>
+          <div class="fhs" style="height:18px">Niveau 17-26</div>
+          <div class="fh wrap" style="width:340px; margin-bottom:10px">Entrée : Marche de l'Ouest</div>
+          <div class="fn" style="height:18px">Quêtes</div>
+          <div class="ql fhs wrap">- <span class="ok">Adieu mon frère… - <span class="giver">Wilder Crispechardon</span> (Hurlevent)</span></div>
+          <div class="ql fhs wrap">- <span class="ok">À la recherche de Cartes du Syndicat des Mineurs - <span class="giver">Wilder Crispechardon</span> (Hurlevent)</span></div>
+          <div class="ql fhs wrap">- <span class="ok">Assaut souterrain - <span class="giver">Shoni la Silencieuse</span> (Hurlevent)</span></div>
+          <div class="ql fhs wrap">- <span class="locked">Les masques rouges en soie - Eclaireur Riell (Marche de l'Ouest) (demande une quête précédente)</span></div>
+          <div class="ql fhs wrap">- <span class="locked">La Confrérie défias - Gryan Stoutmantle (Marche de l'Ouest) (demande une quête précédente)</span></div>
+        </div>
+        <div class="btn" style="right:164px; bottom:4px; width:110px">Ignorer</div>
+        <div class="btn" style="right:8px; bottom:4px; width:150px">Ajouter à la route</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Suivi avec l'alerte de donjon (UI/Tracker.lua) -->
+  <div class="ui" style="left:1420px; top:250px">
+    <div style="zoom:1.75">
+      <div class="trk th-parchment">
+        <div class="bg"></div><div class="edge"></div>
+        <div class="row head">
+          <div class="title fn t-title">Darkshore</div>
+          <div class="levels fhs t-levels">16-19</div>
+        </div>
+        <div class="bar">
+          <div class="bbg"></div><div class="fill" style="width:39.5%"></div>
+          <div class="btxt fhs t-bar" style="white-space:pre">47/119  ·  ~32k XP restants</div>
+        </div>
+        <div class="xp fhs t-xp">24,1k XP/h · niveau dans 31 min</div>
+        <div class="alert">
+          <div class="glow dungeon"></div>
+          <img class="ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_misc_bone_humanskull_01.jpg" alt="">
+          <div class="atxt fn t-dungeon">Donjon conseillé : Les Mortemines (niv 17-26)</div>
+        </div>
+        <div class="cur">
+          <img class="cicon ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt="">
+          <div class="dist fhs t-dist">212 yd</div>
+          <div class="chunk fh t-body wrap">Faire : <span class="c-quest">La Tour d'Althalaxx</span><br>&nbsp;&nbsp;<span class="c-todo">Parchemin déchiré&nbsp;: 1/4</span></div>
+          <div class="mob">
+            <span class="skull ico i-skull"></span>
+            <span class="mname fhs t-body"><span class="c-mob">Fanatique de la Rive noire</span></span>
+            <span class="mlvl fds t-dim"><span class="c-lvl">Niveau 16-17</span></span>
+          </div>
+        </div>
+        <div class="next"><img class="ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="ntxt fds t-dim">La caverne aux champignons</span></div>
+        <div class="next"><img class="ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="ntxt fds t-dim">Le cristal rouge</span></div>
+        <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Rendre : La Bondissante</span></div>
+        <div class="grip ico i-grip"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="badge"><div class="t">Aperçu de l'interface</div><div class="s">Maquette tirée du code de Questify, pas une capture en jeu</div></div>
+</div>
+</body>
+</html>

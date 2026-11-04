@@ -745,6 +745,10 @@ function Journal:BuildOptions(parent)
       y = y + 28
       self.exportButton = toolButton(L.UI_OPT_EXPORT, 200, function() Journal:ShowExport() end)
       self.exportButton:SetPoint("TOPLEFT", panel, "TOPLEFT", 12, -y)
+      self.reportButton = toolButton(L.REPORT_BUTTON, 200, function()
+        if Q.UI.Report then Q.UI.Report:Show() end
+      end)
+      self.reportButton:SetPoint("LEFT", self.exportButton, "RIGHT", 8, 0)
       y = y + 30
       local box = CreateFrame("EditBox", "QuestifyVanillaJournalExportBox", panel, "InputBoxTemplate")
       box:SetSize(CLASS_W - 20, 20)

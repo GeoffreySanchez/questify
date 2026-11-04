@@ -90,7 +90,9 @@ function Bug:Text()
   local errs = Q.errorLog or {}
   add("Erreurs (%d) :", #errs)
   for i = math.max(1, #errs - MAX_ERRORS + 1), #errs do
-    lines[#lines + 1] = "  " .. tostring(errs[i]):gsub("[\r\n]+", " / ")
+    local e = errs[i]
+    local msg = type(e) == "table" and e.msg or e
+    lines[#lines + 1] = "  " .. tostring(msg):gsub("[\r\n]+", " / ")
   end
   return table.concat(lines, "\n")
 end

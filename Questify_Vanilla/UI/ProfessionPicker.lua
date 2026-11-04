@@ -1,9 +1,10 @@
 local addonName, Q = ...
 
 -- Fenêtre « Quels métiers veux-tu apprendre ? » : métiers principaux (deux au plus) et secondaires.
--- S'ouvre une fois par personnage (après l'assistant de navigation), et depuis le journal
--- (onglet Options). « Valider » enregistre le choix (Q.Professions:SetChosen) ; « Plus tard »
--- referme sans rien enregistrer : la question revient à la prochaine connexion.
+-- S'ouvre tant que le choix n'est pas fait, une fois par session au plus, après l'assistant de
+-- démarrage (terminé, ou fermé pendant la session), et depuis le journal (onglet Options).
+-- « Valider » enregistre le choix (Q.Professions:SetChosen) ; « Plus tard » referme sans rien
+-- enregistrer : la question revient à la prochaine connexion.
 Q.UI = Q.UI or {}
 local Picker = { checks = {} }
 Q.UI.ProfessionPicker = Picker
@@ -144,10 +145,15 @@ function Picker:Validate()
   end
 end
 
--- Une seule fois par personnage, quand l'assistant de navigation est passé.
+-- Tant que le choix n'est pas fait, au plus une fois par session, quand l'assistant de démarrage
+-- est terminé ou a été fermé pendant cette session (jamais pendant qu'il est ouvert).
 local function autoShow()
-  if not Q.char or not Q.char.wizardDone or Q.Professions:HasAnswered() then return end
-  if Q.UI.Wizard and Q.UI.Wizard:IsShown() then return end
+  if not Q.char or Q.Professions:HasAnswered() or Picker.autoShown then return end
+  local W = Q.UI.Wizard
+  local wizardPassed = Q.char.wizardDone or (W and W.ClosedThisSession and W:ClosedThisSession())
+  if not wizardPassed then return end
+  if W and W:IsShown() then return end
+  Picker.autoShown = true
   Picker:Show()
 end
 Picker.AutoShow = autoShow

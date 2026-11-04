@@ -18,6 +18,12 @@ Settings.defaults = {
   talentAlert = true,
   questItemButton = true,
   telemetry = true,
+  -- Confort de jeu
+  autoFly = true,           -- Automation/Taxi.lua
+  hearthHints = true,       -- Engine/Hearth.lua
+  dangerAlert = true,       -- Engine/Danger.lua
+  supplyReminders = true,   -- Engine/Supplies.lua
+  showXPRate = true,        -- Engine/XPRate.lua
 }
 
 local function split(path)

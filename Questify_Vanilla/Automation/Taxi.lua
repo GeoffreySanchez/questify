@@ -7,7 +7,8 @@ local addonName, Q = ...
 -- fonctions historiques NumTaxiNodes / TaxiNodeName / TaxiNodeGetType (TaxiFrame). Les deux
 -- existent sur la branche forever de l'interface Blizzard.
 -- Choix du nœud, dans l'ordre :
---   1. identifiant de nœud de l'étape (step.node), s'il y en a un ;
+--   1. identifiant de nœud de l'étape (step.node, ID TaxiNodes du générateur) comparé au nodeID
+--      de C_TaxiMap ; la carte historique n'a pas d'identifiant, on passe aux noms ;
 --   2. ville de la note du guide (« Ratchet, The Barrens » -> « Ratchet ») dans le nom du nœud ;
 --   3. nom de la zone de destination (langue du client) dans un seul nom de nœud ;
 --   4. position : nœud le plus proche de la première étape localisée sur la carte de destination.
@@ -133,10 +134,11 @@ function Taxi:Pick(entry, nodes)
   for _, n in ipairs(nodes) do
     if n.state ~= STATE_CURRENT then others[#others + 1] = n end
   end
-  -- 1. identifiant de nœud donné par l'étape
-  local wanted = tonumber(step.node or step.nodeId or step.taxiNode)
+  -- 1. identifiant de nœud donné par l'étape (nœud courant compris : le joueur y est déjà, Try
+  -- ne fait alors rien) ; absent de la liste : on passe aux noms
+  local wanted = tonumber(step.node)
   if wanted then
-    for _, n in ipairs(others) do
+    for _, n in ipairs(nodes) do
       if n.nodeID == wanted then return n end
     end
   end
@@ -192,6 +194,7 @@ function Taxi:Try()
     Q:Print(L.COMFORT_TAXI_NOT_FOUND, Q.Maps:MapName(entry.step.mapId))
     return true
   end
+  if node.state == STATE_CURRENT then return true end   -- déjà à destination
   if node.state ~= STATE_REACHABLE then
     Q:Print(L.COMFORT_TAXI_UNREACHABLE, node.name)
     return true

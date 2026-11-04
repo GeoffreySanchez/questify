@@ -35,7 +35,7 @@ end
 -- Normalize(rawStep) -> step | nil, erreur
 -- Forme brute : { "accept", 179 }, { "goto", 1426, 22.6, 71.4 }, { "level", 6 }, { "note", "txt" },
 -- { "hearth", 1426 }, { "fly", 1453 }, plus les champs facultatifs (obj, note, race, class,
--- optional, dungeon, at = {mapId, x, y}, xp). Une étape déjà normalisée est recopiée.
+-- optional, dungeon, at = {mapId, x, y}, xp, node). Une étape déjà normalisée est recopiée.
 function Guides:Normalize(raw)
   if type(raw) ~= "table" then return nil, "step is not a table" end
   local action, a2, a3, a4
@@ -104,6 +104,11 @@ function Guides:Normalize(raw)
   if raw.xp ~= nil then
     if not isNum(raw.xp) then return nil, action .. ": xp must be a number" end
     step.xp = raw.xp
+  end
+  -- Point de vol exact (ID TaxiNodes, le même que nodeID de C_TaxiMap), surtout sur les étapes « fly ».
+  if raw.node ~= nil then
+    if not isNum(raw.node) then return nil, action .. ": node must be a number" end
+    step.node = raw.node
   end
   return step
 end

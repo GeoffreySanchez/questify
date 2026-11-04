@@ -47,9 +47,49 @@ return {
 
   node_id_of_the_step_wins = function(t)
     local Q = load()
-    local cur = flyTo(Q, { { "fly", 1426 } })
-    cur.step.node = 777
-    nodes({ { name = "Ironforge, Dun Morogh", state = 1 }, { name = "Kharanos, Dun Morogh", state = 1, nodeID = 777 } })
+    local cur = flyTo(Q, { { "fly", 1426, node = 6 } })
+    t.eq(cur.step.node, 6, "Normalize keeps node")
+    -- noms ambigus (deux nœuds dans la zone), note trompeuse, aucune position : l'ID décide
+    nodes({ { name = "Ironforge, Dun Morogh", state = 1, nodeID = 5, slotIndex = 11 },
+      { name = "Kharanos, Dun Morogh", state = 1, nodeID = 6, slotIndex = 12 } })
+    cur.step.note = "Ironforge, Dun Morogh"
+    Mock.fire("TAXIMAP_OPENED", 1)
+    t.eq(taken(), { 12 })
+    t.ok(Mock.printed(string.format(Q.L.COMFORT_TAXI_FLYING, "Kharanos, Dun Morogh")))
+  end,
+
+  normalize_keeps_a_numeric_node = function(t)
+    local Q = load()
+    t.eq(Q.Guides:Normalize({ "fly", 1453 }).node, nil)
+    t.eq(Q.Guides:Normalize({ "fly", 1453, node = 6 }).node, 6)
+    local bad, err = Q.Guides:Normalize({ "fly", 1453, node = "Ratchet" })
+    t.eq(bad, nil)
+    t.ok(tostring(err):find("node must be a number", 1, true), "node validated")
+  end,
+
+  node_id_of_current_node_does_nothing = function(t)
+    local Q = load()
+    flyTo(Q, { { "fly", 1426, node = 6 } })
+    nodes({ { name = "Kharanos, Dun Morogh", state = 0, nodeID = 6 }, { name = "Ironforge, Dun Morogh", state = 1 } })
+    Mock.fire("TAXIMAP_OPENED", 1)
+    t.eq(taken(), {})
+    t.eq(#Mock.prints, 0)
+  end,
+
+  unknown_node_id_falls_back_to_names = function(t)
+    local Q = load()
+    flyTo(Q, { { "fly", 1432, node = 999 } })
+    nodes({ { name = "Ironforge, Dun Morogh", state = 0, nodeID = 5 }, { name = "Thelsamar, Loch Modan", state = 1, nodeID = 8 } })
+    Mock.fire("TAXIMAP_OPENED", 1)
+    t.eq(taken(), { 2 })
+  end,
+
+  legacy_path_ignores_node_id = function(t)
+    local Q = load()
+    flyTo(Q, { { "fly", 1432, node = 6 } })
+    C_TaxiMap, GetTaxiMapID = nil, nil
+    Mock.comfort.legacy = { { name = "Ironforge, Dun Morogh", type = "CURRENT" },
+      { name = "Thelsamar, Loch Modan", type = "REACHABLE" } }
     Mock.fire("TAXIMAP_OPENED", 1)
     t.eq(taken(), { 2 })
   end,

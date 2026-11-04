@@ -417,7 +417,8 @@ function Diag:Report()
   add("Client: %s (%s), interface %s, %s", tostring(version), tostring(build), tostring(interface),
     tostring(GetLocale and GetLocale() or "?"))
   add("Character: %s %s %s, level %s", tostring(P.faction), tostring(P.raceKey), tostring(P.classFile), tostring(P.level))
-  add("Reward role: %s", tostring(Q.Rewards and Q.Rewards:Role(P.classFile) or (Q.char and Q.char.rewardRole) or "auto"))
+  add("Reward role: %s", tostring(Q.Rewards and Q.Rewards:Role(P.classFile) or "auto"))
+  if Q.Profiles then add("Profile: %s (%s)", tostring(Q.Profiles:Active()), tostring(Q.Profiles:Mode())) end
   add("Spec: %s", Q.SpecRole and select(2, pcall(Q.SpecRole.Describe, Q.SpecRole)) or "-")
 
   local addons = {}

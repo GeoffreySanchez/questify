@@ -73,7 +73,7 @@ return {
   menu_has_role_entries_toggles_and_actions = function(t)
     local Q, Ext = load("SHAMAN", { menu = true })
     local B = Q.UI.MinimapButton
-    Q.char.rewardRole = "melee"
+    Q.Rewards:SetRole("melee")
     Mock.click(B.button, "LeftButton")
     t.eq(Mock.countCalls("MenuUtil.CreateContextMenu"), 1)
     t.eq(Mock.lastMenu.owner, B.button)
@@ -106,7 +106,7 @@ return {
     Mock.click(B.button, "LeftButton")
     local healer = Ext.menuElements("radio", "healer")[1]
     healer.setSelected(healer.data)
-    t.eq(Q.char.rewardRole, "healer")
+    t.eq(Q.Rewards:Role(), "healer")
     t.eq(B.icon:GetTexture(), B.ICONS.healer)
     t.ok(Mock.printed(string.format(Q.L.MINIMAP_ROLE_SET, Q.L.REWARD_SPEC_SHAMAN_HEALER)), "confirmation line")
     t.ok(healer.isSelected(healer.data))
@@ -132,15 +132,16 @@ return {
     noErrors(t)
   end,
 
-  options_entry_opens_the_options_tab = function(t)
+  options_entry_opens_the_options_window = function(t)
     local Q, Ext = load("SHAMAN", { menu = true })
     local B = Q.UI.MinimapButton
     Mock.click(B.button, "LeftButton")
     Ext.menuElements("button", "options")[1].setSelected()
+    local O = Q.UI.Options
+    t.ok(QuestifyOptions and QuestifyOptions:IsShown(), "options window open")
+    O:SelectSection("map")
+    t.ok(O:Widget("minimapButton").check, "option checkbox in the options window")
     local J = Q.UI.Journal
-    t.ok(J:IsShown(), "journal open")
-    t.eq(J.tab, "options")
-    t.ok(J.checks.minimapButton, "option checkbox in the journal")
     Ext.menuElements("button", "journal")[1].setSelected()
     t.eq(J.tab, "route")
     local opened = {}
@@ -229,7 +230,7 @@ return {
     t.eq(Q.Settings:Get("autoQuest"), false)
     t.ok(menu:IsShown(), "stays open after a toggle")
     Mock.click(byKey.caster, "LeftButton")
-    t.eq(Q.char.rewardRole, "caster")
+    t.eq(Q.Rewards:Role(), "caster")
     t.ok(not menu:IsShown(), "closes after a choice")
     noErrors(t)
   end,

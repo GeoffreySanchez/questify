@@ -269,7 +269,8 @@ return {
   report_button_in_options = function(t)
     local Q = load()
     qf("options")
-    Q.UI.Journal.reportButton:Click()
+    Q.UI.Options:SelectSection("tools")
+    Q.UI.Options:Widget("report").button:Click()
     t.ok(QuestifyReport:IsShown())
   end,
 

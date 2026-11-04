@@ -1,4 +1,5 @@
--- Tests du journal (onglets Route, Quêtes de classe, Options) et de la fenêtre des quêtes de classe.
+-- Tests du journal (onglets Route et Quêtes de classe, bouton Options) et de la fenêtre des quêtes
+-- de classe. La fenêtre d'options a ses tests dans test_options.lua.
 local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_d.lua")
@@ -47,13 +48,23 @@ return {
     for _, n in ipairs(UISpecialFrames) do if n == "QuestifyJournal" then special = true end end
     t.ok(special, "closes with Escape (UISpecialFrames)")
     t.eq(Q.UI.Journal.tab, "route", "route tab by default")
-    t.eq(#Q.UI.Journal.tabs, 3)
+    t.eq(#Q.UI.Journal.tabs, 2, "Route and Class quests: options have their own window")
     t.eq(Q.UI.Journal.tabs[2]:GetText(), Q.L.UI_TAB_CLASS)
-    Q.UI.Journal:ShowTab("options")
-    t.ok(Q.UI.Journal.panels.options:IsShown())
-    t.ok(not Q.UI.Journal.panels.route:IsShown())
+    t.eq(Q.UI.Journal.panels.options, nil)
     Mock.click(Q.UI.Journal.tabs[2], "LeftButton")
     t.eq(Q.UI.Journal.tab, "class")
+    t.ok(Q.UI.Journal.panels.class:IsShown())
+    t.ok(not Q.UI.Journal.panels.route:IsShown())
+    -- bouton « Options… » : la fenêtre d'options
+    local b = Q.UI.Journal.optionsButton
+    t.eq(b:GetText(), Q.L.OPT_JOURNAL_OPTIONS)
+    Mock.click(b, "LeftButton")
+    t.ok(QuestifyOptions and QuestifyOptions:IsShown(), "options window opened")
+    -- l'ancien onglet ouvre la fenêtre aussi
+    QuestifyOptions:Hide()
+    Q.UI.Journal:ShowTab("options")
+    t.ok(QuestifyOptions:IsShown())
+    t.eq(Q.UI.Journal.tab, "class", "journal tab unchanged")
     t.eq(#Mock.errors, 0)
   end,
 
@@ -178,106 +189,6 @@ return {
     t.eq(#Mock.errors, 0)
   end,
 
-  options_checkboxes_write_settings = function(t)
-    local Q = load()
-    local J = Q.UI.Journal
-    J:ShowTab("options")
-    local expectedPaths = { "autoQuest", "autoReward", "dungeonQuests", "nameplates", "tracker.locked",
-      "tracker.showMobs", "telemetry" }
-    for _, path in ipairs(expectedPaths) do
-      local cb = J.checks[path]
-      t.ok(cb, "checkbox " .. path)
-      t.eq(cb._template, "UICheckButtonTemplate")
-      t.eq(cb:GetChecked(), Q.Settings:Get(path) == true, "synced " .. path)
-    end
-    local cb = J.checks.autoQuest
-    cb:SetChecked(false)
-    Mock.click(cb, "LeftButton")
-    t.eq(Q.Settings:Get("autoQuest"), false)
-    cb = J.checks["tracker.locked"]
-    cb:SetChecked(true)
-    Mock.click(cb, "LeftButton")
-    t.eq(Q.Settings:Get("tracker.locked"), true)
-    t.ok(not Q.UI.Tracker.frame:IsMovable(), "tracker follows")
-    -- taille du suivi
-    Mock.click(J.scaleUp, "LeftButton")
-    t.near(Q.Settings:Get("tracker.scale"), 1.1, 0.001)
-    Mock.click(J.scaleDown, "LeftButton")
-    Mock.click(J.scaleDown, "LeftButton")
-    t.near(Q.Settings:Get("tracker.scale"), 0.9, 0.001)
-    t.ok(plain(J.scaleText:GetText()):find("90", 1, true))
-    -- un changement extérieur coche la case
-    Q.Settings:Set("nameplates", false)
-    t.eq(J.checks.nameplates:GetChecked(), false)
-  end,
-
-  options_buttons = function(t)
-    local Q = load()
-    local J = Q.UI.Journal
-    J:ShowTab("options")
-    -- réinitialisation du chapitre courant seulement
-    Q.char.manual["g:A_DwarfGnome_01:13"] = true
-    Q.char.skipped["g:A_DwarfGnome_01:2"] = true
-    Q.char.skipped["g:A_DwarfGnome_02:1"] = true
-    Q.char.manual["i:cq:WARLOCK_1598:1"] = true
-    Mock.click(J.resetButton, "LeftButton")
-    t.eq(Q.char.manual["g:A_DwarfGnome_01:13"], nil)
-    t.eq(Q.char.skipped["g:A_DwarfGnome_01:2"], nil)
-    t.eq(Q.char.skipped["g:A_DwarfGnome_02:1"], true, "other chapter kept")
-    t.eq(Q.char.manual["i:cq:WARLOCK_1598:1"], true, "inserted steps kept")
-    t.ok(Mock.printed("Coldridge Valley"), "confirmation in chat")
-    -- export des mesures
-    Ext.fakeTelemetry(Q, "QV1;A_DwarfGnome_01:1=42")
-    Mock.click(J.exportButton, "LeftButton")
-    t.ok(J.exportBox:IsShown())
-    t.eq(J.exportBox:GetText(), "QV1;A_DwarfGnome_01:1=42")
-    Q.Telemetry = nil
-    Mock.click(J.exportButton, "LeftButton")
-    t.eq(J.exportBox:GetText(), Q.L.UI_TELEMETRY_UNAVAILABLE)
-    -- assistant
-    Mock.click(J.wizardButton, "LeftButton")
-    t.ok(QuestifyWizard and QuestifyWizard:IsShown(), "wizard opened")
-    t.eq(#Mock.errors, 0)
-  end,
-
-  class_popup_add_and_ignore = function(t)
-    local Q = load()
-    Ext.fakeClassQuests(Q, { { chain = Ext.warlockChain(), state = "available" } })
-    local P = Q.UI.ClassQuestPopup
-    P:Show(Ext.warlockChain())
-    local f = QuestifyClassQuestPopup
-    t.ok(f and f:IsShown(), "popup shown")
-    t.ok(plain(P.title:GetText()):find("The Stolen Tome", 1, true))
-    t.ok(plain(P.level:GetText()):find("4", 1, true))
-    t.ok(plain(P.objectives:GetText()):find("Powers of the Void", 1, true), "first quest objectives")
-    t.ok(plain(P.start:GetText()):find("Drusilla La Salle", 1, true), "starter NPC")
-    t.ok(plain(P.start:GetText()):find("Elwynn Forest", 1, true), "starter zone")
-    t.ok(plain(P.xp:GetText()):find("550", 1, true), "chain XP")
-    t.eq(shownRows(P.items), 3, "three reward items")
-    P.items[2]:GetScript("OnEnter")(P.items[2])
-    t.eq(Mock.lastCall("GameTooltip:SetItemByID").args[1], 6901)
-    t.eq(P.addButton:GetText(), Q.L.UI_BTN_ADD_ROUTE)
-    Mock.click(P.addButton, "LeftButton")
-    t.eq(Mock.lastCall("ClassQuests:Add").args[1], "WARLOCK_1598")
-    t.eq(Mock.lastCall("ClassQuests:MarkSeen").args[1], "WARLOCK_1598")
-    t.ok(not f:IsShown(), "hidden after add")
-    P:Show({ chain = Ext.warlockChain(), state = "available" })   -- une ligne { chain, state } marche aussi
-    t.ok(f:IsShown())
-    Mock.click(P.ignoreButton, "LeftButton")
-    t.eq(Mock.lastCall("ClassQuests:Ignore").args[1], "WARLOCK_1598")
-    t.eq(Mock.countCalls("ClassQuests:MarkSeen"), 2)
-    t.ok(not f:IsShown(), "hidden after ignore")
-    t.eq(#Mock.errors, 0)
-  end,
-
-  compartment_click_toggles_journal = function(t)
-    local Q = load()
-    Questify_OnAddonCompartmentClick("Questify", "LeftButton")
-    t.ok(QuestifyJournal:IsShown())
-    Questify_OnAddonCompartmentClick("Questify", "LeftButton")
-    t.ok(not QuestifyJournal:IsShown())
-  end,
-
   journal_without_questiedb = function(t)
     Mock.addons.QuestieDB = false
     local Q = load()
@@ -288,7 +199,8 @@ return {
     Q.UI.Journal:ShowTab("class")
     t.eq(Q.UI.Journal.classEmpty:GetText(), Q.L.NEED_QUESTIEDB, "class tab explains the dependency")
     t.ok(not (Q.UI.Journal.classRows[1] and Q.UI.Journal.classRows[1]:IsShown()), "no chain rows")
-    Q.UI.Journal:ShowTab("options")
+    Q.UI.Options:Open()
+    for _, s in ipairs(Q.OptionsSchema.SECTIONS) do Q.UI.Options:SelectSection(s.id) end
     t.eq(#Mock.errors, 0)
   end,
 

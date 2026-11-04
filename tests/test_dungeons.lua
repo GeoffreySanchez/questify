@@ -411,10 +411,11 @@ return {
     t.ok(J.dungeonRows[1].unignoreButton:IsShown(), "Réactiver")
     Mock.click(J.dungeonRows[1].unignoreButton, "LeftButton")
     t.eq(stateOf(Q, "DM"), "available")
-    -- option dans l'onglet Options
-    J:ShowTab("options")
-    t.ok(J.checks.dungeonSuggest, "option checkbox")
-    t.eq(J.checks.dungeonSuggest:GetChecked(), true)
+    -- option dans la fenêtre d'options (Classe et donjons)
+    Q.UI.Options:Open("class")
+    local w = Q.UI.Options:Widget("dungeonSuggest")
+    t.ok(w and w.check, "option checkbox")
+    t.eq(w.check:GetChecked(), true)
     noErrors(t)
   end,
 

@@ -28,11 +28,14 @@ Locales\StringsMap.lua
 Locales\StringsZone.lua
 Locales\StringsVersion.lua
 Locales\StringsMinimap.lua
+Locales\StringsOptions.lua
 
 Core\Init.lua
 Core\Util.lua
 Core\Compat.lua
 Core\Settings.lua
+Core\OptionsSchema.lua
+Core\Profiles.lua
 Core\Diagnostics.lua
 Core\VersionCheck.lua
 
@@ -83,6 +86,7 @@ UI\Journal.lua
 UI\Wizard.lua
 UI\QuestItemButton.lua
 UI\Report.lua
+UI\Options.lua
 UI\Slash.lua
 
 Guides\Guides.xml

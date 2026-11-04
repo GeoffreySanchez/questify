@@ -37,7 +37,8 @@ return {
     Q.Settings:Set("tracker.point", { "CENTER", 10, 20 })
     t.eq(path, "tracker.point")
     t.eq(Q.Settings:Get("tracker.point")[2], 10)
-    t.eq(Q.db.settings.tracker.point[3], 20)
+    t.eq(Q.Profiles:Store().tracker.point[3], 20)
+    t.eq(Q.db.profiles.Default.settings.tracker.point[3], 20, "saved in the active profile")
   end,
 
   safecall_reports_once = function(t)

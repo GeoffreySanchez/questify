@@ -253,7 +253,7 @@ Q.charDefaults = {
   classQuests = { added = {}, ignored = {}, seen = {} },
   telemetry = {},
   wizardDone = nil,
-  rewardRole = "auto",   -- Automation/Rewards.lua : profil de récompense du personnage
+  -- (le profil de butin est dans le profil d'options actif : Core/Profiles.lua)
   specRoleAnswered = {}, -- Automation/SpecRole.lua : spécialisations pour lesquelles « Non » a été répondu
 }
 
@@ -265,11 +265,17 @@ local function onAddonLoaded(event, name)
   if type(QuestifyCharDB) ~= "table" then QuestifyCharDB = {} end
   local copy = Q.Util and Q.Util.CopyDefaults
   if copy then
-    copy(QuestifyDB, { settings = (Q.Settings and Q.Settings.defaults) or {}, debug = false })
+    copy(QuestifyDB, { debug = false })
     copy(QuestifyCharDB, Q.charDefaults)
   end
   Q.db = QuestifyDB
   Q.char = QuestifyCharDB
+  -- Profils d'options (migration de QuestifyDB.settings, profil du personnage) avant l'INIT des
+  -- modules : leurs réglages sont lus dans le profil actif.
+  if Q.Profiles and Q.Profiles.Setup then
+    local ok, err = pcall(Q.Profiles.Setup, Q.Profiles)
+    if not ok then Q:ReportError(err) end
+  end
   flushErrors()
   Q:Fire("INIT")
 end

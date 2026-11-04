@@ -32,7 +32,7 @@ return {
   int_damager_shaman_melee_shows_popup_and_yes_sets_caster = function(t)
     local Q = load("SHAMAN", 20)
     local SR = Q.SpecRole
-    Q.char.rewardRole = "melee"
+    Q.Rewards:SetRole("melee")
     pickSpec(1)   -- Élémentaire : DAMAGER, Intelligence
     t.ok(SR:IsShown(), "popup shown")
     t.eq(SR.current.profile, "caster")
@@ -40,7 +40,7 @@ return {
     t.ok(SR.text:GetText():find("Elemental", 1, true), "spec name in the text")
     t.eq(SR.noButton:GetText(), string.format(Q.L.SPECROLE_NO, Q.L.REWARD_SPEC_SHAMAN_MELEE))
     Mock.click(SR.yesButton, "LeftButton")
-    t.eq(Q.char.rewardRole, "caster")
+    t.eq(Q.Rewards:Role(), "caster")
     t.ok(not SR:IsShown(), "closed after Yes")
     t.ok(Mock.printed(string.format(Q.L.MINIMAP_ROLE_SET, Q.L.REWARD_SPEC_SHAMAN_CASTER)), "confirmation line")
     -- même spécialisation ensuite : rien à proposer
@@ -52,12 +52,12 @@ return {
   no_is_remembered_per_spec_and_a_new_spec_asks_again = function(t)
     local Q = load("SHAMAN", 20)
     local SR = Q.SpecRole
-    Q.char.rewardRole = "melee"
+    Q.Rewards:SetRole("melee")
     pickSpec(1)
     t.ok(SR:IsShown())
     Mock.click(SR.noButton, "LeftButton")
     t.ok(not SR:IsShown())
-    t.eq(Q.char.rewardRole, "melee", "role kept")
+    t.eq(Q.Rewards:Role(), "melee", "role kept")
     t.eq(Q.char.specRoleAnswered[262], true)
     t.ok(Mock.printed(string.format(Q.L.SPECROLE_KEPT, Q.L.REWARD_SPEC_SHAMAN_MELEE)))
     pickSpec(1)
@@ -80,10 +80,10 @@ return {
 
   same_spec_as_role_shows_nothing = function(t)
     local Q = load("SHAMAN", 20)
-    Q.char.rewardRole = "caster"
+    Q.Rewards:SetRole("caster")
     pickSpec(1)
     t.ok(not Q.SpecRole:IsShown())
-    Q.char.rewardRole = "healer"
+    Q.Rewards:SetRole("healer")
     pickSpec(3)
     t.ok(not Q.SpecRole:IsShown())
     noErrors(t)
@@ -92,7 +92,7 @@ return {
   combat_queues_the_popup = function(t)
     local Q = load("SHAMAN", 20)
     local SR = Q.SpecRole
-    Q.char.rewardRole = "melee"
+    Q.Rewards:SetRole("melee")
     Mock.player.combat = true
     pickSpec(1)
     t.ok(not SR:IsShown(), "never shown in combat")
@@ -113,7 +113,7 @@ return {
   no_spec_or_missing_api_is_silent = function(t)
     local Q = load("SHAMAN", 20)
     local SR = Q.SpecRole
-    Q.char.rewardRole = "melee"
+    Q.Rewards:SetRole("melee")
     for _, index in ipairs({ false, 0, 5 }) do   -- aucune, zéro, spécialisation de départ
       pickSpec(index or nil)
       t.ok(not SR:IsShown(), "no popup for index " .. tostring(index))
@@ -138,7 +138,7 @@ return {
 
   below_spec_level_does_nothing = function(t)
     local Q = load("SHAMAN", 9)
-    Q.char.rewardRole = "melee"
+    Q.Rewards:SetRole("melee")
     pickSpec(1)
     t.ok(not Q.SpecRole:IsShown())
     noErrors(t)
@@ -149,12 +149,12 @@ return {
     local SR = Q.SpecRole
     t.eq(SR:ProfileFor("DAMAGER", 2, "HUNTER"), "ranged")
     t.eq(SR:ProfileFor("DAMAGER", 4, "HUNTER"), "ranged")
-    Q.char.rewardRole = "melee"
+    Q.Rewards:SetRole("melee")
     pickSpec(2)   -- Précision
     t.ok(SR:IsShown())
     t.eq(SR.current.profile, "ranged")
     Mock.click(SR.yesButton, "LeftButton")
-    t.eq(Q.char.rewardRole, "ranged")
+    t.eq(Q.Rewards:Role(), "ranged")
     noErrors(t)
   end,
 
@@ -182,7 +182,7 @@ return {
     -- assistant déjà terminé (sinon il s'ouvre à la connexion et la question l'attend)
     local Q = Mock.loadAddon(TOC, { extraFiles = { GUIDES },
       savedVariables = { QuestifyCharDB = { wizardDone = true } } })
-    t.eq(Q.char.rewardRole, "auto")
+    t.eq(Q.Rewards:Role(), "auto")
     Mock.advance(6)
     t.ok(not Q.SpecRole:IsShown(), "waits for the spec data")
     Mock.spec.initialized = true
@@ -217,9 +217,24 @@ return {
     noErrors(t)
   end,
 
+  prompt_option_off_shows_nothing = function(t)
+    local Q = load("SHAMAN", 20)
+    local SR = Q.SpecRole
+    Q.Rewards:SetRole("melee")
+    Q.Settings:Set("specRolePrompt", false)
+    pickSpec(1)
+    t.ok(not SR:IsShown(), "no proposal when the option is off")
+    Q.Settings:Set("specRolePrompt", true)
+    pickSpec(1)
+    t.ok(SR:IsShown(), "proposal again once on")
+    Q.Settings:Set("specRolePrompt", false)
+    t.ok(not SR:IsShown(), "open proposal closed when the option goes off")
+    noErrors(t)
+  end,
+
   role_changed_elsewhere_closes_the_popup = function(t)
     local Q = load("SHAMAN", 20)
-    Q.char.rewardRole = "melee"
+    Q.Rewards:SetRole("melee")
     pickSpec(1)
     t.ok(Q.SpecRole:IsShown())
     Q.Rewards:SetRole("caster")
@@ -230,7 +245,7 @@ return {
   bug_report_has_the_spec_line = function(t)
     local Q = load("SHAMAN", 20)
     Mock.spec.index = 1
-    Q.char.rewardRole = "melee"
+    Q.Rewards:SetRole("melee")
     local report = Q.Diagnostics:Report()
     t.ok(report:find("Spec: Elemental (id 262, DAMAGER, stat 4) -> caster; reward role melee", 1, true), report)
   end,

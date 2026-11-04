@@ -445,11 +445,10 @@ return {
     t.eq(#Mock.errors, 0)
   end,
 
-  journal_has_the_option = function(t)
+  options_window_has_the_option = function(t)
     local Q = load()
-    local J = Q.UI.Journal
-    J:ShowTab("options")
-    local cb = J.checks.zoneMode
+    Q.UI.Options:Open("route")
+    local cb = Q.UI.Options:Widget("zoneMode").check
     t.ok(cb, "checkbox")
     t.eq(cb:GetChecked(), true)
     cb:SetChecked(false)

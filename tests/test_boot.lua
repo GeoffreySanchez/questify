@@ -39,7 +39,9 @@ return {
     t.eq(type(Q.char.classQuests.ignored), "table")
     t.eq(type(Q.char.classQuests.seen), "table")
     t.eq(type(Q.char.telemetry), "table")
-    t.eq(Q.db.settings.tracker.nextSteps, 3)
+    t.eq(Q.Settings:Get("tracker.nextSteps"), 3)
+    t.eq(type(Q.db.profiles.Default.settings), "table", "settings live in the Default profile")
+    t.eq(Q.db.settings, nil, "no settings table outside the profiles")
   end,
 
   saved_variables_survive_reload = function(t)

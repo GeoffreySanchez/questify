@@ -147,7 +147,14 @@ addons périmés ».
 ### Commandes
 - `/questify` ou `/qf` : ouvrir ou fermer le journal.
 - `/qf skip` : passer l'étape courante ; `/qf back` : revenir à l'étape précédente.
-- `/qf options` : options ; `/qf wizard` : assistant de démarrage (reprend à la page laissée).
+- `/qf options` : fenêtre d'options (sections à gauche, recherche, icône « i » sur chaque option) ;
+  `/qf options <mot>` l'ouvre sur une recherche. Aussi dans Échap > Options > AddOns > Questify.
+  `/qf wizard` : assistant de démarrage (reprend à la page laissée).
+
+Profils (section Profils des options) : par compte (profil partagé « Par défaut ») ou par personnage.
+Un profil garde les options, la position, la taille, la largeur et le thème du suivi, et le profil de
+butin de chaque classe ; « Exporter » donne une chaîne `QFY1:…` à partager, « Importer » la reprend
+après confirmation (valeurs inconnues ou invalides ignorées). La progression n'est jamais dans un profil.
 - `/qf export` : exporter les mesures de temps par étape (rien n'est envoyé automatiquement).
 - `/qf check` : autodiagnostic (fonctions du jeu, QuestieDB, repère, navigation, route, erreurs).
 - `/qf bug` (ou `/qf report`) : rapport de bug prêt à copier (bouton « Rapport de bug » dans les
@@ -277,7 +284,14 @@ date AddOns".
 ### Commands
 - `/questify` or `/qf`: open or close the journal.
 - `/qf skip`: skip the current step; `/qf back`: go back one step.
-- `/qf options`: options; `/qf wizard`: first-launch wizard (resumes on the page you left).
+- `/qf options`: options window (sections on the left, search, "i" icon on every option);
+  `/qf options <word>` opens it on a search. Also in Esc > Options > AddOns > Questify.
+  `/qf wizard`: first-launch wizard (resumes on the page you left).
+
+Profiles (Profiles section of the options): per account (shared "Default" profile) or per character.
+A profile holds the options, the tracker position, size, width and theme, and the loot profile of
+each class; "Export" gives a `QFY1:…` string to share, "Import" takes it back after a confirmation
+(unknown or invalid values are ignored). Progress is never stored in a profile.
 - `/qf export`: export the per-step timing data (nothing is ever sent automatically).
 - `/qf check`: self-check (game functions, QuestieDB, map pin, navigation, route, errors).
 - `/qf bug` (or `/qf report`): bug report ready to copy ("Bug report" button in the options);

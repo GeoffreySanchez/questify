@@ -42,6 +42,12 @@ local STAT_KEYS = {
   SPI = "ITEM_MOD_SPIRIT_SHORT",
   ARMOR = "RESISTANCE0_NAME",
   DPS = "ITEM_MOD_DAMAGE_PER_SECOND_SHORT",
+  -- Puissance des sorts : clés possibles selon le client (à confirmer sur la branche forever de
+  -- Gethe/wow-ui-source) ; une clé absente de l'objet ne compte pas.
+  SP = "ITEM_MOD_SPELL_POWER_SHORT",
+  SPELLDMG = "ITEM_MOD_SPELL_DAMAGE_DONE_SHORT",
+  -- Soins : le nom de clé varie selon les clients, on prend la première présente.
+  HEAL = { "ITEM_MOD_SPELL_HEALING_DONE_SHORT", "ITEM_MOD_HEALING_DONE_SHORT" },
 }
 
 local WEIGHTS = {
@@ -55,6 +61,112 @@ local WEIGHTS = {
   WARLOCK = { INT = 1, STA = 0.8, SPI = 0.6, DPS = 0.5 },
   DRUID = { INT = 0.8, STR = 0.6, AGI = 0.6, SPI = 0.5, STA = 0.5, ARMOR = 0.01, DPS = 1 },
 }
+
+---------------------------------------------------------------------------
+-- Profils de rôle (réglage par personnage Q.char.rewardRole ; "auto" = table de classe ci-dessus)
+---------------------------------------------------------------------------
+-- DPS_RANGED / DPS_MELEE : poids du DPS d'arme à distance (emplacement 18) / de mêlée, si présents ;
+-- sinon DPS s'applique aux deux.
+local ROLE_WEIGHTS = {
+  caster = { INT = 1, SPI = 0.6, STA = 0.5, SP = 1.2, SPELLDMG = 1.2, HEAL = 0.2, STR = 0.05, AGI = 0.05,
+    ARMOR = 0.005, DPS = 0.2 },
+  healer = { INT = 1, SPI = 0.8, STA = 0.4, SP = 1.1, HEAL = 1.1, SPELLDMG = 0.3, STR = 0.05, AGI = 0.05,
+    ARMOR = 0.005, DPS = 0.1 },
+  ranged = { AGI = 1, STA = 0.5, INT = 0.3, STR = 0.1, ARMOR = 0.01, DPS_RANGED = 3, DPS_MELEE = 0.5 },
+}
+local TANK_WEIGHTS = {
+  WARRIOR = { STA = 1, STR = 0.6, AGI = 0.4, ARMOR = 0.05, DPS = 1 },
+  PALADIN = { STA = 1, STR = 0.6, AGI = 0.3, INT = 0.2, ARMOR = 0.05, DPS = 1 },
+  DRUID = { STA = 1, AGI = 0.7, STR = 0.3, ARMOR = 0.05, DPS = 1 },
+}
+-- Mêlée : la table de la classe, sauf le druide (la sienne penche vers l'intelligence).
+local MELEE_OVERRIDE = {
+  DRUID = { STR = 1, AGI = 0.9, STA = 0.5, ARMOR = 0.01, DPS = 1.5 },
+}
+
+-- Profils proposés par classe ("auto" est toujours disponible en plus).
+local CLASS_ROLES = {
+  SHAMAN = { "caster", "melee", "healer" },
+  DRUID = { "caster", "melee", "tank", "healer" },
+  PALADIN = { "melee", "tank", "healer" },
+  PRIEST = { "caster", "healer" },
+  WARRIOR = { "melee", "tank" },
+  HUNTER = { "ranged", "melee" },
+  ROGUE = { "melee" },
+  MAGE = { "caster" },
+  WARLOCK = { "caster" },
+}
+Rewards.CLASS_ROLES = CLASS_ROLES
+
+-- Roles(classFile) -> { "auto", ... } : les profils de la classe, "auto" en tête.
+function Rewards:Roles(classFile)
+  local out = { "auto" }
+  for _, r in ipairs(CLASS_ROLES[classFile] or {}) do out[#out + 1] = r end
+  return out
+end
+
+-- Le sélecteur ne vaut que s'il y a un vrai choix (pas pour les classes à un seul profil).
+function Rewards:HasChoice(classFile)
+  return #(CLASS_ROLES[classFile] or {}) > 1
+end
+
+local function validRole(classFile, role)
+  if role == "auto" then return true end
+  for _, r in ipairs(CLASS_ROLES[classFile] or {}) do
+    if r == role then return true end
+  end
+  return false
+end
+
+-- Role(classFile) -> profil choisi pour ce personnage, "auto" s'il manque ou ne convient pas à la classe.
+function Rewards:Role(classFile)
+  classFile = classFile or (Q.Player and Q.Player.classFile)
+  local role = Q.char and Q.char.rewardRole
+  if type(role) == "string" and validRole(classFile, role) then return role end
+  return "auto"
+end
+
+-- SetRole(role) : enregistre le profil du personnage (ignoré s'il ne convient pas à la classe).
+function Rewards:SetRole(role)
+  local classFile = Q.Player and Q.Player.classFile
+  if not (Q.char and validRole(classFile, role)) then return false end
+  Q.char.rewardRole = role
+  Q:Fire("SETTINGS_CHANGED", "rewardRole", role)
+  return true
+end
+
+-- NextRole(current) -> profil suivant de la classe (boucle).
+function Rewards:NextRole(current, classFile)
+  classFile = classFile or (Q.Player and Q.Player.classFile)
+  local roles = self:Roles(classFile)
+  for i, r in ipairs(roles) do
+    if r == current then return roles[i % #roles + 1] end
+  end
+  return roles[1]
+end
+
+-- RoleLabel(role, classFile) -> nom localisé : la spécialisation si connue, sinon le rôle.
+function Rewards:RoleLabel(role, classFile)
+  local L = Q.L
+  classFile = classFile or (Q.Player and Q.Player.classFile)
+  if role == "auto" then return L.REWARD_ROLE_AUTO end
+  local up = tostring(role):upper()
+  local specKey = "REWARD_SPEC_" .. tostring(classFile) .. "_" .. up
+  -- Q.L renvoie la clé pour un texte absent : on ne la prend que si elle a une vraie valeur
+  local spec = rawget(L, specKey)
+  if spec == nil and L[specKey] ~= specKey then spec = L[specKey] end
+  return spec or L["REWARD_ROLE_" .. up]
+end
+
+-- Weights(classFile, role) -> table de poids : "auto" = table de classe ; sinon le profil.
+function Rewards:Weights(classFile, role)
+  local base = WEIGHTS[classFile]
+  if role == nil then role = self:Role(classFile) end
+  if role == "auto" or not validRole(classFile, role) then return base end
+  if role == "melee" then return MELEE_OVERRIDE[classFile] or base end
+  if role == "tank" then return TANK_WEIGHTS[classFile] or base end
+  return ROLE_WEIGHTS[role] or base
+end
 
 ---------------------------------------------------------------------------
 -- Emplacements d'équipement
@@ -161,13 +273,26 @@ end
 ---------------------------------------------------------------------------
 -- Score
 ---------------------------------------------------------------------------
--- Score(stats, classFile) : somme des poids de la classe appliqués aux stats de l'objet.
-function Rewards:Score(stats, classFile)
-  local weights = WEIGHTS[classFile]
+-- Score(stats, classFile, ranged, role) : somme des poids du profil (par défaut celui du personnage)
+-- appliqués aux stats de l'objet. ranged : l'objet va dans l'emplacement à distance (DPS d'arme).
+function Rewards:Score(stats, classFile, ranged, role)
+  local weights = self:Weights(classFile, role)
   if not weights or type(stats) ~= "table" then return 0 end
   local total = 0
   for short, weight in pairs(weights) do
-    local v = tonumber(stats[STAT_KEYS[short]])
+    local key = STAT_KEYS[short]
+    if short == "DPS_RANGED" or short == "DPS_MELEE" then
+      if (short == "DPS_RANGED") == (ranged and true or false) then key = STAT_KEYS.DPS else key = nil end
+    end
+    local v
+    if type(key) == "table" then
+      for _, k in ipairs(key) do
+        v = tonumber(stats[k])
+        if v then break end
+      end
+    else
+      v = key and tonumber(stats[key])
+    end
     if v then total = total + v * weight end
   end
   return total
@@ -178,7 +303,7 @@ function Rewards:EquippedScore(slot, player)
   player = player or Q.Player
   local link = GetInventoryItemLink("player", slot)
   if not link then return 0 end
-  return self:Score(readItem(link).stats, player and player.classFile)
+  return self:Score(readItem(link).stats, player and player.classFile, slot == 18)
 end
 
 -- ComparisonSlots(equipLoc, player) -> emplacements auxquels comparer une récompense.
@@ -226,7 +351,7 @@ function Rewards:UpgradeGain(item, player, equipped)
   for _, s in ipairs(slots) do
     base = math.min(base, equipped and equipped(s) or self:EquippedScore(s, player))
   end
-  return self:Score(item.stats, player.classFile) - base
+  return self:Score(item.stats, player.classFile, item.equipLoc and SLOTS[item.equipLoc] and SLOTS[item.equipLoc][1] == 18) - base
 end
 Rewards.EPSILON = EPSILON
 

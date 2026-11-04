@@ -68,7 +68,7 @@ local AUTOMATIONS = {
 local PAGE_KEYS = {
   [PAGE_ROUTING] = { "routing" },
   [PAGE_DISPLAY] = { "display" },
-  [PAGE_AUTO] = { "autoQuest", "autoReward", "sellJunk" },
+  [PAGE_AUTO] = { "autoQuest", "autoReward", "sellJunk", "rewardRole" },
 }
 
 local READY = "Interface\\RaidFrame\\ReadyCheck-Ready"
@@ -359,6 +359,24 @@ function Wizard:BuildAutoPage(page)
     self.checks[def[1]] = cb
     anchor = cb
   end
+  -- profil de récompense, sous les cases ; masqué pour une classe sans vrai choix
+  local b = newButton("Button", page, "UIPanelButtonTemplate")
+  b:SetSize(260, 22)
+  local reward = self.checks.autoReward
+  b:SetPoint("TOPLEFT", reward, "BOTTOMLEFT", 30, -4)
+  -- la case suivante passe sous le bouton
+  local after = self.checks.sellJunk
+  if after then
+    after:ClearAllPoints()
+    after:SetPoint("TOPLEFT", b, "BOTTOMLEFT", -30, -6)
+  end
+  b:SetScript("OnClick", safe(function()
+    local Rw = Q.Rewards
+    if not (Rw and Wizard.choice) then return end
+    Wizard:SetChoice("rewardRole", Rw:NextRole(Wizard.choice.rewardRole))
+    Wizard:Refresh()
+  end))
+  self.rewardRoleButton = b
 end
 
 function Wizard:BuildRecapPage(page)
@@ -512,6 +530,16 @@ function Wizard:Refresh()
   end
   self:SelectDisplay(c.display)
   for _, def in ipairs(AUTOMATIONS) do self.checks[def[1]]:SetChecked(c[def[1]]) end
+  local rb, Rw = self.rewardRoleButton, Q.Rewards
+  if rb and Rw then
+    local classFile = Q.Player and Q.Player.classFile
+    if Rw:HasChoice(classFile) then
+      rb:SetText(string.format(L.UI_OPT_REWARD_ROLE, Rw:RoleLabel(c.rewardRole, classFile)))
+      rb:Show()
+    else
+      rb:Hide()
+    end
+  end
 end
 
 -- Les cases sont relues avant le récapitulatif et au moment de terminer : leur état affiché fait foi.
@@ -540,6 +568,7 @@ function Wizard:Load()
     autoQuest = Q.Settings:Get("autoQuest") ~= false,
     autoReward = Q.Settings:Get("autoReward") ~= false,
     sellJunk = Q.Settings:Get("sellJunk") ~= false,
+    rewardRole = Q.Rewards and Q.Rewards:Role() or "auto",
   }
   self.initial = initial
   local choice = {}
@@ -550,6 +579,14 @@ function Wizard:Load()
     for k, v in pairs(draft) do
       if initial[k] ~= nil and type(v) == type(initial[k]) then choice[k] = v end
     end
+  end
+  if Q.Rewards then
+    -- un brouillon périmé ne doit pas imposer un profil que la classe n'a pas
+    local ok = false
+    for _, r in ipairs(Q.Rewards:Roles(Q.Player and Q.Player.classFile)) do
+      if r == choice.rewardRole then ok = true end
+    end
+    if not ok then choice.rewardRole = initial.rewardRole end
   end
   if not d.shortestpath then choice.routing = false end
   if not d[choice.display] then choice.display = initial.display end
@@ -661,6 +698,7 @@ function Wizard:Finish()
   Q.Settings:Set("autoQuest", c.autoQuest)
   Q.Settings:Set("autoReward", c.autoReward)
   Q.Settings:Set("sellJunk", c.sellJunk)
+  if Q.Rewards and c.rewardRole then Q.Rewards:SetRole(c.rewardRole) end
   if Q.char then
     Q.char.wizardDone = true
     Q.char.wizardPage = nil

@@ -34,9 +34,16 @@ dossier AddOns (il n'est plus chargé).
 ## Au lancement de Forever (ce soir, minuit à Paris)
 
 1. Sur le perso Forever : `/qf check`, puis `/qf talents` et `/reload` (relevé des vrais arbres de
-   talents dans `WTF\Account\...\SavedVariables\Questify_Vanilla.lua`, clé `talentDump[<classe>]`).
+   talents par `C_ClassTalents` / `C_Traits` dans
+   `WTF\Account\...\SavedVariables\Questify_Vanilla.lua`, clé `talentDump.forever[<classe>]` :
+   nœuds avec position `posX`/`posY`, rangs, groupes (les trois arbres), sorts et noms, monnaie de
+   l'arbre). Si la discussion dit « pas encore de configuration de talents active », ouvrir une fois
+   la fenêtre des talents puis relancer `/qf talents`.
 2. Lire ce relevé, vérifier comment le jeu expose le talent « Talented » (points hors des trois
-   arbres) et adapter `Engine/Talents.lua` (compte des points à dépenser).
+   arbres) et que la monnaie de l'arbre (`trees[1].currencies[*].quantity`, lue par le rappel des
+   points à dépenser) donne bien les points restants. Les conseils de build lisent encore
+   `GetTalentInfo` (arbre, palier, colonne), absent de Forever : adapter `Talents:Find` aux nœuds
+   `C_Traits` du relevé (groupe, `posX`, `posY`) avant d'écrire les builds.
 3. Écrire les builds Forever (monde ouvert / donjon) dans `Data/TalentBuilds.lua` sur ces arbres,
    d'après les guides mis à jour après le lancement (Icy Veins : le calculateur intégré donne le
    build final, le texte donne les niveaux ; le texte du 21 octobre n'est plus à jour). Le test

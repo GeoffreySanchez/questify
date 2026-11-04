@@ -417,6 +417,7 @@ function Diag:Report()
   add("Client: %s (%s), interface %s, %s", tostring(version), tostring(build), tostring(interface),
     tostring(GetLocale and GetLocale() or "?"))
   add("Character: %s %s %s, level %s", tostring(P.faction), tostring(P.raceKey), tostring(P.classFile), tostring(P.level))
+  add("Reward role: %s", tostring(Q.Rewards and Q.Rewards:Role(P.classFile) or (Q.char and Q.char.rewardRole) or "auto"))
 
   local addons = {}
   for _, name in ipairs({ "QuestieDB", "TomTom", "WaypointUI", "ShortestPathForever" }) do
@@ -451,8 +452,8 @@ function Diag:Report()
   local st = Q.Nav and Q.Nav:Status() or {}
   local t = st.target
   if t then
-    add("Target: %s %.1f, %.1f \"%s\" via %s (%s)", mapLabel(t.mapId), t.x, t.y, tostring(t.title),
-      tostring(st.wanted), st.provider and "placed" or "not placed")
+    add("Target: %s %.1f, %.1f \"%s\" via %s (%s%s)", mapLabel(t.mapId), t.x, t.y, tostring(t.title),
+      tostring(st.wanted), st.provider and "placed" or "not placed", st.manual and ", map pin" or "")
   else
     add("Target: -")
   end

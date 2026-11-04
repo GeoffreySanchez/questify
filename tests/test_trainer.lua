@@ -11,23 +11,33 @@ local TRAINERS = {
     zoneID = 12, friendlyToFaction = "A", subName = "Warrior Trainer", npcFlags = 51 },
 }
 
--- Fenêtre de maître simulée : services = { { name, rank, category, level, cost } }, filtres.
+-- Fenêtre de maître simulée : services = { { name, rank, type, level, cost } }, filtres.
+-- Signature Mainline de GetTrainerServiceInfo (Blizzard_TrainerUI/Mainline) : nom, type, icône,
+-- niveau requis, sous-texte (rang), catégorie. GetTrainerServiceLevelReq n'existe pas dans Forever.
+-- Changer un filtre relance TRAINER_UPDATE, comme le client.
 local trainer
 
 local function installTrainerApi()
-  trainer = { services = {}, tradeskill = false, filters = { available = true, unavailable = false, used = false },
-    filterCalls = {} }
+  trainer = { services = {}, tradeskill = false, filters = { available = true, unavailable = true, used = false },
+    filterCalls = {}, reads = 0 }
   local function visible()
     local out = {}
     for _, s in ipairs(trainer.services) do
-      if trainer.filters[s[3]] then out[#out + 1] = s end
+      if trainer.filters[s[3]] or s[3] == "header" then out[#out + 1] = s end
     end
     return out
   end
-  GetNumTrainerServices = function() return #visible() end
-  GetTrainerServiceInfo = function(i) local s = visible()[i]; if s then return s[1], s[2], s[3] end end
-  GetTrainerServiceLevelReq = function(i) local s = visible()[i]; return s and s[4] end
-  GetTrainerServiceCost = function(i) local s = visible()[i]; return s and s[5] or 0 end
+  GetNumTrainerServices = function()
+    trainer.reads = trainer.reads + 1
+    if trainer.onRead then trainer.onRead() end
+    return #visible()
+  end
+  GetTrainerServiceInfo = function(i)
+    local s = visible()[i]
+    if s then return s[1], s[3], 136000 + i, s[4], s[2], "" end
+  end
+  GetTrainerServiceLevelReq = nil
+  GetTrainerServiceCost = function(i) local s = visible()[i]; return s and s[5] or 0, false end
   GetTrainerServiceTypeFilter = function(f) return trainer.filters[f] end
   SetTrainerServiceTypeFilter = function(f, on)
     trainer.filterCalls[#trainer.filterCalls + 1] = f .. "=" .. tostring(on)
@@ -61,6 +71,7 @@ end
 local function plain(s) return (tostring(s or ""):gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "")) end
 
 local SERVICES_L2 = {
+  { "Abilities", "", "header", nil, 0 },
   { "Battle Shout", "Rank 1", "used", 1, 10 },
   { "Rend", "Rank 1", "available", 4, 100 },        -- niveau 4
   { "Charge", "", "unavailable", 4, 100 },
@@ -109,16 +120,17 @@ return {
     talkTo(912, SERVICES_L2)
     t.ok(not Q.Trainer:HasStep(), "visit done: step removed")
     t.ok(Q.Progress:Current().step.action ~= "train")
-    t.eq(trainer.filters, { available = true, unavailable = false, used = false }, "window filters restored")
+    t.eq(trainer.filterCalls, {}, "window filters never touched")
     local a = Q.Trainer:Alert()
     t.ok(a and a.known, "exact list now")
     t.eq(a.count, 2, "Rend and Charge (level 4)")
     t.eq(a.cost, 200)
     t.eq(a.names, { "Rend (Rank 1)", "Charge" })
     t.eq(Q.UI.Tracker.trainerText:GetText(), string.format(Q.L.UI_TRAINER_ALERT, 2))
-    -- les deux sorts appris
-    SERVICES_L2[2][3], SERVICES_L2[3][3] = "used", "used"
+    -- les deux sorts appris (TRAINER_UPDATE : une relecture différée)
+    SERVICES_L2[3][3], SERVICES_L2[4][3] = "used", "used"
     Mock.fire("TRAINER_UPDATE")
+    Mock.advance(Q.Trainer.UPDATE_DELAY + 0.05)
     t.eq(Q.Trainer:Alert(), nil, "nothing left at level 4")
     levelUp(5)
     t.eq(Q.Trainer:Alert(), nil, "nothing new at level 5")
@@ -126,7 +138,8 @@ return {
     local a6 = Q.Trainer:Alert()
     t.eq(a6 and a6.count, 1, "Thunder Clap at level 6")
     t.eq(Mock.countPrinted(string.format(Q.L.TRAINER_NEW_SPELLS, 1)), 1)
-    SERVICES_L2[2][3], SERVICES_L2[3][3] = "available", "unavailable"
+    SERVICES_L2[3][3], SERVICES_L2[4][3] = "available", "unavailable"
+    t.eq(trainer.filterCalls, {}, "window filters never touched")
     t.eq(#Mock.errors, 0)
   end,
 
@@ -209,5 +222,67 @@ return {
     money = 20
     Mock.fire("PLAYER_MONEY")
     t.ok(Q.Trainer:Alert(), "10 c estimated at level 2")
+  end,
+
+  -- Après une première visite, l'alerte revient à chaque niveau où un sort de la liste arrive
+  -- (niveau requis lu en 4e retour de GetTrainerServiceInfo).
+  alert_fires_again_at_next_level_after_first_visit = function(t)
+    local Q = load()
+    levelUp(4)
+    local list = {
+      { "Battle Shout", "Rank 1", "used", 1, 10 },
+      { "Rend", "Rank 1", "used", 4, 100 },
+      { "Thunder Clap", "Rank 1", "unavailable", 6, 100 },
+      { "Hamstring", "", "unavailable", 8, 100 },
+    }
+    talkTo(912, list)
+    t.eq(Q.Trainer:Alert(), nil, "everything learned at level 4")
+    Mock.fire("TRAINER_CLOSED")
+    levelUp(5)
+    t.eq(Q.Trainer:Alert(), nil, "nothing new at level 5")
+    levelUp(6)
+    local a = Q.Trainer:Alert()
+    t.ok(a and a.known, "level 6: alert again from the read list")
+    t.eq(a.count, 1); t.eq(a.names, { "Thunder Clap (Rank 1)" })
+    t.ok(Q.UI.Tracker.trainerAlert:IsShown())
+    t.eq(Mock.countPrinted(string.format(Q.L.TRAINER_NEW_SPELLS, 1)), 1)
+    -- deuxième visite : sort appris, l'alerte revient encore au niveau 8
+    list[3][3], list[4][3] = "used", "unavailable"
+    talkTo(912, list)
+    t.eq(Q.Trainer:Alert(), nil)
+    Mock.fire("TRAINER_CLOSED")
+    levelUp(8)
+    local a8 = Q.Trainer:Alert()
+    t.eq(a8 and a8.names, { "Hamstring" }, "third wave")
+    t.eq(Mock.countPrinted(string.format(Q.L.TRAINER_NEW_SPELLS, 1)), 2, "one message per wave")
+    t.eq(#Mock.errors, 0)
+  end,
+
+  -- La lecture ne change jamais les filtres de la fenêtre, et TRAINER_UPDATE ne peut pas boucler.
+  reading_services_changes_no_filter_and_cannot_loop = function(t)
+    local Q = load()
+    levelUp(4)
+    talkTo(912, SERVICES_L2)
+    t.eq(trainer.filterCalls, {}, "no filter change on TRAINER_SHOW")
+    t.eq(trainer.filters, { available = true, unavailable = true, used = false })
+    local before = trainer.reads
+    for _ = 1, 5 do Mock.fire("TRAINER_UPDATE") end
+    t.eq(trainer.reads, before, "nothing read synchronously")
+    Mock.advance(Q.Trainer.UPDATE_DELAY + 0.05)
+    t.eq(trainer.reads, before + 1, "five updates -> one read")
+    -- client qui relance TRAINER_UPDATE pendant chaque lecture : ignoré, pas de boucle
+    trainer.onRead = function() Mock.fire("TRAINER_UPDATE") end
+    Mock.fire("TRAINER_UPDATE")
+    Mock.advance(5)
+    t.eq(trainer.reads, before + 2, "an update fired during our own read is ignored")
+    trainer.onRead = nil
+    t.eq(trainer.filterCalls, {})
+    -- fenêtre fermée : pas de lecture (la liste du client serait vide)
+    Mock.fire("TRAINER_CLOSED")
+    Mock.fire("TRAINER_UPDATE")
+    Mock.advance(1)
+    t.eq(trainer.reads, before + 2)
+    t.ok(Q.Trainer:Alert(), "list kept after closing")
+    t.eq(#Mock.errors, 0)
   end,
 }

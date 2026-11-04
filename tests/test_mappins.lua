@@ -192,14 +192,15 @@ return {
   clicking_a_pin_sets_navigation_target = function(t)
     local Q = load()
     local seen
-    local orig = Q.Nav.SetTarget
-    Q.Nav.SetTarget = function(self, mapId, x, y, title)
+    local orig = Q.Nav.SetManualTarget
+    Q.Nav.SetManualTarget = function(self, mapId, x, y, title)
       seen = { mapId, x, y, title }
       return orig(self, mapId, x, y, title)
     end
     local p = active(Q, "world", 1)[1]   -- prendre 179 chez Sten Stoutarm
     Mock.click(p.frame, "LeftButton")
-    t.ok(seen, "Q.Nav:SetTarget called")
+    t.ok(seen, "Q.Nav:SetManualTarget called")
+    t.eq(Q.Nav:Status().manual, true)
     t.eq(seen[1], 1426); t.near(seen[2], 29.93, 0.001); t.near(seen[3], 71.2, 0.001)
     t.ok(seen[4]:find("Dwarven Outfitters", 1, true), "step title")
     t.eq(Q.Nav:Status().target.mapId, 1426)
@@ -207,6 +208,41 @@ return {
     seen = nil
     Mock.click(active(Q, "minimap", 1)[1].frame, "LeftButton")
     t.ok(seen and seen[1] == 1426)
+    t.eq(#Mock.errors, 0)
+  end,
+
+  -- Le repère cliqué reste la cible : la minuterie des étapes « complete » (3 s) et le mode zone
+  -- ne le remplacent pas ; l'étape suivante, ou un autre clic, reprend la main.
+  pin_click_wins_over_ticker_until_next_step = function(t)
+    local Q = load()
+    acceptWolfQuest(Q)
+    t.eq(Q.Progress:Current().step.action, "complete")
+    local turnin = active(Q, "world", 2)[1]                   -- « ? » de 179 chez Sten
+    Mock.click(turnin.frame, "LeftButton")
+    local st = Q.Nav:Status()
+    t.eq(st.manual, true)
+    t.near(st.target.x, turnin.x, 0.001); t.near(st.target.y, turnin.y, 0.001)
+    -- le joueur bouge : la minuterie aurait visé un autre loup
+    Mock.player.x, Mock.player.y = 22.6, 79.5
+    Mock.advance(10)
+    Q:Fire("ZONEMODE_CHANGED")
+    st = Q.Nav:Status()
+    t.near(st.target.x, turnin.x, 0.001, "ticker and zone mode keep the clicked pin")
+    t.near(st.target.y, turnin.y, 0.001)
+    -- un autre repère remplace le premier
+    local wolf = active(Q, "world", 1)[3]
+    Mock.click(wolf.frame, "LeftButton")
+    t.near(Q.Nav:Status().target.x, wolf.x, 0.001, "new manual target")
+    -- quête complète : nouvelle étape, la cible suit la route de nouveau
+    Mock.quests.log[179].complete = true
+    Mock.quests.log[179].objectives[1].finished = true
+    Mock.fire("QUEST_LOG_UPDATE")
+    Mock.advance(0.3)
+    t.eq(Q.Progress:Current().step.action, "turnin")
+    st = Q.Nav:Status()
+    t.eq(st.manual, false, "step changed: manual target dropped")
+    local tg = Q.Targets:ForEntry(Q.Progress:Current())
+    t.near(st.target.x, tg.x, 0.001); t.near(st.target.y, tg.y, 0.001)
     t.eq(#Mock.errors, 0)
   end,
 

@@ -14,6 +14,7 @@ local applied       -- ce qui est posé chez le fournisseur : { provider, key }
 local tomtomUid     -- retour de TomTom:AddWaypoint, à retirer avant le point suivant
 local retryPending  -- ShortestPath a refusé (combat) : on retente à la fin du combat
 local refusedKey    -- clé de la cible refusée : on ne la renvoie pas avant la fin du combat
+local manual        -- cible choisie par le joueur (clic sur un repère de la carte) : prioritaire
 local ticker
 
 ---------------------------------------------------------------------------
@@ -182,9 +183,24 @@ function Nav:SetTarget(mapId, x, y, title)
   apply()
 end
 
+-- Cible choisie par le joueur (clic sur un repère de la carte) : elle reste posée jusqu'au
+-- prochain changement d'étape ou au prochain choix ; la minuterie des étapes « complete » et le
+-- mode zone ne la remplacent pas.
+function Nav:SetManualTarget(mapId, x, y, title)
+  if type(mapId) ~= "number" or type(x) ~= "number" or type(y) ~= "number" then return false end
+  manual = true
+  self:SetTarget(mapId, x, y, title)
+  return true
+end
+
+function Nav:HasManualTarget()
+  return manual == true
+end
+
 -- Status() -> copie de l'état pour /qf check et /qf bug :
 -- { target = { mapId, x, y, title } ou nil, provider = fournisseur posé ou nil,
---   wanted = fournisseur qui serait utilisé, retryPending = bool }
+--   wanted = fournisseur qui serait utilisé, retryPending = bool,
+--   manual = bool (cible choisie sur la carte) }
 function Nav:Status()
   local t = target and { mapId = target.mapId, x = target.x, y = target.y, title = target.title } or nil
   return {
@@ -192,17 +208,21 @@ function Nav:Status()
     provider = applied and applied.provider or nil,
     wanted = currentProvider(),
     retryPending = retryPending == true,
+    manual = manual == true,
   }
 end
 
 function Nav:Clear()
   target = nil
+  manual = nil
   retryPending, refusedKey = false, nil
   clearApplied()
 end
 
--- Recalcule la cible de l'étape donnée (par défaut l'étape courante) et la pose.
+-- Recalcule la cible de l'étape donnée (par défaut l'étape courante) et la pose. Une cible
+-- choisie par le joueur reste en place (voir SetManualTarget).
 function Nav:Refresh(entry)
+  if manual then return end
   if entry == nil then entry = Q.Progress:Current() end
   if not entry then
     self:Clear()
@@ -251,6 +271,7 @@ end
 -- Messages et évènements
 ---------------------------------------------------------------------------
 Q:On("STEP_CHANGED", function(entry)
+  manual = nil   -- nouvelle étape : la cible de l'étape reprend la main
   Nav:Refresh(entry)
   syncTicker()
 end)

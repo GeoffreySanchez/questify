@@ -249,7 +249,27 @@ return {
     local Q = load()
     t.eq(Q.Maps:Distance(1426, 10, 50, 1426, 11, 50), nil)
     Mock.maps[1426] = saved
+    Mock.advance(Q.Maps.FAIL_RETRY + 1)
     t.near(Q.Maps:Distance(1426, 10, 50, 1426, 11, 50), 49.25, 0.01, "retried after a transient failure")
+    t.eq(#Mock.errors, 0)
+  end,
+
+  -- Carte sans position monde : échec gardé ~30 s (pas trois appels à chaque WorldPos), puis retenté.
+  world_pos_failure_negative_cache = function(t)
+    local Q = load()
+    local calls = 0
+    local orig = C_Map.GetWorldPosFromMapPos
+    C_Map.GetWorldPosFromMapPos = function(...) calls = calls + 1; return orig(...) end
+    for _ = 1, 10 do t.eq(Q.Maps:WorldPos(9999, 50, 50), nil) end
+    t.eq(calls, 1, "one client call for ten lookups")
+    Mock.advance(Q.Maps.FAIL_RETRY - 1)
+    t.eq(Q.Maps:WorldPos(9999, 50, 50), nil)
+    t.eq(calls, 1, "still cached before the delay")
+    Mock.advance(2)
+    t.eq(Q.Maps:WorldPos(9999, 50, 50), nil)
+    t.eq(calls, 2, "retried after the delay")
+    -- les autres cartes ne sont pas touchées
+    t.ok(Q.Maps:WorldPos(1426, 50, 50), "known map still works")
     t.eq(#Mock.errors, 0)
   end,
 

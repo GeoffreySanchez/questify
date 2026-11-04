@@ -96,11 +96,12 @@ COMMANDS.debug = function()
   Q:Print(QuestifyVanillaDB.debug and L.UI_SLASH_DEBUG_ON or L.UI_SLASH_DEBUG_OFF)
 end
 
--- Relevé des arbres de talents du client (positions, rangs max, noms, icônes) dans
--- QuestifyVanillaDB.talentDump[<classe>] : sert à écrire et vérifier les presets.
+-- Relevé des arbres de talents Forever (C_ClassTalents / C_Traits : nœuds, positions, rangs max,
+-- sorts, monnaie) dans QuestifyVanillaDB.talentDump[<jeu>][<classe>] : sert à écrire et vérifier
+-- les presets. Échec (API absente, pas de configuration) : Dump affiche lui-même la raison.
 COMMANDS.talents = function()
   local n = Q.Talents and Q.Talents:Dump() or 0
-  Q:Print(L.UI_SLASH_TALENTS_DUMPED, n)
+  if n > 0 then Q:Print(L.UI_SLASH_TALENTS_DUMPED, n) end
 end
 
 COMMANDS.check = function()

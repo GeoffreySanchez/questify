@@ -198,6 +198,7 @@ Q:On("LOGIN", function()
     Q.SafeCall(Professions.Check, Professions)
   end)
 end)
-for _, event in ipairs({ "SKILL_LINES_CHANGED", "LEARNED_SPELL_IN_TAB", "ZONE_CHANGED_NEW_AREA" }) do
+-- LEARNED_SPELL_IN_TAB n'existe plus en 12.x : LEARNED_SPELL_IN_SKILL_LINE (SpellBookDocumentation).
+for _, event in ipairs({ "SKILL_LINES_CHANGED", "LEARNED_SPELL_IN_SKILL_LINE", "ZONE_CHANGED_NEW_AREA" }) do
   Q:RegisterEvent(event, function() Q.SafeCall(Professions.Check, Professions) end)
 end

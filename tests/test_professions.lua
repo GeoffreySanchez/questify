@@ -138,4 +138,16 @@ return {
     t.ok(not Q.Professions:HasStep("MINING"))
     t.ok(Q.Progress:Current().step.action ~= "trainprof")
   end,
+
+  -- 12.x : LEARNED_SPELL_IN_SKILL_LINE remplace LEARNED_SPELL_IN_TAB (absent de Forever).
+  learned_spell_in_skill_line_checks_at_once = function(t)
+    local Q = load({ QuestifyVanillaCharDB = { wizardDone = true } })
+    Q.Professions:SetChosen({ MINING = true })
+    t.ok(Q.Professions:HasStep("MINING"))
+    known[2575] = true
+    Mock.fire("LEARNED_SPELL_IN_SKILL_LINE", 2575, 3, false)
+    t.ok(not Q.Professions:HasStep("MINING"), "checked on the event, without waiting for the ticker")
+    t.eq(#(Mock.eventFrames["LEARNED_SPELL_IN_TAB"] or {}), 0, "removed event not registered")
+    t.eq(#Mock.errors, 0)
+  end,
 }

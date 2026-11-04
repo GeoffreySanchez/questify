@@ -24,6 +24,12 @@ end
 ---------------------------------------------------------------------------
 -- Arbres de talents du client
 ---------------------------------------------------------------------------
+-- Forever (famille Mainline 12.x) expose les talents par C_ClassTalents et C_Traits (voir
+-- Blizzard_PlayerSpells/Camelot/ClassTalents) : un arbre de classe dont les trois « arbres »
+-- classiques sont des groupes de nœuds. GetNumTalentTabs, GetTalentInfo et UnitCharacterPoints
+-- n'y existent pas ; les fonctions qui les lisent (Find, Spent) restent pour les presets et
+-- renvoient « rien » sans elles.
+
 -- Talent à (arbre, palier, colonne) : -> index, nom, icône, rang, rang max ; nil si absent.
 function Talents:Find(tab, tier, column)
   local n = call(GetNumTalents, tab) or 0
@@ -34,26 +40,181 @@ function Talents:Find(tab, tier, column)
   return nil
 end
 
--- Relevé des arbres pour QuestifyVanillaDB.talentDump : -> nombre de talents relevés.
-function Talents:Dump()
-  QuestifyVanillaDB = QuestifyVanillaDB or {}
-  local db = QuestifyVanillaDB
-  db.talentDump = db.talentDump or {}
-  local list, count = { locale = GetLocale and GetLocale() or "?", tabs = {} }, 0
-  for tab = 1, (call(GetNumTalentTabs) or 0) do
-    local a, b = call(GetTalentTabInfo, tab)
-    list.tabs[tab] = type(a) == "number" and b or a
-    for i = 1, (call(GetNumTalents, tab) or 0) do
-      local name, icon, tier, col, _, maxRank = call(GetTalentInfo, tab, i)
-      list[#list + 1] = { tab = tab, index = i, name = name, icon = icon, tier = tier, column = col, maxRank = maxRank }
-      count = count + 1
-    end
-  end
-  db.talentDump[Q.Player.classFile or "?"] = list
-  return count
+local function plain(v)
+  if Q.Util.IsSecret(v) then return nil end
+  local k = type(v)
+  if k == "number" or k == "string" or k == "boolean" then return v end
+  return nil
 end
 
--- Points déjà placés dans tous les arbres.
+local function plainList(list)
+  local out = {}
+  if type(list) ~= "table" or Q.Util.IsSecret(list) then return out end
+  for _, v in ipairs(list) do
+    local p = plain(v)
+    if p ~= nil then out[#out + 1] = p end
+  end
+  return out
+end
+
+-- Configuration de talents active et ses arbres : -> configID, { treeID, ... } ; nil si l'API
+-- manque ou ne répond pas encore.
+local function activeTrees()
+  if type(C_ClassTalents) ~= "table" or type(C_Traits) ~= "table" then return nil end
+  local configID = plain(call(C_ClassTalents.GetActiveConfigID))
+  if type(configID) ~= "number" then return nil end
+  local info = call(C_Traits.GetConfigInfo, configID)
+  if type(info) ~= "table" or Q.Util.IsSecret(info) then return nil end
+  local trees = plainList(info.treeIDs)
+  if #trees == 0 then return nil end
+  return configID, trees
+end
+
+-- Monnaies d'un arbre (C_Traits.GetTreeCurrencyInfo) : { { traitCurrencyID, quantity, maxQuantity,
+-- spent, spentInTree } }.
+local function treeCurrencies(configID, treeID)
+  local list = call(C_Traits.GetTreeCurrencyInfo, configID, treeID, false)
+  local out = {}
+  if type(list) ~= "table" or Q.Util.IsSecret(list) then return out end
+  for _, c in ipairs(list) do
+    if type(c) == "table" and not Q.Util.IsSecret(c) then
+      out[#out + 1] = { traitCurrencyID = plain(c.traitCurrencyID), quantity = plain(c.quantity),
+        maxQuantity = plain(c.maxQuantity), spent = plain(c.spent), spentInTree = plain(c.spentInTree) }
+    end
+  end
+  return out
+end
+
+-- Points à dépenser selon la monnaie des arbres de la configuration active (Forever) ; nil si
+-- l'API manque ou ne donne aucune quantité lisible. Une monnaie présente dans plusieurs arbres
+-- n'est comptée qu'une fois.
+function Talents:TreeCurrencyUnspent()
+  if type(C_Traits) ~= "table" or type(C_Traits.GetTreeCurrencyInfo) ~= "function" then return nil end
+  local configID, trees = activeTrees()
+  if not configID then return nil end
+  local byCurrency, extra, any = {}, 0, false
+  for _, treeID in ipairs(trees) do
+    for _, c in ipairs(treeCurrencies(configID, treeID)) do
+      local q = c.quantity
+      if type(q) == "number" then
+        any = true
+        if c.traitCurrencyID then
+          byCurrency[c.traitCurrencyID] = math.max(byCurrency[c.traitCurrencyID] or 0, q)
+        else
+          extra = extra + q
+        end
+      end
+    end
+  end
+  if not any then return nil end
+  local total = extra
+  for _, q in pairs(byCurrency) do total = total + q end
+  return math.max(0, total)
+end
+
+-- Relevé des arbres Forever pour QuestifyVanillaDB.talentDump[<jeu>][<classe>] :
+--   { locale, interface, configID, trees = { { treeID, currencies, groups } },
+--     nodes = { { treeID, nodeID, posX, posY, maxRanks, currentRank, type, isVisible, groupIDs,
+--                 entries = { { entryID, definitionID, spellID, name, maxRanks } } } } }
+-- -> nombre de nœuds relevés ; 0 avec un message clair si l'API manque ou ne répond pas.
+local DUMP_API = {
+  { "C_ClassTalents", "GetActiveConfigID" }, { "C_Traits", "GetConfigInfo" }, { "C_Traits", "GetTreeNodes" },
+  { "C_Traits", "GetNodeInfo" }, { "C_Traits", "GetEntryInfo" }, { "C_Traits", "GetDefinitionInfo" },
+  { "C_Traits", "GetTreeCurrencyInfo" },
+}
+
+local function hasDumpApi()
+  for _, a in ipairs(DUMP_API) do
+    local ns = _G[a[1]]
+    if type(ns) ~= "table" or type(ns[a[2]]) ~= "function" then return false end
+  end
+  return true
+end
+
+local function spellName(spellID)
+  if type(spellID) ~= "number" then return nil end
+  if type(C_Spell) == "table" then return plain(call(C_Spell.GetSpellName, spellID)) end
+  return nil
+end
+
+local function gameKey()
+  if Q.IsForever() then return "forever" end
+  local interface = GetBuildInfo and select(4, GetBuildInfo())
+  return "interface-" .. tostring(tonumber(interface) or "?")
+end
+
+local function dumpNode(configID, treeID, nodeID)
+  local info = call(C_Traits.GetNodeInfo, configID, nodeID)
+  if type(info) ~= "table" or Q.Util.IsSecret(info) then return nil end
+  local node = { treeID = treeID, nodeID = nodeID, posX = plain(info.posX), posY = plain(info.posY),
+    maxRanks = plain(info.maxRanks), currentRank = plain(info.currentRank), type = plain(info.type),
+    isVisible = plain(info.isVisible), groupIDs = plainList(info.groupIDs), entries = {} }
+  for _, entryID in ipairs(plainList(info.entryIDs)) do
+    local e = { entryID = entryID }
+    local entry = call(C_Traits.GetEntryInfo, configID, entryID)
+    if type(entry) == "table" and not Q.Util.IsSecret(entry) then
+      e.definitionID = plain(entry.definitionID)
+      e.maxRanks = plain(entry.maxRanks)
+      if type(e.definitionID) == "number" then
+        local def = call(C_Traits.GetDefinitionInfo, e.definitionID)
+        if type(def) == "table" and not Q.Util.IsSecret(def) then
+          e.spellID = plain(def.spellID)
+          e.name = plain(def.overrideName) or spellName(e.spellID)
+        end
+      end
+    end
+    node.entries[#node.entries + 1] = e
+  end
+  return node
+end
+
+function Talents:Dump()
+  local L = Q.L
+  if not hasDumpApi() then
+    Q:Print(L.TALENT_DUMP_NO_API)
+    return 0
+  end
+  local configID, trees = activeTrees()
+  if not configID then
+    Q:Print(L.TALENT_DUMP_NO_CONFIG)
+    return 0
+  end
+  local version = GetBuildInfo and select(4, GetBuildInfo())
+  local out = { locale = GetLocale and GetLocale() or "?", interface = tonumber(version), configID = configID,
+    trees = {}, nodes = {} }
+  for _, treeID in ipairs(trees) do
+    local tree = { treeID = treeID, currencies = treeCurrencies(configID, treeID), groups = {} }
+    -- groupes du tree (les trois arbres classiques de Forever) : nom affiché et ordre
+    local groups = type(C_Traits.GetGroupDisplayInfoByTreeID) == "function"
+      and call(C_Traits.GetGroupDisplayInfoByTreeID, treeID)
+    if type(groups) == "table" and not Q.Util.IsSecret(groups) then
+      for _, g in ipairs(groups) do
+        if type(g) == "table" and not Q.Util.IsSecret(g) then
+          tree.groups[#tree.groups + 1] = { groupID = plain(g.groupID), displayName = plain(g.displayName),
+            orderIndex = plain(g.orderIndex), icon = plain(g.icon) }
+        end
+      end
+    end
+    out.trees[#out.trees + 1] = tree
+    for _, nodeID in ipairs(plainList(call(C_Traits.GetTreeNodes, treeID))) do
+      local node = dumpNode(configID, treeID, nodeID)
+      if node then out.nodes[#out.nodes + 1] = node end
+    end
+  end
+  if #out.nodes == 0 then
+    Q:Print(L.TALENT_DUMP_EMPTY)
+    return 0
+  end
+  QuestifyVanillaDB = QuestifyVanillaDB or {}
+  local db = QuestifyVanillaDB
+  db.talentDump = type(db.talentDump) == "table" and db.talentDump or {}
+  local game = gameKey()
+  db.talentDump[game] = type(db.talentDump[game]) == "table" and db.talentDump[game] or {}
+  db.talentDump[game][Q.Player.classFile or "?"] = out
+  return #out.nodes
+end
+
+-- Points déjà placés dans tous les arbres (API Classic des presets, absente de Forever).
 function Talents:Spent()
   local total = 0
   for tab = 1, (call(GetNumTalentTabs) or 0) do
@@ -65,13 +226,16 @@ function Talents:Spent()
   return total
 end
 
--- Points à dépenser : API du client, sinon niveau - 9 - points placés.
+-- Points à dépenser : ancienne API du client, sinon la monnaie des arbres (C_Traits, Forever),
+-- sinon niveau - 9 - points placés (arbres Classic) ; 0 (rappel muet) si rien ne répond.
 function Talents:Unspent()
   if playerLevel() < FIRST_LEVEL then return 0 end
   local v = call(UnitCharacterPoints, "player")
   if type(v) == "number" and not Q.Util.IsSecret(v) then return math.max(0, v) end
   v = call(GetUnspentTalentPoints)
   if type(v) == "number" and not Q.Util.IsSecret(v) then return math.max(0, v) end
+  v = self:TreeCurrencyUnspent()
+  if v then return v end
   if (call(GetNumTalentTabs) or 0) == 0 then return 0 end
   return math.max(0, playerLevel() - (FIRST_LEVEL - 1) - self:Spent())
 end
@@ -186,7 +350,9 @@ Q:RegisterEvent("PLAYER_LEVEL_UP", function(_, level)
   -- Q.Player est mis à jour par Progress sur le même évènement : on lit le niveau reçu
   Q:After(0.5, function() Q.SafeCall(announce, tonumber(level)) Q:Fire("TALENTS_CHANGED") end)
 end)
-for _, event in ipairs({ "CHARACTER_POINTS_CHANGED", "PLAYER_TALENT_UPDATE", "SPELLS_CHANGED" }) do
+-- TRAIT_* : points dépensés ou gagnés dans les arbres C_Traits (Forever).
+for _, event in ipairs({ "CHARACTER_POINTS_CHANGED", "PLAYER_TALENT_UPDATE", "SPELLS_CHANGED",
+    "TRAIT_TREE_CURRENCY_INFO_UPDATED", "TRAIT_CONFIG_UPDATED" }) do
   Q:RegisterEvent(event, function() Q:Fire("TALENTS_CHANGED") end)
 end
 Q:On("LOGIN", function()

@@ -42,7 +42,8 @@ Q:RegisterStrings({
     COMFORT_DANGER_HIGH = "Dangerous: %s (level %s)",
     COMFORT_DANGER_UNKNOWN = "a monster",
     COMFORT_DANGER_CHAT_ELITE = "Careful: %s, elite level %s, is nearby.",
-    COMFORT_DANGER_CHAT_HIGH = "Careful: %s, level %s, is nearby.",
+    COMFORT_DANGER_RARE = "Rare nearby: %s (level %s)",
+    COMFORT_DANGER_CHAT_RARE = "Rare: %s, level %s, is nearby.",
 
     -- Sacs et réparation
     COMFORT_BAGS_FULL = "Bags almost full (%d free): sell before leaving town",
@@ -82,7 +83,8 @@ Q:RegisterStrings({
     COMFORT_DANGER_HIGH = "Dangereux : %s (niveau %s)",
     COMFORT_DANGER_UNKNOWN = "un monstre",
     COMFORT_DANGER_CHAT_ELITE = "Attention : %s, élite niveau %s, est tout près.",
-    COMFORT_DANGER_CHAT_HIGH = "Attention : %s, niveau %s, est tout près.",
+    COMFORT_DANGER_RARE = "Rare proche : %s (niveau %s)",
+    COMFORT_DANGER_CHAT_RARE = "Rare : %s, niveau %s, est tout près.",
 
     COMFORT_BAGS_FULL = "Sacs presque pleins (%d libres) : vends avant de quitter la ville",
     COMFORT_REPAIR = "Équipement à %d %% : répare avant de quitter la ville",

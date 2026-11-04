@@ -1,10 +1,11 @@
 local addonName, Q = ...
 
 -- Alerte élites / danger (option dangerAlert). Pendant une étape « complete » (zone d'objectif),
--- hors instance : les barres de nom visibles et la cible sont examinées ; un monstre élite, ou de
--- 3 niveaux ou plus au-dessus du joueur, donne une ligne d'avertissement dans le suivi
--- (Danger:Line) et une seule ligne dans la discussion par monstre toutes les 5 minutes (jamais en
--- combat). Toute valeur secrète est ignorée : le monstre ne compte pas.
+-- hors instance : les barres de nom visibles et la cible sont examinées ; un monstre élite, rare,
+-- ou de 3 niveaux ou plus au-dessus du joueur, donne une ligne d'avertissement dans le suivi
+-- (Danger:Line). Seuls les élites et les rares donnent aussi une ligne dans la discussion, une
+-- fois par PNJ (npcID) toutes les 5 minutes, jamais en combat : un monstre seulement plus haut en
+-- niveau n'a que la ligne du suivi. Toute valeur secrète est ignorée : le monstre ne compte pas.
 local Danger = {}
 Q.Danger = Danger
 
@@ -14,6 +15,7 @@ local C = Q.Comfort
 local LEVEL_GAP = 3
 local CHAT_EVERY = 5 * 60   -- secondes entre deux messages pour un même monstre
 local ELITE = { elite = true, rareelite = true, worldboss = true }
+local RARE = { rare = true, rareelite = true }
 local COLOR = "|cffff8040"
 
 local tracked = {}    -- unités dont la barre de nom est affichée : [unit] = true
@@ -61,7 +63,8 @@ local function mobKey(unit, name)
   return nil
 end
 
--- Examine une unité : -> { name, levelText, elite, level, key } si elle est dangereuse, sinon nil.
+-- Examine une unité : -> { name, levelText, elite, rare, level, key } si elle est dangereuse,
+-- sinon nil.
 function Danger:Evaluate(unit)
   if type(unit) ~= "string" then return nil end
   if not unitFlag(UnitExists, unit) then return nil end
@@ -70,30 +73,35 @@ function Danger:Evaluate(unit)
   if not unitFlag(UnitCanAttack, "player", unit) then return nil end
   local class = unitValue(UnitClassification, unit)
   local elite = type(class) == "string" and ELITE[class] == true
+  local rare = type(class) == "string" and RARE[class] == true
   local level = C.Number(unitValue(UnitLevel, unit))
-  if level == nil and not elite then return nil end
+  if level == nil and not (elite or rare) then return nil end
   local high = level ~= nil and (level < 0 or level - playerLevel() >= LEVEL_GAP)
-  if not (elite or high) then return nil end
+  if not (elite or rare or high) then return nil end
   local name = unitValue(UnitName, unit)
   if type(name) ~= "string" or name == "" then name = nil end
   local levelText = (level == nil or level < 0) and "??" or tostring(level)
-  return { name = name, levelText = levelText, elite = elite, level = level or 99, key = mobKey(unit, name) }
+  return { name = name, levelText = levelText, elite = elite, rare = rare, level = level or 99,
+    key = mobKey(unit, name) }
 end
 
--- Plus dangereux d'abord : élite, puis niveau le plus haut.
+-- Plus dangereux d'abord : élite, puis rare, puis niveau le plus haut.
 local function worse(a, b)
   if a.elite ~= b.elite then return a.elite end
+  if (a.rare == true) ~= (b.rare == true) then return a.rare == true end
   return (a.level or 0) > (b.level or 0)
 end
 
+-- Ligne dans la discussion : élites et rares seulement (pas les monstres juste plus hauts).
 local function warnChat(info)
+  if not (info.elite or info.rare) then return end
   if not info.key or C.InCombat() then return end
   local t = now()
   local last = warned[info.key]
   if last and t - last < CHAT_EVERY then return end
   warned[info.key] = t
   local name = info.name or L.COMFORT_DANGER_UNKNOWN
-  Q:Print(info.elite and L.COMFORT_DANGER_CHAT_ELITE or L.COMFORT_DANGER_CHAT_HIGH, name, info.levelText)
+  Q:Print(info.elite and L.COMFORT_DANGER_CHAT_ELITE or L.COMFORT_DANGER_CHAT_RARE, name, info.levelText)
 end
 
 -- Examine une unité et garde le résultat (chaque barre de nom n'est lue qu'à son apparition).
@@ -136,7 +144,8 @@ function Danger:Line()
   local t = threat
   if not t or not enabled() then return nil end
   local name = t.name or L.COMFORT_DANGER_UNKNOWN
-  return COLOR .. C.Format(t.elite and L.COMFORT_DANGER_ELITE or L.COMFORT_DANGER_HIGH, name, t.levelText) .. "|r"
+  local fmt = (t.elite and L.COMFORT_DANGER_ELITE) or (t.rare and L.COMFORT_DANGER_RARE) or L.COMFORT_DANGER_HIGH
+  return COLOR .. C.Format(fmt, name, t.levelText) .. "|r"
 end
 
 ---------------------------------------------------------------------------

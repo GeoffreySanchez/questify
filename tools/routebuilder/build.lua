@@ -1,10 +1,10 @@
--- tools/routebuilder/build.lua : génère les guides de Questify Vanilla depuis QuestieDB (hors jeu).
+-- tools/routebuilder/build.lua : génère les guides de Questify depuis QuestieDB (hors jeu).
 --
 -- Usage :
 --   luajit tools/routebuilder/build.lua [--db PATH] [--questie PATH] [--faction Alliance|Horde|all]
 --          [--only <planId>] [--report DIR] [--out DIR] [--overrides FILE] [--date AAAA-MM-JJ]
 --
---   --out      dossier des guides (défaut Questify_Vanilla/Guides) : <out>/<Alliance|Horde|Skyborne>/<planId>.lua,
+--   --out      dossier des guides (défaut Questify/Guides) : <out>/<Alliance|Horde|Skyborne>/<planId>.lua,
 --              <out>/Guides.xml (tous les guides présents, puis ClassQuestData.lua) et <out>/ClassQuestData.lua
 --   --report   dossier des rapports Markdown (défaut docs/routes) : <report>/<planId>.md
 --   --only     ne réécrit que ce chapitre (les chapitres précédents sont simulés pour l'état du personnage)
@@ -27,7 +27,7 @@ local build = {}
 
 local function parseArgs(argv)
   local o = { db = qdb.DEFAULT_DB, questie = qdb.DEFAULT_QUESTIE, faction = "all", report = "docs/routes",
-              out = "Questify_Vanilla/Guides", overrides = here .. "/overrides.lua", date = os.date("%Y-%m-%d") }
+              out = "Questify/Guides", overrides = here .. "/overrides.lua", date = os.date("%Y-%m-%d") }
   local i = 1
   while i <= #argv do
     local a, v = argv[i], argv[i + 1]

@@ -1,5 +1,5 @@
 -- tools/routebuilder/classquests.lua : chaînes de quêtes de classe (niveau <= 30) pour
--- Questify_Vanilla/Guides/ClassQuestData.lua (forme de la Task 7) :
+-- Questify/Guides/ClassQuestData.lua (forme de la Task 7) :
 --   Q.ClassQuestData = { [classFile] = { { key, title, faction, races, level, quests = {...},
 --                                         rewards = { [questId] = { items = {...}, xp = n } } }, ... } }
 

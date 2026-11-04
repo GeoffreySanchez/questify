@@ -1,6 +1,6 @@
 -- Tests de l'animation autour de l'objet à utiliser (Q.UI.ObjectGlow), accrochée au cadre d'écran
 -- du marqueur 3D natif (C_Navigation, simulé ici).
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_d.lua")
 

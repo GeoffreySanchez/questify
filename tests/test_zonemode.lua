@@ -3,7 +3,7 @@
 -- (784 : marins, soldats et le lieutenant Benedict) et « The Admiral's Orders » (830, lancée par
 -- l'enveloppe du coffre de Benedict, fermé par la clé que porte Benedict). Points réels de
 -- QuestieDB (vue Forever), en partie.
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_mappins.lua")
 
 local SAILOR, MARINE, BENEDICT, GARTHOK, BOAR = 3128, 3129, 3192, 3139, 90501

@@ -1,5 +1,5 @@
 -- Tests du moteur de progression (Q.Progress, Q.Player).
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 
 local function load(opts)
@@ -70,7 +70,7 @@ return {
   end,
 
   saved_guide_is_kept = function(t)
-    local Q = load({ savedVariables = { QuestifyVanillaCharDB = { guideId = "A_DwarfGnome_02" } } })
+    local Q = load({ savedVariables = { QuestifyCharDB = { guideId = "A_DwarfGnome_02" } } })
     t.eq(Q.Progress:Guide().id, "A_DwarfGnome_02")
   end,
 
@@ -297,7 +297,7 @@ return {
   end,
 
   route_end_message = function(t)
-    local Q = load({ savedVariables = { QuestifyVanillaCharDB = { guideId = "A_DwarfGnome_02" } } })
+    local Q = load({ savedVariables = { QuestifyCharDB = { guideId = "A_DwarfGnome_02" } } })
     local keys = {}
     for _, e in ipairs(Q.Progress:Entries()) do keys[#keys + 1] = e.key end
     for _, k in ipairs(keys) do Q.Progress:MarkDone(k) end

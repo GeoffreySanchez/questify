@@ -1,10 +1,10 @@
 -- Tests des repères des étapes sur la carte du monde et la minicarte (Q.UI.MapPins), posés par
 -- les vraies bibliothèques HereBeDragons chargées par le TOC.
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_mappins.lua")
 
-local REF = "Questify_Vanilla_MapPins"
+local REF = "Questify_MapPins"
 
 -- Chapitre A_DwarfGnome_01 de la fixture, joueur nain guerrier niveau 1 à Coldridge Valley.
 local function load(opts)

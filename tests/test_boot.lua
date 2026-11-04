@@ -1,11 +1,11 @@
 -- Tests de démarrage : chargement du TOC, messages INIT/LOGIN, absence de QuestieDB.
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 
 return {
   loads_and_fires_login = function(t)
     local loginSeen = false
     local Q = Mock.loadAddon(TOC, { beforeLogin = function(Q) Q:On("LOGIN", function() loginSeen = true end) end })
-    t.ok(QuestifyVanilla == Q, "global set")
+    t.ok(Questify == Q, "global set")
     t.ok(loginSeen, "LOGIN fired")
     t.eq(Q.Settings:Get("nav.display"), "native")
     t.ok(Q.IsForever())
@@ -30,8 +30,8 @@ return {
       end,
     })
     t.eq(order, { "char", "login" })
-    t.ok(QuestifyVanillaDB == Q.db, "Q.db is the saved table")
-    t.ok(QuestifyVanillaCharDB == Q.char, "Q.char is the saved table")
+    t.ok(QuestifyDB == Q.db, "Q.db is the saved table")
+    t.ok(QuestifyCharDB == Q.char, "Q.char is the saved table")
     t.eq(type(Q.char.manual), "table")
     t.eq(type(Q.char.skipped), "table")
     t.eq(type(Q.char.inserted), "table")
@@ -72,7 +72,7 @@ return {
     Q:RegisterEvent("UNIT_AURA", function() reached = true end)
     Mock.fire("UNIT_AURA")
     t.ok(reached, "second handler still runs")
-    t.ok(Mock.printed("Questify Vanilla:"), "error reported with prefix")
+    t.ok(Mock.printed("Questify:"), "error reported with prefix")
     t.eq(Mock.countPrinted("kaboom"), 1)
   end,
 
@@ -90,10 +90,10 @@ return {
   print_and_debug = function(t)
     local Q = Mock.loadAddon(TOC)
     Q:Print("hello %d", 42)
-    t.ok(Mock.printed("|cff33ccffQuestify Vanilla|r: hello 42"))
+    t.ok(Mock.printed("|cff33ccffQuestify|r: hello 42"))
     Q:Debug("hidden-line")
     t.ok(not Mock.printed("hidden-line"))
-    QuestifyVanillaDB.debug = true
+    QuestifyDB.debug = true
     Q:Debug("shown-line", 1)
     t.ok(Mock.printed("shown-line"))
   end,
@@ -102,11 +102,11 @@ return {
     local function read(p)
       local f = assert(io.open(Mock.root .. "/" .. p, "rb")); local s = f:read("*a"); f:close(); return s
     end
-    local a = read("Questify_Vanilla/Questify_Vanilla.toc")
-    local b = read("Questify_Vanilla/Questify_Vanilla_Camelot.toc")
+    local a = read("Questify/Questify.toc")
+    local b = read("Questify/Questify_Camelot.toc")
     t.eq(a, b, "both TOC files identical")
     t.ok(a:find("## Interface: 16001", 1, true), "interface")
-    t.ok(a:find("## AddonCompartmentFunc: QuestifyVanilla_OnAddonCompartmentClick", 1, true), "compartment")
+    t.ok(a:find("## AddonCompartmentFunc: Questify_OnAddonCompartmentClick", 1, true), "compartment")
     t.ok(a:find("Guides\\Guides.xml", 1, true), "guides xml listed")
     t.ok(a:find("UI\\Slash.lua", 1, true), "complete file list")
   end,

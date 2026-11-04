@@ -75,7 +75,7 @@ function emit.guide(plan, steps, report, meta)
   local out = {}
   local function w(s) out[#out + 1] = s end
   w("local addonName, Q = ...")
-  w("-- Généré par tools/routebuilder (générateur de routes de Questify Vanilla). Ne pas modifier à la main :")
+  w("-- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :")
   w("-- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.")
   w(("-- Source : QuestieDB commit %s, généré le %s."):format(meta.commit or "unknown", meta.date or os.date("%Y-%m-%d")))
   if report.xpPerHour then

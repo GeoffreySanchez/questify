@@ -1,5 +1,5 @@
 -- Tests de l'assistant du premier démarrage (Q.UI.Wizard).
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_d.lua")
 local WExt = dofile(Mock.root .. "/tests/mock_ext_wizard.lua")
@@ -36,7 +36,7 @@ return {
     local W = Q.UI.Wizard
     t.ok(not shown(W), "not before 3 s")
     Mock.advance(3)
-    local f = QuestifyVanillaWizard
+    local f = QuestifyWizard
     t.ok(f and f:IsShown(), "shown 3 s after login")
     t.eq(Q.char.wizardDone, nil, "not marked done while open")
     t.eq(W.page, 1)
@@ -214,7 +214,7 @@ return {
     t.ok(T.qdbLink and T.qdbLink:IsShown(), "link button in the tracker")
     t.eq(T.qdbLink:GetText(), Q.L.UI_WIZ_LINK_BUTTON)
     goToPage(W, 3)
-    QuestifyVanillaWizard:Hide()
+    QuestifyWizard:Hide()
     Mock.click(T.qdbLink, "LeftButton")
     t.ok(shown(W), "tracker button opens the wizard")
     t.eq(W.page, 1, "on the addons page")
@@ -289,7 +289,7 @@ return {
     t.eq(Q.char.wizardDraft, nil, "draft cleared")
     t.eq(Q.Settings:Get("sellJunk"), false)
     -- relancé à la main : depuis le début
-    SlashCmdList.QUESTIFYVANILLA("wizard")
+    SlashCmdList.QUESTIFY("wizard")
     t.eq(W.page, 1)
   end,
 
@@ -298,7 +298,7 @@ return {
     local W = Q.UI.Wizard
     Mock.advance(3)
     goToPage(W, 3)
-    QuestifyVanillaWizard:Hide()
+    QuestifyWizard:Hide()
     t.eq(Q.char.wizardDone, nil, "closing is not finishing")
     t.eq(Q.char.wizardPage, 3, "page kept")
     t.eq(Q.Settings:Get("nav.display"), "native", "settings unchanged")
@@ -307,10 +307,10 @@ return {
     Mock.advance(5)
     t.ok(not shown(W), "not nagged within the session")
     -- /qf wizard reprend à la même page
-    SlashCmdList.QUESTIFYVANILLA("wizard")
+    SlashCmdList.QUESTIFY("wizard")
     t.ok(shown(W))
     t.eq(W.page, 3)
-    QuestifyVanillaWizard:Hide()
+    QuestifyWizard:Hide()
     -- session suivante : rouvert sur la même page
     local Q2 = WExt.reload()
     Mock.advance(3)
@@ -385,8 +385,8 @@ return {
   wizard_rerun_keeps_current_choice = function(t)
     Mock.addons.WaypointUI = true
     Mock.addons.TomTom = true
-    local Q = load({ savedVariables = { QuestifyVanillaCharDB = { wizardDone = true },
-      QuestifyVanillaDB = { settings = { nav = { display = "tomtom", routing = false } } } } })
+    local Q = load({ savedVariables = { QuestifyCharDB = { wizardDone = true },
+      QuestifyDB = { settings = { nav = { display = "tomtom", routing = false } } } } })
     local W = Q.UI.Wizard
     W:Show()
     t.ok(W.radios.tomtom:GetChecked(), "saved choice kept when the wizard is run again")
@@ -395,7 +395,7 @@ return {
   wizard_not_done_while_open = function(t)
     local Q = load()
     Q.UI.Wizard:Show()
-    t.ok(QuestifyVanillaWizard:IsShown())
+    t.ok(QuestifyWizard:IsShown())
     t.eq(Q.char.wizardDone, nil, "creation does not mark the wizard done")
     Mock.click(Q.UI.Wizard.nextButton, "LeftButton")
     t.eq(Q.char.wizardDone, nil)
@@ -430,15 +430,15 @@ return {
     t.ok(not shown(Q.UI.Wizard), "not during combat")
     Mock.player.combat = false
     Mock.fire("PLAYER_REGEN_ENABLED")
-    t.ok(QuestifyVanillaWizard and QuestifyVanillaWizard:IsShown(), "after combat")
+    t.ok(QuestifyWizard and QuestifyWizard:IsShown(), "after combat")
   end,
 
   wizard_slash_command = function(t)
-    local Q = load({ savedVariables = { QuestifyVanillaCharDB = { wizardDone = true } } })
+    local Q = load({ savedVariables = { QuestifyCharDB = { wizardDone = true } } })
     Mock.advance(3)
     t.ok(not shown(Q.UI.Wizard))
-    SlashCmdList.QUESTIFYVANILLA("wizard")
-    t.ok(QuestifyVanillaWizard:IsShown())
+    SlashCmdList.QUESTIFY("wizard")
+    t.ok(QuestifyWizard:IsShown())
     t.eq(Q.UI.Wizard.page, 1)
   end,
 

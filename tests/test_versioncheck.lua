@@ -1,5 +1,5 @@
 -- Tests de la vérification de version entre joueurs (Q.VersionCheck, Core/VersionCheck.lua).
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_versioncheck.lua")
 
 local MINE = "1.2.3"
@@ -68,11 +68,11 @@ return {
     Ext.receive("1.3.0", "GUILD", "Ami-Testrealm")
     Ext.receive("1.4.0-beta", "PARTY", "Autre-Testrealm")
     t.eq(Mock.countPrinted("is available"), 1, "one chat line per session")
-    t.eq(Mock.countPrinted("Questify Vanilla 1.3.0 is available (you have 1.2.3): update it (CurseForge or GitHub)."), 1)
+    t.eq(Mock.countPrinted("Questify 1.3.0 is available (you have 1.2.3): update it (CurseForge or GitHub)."), 1)
     local notices = Mock.callsTo("RaidWarningUtil.AddMessage")
     t.eq(#notices, 1, "one on-screen message")
     t.ok(notices[1].args[1]:find("1.3.0", 1, true), "on-screen text names the version")
-    t.eq(notices[1].args[1], "Questify Vanilla 1.3.0 is available (CurseForge or GitHub)", "neutral source")
+    t.eq(notices[1].args[1], "Questify 1.3.0 is available (CurseForge or GitHub)", "neutral source")
     t.eq(notices[1].args[2], ChatTypeInfo["SYSTEM"], "system color")
     t.eq(Q.VersionCheck:NewestSeen(), "1.4.0-beta", "newest version seen")
     t.eq(countSends(), 0, "no reply to a newer version")
@@ -84,8 +84,8 @@ return {
     Mock.locale = "frFR"
     load()
     Ext.receive("2.0.0", "WHISPER", "Ami-Testrealm")
-    t.eq(Mock.countPrinted("Questify Vanilla 2.0.0 est disponible (tu as 1.2.3) : mets à jour (CurseForge ou GitHub)."), 1)
-    t.eq(Mock.lastCall("RaidWarningUtil.AddMessage").args[1], "Questify Vanilla 2.0.0 est disponible (CurseForge ou GitHub)")
+    t.eq(Mock.countPrinted("Questify 2.0.0 est disponible (tu as 1.2.3) : mets à jour (CurseForge ou GitHub)."), 1)
+    t.eq(Mock.lastCall("RaidWarningUtil.AddMessage").args[1], "Questify 2.0.0 est disponible (CurseForge ou GitHub)")
     t.eq(#Mock.errors, 0)
   end,
 
@@ -295,7 +295,7 @@ return {
   option_off_sends_nothing = function(t)
     local S = Ext.install()
     S.guild, S.party = true, true
-    load({ savedVariables = { QuestifyVanillaDB = { settings = { versionCheck = false } } } })
+    load({ savedVariables = { QuestifyDB = { settings = { versionCheck = false } } } })
     Mock.advance(30)
     Mock.fire("GROUP_ROSTER_UPDATE")
     Ext.receive("1.0.0", "GUILD", "Alice-Testrealm")
@@ -310,7 +310,7 @@ return {
   option_toggled_in_session = function(t)
     local S = Ext.install()
     S.guild = true
-    local Q = load({ savedVariables = { QuestifyVanillaDB = { settings = { versionCheck = false } } } })
+    local Q = load({ savedVariables = { QuestifyDB = { settings = { versionCheck = false } } } })
     Mock.advance(30)
     t.eq(countSends(), 0)
     Q.Settings:Set("versionCheck", true)

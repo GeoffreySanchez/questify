@@ -1,5 +1,5 @@
 -- Tests de la façade QuestieDB (Q.QDB) et des cartes (Q.Maps).
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 
 local function load(opts) return Mock.loadAddon(TOC, opts) end
 

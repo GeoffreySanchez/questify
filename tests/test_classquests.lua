@@ -1,5 +1,5 @@
 -- Tests des quêtes de classe (Q.ClassQuests) : liste, alerte, ajout, abandon, fin de chaîne.
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 
 -- Données de test : on ne dépend pas du fichier généré, que le générateur réécrit.

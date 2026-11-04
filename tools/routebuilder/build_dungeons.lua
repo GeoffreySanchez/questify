@@ -3,7 +3,7 @@
 --   luajit tools/routebuilder/build_dungeons.lua [--db PATH] [--questie PATH] [--data DIR] [--out FILE]
 --          [--date YYYY-MM-DD]
 -- Lit la vue Forever de QuestieDB (Alliance puis Horde, chargeur en bac à sable qdb.lua) et écrit
--- Questify_Vanilla/Guides/DungeonData.lua : pour chaque donjon jusqu'au niveau ~45, sa zone, sa plage
+-- Questify/Guides/DungeonData.lua : pour chaque donjon jusqu'au niveau ~45, sa zone, sa plage
 -- de niveaux, les factions autorisées, l'entrée (uiMapID, x, y en 0-100) et, par faction, les quêtes
 -- (IDs, PNJ de départ et sa position, PNJ de fin et sa position, niveaux, masque de races,
 -- préquêtes). Seulement des faits (IDs, niveaux, coordonnées) : aucun texte n'est repris d'un guide.
@@ -69,7 +69,7 @@ local MAX_BC_DEPTH = 3
 ---------------------------------------------------------------------------
 local function parseArgs(argv)
   local o = { db = qdb.DEFAULT_DB, questie = qdb.DEFAULT_QUESTIE, data = "tools/routebuilder/data",
-              out = "Questify_Vanilla/Guides/DungeonData.lua", date = os.date("%Y-%m-%d") }
+              out = "Questify/Guides/DungeonData.lua", date = os.date("%Y-%m-%d") }
   local i = 1
   while i <= #argv do
     local k, v = argv[i], argv[i + 1]

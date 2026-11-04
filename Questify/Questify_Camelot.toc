@@ -1,0 +1,89 @@
+## Interface: 16001
+## Title: Questify
+## Notes: Free leveling guide for World of Warcraft: Forever (1-30).
+## Notes-frFR: Guide de leveling gratuit pour World of Warcraft: Forever (1-30).
+## Author: Questify contributors
+## Version: 0.1.0
+## IconTexture: Interface\Icons\INV_Misc_Book_09
+## OptionalDeps: QuestieDB, TomTom, WaypointUI, ShortestPathForever
+## SavedVariables: QuestifyDB
+## SavedVariablesPerCharacter: QuestifyCharDB
+## AddonCompartmentFunc: Questify_OnAddonCompartmentClick
+## X-License: GPL-3.0-or-later
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\HereBeDragons\HereBeDragons-2.0.lua
+Libs\HereBeDragons\HereBeDragons-Pins-2.0.lua
+
+Locales\Locale.lua
+Locales\StringsCore.lua
+Locales\StringsNav.lua
+Locales\StringsUI.lua
+Locales\StringsDiag.lua
+Locales\StringsWizard.lua
+Locales\StringsComfort.lua
+Locales\StringsDungeons.lua
+Locales\StringsMap.lua
+Locales\StringsZone.lua
+Locales\StringsVersion.lua
+Locales\StringsMinimap.lua
+
+Core\Init.lua
+Core\Util.lua
+Core\Compat.lua
+Core\Settings.lua
+Core\Diagnostics.lua
+Core\VersionCheck.lua
+
+Data\Constants.lua
+Data\QDB.lua
+Data\Maps.lua
+Data\ClassTrainers.lua
+Data\TalentBuilds.lua
+
+Engine\Guides.lua
+Engine\Progress.lua
+Engine\Targets.lua
+Engine\ZoneMode.lua
+Engine\Format.lua
+Engine\ClassQuests.lua
+Engine\Trainer.lua
+Engine\Professions.lua
+Engine\Talents.lua
+Engine\StepGuard.lua
+Engine\Telemetry.lua
+Engine\XPRate.lua
+Engine\Hearth.lua
+Engine\Danger.lua
+Engine\Supplies.lua
+Engine\Dungeons.lua
+
+Nav\Navigation.lua
+
+Automation\Rewards.lua
+Automation\SpecRole.lua
+Automation\AutoQuest.lua
+Automation\SellJunk.lua
+Automation\Taxi.lua
+
+UI\Themes.lua
+UI\Tracker.lua
+UI\MobPanel.lua
+UI\Nameplates.lua
+UI\ObjectGlow.lua
+UI\UpgradePopup.lua
+UI\ProfessionPicker.lua
+UI\TalentPicker.lua
+UI\ClassQuestPopup.lua
+UI\DungeonPopup.lua
+UI\MapPins.lua
+UI\MinimapButton.lua
+UI\Journal.lua
+UI\Wizard.lua
+UI\QuestItemButton.lua
+UI\Report.lua
+UI\Slash.lua
+
+Guides\Guides.xml
+Guides\DungeonData.lua

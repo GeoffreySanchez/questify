@@ -1,6 +1,6 @@
 -- Tests des monstres à tuer : lignes dans l'étape courante du suivi (Q.UI.Tracker) et boutons
 -- sécurisés de ciblage posés par-dessus (Q.UI.MobPanel) : combat, position, modèle 3D.
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_d.lua")
 
@@ -71,7 +71,7 @@ return {
     t.eq(plain(T.mobRows[1].name:GetText()), "Ragged Young Wolf")
     t.ok(plain(T.mobRows[1].level:GetText()):find("1", 1, true), "level range")
     t.ok(plain(T.currentText:GetText()):find("Tough Wolf Meat: 3/8", 1, true), "objective right above")
-    t.eq(QuestifyVanillaMobPanel, nil, "no separate panel any more")
+    t.eq(QuestifyMobPanel, nil, "no separate panel any more")
     t.eq(#Mock.errors, 0)
   end,
 
@@ -246,7 +246,7 @@ return {
     local P = Q.UI.MobPanel
     local row = P.rows[1]
     row:GetScript("OnEnter")(row)
-    local model = QuestifyVanillaMobModel
+    local model = QuestifyMobModel
     t.ok(model, "shared model exists")
     t.eq(model:GetObjectType(), "PlayerModel")
     t.eq({ model:GetSize() }, { 160, 160 })
@@ -271,7 +271,7 @@ return {
   autotarget_off_by_default = function(t)
     local Q = load()
     acceptWolves()
-    local b = QuestifyVanillaAutoTarget
+    local b = QuestifyAutoTarget
     t.ok(b, "hidden button for the key binding")
     t.eq(b._template, "SecureActionButtonTemplate")
     t.eq(b:GetAttribute("type"), "macro")
@@ -283,17 +283,17 @@ return {
     local Q = loadTwoSteps()
     acceptWolves()
     Q.Settings:Set("tracker.autoTarget", true)
-    t.eq(QuestifyVanillaAutoTarget:GetAttribute("macrotext"),
+    t.eq(QuestifyAutoTarget:GetAttribute("macrotext"),
       "/stopmacro [combat]\n/cleartarget\n/targetexact Ragged Young Wolf\n/tm !8")
     switchToTroggs()
     Mock.quests.log[170].objectives[1] = { text = "Rockjaw Trogg slain: 6/6", finished = true }
     Mock.fire("QUEST_LOG_UPDATE")
     Mock.advance(0.3)
-    t.eq(QuestifyVanillaAutoTarget:GetAttribute("macrotext"),
+    t.eq(QuestifyAutoTarget:GetAttribute("macrotext"),
       "/stopmacro [combat]\n/cleartarget\n/targetexact Burly Rockjaw Trogg\n"
       .. "/targetexact [noexists] Rockjaw Trogg\n/tm !8", "remaining objective first")
     Q.Settings:Set("tracker.autoTarget", false)
-    t.eq(QuestifyVanillaAutoTarget:GetAttribute("macrotext"), "")
+    t.eq(QuestifyAutoTarget:GetAttribute("macrotext"), "")
     t.eq(#Mock.errors, 0)
   end,
 
@@ -301,16 +301,16 @@ return {
     local Q = loadTwoSteps()
     acceptWolves()
     Q.Settings:Set("tracker.autoTarget", true)
-    local before = QuestifyVanillaAutoTarget:GetAttribute("macrotext")
-    local calls = Ext.spyCombat({ QuestifyVanillaAutoTarget })
+    local before = QuestifyAutoTarget:GetAttribute("macrotext")
+    local calls = Ext.spyCombat({ QuestifyAutoTarget })
     Mock.player.combat = true
     switchToTroggs()
     Q.Settings:Set("tracker.autoTarget", false)
     t.eq(calls, {})
-    t.eq(QuestifyVanillaAutoTarget:GetAttribute("macrotext"), before)
+    t.eq(QuestifyAutoTarget:GetAttribute("macrotext"), before)
     Mock.player.combat = false
     Mock.fire("PLAYER_REGEN_ENABLED")
-    t.eq(QuestifyVanillaAutoTarget:GetAttribute("macrotext"), "")
+    t.eq(QuestifyAutoTarget:GetAttribute("macrotext"), "")
   end,
 
   autotarget_macro_length_capped = function(t)

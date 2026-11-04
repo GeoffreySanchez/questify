@@ -1,5 +1,5 @@
 -- Tests des utilitaires (Q.Util), des réglages (Q.Settings) et de Q.SafeCall.
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 
 return {
   hasbit_above_32_bits = function(t)

@@ -1,5 +1,5 @@
 -- Tests de l'automatisation des quêtes (Q.AutoQuest) : accepter, rendre, récompense.
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 
 local function load(opts, setup)

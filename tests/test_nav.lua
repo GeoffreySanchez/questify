@@ -1,5 +1,5 @@
 -- Tests de la navigation (Q.Nav) : fournisseurs, repli, déduplication, combat.
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 
 -- Charge l'addon ; `settings` est appliqué avant la connexion, donc avant la première cible.
@@ -92,7 +92,7 @@ return {
     local first = Mock.callsTo("ShortestPathForever.API.Navigate")
     t.eq(#first, 1, "refused in combat")
     local a = first[1].args
-    t.eq(a[1], "QuestifyVanilla"); t.eq(a[2], 1426)
+    t.eq(a[1], "Questify"); t.eq(a[2], 1426)
     t.near(a[3], 0.2993, 0.0001); t.near(a[4], 0.712, 0.0001)
     t.ok(a[5]:find("Dwarven Outfitters", 1, true), "title"); t.eq(a[6], "quest")
     t.eq(Mock.countCalls("C_Map.SetUserWaypoint"), 0, "ShortestPath only")
@@ -171,7 +171,7 @@ return {
     local Q4 = load({ ["nav.routing"] = true })
     Q4.Nav:Clear()
     local cancel = Mock.lastCall("ShortestPathForever.API.Cancel")
-    t.ok(cancel and cancel.args[1] == "QuestifyVanilla", "Cancel(owner)")
+    t.ok(cancel and cancel.args[1] == "Questify", "Cancel(owner)")
   end,
 
   clears_when_there_is_no_current_step = function(t)

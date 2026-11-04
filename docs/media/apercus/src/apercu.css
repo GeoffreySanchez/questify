@@ -1,0 +1,281 @@
+/* Aperçus (maquettes) de l'interface de Questify, rendus en PNG 1920 x 1080.
+   Les dimensions des éléments d'interface sont en unités de l'interface du jeu (1 px = 1 unité) ;
+   la propriété zoom de chaque groupe les agrandit pour l'image. Les tailles, positions, couleurs et
+   textes suivent le code (Questify/UI/*.lua, Questify/Locales/*.lua). Police de substitution :
+   Optima (proche de Friz Quadrata, la police du jeu). Icônes de sorts et d'objets chargées au rendu
+   depuis wow.zamimg.com ; les textures d'interface sont redessinées en SVG. */
+
+:root {
+  --friz: "Optima", "Marcellus", "Palatino", serif;
+  --num: "Avenir Next Condensed", "Arial Narrow", sans-serif;
+  --sans: "Avenir Next", "Avenir", "Helvetica Neue", sans-serif;
+  --gold: #ffd100;
+  --white: #ffffff;
+  --gray: #808080;
+  --shadow: 1px 1px 0 #000;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  width: 1920px; height: 1080px; overflow: hidden;
+  background: #121418;
+  font-family: var(--friz);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ------------------------------------------------------------------ */
+/* Scène : fond sombre neutre, légende, mention « Aperçu de l'interface » */
+/* ------------------------------------------------------------------ */
+.stage {
+  position: relative; width: 1920px; height: 1080px; overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 62% 45%, rgba(255,255,255,0.045), rgba(255,255,255,0) 70%),
+    linear-gradient(180deg, #17191e 0%, #111317 100%);
+}
+.cap { position: absolute; left: 96px; top: 92px; width: 600px; font-family: var(--sans); color: #e9ebef; }
+.cap .brand {
+  display: inline-block; font-size: 17px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: #d7b65a; margin-bottom: 18px;
+}
+.cap h1 { margin: 0 0 18px; font-size: 46px; line-height: 1.12; font-weight: 600; letter-spacing: -.01em; }
+.cap p { margin: 0; font-size: 22px; line-height: 1.5; color: #aab0ba; }
+.cap p + p { margin-top: 14px; }
+.badge {
+  position: absolute; right: 40px; bottom: 34px; text-align: right; font-family: var(--sans);
+}
+.badge .t {
+  display: inline-block; padding: 9px 18px; border: 1.5px solid rgba(215,182,90,.75); border-radius: 999px;
+  color: #ead9a6; font-size: 20px; font-weight: 600; letter-spacing: .02em; background: rgba(0,0,0,.35);
+}
+.badge .s { margin-top: 8px; color: #7f8692; font-size: 15px; }
+
+/* groupe d'éléments d'interface agrandi */
+.ui { position: absolute; }
+
+/* ------------------------------------------------------------------ */
+/* Polices du jeu (objets de police de Blizzard)                        */
+/* ------------------------------------------------------------------ */
+.fn, .fh, .fhs, .fds, .fd, .fnl, .fns, .fgs { font-family: var(--friz); text-shadow: var(--shadow); white-space: nowrap; }
+.fn  { font-size: 13px; line-height: 14px; color: var(--gold); }            /* GameFontNormal */
+.fh  { font-size: 13px; line-height: 14px; color: var(--white); }           /* GameFontHighlight */
+.fd  { font-size: 13px; line-height: 14px; color: var(--gray); }            /* GameFontDisable */
+.fnl { font-size: 17px; line-height: 18px; color: var(--gold); }            /* GameFontNormalLarge */
+.fhs { font-size: 11px; line-height: 12px; color: var(--white); }           /* GameFontHighlightSmall */
+.fds { font-size: 11px; line-height: 12px; color: var(--gray); }            /* GameFontDisableSmall */
+.fns { font-size: 11px; line-height: 12px; color: var(--gold); }            /* GameFontNormalSmall */
+.fgs { font-size: 11px; line-height: 12px; color: #1aff1a; }                /* GameFontGreenSmall */
+.wrap { white-space: normal; }
+.ell { overflow: hidden; text-overflow: ellipsis; }
+.abs { position: absolute; }
+
+/* ------------------------------------------------------------------ */
+/* Textures d'interface redessinées                                     */
+/* ------------------------------------------------------------------ */
+.ico { display: block; background-size: 100% 100%; background-repeat: no-repeat; }
+img.ico { object-fit: cover; }
+/* Interface\GossipFrame\AvailableQuestIcon */
+.i-accept { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M11.5 3h9l-2 17.5h-5z' fill='%23ffd200' stroke='%23000' stroke-width='1.6' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='26.2' r='3.6' fill='%23ffd200' stroke='%23000' stroke-width='1.6'/%3E%3C/svg%3E"); }
+/* Interface\GossipFrame\ActiveQuestIcon */
+.i-turnin { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M9 10.5C9 6 12.2 3 16.4 3c4.4 0 7.4 2.8 7.4 6.6 0 3-1.7 4.6-3.6 5.8-1.6 1-2.2 1.7-2.2 3.4v1h-4.8v-1.5c0-2.8 1.1-4.1 3-5.4 1.5-1 2.4-1.7 2.4-3.1 0-1.5-1.1-2.5-2.6-2.5-1.7 0-2.8 1.1-2.9 3.1z' fill='%23ffd200' stroke='%23000' stroke-width='1.5' stroke-linejoin='round'/%3E%3Ccircle cx='15.6' cy='26.2' r='3.4' fill='%23ffd200' stroke='%23000' stroke-width='1.5'/%3E%3C/svg%3E"); }
+/* Interface\TargetingFrame\UI-RaidTargetingIcon_8 (crâne) */
+.i-skull { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2.5C8.8 2.5 4 7.6 4 13.8c0 3.8 1.8 6.3 4 7.9v4.6c0 1.1.8 1.9 1.8 1.9h12.4c1 0 1.8-.8 1.8-1.9v-4.6c2.2-1.6 4-4.1 4-7.9C28 7.6 23.2 2.5 16 2.5z' fill='%23f4f4f4' stroke='%23000' stroke-width='1.4'/%3E%3Cellipse cx='11' cy='14.6' rx='3.6' ry='3.9' fill='%23111'/%3E%3Cellipse cx='21' cy='14.6' rx='3.6' ry='3.9' fill='%23111'/%3E%3Cpath d='M16 18.4l-2.3 3.8h4.6z' fill='%23111'/%3E%3Cpath d='M12.5 24.2v3.4M16 24.2v3.4M19.5 24.2v3.4' stroke='%23111' stroke-width='1.4'/%3E%3C/svg%3E"); }
+/* Interface\COMMON\Indicator-Green */
+.i-zone { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3CradialGradient id='g' cx='.4' cy='.35' r='.7'%3E%3Cstop offset='0' stop-color='%23c8ffb0'/%3E%3Cstop offset='.45' stop-color='%2333c822'/%3E%3Cstop offset='1' stop-color='%23095c06'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='16' cy='16' r='11.5' fill='url(%23g)' stroke='%23042a02' stroke-width='1.6'/%3E%3Cellipse cx='13' cy='11' rx='4.5' ry='2.6' fill='%23fff' opacity='.55'/%3E%3C/svg%3E"); }
+/* Interface\RaidFrame\ReadyCheck-Ready / -NotReady / -Waiting */
+.i-ready { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M5 17l7.5 7.5L27.5 7' fill='none' stroke='%23000' stroke-width='7.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M5 17l7.5 7.5L27.5 7' fill='none' stroke='%2346d826' stroke-width='4.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+.i-notready { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M7 7l18 18M25 7L7 25' fill='none' stroke='%23000' stroke-width='7.5' stroke-linecap='round'/%3E%3Cpath d='M7 7l18 18M25 7L7 25' fill='none' stroke='%23e8261c' stroke-width='4.6' stroke-linecap='round'/%3E%3C/svg%3E"); }
+.i-waiting { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='%23453204' stroke='%23000' stroke-width='1.5'/%3E%3Cpath d='M12 13c0-2.6 1.8-4.2 4.2-4.2 2.5 0 4.1 1.6 4.1 3.6 0 1.7-1 2.6-2.1 3.3-.9.6-1.2 1-1.2 2v.6h-2.6v-.9c0-1.6.6-2.4 1.7-3.1.9-.6 1.4-1 1.4-1.8 0-.8-.6-1.4-1.5-1.4-1 0-1.6.6-1.6 1.8z' fill='%23ffd200'/%3E%3Ccircle cx='15.9' cy='21.7' r='1.8' fill='%23ffd200'/%3E%3C/svg%3E"); }
+/* Interface\ChatFrame\ChatFrameExpandArrow */
+.i-current { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M10 5l14 11-14 11z' fill='%23ffd200' stroke='%23000' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+/* Interface\common\help-i */
+.i-info { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3CradialGradient id='b' cx='.4' cy='.35' r='.75'%3E%3Cstop offset='0' stop-color='%2373b8ff'/%3E%3Cstop offset='.6' stop-color='%231f5fc0'/%3E%3Cstop offset='1' stop-color='%230b2d66'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='16' cy='16' r='12.5' fill='url(%23b)' stroke='%23d8b24a' stroke-width='2.4'/%3E%3Ccircle cx='16' cy='10' r='2.2' fill='%23fff'/%3E%3Crect x='14.1' y='13.6' width='3.8' height='9.6' rx='1' fill='%23fff'/%3E%3C/svg%3E"); }
+/* Interface\ChatFrame\UI-ChatIM-SizeGrabber-Up */
+.i-grip { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M15 4L4 15M15 8.5L8.5 15M15 12.5L12.5 15' stroke='%23cfc6b4' stroke-width='1.3' stroke-linecap='round'/%3E%3C/svg%3E"); }
+
+/* ------------------------------------------------------------------ */
+/* Lueur des alertes (Interface\QuestFrame\UI-QuestTitleHighlight)      */
+/* ------------------------------------------------------------------ */
+.glow { position: absolute; inset: 0; border-radius: 2px; }
+
+/* ------------------------------------------------------------------ */
+/* Suivi (UI/Tracker.lua) : largeur 260, PAD 8, ICON 22, ICON_COL 38     */
+/* ------------------------------------------------------------------ */
+.trk { position: relative; width: 260px; padding: 8px 8px 6px 8px; }
+.trk .bg, .trk .edge { position: absolute; pointer-events: none; }
+.trk > :not(.bg):not(.edge):not(.grip) { position: relative; }
+.trk .bg { inset: 3px; }
+.trk .edge { inset: 0; border-radius: 5px; }
+.trk .row { position: relative; }
+.trk .head { height: 18px; }
+.trk .head .title { position: absolute; left: 0; top: 0; width: 196px; overflow: hidden; }
+.trk .head .levels { position: absolute; right: 0; top: 1px; text-align: right; }
+.trk .bar { height: 12px; margin-bottom: 6px; position: relative; }
+.trk .bar .bbg, .trk .bar .fill { position: absolute; top: 0; bottom: 0; left: 0; }
+.trk .bar .bbg { right: 0; }
+.trk .bar .fill::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,.38) 0%, rgba(255,255,255,.10) 45%, rgba(0,0,0,.18) 55%, rgba(0,0,0,.05) 100%);
+}
+.trk .bar .btxt { position: absolute; inset: 0; text-align: center; line-height: 12px; }
+.trk .xp { height: 13px; overflow: hidden; }
+.trk .alert { height: 20px; margin-bottom: 4px; position: relative; }
+.trk .alert .ico { position: absolute; left: 2px; top: 2px; width: 16px; height: 16px; }
+.trk .alert .atxt { position: absolute; left: 22px; right: 2px; top: 3px; overflow: hidden; text-overflow: ellipsis; }
+.trk .cur { position: relative; min-height: 36px; margin-bottom: 6px; padding-left: 40px; }
+.trk .cur .cicon { position: absolute; left: 8px; top: 0; width: 22px; height: 22px; }
+.trk .cur .dist { position: absolute; left: -2px; width: 42px; top: 24px; text-align: center; }
+.trk .chunk { width: 204px; white-space: pre-wrap; font-size: 13px; line-height: 14px; }
+.trk .mob { position: relative; height: 16px; width: 204px; }
+.trk .mob .skull { position: absolute; left: 10px; top: 2px; width: 12px; height: 12px; }
+.trk .mob .mname { position: absolute; left: 26px; top: 2px; width: 116px; overflow: hidden; text-overflow: ellipsis; }
+.trk .mob .mlvl { position: absolute; right: 0; top: 2px; width: 62px; text-align: right; }
+.trk .warn { height: 14px; padding-left: 2px; }
+.trk .next { position: relative; height: 15px; }
+.trk .next .ico { position: absolute; left: 2px; top: 1px; width: 12px; height: 12px; filter: grayscale(1); opacity: .7; }
+.trk .next .ntxt { position: absolute; left: 18px; top: 0; width: 228px; overflow: hidden; text-overflow: ellipsis; }
+.trk .grip { position: absolute; right: 2px; bottom: 2px; width: 16px; height: 16px; }
+
+/* Thème parchemin (défaut) : atlas QuestBG-Parchment, bordure de bulle dorée, encre brune, sans ombre */
+.th-parchment .bg {
+  opacity: .9;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32  0 0 0 0 .22  0 0 0 0 .08  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.38'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 85% 75% at 50% 45%, #f1e3bf 0%, #e3cf9f 55%, #c9ac74 100%);
+}
+.th-parchment .edge { opacity: .9; border: 2px solid #b88c40; box-shadow: inset 0 0 0 1px rgba(90,60,20,.45), 0 0 0 1px rgba(40,25,5,.35); }
+.th-parchment .t-title { color: #4d2100; }
+.th-parchment .t-body { color: #2b1a08; }
+.th-parchment .t-dim, .th-parchment .t-levels { color: #5c452a; }
+.th-parchment .t-dist { color: #40260d; }
+.th-parchment .t-bar { color: #fff; }
+.th-parchment .t-xp { color: #1f4080; }
+.th-parchment .t-warn { color: #8c4d00; }
+.th-parchment .t-class { color: #7a4500; }
+.th-parchment .t-dungeon { color: #99380a; }
+.th-parchment .bar .fill { background: #8c591a; }
+.th-parchment .bar .bbg { background: rgba(51,31,10,.55); }
+.th-parchment * { text-shadow: none; }
+/* codes de couleur recolorés (Themes.lua, PARCHMENT_CODES) */
+.th-parchment .c-todo { color: #2b1a08; }
+.th-parchment .c-quest { color: #7a3d00; }
+.th-parchment .c-npc { color: #00663a; }
+.th-parchment .c-mob { color: #a31414; }
+.th-parchment .c-obj { color: #1d4f8c; }
+.th-parchment .c-note { color: #5e4b33; }
+.th-parchment .c-done { color: #7d6b52; }
+.th-parchment .c-lvl { color: #6a5841; }
+.th-parchment .c-zonetodo { color: #45341e; }
+.th-parchment .c-zone { color: #1f6e1f; }
+.th-parchment .c-group { color: #7a3d00; }
+
+/* Thèmes clairs : couleurs d'origine des codes */
+.c-todo { color: #ffffff; } .c-quest { color: #ffd100; } .c-npc { color: #00ff96; } .c-mob { color: #ff6060; }
+.c-obj { color: #66bbff; } .c-note { color: #999999; } .c-done { color: #808080; } .c-lvl { color: #aaaaaa; }
+.c-zonetodo { color: #c8c8c8; } .c-zone { color: #40e050; } .c-group { color: #ffd100; }
+
+/* Thème noir */
+.th-dark .bg { background: #000; opacity: .9; }
+.th-dark .edge { border: 2px solid rgba(128,128,128,.72); }
+.th-dark .t-title { color: #ffd100; } .th-dark .t-body { color: #fff; } .th-dark .t-dim { color: #808080; }
+.th-dark .t-levels, .th-dark .t-dist, .th-dark .t-bar { color: #fff; } .th-dark .t-xp { color: #bfd9ff; }
+.th-dark .t-class { color: #ffd100; } .th-dark .t-dungeon { color: #ffb366; }
+.th-dark .bar .fill { background: #428ff2; } .th-dark .bar .bbg { background: rgba(0,0,0,.5); }
+
+/* Thème transparent : ni fond ni bordure, texte cerné de noir */
+.th-transparent .t-title { color: #ffd100; } .th-transparent .t-body { color: #fff; } .th-transparent .t-dim { color: #b8b8b8; }
+.th-transparent .t-levels, .th-transparent .t-dist, .th-transparent .t-bar { color: #fff; } .th-transparent .t-xp { color: #bfd9ff; }
+.th-transparent .bar .fill { background: #428ff2; } .th-transparent .bar .bbg { background: rgba(0,0,0,.5); }
+.th-transparent * { text-shadow: -1px 0 0 #000, 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, 1px 1px 0 #000; }
+
+/* Thème fondu de gris : dégradé vertical du gris foncé (haut) au transparent (bas) */
+.th-gradient .bg { background: linear-gradient(180deg, rgba(31,31,31,.9) 0%, rgba(31,31,31,0) 100%); }
+.th-gradient .t-title { color: #ffd100; } .th-gradient .t-body { color: #fff; } .th-gradient .t-dim { color: #b8b8b8; }
+.th-gradient .t-levels, .th-gradient .t-dist, .th-gradient .t-bar { color: #fff; } .th-gradient .t-xp { color: #bfd9ff; }
+.th-gradient .bar .fill { background: #428ff2; } .th-gradient .bar .bbg { background: rgba(0,0,0,.5); }
+
+/* ------------------------------------------------------------------ */
+/* Cadre à portrait (ButtonFrameTemplate)                               */
+/* ------------------------------------------------------------------ */
+.bft {
+  position: absolute; border-radius: 7px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #2a2b2e 0%, #1c1d20 100%);
+  box-shadow: 0 0 0 1px #050505, inset 0 0 0 2px #77787c, inset 0 0 0 3px #3a3b3e, inset 0 0 0 4px #0b0b0c, 0 18px 50px rgba(0,0,0,.65);
+}
+.bft-top { position: absolute; left: 3px; right: 3px; top: 3px; height: 20px; border-radius: 5px 5px 0 0;
+  background: linear-gradient(180deg, #3a3b3f, #24252a); box-shadow: inset 0 -1px 0 #0b0b0c, 0 1px 0 #55565a; }
+.bft-title { position: absolute; left: 58px; right: 28px; top: 5px; text-align: center; }
+.bft-portrait { position: absolute; left: -9px; top: -9px; width: 64px; height: 64px; border-radius: 50%;
+  background: #000; box-shadow: 0 0 0 3px #c9a646, 0 0 0 4px #3d2d08, 0 0 0 6px #77787c, 0 3px 8px rgba(0,0,0,.7); overflow: hidden; }
+.bft-portrait img { width: 100%; height: 100%; display: block; transform: scale(1.12); }
+.bft-close { position: absolute; right: 4px; top: 4px; width: 18px; height: 18px; border-radius: 4px;
+  background: linear-gradient(180deg, #c3251b, #6d0c07); box-shadow: 0 0 0 1px #000, inset 0 0 0 1px #e0b85a; }
+.bft-close::before, .bft-close::after { content: ""; position: absolute; left: 8px; top: 3px; width: 2px; height: 12px; background: #f6e7c5; border-radius: 1px; }
+.bft-close::before { transform: rotate(45deg); } .bft-close::after { transform: rotate(-45deg); }
+.bft-inset { position: absolute; left: 4px; top: 60px; right: 6px; bottom: 26px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .03' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .6  0 0 0 0 .6  0 0 0 0 .65  0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.10'/%3E%3C/svg%3E"),
+    #0d0e10;
+  box-shadow: inset 0 0 0 1px #000, inset 0 0 0 2px #3b3c40, inset 0 2px 6px rgba(0,0,0,.8); }
+
+/* Bouton rouge (UIPanelButtonTemplate) */
+.btn { position: absolute; height: 22px; border-radius: 3px; text-align: center; white-space: nowrap;
+  font-family: var(--friz); font-size: 13px; line-height: 21px; color: var(--gold); text-shadow: var(--shadow);
+  background: linear-gradient(180deg, #b31c12 0%, #7a0d08 55%, #5a0805 100%);
+  box-shadow: 0 0 0 1px #1d0201, inset 0 0 0 1px rgba(232,170,110,.55), inset 0 1px 0 rgba(255,220,180,.5); }
+.btn.dis { color: #8a8a8a; background: linear-gradient(180deg, #4b4b4b, #2a2a2a);
+  box-shadow: 0 0 0 1px #0a0a0a, inset 0 0 0 1px rgba(160,160,160,.35); }
+
+/* Onglets sous le cadre (PanelTabButtonTemplate) */
+.tab { position: absolute; height: 30px; padding: 0 16px; border-radius: 0 0 9px 9px; text-align: center;
+  background: linear-gradient(180deg, #121214 0%, #26272a 100%);
+  box-shadow: 0 0 0 1px #050505, inset 0 0 0 2px #5b5c60, inset 0 0 0 3px #1a1a1c; }
+.tab span { display: block; padding-top: 8px; }
+.tab.on { height: 33px; background: linear-gradient(180deg, #2c2d31 0%, #3a3b40 100%); }
+.tab.on span { color: #fff; padding-top: 10px; }
+
+/* Barre de défilement (UIPanelScrollFrameTemplate) */
+.sb { position: absolute; width: 16px; }
+.sb .track { position: absolute; left: 3px; right: 3px; top: 16px; bottom: 16px; border-radius: 5px;
+  background: rgba(0,0,0,.65); box-shadow: inset 0 0 0 1px #2e2f33; }
+.sb .arrow { position: absolute; left: 0; width: 16px; height: 16px; border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, #3b2a10, #120c03); box-shadow: 0 0 0 1px #000, inset 0 0 0 1.5px #b89344; }
+.sb .arrow::after { content: ""; position: absolute; left: 4px; top: 5px; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 5px solid #f1c53a; }
+.sb .arrow.down::after { border-bottom: 0; border-top: 5px solid #f1c53a; top: 6px; }
+.sb .arrow.dis { filter: grayscale(1) brightness(.75); }
+.sb .up { top: 0; } .sb .down { bottom: 0; }
+.sb .thumb { position: absolute; left: 1px; width: 14px; border-radius: 4px;
+  background: linear-gradient(90deg, #5c4515, #c49a3d 45%, #7a5a1a); box-shadow: 0 0 0 1px #000, inset 0 0 0 1px rgba(255,230,160,.35); }
+
+/* Champ de saisie (InputBoxTemplate) et recherche (SearchBoxTemplate) */
+.input { position: absolute; height: 20px; border-radius: 3px; background: rgba(0,0,0,.72);
+  box-shadow: inset 0 0 0 1px #6f6656, inset 0 0 0 2px #1d1b17; padding: 0 6px; overflow: hidden; }
+.input .v { line-height: 20px; }
+.search { padding-left: 20px; }
+.search::before { content: ""; position: absolute; left: 5px; top: 4px; width: 8px; height: 8px; border-radius: 50%; border: 1.6px solid #b0b0b0; }
+.search::after { content: ""; position: absolute; left: 13px; top: 12px; width: 5px; height: 1.6px; background: #b0b0b0; transform: rotate(45deg); transform-origin: left center; }
+
+/* Menu déroulant (WowStyle1DropdownTemplate) */
+.dd { position: absolute; height: 26px; border-radius: 4px;
+  background: linear-gradient(180deg, #2c2c2f, #151517); box-shadow: 0 0 0 1px #000, inset 0 0 0 1px #6d6a62, inset 0 1px 0 rgba(255,255,255,.08); }
+.dd .v { position: absolute; left: 10px; right: 26px; top: 6px; }
+.dd::after { content: ""; position: absolute; right: 9px; top: 10px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 6px solid #f1c53a; }
+
+/* Bouton radio (UIRadioButtonTemplate) */
+.radio { position: absolute; width: 16px; height: 16px; border-radius: 50%; background: radial-gradient(circle at 50% 40%, #2a2a2a, #050505);
+  box-shadow: 0 0 0 1px #000, inset 0 0 0 1.5px #a59a83; }
+.radio.on::after { content: ""; position: absolute; left: 4px; top: 4px; width: 8px; height: 8px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #fff6b0, #f2c200 60%, #a37a00); }
+
+/* Infobulle (GameTooltip) */
+.tip { position: absolute; padding: 8px 10px 9px; border-radius: 5px;
+  background: rgba(10,10,26,.94); box-shadow: 0 0 0 1px #000, inset 0 0 0 1.5px #c9c9d4, inset 0 0 0 2.5px #23232e, 0 6px 18px rgba(0,0,0,.6); }
+.tip .tt { font-size: 15px; line-height: 17px; color: var(--gold); white-space: normal; text-shadow: var(--shadow); font-family: var(--friz); }
+.tip .tl { font-size: 13px; line-height: 15px; color: #fff; white-space: normal; text-shadow: var(--shadow); font-family: var(--friz); margin-top: 2px; }
+
+/* Rangée de surbrillance (UI-QuestLogTitleHighlight teinté or) */
+.hl { position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(255,209,0,.30) 0%, rgba(255,209,0,.42) 50%, rgba(255,209,0,.18) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,230,120,.35), inset 0 -1px 0 rgba(255,230,120,.25); }

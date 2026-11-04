@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Questify, aperçu 06 : quête de classe</title>
+<link rel="stylesheet" href="apercu.css">
+<style>
+  /* lueur de l'alerte de quête de classe : teinte (1, 0.82, 0), fondu BLEND sur parchemin */
+  .glow.class { background: radial-gradient(ellipse 62% 95% at 42% 50%, rgba(255,209,0,.55) 0%, rgba(255,209,0,.22) 62%, rgba(255,209,0,0) 100%); }
+  .pop { position: relative; width: 360px; padding: 68px 16px 40px; }
+  .pop .content { position: relative; }
+  .items { display: grid; grid-template-columns: repeat(7, 32px); gap: 4px; margin-bottom: 4px; }
+  .items img { width: 32px; height: 32px; display: block; box-shadow: 0 0 0 1px rgba(0,0,0,.8); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap" style="width:560px">
+    <div class="brand">Questify</div>
+    <h1>Quêtes de classe</h1>
+    <p>Une alerte lumineuse dans le suivi quand une suite de quêtes de classe devient disponible. Un clic ouvre sa fenêtre&nbsp;: départ, objectifs, récompenses et XP de toute la suite.</p>
+    <p>«&nbsp;Ajouter à la route&nbsp;» l'insère dans le parcours, «&nbsp;Ignorer&nbsp;» la laisse de côté (réactivable dans le journal).</p>
+    <p>Nain Guerrier niveau 10. Des trois suites du Guerrier (Hurlevent, Forgefer, Darnassus), Questify propose celle du maître le plus proche&nbsp;: Granis Swiftaxe, à Kharanos.</p>
+  </div>
+
+  <!-- Fenêtre de la quête de classe (UI/ClassQuestPopup.lua : 360 de large, ButtonFrameTemplate) -->
+  <div class="ui" style="left:742px; top:236px">
+    <div style="zoom:1.75">
+      <div class="bft pop">
+        <div class="bft-top"></div>
+        <div class="bft-inset"></div>
+        <div class="bft-portrait"><img src="https://wow.zamimg.com/images/wow/icons/large/classicon_warrior.jpg" alt=""></div>
+        <div class="bft-title fn">Quêtes de classe</div>
+        <div class="bft-close"></div>
+        <div class="content">
+          <div class="fnl wrap" style="width:250px; margin-bottom:4px">Muren Stormpike</div>
+          <div class="fhs" style="height:18px">Niveau 10</div>
+          <div class="fh wrap" style="width:328px; margin-bottom:10px">Commence auprès de <span style="color:#00ff96">Granis Swiftaxe</span> (Dun Morogh)</div>
+          <div class="fn" style="height:18px">Objectifs</div>
+          <div class="fh wrap" style="width:328px; margin-bottom:10px">Parler à Muren Stormpike.</div>
+          <div class="fn" style="height:20px">Récompenses</div>
+          <div class="items">
+            <!-- Armes en fer gris (1682), une au choix : hache, dague, masse et épée d'Umbral -->
+            <img src="https://wow.zamimg.com/images/wow/icons/large/inv_axe_17.jpg" alt="">
+            <img src="https://wow.zamimg.com/images/wow/icons/large/inv_weapon_shortblade_15.jpg" alt="">
+            <img src="https://wow.zamimg.com/images/wow/icons/large/inv_mace_12.jpg" alt="">
+            <img src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt="">
+          </div>
+          <div class="fh" style="height:18px">2565 XP</div>
+        </div>
+        <div class="btn" style="right:164px; bottom:4px; width:110px">Ignorer</div>
+        <div class="btn" style="right:8px; bottom:4px; width:150px">Ajouter à la route</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Suivi avec l'alerte (UI/Tracker.lua) -->
+  <div class="ui" style="left:1420px; top:236px">
+    <div style="zoom:1.75">
+      <div class="trk th-parchment">
+        <div class="bg"></div><div class="edge"></div>
+        <div class="row head">
+          <div class="title fn t-title">Dun Morogh</div>
+          <div class="levels fhs t-levels">6-11</div>
+        </div>
+        <div class="bar">
+          <div class="bbg"></div><div class="fill" style="width:82.5%"></div>
+          <div class="btxt fhs t-bar" style="white-space:pre">85/103  ·  ~5k XP restants</div>
+        </div>
+        <div class="xp fhs t-xp">18,9k XP/h · niveau dans 12 min</div>
+        <div class="alert">
+          <div class="glow class"></div>
+          <span class="ico i-accept"></span>
+          <div class="atxt fn t-class">Quête de classe disponible : Muren Stormpike</div>
+        </div>
+        <div class="cur">
+          <span class="cicon ico i-accept"></span>
+          <div class="dist fhs t-dist">64 yd</div>
+          <div class="chunk fh t-body wrap">Prendre <span class="c-quest">La nouvelle cuvée de Rejold</span> auprès de <span class="c-npc">Rejold Barleybrew</span></div>
+        </div>
+        <div class="next"><img class="ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="ntxt fds t-dim">La réserve volée de Tundra MacGrann</span></div>
+        <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Rendre : La réserve volée de Tundra MacGrann</span></div>
+        <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Rendre : La nouvelle cuvée de Rejold</span></div>
+        <div class="grip ico i-grip"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="badge"><div class="t">Aperçu de l'interface</div><div class="s">Maquette tirée du code de Questify, pas une capture en jeu</div></div>
+</div>
+</body>
+</html>

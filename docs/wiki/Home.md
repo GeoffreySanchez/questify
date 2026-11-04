@@ -6,7 +6,7 @@ Guide de leveling **gratuit et open source** pour **World of Warcraft: Forever**
 | Page | Contenu / Content |
 |---|---|
 | [Installation](Installation) | Addons requis et optionnels avec liens CurseForge, installation pas à pas, problèmes fréquents / required and optional addons with CurseForge links, step-by-step install, common problems |
-| [Galerie / Gallery](Galerie) | Captures et vidéos de l'addon en jeu / screenshots and videos in game |
+| [Galerie / Gallery](Galerie) | Aperçus de l'interface, puis captures et vidéos en jeu / interface previews, then in-game screenshots and videos |
 
 Ces pages sont versionnées dans le dépôt, dossier `docs/wiki/`, puis copiées dans le wiki GitHub.
 *These pages live in the repository under `docs/wiki/`, then are copied to the GitHub wiki.*

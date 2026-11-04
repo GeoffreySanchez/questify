@@ -268,6 +268,25 @@ Libraries bundled in `Questify_Vanilla/Libs/`, copied unchanged:
 
 ## Développement / Development
 
+### Publier une version / Publishing a release
+
+1. Mettre la nouvelle version dans `## Version:` des deux TOC (`Questify_Vanilla.toc` et
+   `Questify_Vanilla_Camelot.toc`, identiques), au format `X.Y.Z` (ou `X.Y.Z-beta.1`), et ajouter une
+   section `## X.Y.Z (date)` dans `CHANGELOG.md`. Fusionner dans `main`.
+2. Créer et pousser le tag : `git tag vX.Y.Z && git push origin vX.Y.Z`.
+3. Le workflow « Release » vérifie que le tag correspond au TOC, lance les tests, construit le zip, crée la
+   release GitHub (notes tirées du CHANGELOG), puis envoie le zip sur CurseForge.
+
+Pour l'envoi sur CurseForge, créer une fois deux secrets dans GitHub (Settings > Secrets and variables >
+Actions) : `CF_API_KEY` (jeton créé sur https://authors.curseforge.com/#/settings/api-tokens) et
+`CF_PROJECT_ID` (ID numérique du projet, encadré « About Project » de la page CurseForge). Sans eux, seule
+la release GitHub est publiée. Variable facultative `CF_GAME_VERSION` (1.60.1 par défaut).
+
+English: bump `## Version:` in both TOC files and add a `## X.Y.Z (date)` section to `CHANGELOG.md`, merge
+into `main`, then push a `vX.Y.Z` tag. The "Release" workflow checks the tag against the TOC, runs the tests,
+builds the zip, creates the GitHub release and uploads to CurseForge once the `CF_API_KEY` and
+`CF_PROJECT_ID` secrets are set (optional variable `CF_GAME_VERSION`, default 1.60.1).
+
 - Tests: `luajit tests/run.lua [pattern]` (WoW API mock in `tests/wow_mock.lua`).
 - Syntax check: `tools/check_syntax.sh`.
 - Release check and zip: `tools/package.sh` runs the syntax check, the tests and `tools/validate_guides.lua`,

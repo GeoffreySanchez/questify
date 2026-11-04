@@ -768,7 +768,7 @@ local OPTION_GROUPS = {
   { title = "COMFORT_OPT_TITLE", checks = { { "autoFly", "COMFORT_OPT_AUTOFLY" },
     { "hearthHints", "COMFORT_OPT_HEARTH" }, { "dangerAlert", "COMFORT_OPT_DANGER" },
     { "supplyReminders", "COMFORT_OPT_SUPPLIES" }, { "showXPRate", "COMFORT_OPT_XPRATE" } } },
-  { title = "UI_OPT_TOOLS", checks = { { "telemetry", "UI_OPT_TELEMETRY" } }, tools = true },
+  { title = "UI_OPT_TOOLS", checks = { { "telemetry", "UI_OPT_TELEMETRY" }, { "versionCheck", "VERSION_OPT" } }, tools = true },
 }
 local SCALE_MIN, SCALE_MAX, SCALE_STEP = 0.6, 1.6, 0.1
 

@@ -5,7 +5,6 @@
 ## Author: Questify Vanilla contributors
 ## Version: 0.1.0
 ## IconTexture: Interface\Icons\INV_Misc_Book_09
-## Dependencies: QuestieDB
 ## OptionalDeps: QuestieDB, TomTom, WaypointUI, ShortestPathForever
 ## SavedVariables: QuestifyVanillaDB
 ## SavedVariablesPerCharacter: QuestifyVanillaCharDB
@@ -17,6 +16,8 @@ Locales\StringsCore.lua
 Locales\StringsNav.lua
 Locales\StringsUI.lua
 Locales\StringsDiag.lua
+Locales\StringsWizard.lua
+Locales\StringsComfort.lua
 
 Core\Init.lua
 Core\Util.lua
@@ -40,12 +41,17 @@ Engine\Professions.lua
 Engine\Talents.lua
 Engine\StepGuard.lua
 Engine\Telemetry.lua
+Engine\XPRate.lua
+Engine\Hearth.lua
+Engine\Danger.lua
+Engine\Supplies.lua
 
 Nav\Navigation.lua
 
 Automation\Rewards.lua
 Automation\AutoQuest.lua
 Automation\SellJunk.lua
+Automation\Taxi.lua
 
 UI\Tracker.lua
 UI\MobPanel.lua

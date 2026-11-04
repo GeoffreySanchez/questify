@@ -3,6 +3,38 @@
 ## Non publié
 
 ### Français
+- Vols automatiques : chez le maître de vol, l'étape « Prendre un vol vers X » choisit et prend le
+  bon trajet (Maj pour choisir toi-même, jamais en combat).
+- Pierre de foyer dans le suivi : « Pierre prête » ou « Pierre dans 12 min », et sinon le trajet à
+  pied ou le vol conseillé. Sur « Lier la pierre de foyer », le foyer actuel.
+- Alerte de danger : élite ou monstre de 3 niveaux ou plus au-dessus de toi près d'un objectif
+  (une ligne dans le suivi, un message par monstre toutes les 5 minutes, jamais en instance).
+- Rappel sacs pleins et réparation avant de partir loin d'un marchand (au plus toutes les 10 min).
+- XP/h et temps avant le prochain niveau dans le suivi, XP restante estimée du chapitre.
+- Options : groupe « Confort » dans le journal pour couper chacune de ces aides.
+- Assistant de premier démarrage refait, en cinq pages : bienvenue et addons, calcul d'itinéraire,
+  affichage, automatisations (dont la vente de la camelote), récapitulatif.
+  - Pour chaque addon absent (QuestieDB, ShortestPath Forever, WaypointUI, TomTom), le lien
+    CurseForge s'affiche dans un champ en lecture seule, sélectionné d'un clic pour Ctrl+C.
+  - Un addon installé mais désactivé a un bouton « Activer », puis « Recharger l'interface ».
+  - « Précédent », « Ignorer » et « Suivant » sur chaque page, « Terminer » sur la dernière.
+  - L'assistant reprend à la même page après « Recharger l'interface », `/reload` ou une
+    reconnexion. Fermé avec la croix, il n'est plus considéré comme terminé : il revient à la
+    session suivante (une fois par session) et `/qf wizard` le rouvre sur la même page.
+  - Le choix des métiers vient après l'assistant, qu'il soit terminé ou seulement fermé (une fois
+    par session au plus).
+- Sans QuestieDB (ou avec une version trop ancienne), Questify se charge quand même : le suivi
+  l'explique et son bouton « Lien » ouvre l'assistant sur la page des addons, où le lien
+  CurseForge de QuestieDB est prêt à copier.
+- Rappels de talents dès le niveau 10 : alerte dans le suivi tant qu'un point reste à dépenser,
+  message à chaque niveau avec le talent conseillé par le build choisi, clic : fenêtre des talents.
+  Choix du build en cartes animées (monde ouvert ou donjon) au niveau 10 et dans les options.
+  Aucune classe de Forever n'a encore de build : seuls les rappels s'affichent. `/qf talents`
+  relève les arbres de talents du client pour écrire ces builds.
+- Bouton de l'objet de quête de l'étape, à gauche du suivi, avec un raccourci dans les Raccourcis
+  du jeu ; il ne change que hors combat. Option, activée par défaut.
+- Quand le donneur ne propose pas la quête attendue (quête modifiée), l'étape est passée avec un
+  message ; `/qf back` la rouvre.
 - Les monstres à tuer s'affichent dans le suivi, sous la ligne d'objectif de l'étape « Faire »
   (crâne, nom, niveau), au lieu du panneau « Cibles » séparé. Un clic cible toujours le plus proche
   et lui pose un crâne.
@@ -12,8 +44,9 @@
 - Forever : animation dorée (ondes et étoile qui tourne) autour de l'objet à utiliser quand l'étape
   pointe sur un objet du monde (coffre, seau…), avec le marqueur natif. Option « Animer l'objet à
   utiliser », activée par défaut.
-- Alerte « nouveaux sorts » dans le suivi selon le niveau et les sorts déjà appris (liste relevée
-  chez le maître de classe) ; clic : étape vers le maître de classe le plus proche.
+- Alerte « nouveaux sorts » dans le suivi selon le niveau, les sorts déjà appris (liste relevée
+  chez le maître de classe) et l'or disponible (seuls les sorts payables comptent) ; clic : étape
+  vers le maître de classe le plus proche.
 - Annonce « Équipez <objet> pour gagner en puissance » au milieu de l'écran quand un objet reçu
   améliore l'équipement (clic : équiper).
 - Vente automatique de la camelote chez les marchands (option, Maj pour suspendre).
@@ -30,8 +63,41 @@
 - Les erreurs Lua sont gardées avec leur pile d'appels (les 20 dernières, nombre de répétitions
   compris), y compris celles du chargement, et survivent à `/reload` ; la première erreur d'une
   session indique `/qf bug`.
+- Classic Era n'est plus pris en charge : l'addon vise WoW: Forever seul, avec un seul zip
+  (`Questify_Vanilla-<version>-forever.zip`).
 
 ### English
+- Automatic flights: at the flight master, a "Take a flight to X" step picks and takes the right
+  route (hold Shift to choose yourself, never in combat).
+- Hearthstone in the tracker: "ready" or "ready in 12 min", otherwise the suggested walk or flight.
+  On "Bind your hearthstone", the current home.
+- Danger alert: elite or mob 3+ levels above you near an objective (one tracker line, one chat
+  message per mob every 5 minutes, never in instances).
+- Bags-full and repair reminder before you leave a merchant area for far away (at most every 10 min).
+- XP/h and time to next level in the tracker, estimated XP left in the chapter.
+- Options: a "Comfort" group in the journal to turn each of these off.
+- First-launch wizard redone, in five pages: welcome and addons, route planning, display,
+  automations (including junk selling), summary.
+  - For each missing addon (QuestieDB, ShortestPath Forever, WaypointUI, TomTom), its CurseForge
+    link shows in a read-only field, selected with one click for Ctrl+C.
+  - An installed but disabled addon has an "Enable" button, then "Reload UI".
+  - "Previous", "Skip" and "Next" on every page, "Finish" on the last one.
+  - The wizard resumes on the same page after "Reload UI", `/reload` or a new login. Closing it
+    with the X no longer counts as finished: it comes back in the next session (once per session)
+    and `/qf wizard` reopens it on the same page.
+  - The profession choice comes after the wizard, whether it was finished or only closed (at most
+    once per session).
+- Without QuestieDB (or with a version that is too old), Questify still loads: the tracker says so
+  and its "Link" button opens the wizard on the addons page, where the QuestieDB CurseForge link is
+  ready to copy.
+- Talent reminders from level 10: a tracker alert while a point is left to spend, a message at each
+  level with the talent advised by the chosen build, click: talent window. Build choice on animated
+  cards (open world or dungeon) at level 10 and in the options. No Forever class has a build yet:
+  only the reminders show. `/qf talents` records the client's talent trees to write those builds.
+- Button for the current step's quest item, left of the tracker, with a key in the game's Key
+  Bindings; it only changes out of combat. Option, on by default.
+- When the quest giver does not offer the expected quest (changed quest), the step is skipped with
+  a message; `/qf back` reopens it.
 - Monsters to kill are shown in the tracker, under the objective line of the current "Complete"
   step (skull, name, level), instead of the separate "Targets" panel. Clicking still targets the
   nearest one and marks it with a skull.
@@ -40,8 +106,8 @@
 - Forever: golden animation (waves and a spinning star) around the object to use when the step
   points at a world object (chest, bucket…), with the built-in marker. "Animate the object to use"
   option, on by default.
-- "New spells" alert in the tracker from your level and known spells (list read at the class
-  trainer); click: step to the nearest class trainer.
+- "New spells" alert in the tracker from your level, known spells (list read at the class
+  trainer) and gold (only spells you can pay for count); click: step to the nearest class trainer.
 - "Equip <item> to gain power" announcement in the middle of the screen when a received item is an
   upgrade (click: equip).
 - Automatic junk selling at merchants (option, Shift to pause).
@@ -57,6 +123,8 @@
   navigation, quest log, settings, self-check results and Lua errors.
 - Lua errors are kept with their call stack (the last 20, with repeat counts), including those
   raised while loading, and survive `/reload`; the first error of a session points to `/qf bug`.
+- Classic Era is no longer supported: the addon targets WoW: Forever only, with a single zip
+  (`Questify_Vanilla-<version>-forever.zip`).
 
 ## 0.1.0 (2026-11-03)
 

@@ -45,6 +45,39 @@ return {
     t.ok(not (P.frame and P.frame:IsShown()), "wizard first")
   end,
 
+  picker_after_wizard_closed = function(t)
+    local Q = load()
+    local P, W = Q.UI.ProfessionPicker, Q.UI.Wizard
+    Mock.advance(4)
+    t.ok(W:IsShown(), "wizard open")
+    P.AutoShow()
+    t.ok(not (P.frame and P.frame:IsShown()), "never while the wizard is open")
+    QuestifyVanillaWizard:Hide()                    -- croix : l'assistant n'est pas terminé
+    t.eq(Q.char.wizardDone, nil)
+    Mock.advance(1)
+    t.ok(P.frame and P.frame:IsShown(), "asked once the wizard is closed")
+    P.laterButton:GetScript("OnClick")(P.laterButton)
+    -- une fois par session : ni une nouvelle fermeture de l'assistant ni LOGIN ne la rouvrent
+    SlashCmdList.QUESTIFYVANILLA("wizard")
+    QuestifyVanillaWizard:Hide()
+    Q:Fire("LOGIN")
+    Mock.advance(5)
+    t.ok(not P.frame:IsShown(), "once per session")
+    t.eq(#Mock.errors, 0)
+  end,
+
+  picker_after_wizard_finished = function(t)
+    local Q = load()
+    local P, W = Q.UI.ProfessionPicker, Q.UI.Wizard
+    Mock.advance(4)
+    while W.page < W.NUM_PAGES do Mock.click(W.nextButton, "LeftButton") end
+    Mock.click(W.finishButton, "LeftButton")
+    Mock.advance(1)
+    t.ok(P.frame and P.frame:IsShown(), "asked after Finish")
+    t.eq(Mock.countCalls("StaticPopup_Show"), 0)
+    t.eq(#Mock.errors, 0)
+  end,
+
   two_primaries_max = function(t)
     local Q = load({ QuestifyVanillaCharDB = { wizardDone = true } })
     local P = Q.UI.ProfessionPicker

@@ -6,6 +6,10 @@ local addonName, Q = ...
 --   étape courante en gros : icône d'action, texte coloré, distance (mise à jour toutes les 0,5 s),
 --   et sous chaque ligne d'objectif les monstres à tuer (crâne, nom, niveau) ;
 --   les étapes suivantes en petit et en gris.
+-- Confort de jeu (Engine/XPRate, Hearth, Danger, Supplies) : ligne XP/h sous la barre, XP restante
+-- du chapitre dans la barre, lignes de la pierre de foyer sous l'étape, avertissements (danger,
+-- sacs, réparation) sous l'étape courante. Chaque module est lu sous pcall : absent ou en erreur,
+-- il n'affiche rien.
 -- Le clic sur un monstre passe par les boutons sécurisés d'UI/MobPanel.lua, posés par-dessus ses
 -- lignes sans s'ancrer au suivi : un enfant sécurisé rendrait le suivi protégé (impossible à
 -- redimensionner en combat). Ici, les lignes de monstres ne sont que du texte et des textures.
@@ -24,6 +28,10 @@ local NEXT_HEIGHT = 15
 local MAX_NEXT = 10
 local DIST_INTERVAL = 0.5   -- secondes entre deux calculs de distance
 local TARGET_INTERVAL = 2   -- secondes entre deux recherches du point le plus proche
+
+local XP_LINE_H = 13        -- ligne XP/h sous la barre
+local WARN_LINE_H = 14      -- avertissements de confort sous l'étape courante
+local MAX_WARN = 4
 
 local MOB_ROW_H = 16
 local MOB_INDENT = 10       -- retrait des lignes de monstres sous leur objectif
@@ -102,6 +110,21 @@ end
 local function hideTooltip()
   if GameTooltip then GameTooltip:Hide() end
 end
+
+-- Appel protégé d'un module de confort (Q.XPRate, Q.Hearth, Q.Danger, Q.Supplies) : nil si le
+-- module ou la méthode manque, ou en cas d'erreur (signalée une fois).
+local function comfort(module, method, ...)
+  local m = Q[module]
+  local fn = type(m) == "table" and m[method]
+  if type(fn) ~= "function" then return nil end
+  local ok, res = pcall(fn, m, ...)
+  if not ok then
+    Q:ReportError(res)
+    return nil
+  end
+  return res
+end
+Tracker.Comfort = comfort
 
 ---------------------------------------------------------------------------
 -- Actions de la souris sur l'étape courante
@@ -269,6 +292,17 @@ function Tracker:Create()
   local barText = bar:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   barText:SetPoint("CENTER", bar, "CENTER", 0, 0)
   self.bar, self.barText = bar, barText
+
+  -- XP/h et temps avant le prochain niveau (Engine/XPRate.lua)
+  local xpLine = f:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+  xpLine:SetJustifyH("LEFT")
+  xpLine:SetWordWrap(false)
+  xpLine:SetTextColor(0.75, 0.85, 1)
+  xpLine:Hide()
+  self.xpLine = xpLine
+
+  -- Avertissements de confort (danger, sacs, réparation), créés à la demande
+  self.warnLines = {}
 
   -- Alerte de quête de classe
   local alert = CreateFrame("Button", nil, f)
@@ -635,6 +669,8 @@ function Tracker:ShowMessage(text)
   self.talentPulse:Stop()
   self.mobSlots = {}
   for _, line in ipairs(self.nextLines) do line.icon:Hide(); line.text:Hide() end
+  self.xpLine:Hide()
+  for _, line in ipairs(self.warnLines) do line:Hide() end
   self.alertPulse:Stop()
   self.message:SetText(text)
   self.message:Show()
@@ -698,6 +734,12 @@ local function stepSegments(entry, mobs)
   end
   if #rest > 0 then addMobs(rest) end
   for _, line in ipairs(parts.tail) do buf[#buf + 1] = line end
+  local hearth = comfort("Hearth", "Lines", entry)
+  if type(hearth) == "table" then
+    for _, line in ipairs(hearth) do
+      if type(line) == "string" then buf[#buf + 1] = line end
+    end
+  end
   local state, reason = Q.Progress:State(entry)
   if state == "blocked" and reason then
     buf[#buf + 1] = REASON_COLOR .. Q.Format:Reason(reason) .. "|r"
@@ -763,6 +805,84 @@ function Tracker:LayoutCurrent(cur, yTop)
   return yy
 end
 
+---------------------------------------------------------------------------
+-- Confort : ligne XP/h et avertissements
+---------------------------------------------------------------------------
+-- Place la ligne XP/h à la hauteur y si elle a un texte ; -> nouvelle hauteur.
+function Tracker:LayoutXPLine(y)
+  local text = comfort("XPRate", "Text")
+  local line = self.xpLine
+  if type(text) ~= "string" or text == "" then
+    line:Hide()
+    return y
+  end
+  local f = self.frame
+  line:ClearAllPoints()
+  line:SetPoint("TOPLEFT", f, "TOPLEFT", PAD, -y)
+  line:SetWidth(curWidth() - 2 * PAD)
+  line:SetText(text)
+  line:Show()
+  return y + XP_LINE_H
+end
+
+-- Nouveau texte XP/h sans refaire toute la mise en page ; faux si la ligne doit apparaître ou
+-- disparaître (il faut alors tout redessiner).
+function Tracker:UpdateXPLine()
+  local line = self.xpLine
+  if not line or not self.title:IsShown() then return false end
+  local text = comfort("XPRate", "Text")
+  local has = type(text) == "string" and text ~= ""
+  if has ~= line:IsShown() then return false end
+  if has then line:SetText(text) end
+  return true
+end
+
+local function warnLine(self, i)
+  local line = self.warnLines[i]
+  if line then return line end
+  line = self.frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+  line:SetJustifyH("LEFT")
+  line:SetWordWrap(false)
+  line:Hide()
+  self.warnLines[i] = line
+  return line
+end
+
+-- Textes des avertissements : danger, puis sacs et réparation.
+local function warnings()
+  local out = {}
+  local danger = comfort("Danger", "Line")
+  if type(danger) == "string" and danger ~= "" then out[#out + 1] = danger end
+  local supplies = comfort("Supplies", "Lines")
+  if type(supplies) == "table" then
+    for _, line in ipairs(supplies) do
+      if type(line) == "string" and line ~= "" then out[#out + 1] = line end
+    end
+  end
+  return out
+end
+
+-- Place les avertissements à la hauteur y ; -> nouvelle hauteur.
+function Tracker:LayoutWarnings(y)
+  local list = warnings()
+  local f = self.frame
+  local n = 0
+  for _, text in ipairs(list) do
+    if n >= MAX_WARN then break end
+    n = n + 1
+    local line = warnLine(self, n)
+    line:ClearAllPoints()
+    line:SetPoint("TOPLEFT", f, "TOPLEFT", PAD + 2, -y)
+    line:SetWidth(curWidth() - 2 * PAD - 4)
+    line:SetText(text)
+    line:Show()
+    y = y + WARN_LINE_H
+  end
+  for i = n + 1, #self.warnLines do self.warnLines[i]:Hide() end
+  if n > 0 then y = y + 2 end
+  return y
+end
+
 function Tracker:Refresh()
   local f = self.frame
   if not f then return end
@@ -784,6 +904,17 @@ function Tracker:Refresh()
   local status = qdbStatus()
   if status ~= "ok" then
     self:ShowMessage(status == "old" and L.QUESTIEDB_TOO_OLD or L.NEED_QUESTIEDB)
+    -- Bouton « Lien » : assistant sur la page des addons (lien CurseForge de QuestieDB à copier).
+    -- L'état de QuestieDB est fixé pour la session (Q.QDB:Status en cache) : jamais caché.
+    if not self.qdbLink and Q.UI.Wizard then
+      local b = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
+      b:SetSize(80, 20)
+      b:SetText(L.UI_WIZ_LINK_BUTTON)
+      b:SetPoint("TOPLEFT", self.message, "BOTTOMLEFT", 0, -6)
+      b:SetScript("OnClick", function() Q.SafeCall(Q.UI.Wizard.Show, Q.UI.Wizard, 1) end)
+      self.qdbLink = b
+    end
+    if self.qdbLink then f:SetHeight(f:GetHeight() + 26) end
     return self:AfterLayout()
   end
   local guide = Q.Progress:Guide()
@@ -802,8 +933,13 @@ function Tracker:Refresh()
   self.bar:SetMinMaxValues(0, math.max(total, 1))
   self.bar:SetValue(done)
   self.barText:SetFormattedText(L.UI_TRACKER_PROGRESS, done, total)
+  local chapterXP = comfort("XPRate", "ChapterText")
+  if type(chapterXP) == "string" and chapterXP ~= "" then
+    self.barText:SetText((self.barText:GetText() or "") .. "  ·  " .. chapterXP)
+  end
   self.bar:Show()
   local y = PAD + 18 + 12 + 6
+  y = self:LayoutXPLine(y)
 
   -- Alerte de quête de classe
   local alerts = classAlerts()
@@ -849,6 +985,7 @@ function Tracker:Refresh()
   cur_:SetHeight(h)
   cur_:Show()
   y = y + h + 6
+  y = self:LayoutWarnings(y)
 
   -- Étapes suivantes
   local wanted = math.min(math.max(math.floor(tonumber(setting("tracker.nextSteps")) or 3), 0), MAX_NEXT)
@@ -912,6 +1049,12 @@ Q:On("GUIDE_CHANGED", refresh)
 Q:On("CLASSQUESTS_CHANGED", refresh)
 Q:On("TRAINER_CHANGED", refresh)
 Q:On("TALENTS_CHANGED", refresh)
+-- Confort : un nouveau texte XP/h se met à jour sur place ; le reste redessine le suivi.
+Q:On("COMFORT_CHANGED", function(kind)
+  if not Tracker.frame then return end
+  if kind == "xp" and Tracker:UpdateXPLine() then return end
+  Tracker:Refresh()
+end)
 Q:On("SETTINGS_CHANGED", function(path)
   if not Tracker.frame then return end
   if path == "tracker.point" and not Tracker.moving then applyPosition(Tracker.frame) end

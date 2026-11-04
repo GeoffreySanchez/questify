@@ -77,7 +77,7 @@ function Report:Create()
       self:HighlightText()
     end
   end)
-  -- Le défilement suit le curseur (fonctions des modèles du jeu, présentes sur Forever et Era).
+  -- Le défilement suit le curseur (fonctions des modèles du jeu).
   if ScrollingEdit_OnCursorChanged then box:SetScript("OnCursorChanged", ScrollingEdit_OnCursorChanged) end
   if ScrollingEdit_OnUpdate then
     box:SetScript("OnUpdate", function(self, elapsed) ScrollingEdit_OnUpdate(self, elapsed, scroll) end)

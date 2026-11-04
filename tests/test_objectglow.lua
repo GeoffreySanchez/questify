@@ -114,7 +114,7 @@ return {
     C_Navigation = nil
     local Q = Mock.loadAddon(TOC, { extraFiles = { GUIDES }, skipGuides = true })
     Mock.advance(0.2)
-    t.eq(Q.UI.ObjectGlow.frame, nil, "Era-like client: no frame at all")
+    t.eq(Q.UI.ObjectGlow.frame, nil, "client without C_Navigation: no frame at all")
     t.eq(#Mock.errors, 0)
   end,
 }

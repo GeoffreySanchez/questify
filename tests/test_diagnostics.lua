@@ -3,7 +3,6 @@ local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local EARLY = "tests/fixtures/early_error_fixture.lua"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_d.lua")
-local Era = dofile(Mock.root .. "/tests/mock_era.lua")
 
 local function load(opts)
   Ext.install()
@@ -116,15 +115,12 @@ return {
     t.eq(#Mock.errors, 0)
   end,
 
-  check_era_client = function(t)
-    Era.install()
-    local Q = Mock.loadAddon(Era.TOC, { extraFiles = { GUIDES }, skipGuides = true })
+  check_unknown_client = function(t)
+    local Q = load()
+    GetBuildInfo = function() return "11.2.5", "63906", "Oct 7 2026", 110205 end
     local r = run(Q)
-    t.ok(r.client.detail:find("Classic Era", 1, true))
-    t.eq(r.questlog.status, "ok", "Era quest log functions")
-    t.eq(r.automation.status, "ok")
-    t.eq(r.waypoint.status, "info", "no native pin on Era is expected")
-    t.eq(r.navigation.status, "warn", "native display on Era: TomTom advised")
+    t.eq(r.client.status, "warn", "only Forever is supported")
+    t.ok(r.client.detail:find("110205", 1, true))
     t.eq(#Mock.errors, 0)
   end,
 

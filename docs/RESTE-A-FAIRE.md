@@ -11,7 +11,7 @@ Ce commit contient trois ajouts testés (tests verts), pas encore copiés dans l
 - StepGuard : un donneur qui ne propose pas la quête attendue -> étape passée, `/qf back` pour la rouvrir.
 
 **À faire au rallumage :** mettre à jour le clone du Bureau (`git pull` sur la branche), copier
-`Questify_Vanilla/` dans `_classic_era_\Interface\AddOns\` et `_forever_\Interface\AddOns\`, puis
+`Questify_Vanilla/` dans `_forever_\Interface\AddOns\`, puis
 **relancer le jeu** (nouveaux fichiers : `UI\QuestItemButton.lua`, `UI\BugReport.lua`, `Engine\StepGuard.lua`).
 
 ## Au lancement de Forever (ce soir, minuit à Paris)
@@ -44,8 +44,6 @@ Ce commit contient trois ajouts testés (tests verts), pas encore copiés dans l
   `tools/routebuilder` pour recaler les constantes (vitesse de marche, temps par mob, temps PNJ) et régénérer les routes.
 
 ### Talents
-- Builds Era des 8 autres classes (même méthode que le guerrier : ordre Icy Veins Classic, positions
-  vérifiées sur le calculateur Classic de Wowhead).
 - Builds Forever des 9 classes (voir « Au lancement »).
 
 ### Divers

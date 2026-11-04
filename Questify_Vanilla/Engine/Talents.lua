@@ -39,8 +39,6 @@ function Talents:Dump()
   QuestifyVanillaDB = QuestifyVanillaDB or {}
   local db = QuestifyVanillaDB
   db.talentDump = db.talentDump or {}
-  local flavor = (Q.IsClassicEra and Q.IsClassicEra()) and "era" or "forever"
-  db.talentDump[flavor] = db.talentDump[flavor] or {}
   local list, count = { locale = GetLocale and GetLocale() or "?", tabs = {} }, 0
   for tab = 1, (call(GetNumTalentTabs) or 0) do
     local a, b = call(GetTalentTabInfo, tab)
@@ -51,7 +49,7 @@ function Talents:Dump()
       count = count + 1
     end
   end
-  db.talentDump[flavor][Q.Player.classFile or "?"] = list
+  db.talentDump[Q.Player.classFile or "?"] = list
   return count
 end
 
@@ -81,16 +79,13 @@ end
 ---------------------------------------------------------------------------
 -- Presets
 ---------------------------------------------------------------------------
--- Presets de la classe pour ce jeu (champ flavor : "era" ou "forever" ; absent = les deux).
+-- Presets de la classe du personnage (Data/TalentBuilds.lua).
 function Talents:Presets()
   local data = Q.TalentBuildData
   local list = type(data) == "table" and Q.Player.classFile and data[Q.Player.classFile]
   if type(list) ~= "table" then return {} end
-  local flavor = (Q.IsClassicEra and Q.IsClassicEra()) and "era" or "forever"
   local out = {}
-  for _, p in ipairs(list) do
-    if p.flavor == nil or p.flavor == flavor then out[#out + 1] = p end
-  end
+  for _, p in ipairs(list) do out[#out + 1] = p end
   return out
 end
 

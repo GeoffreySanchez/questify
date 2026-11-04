@@ -97,7 +97,7 @@ COMMANDS.debug = function()
 end
 
 -- Relevé des arbres de talents du client (positions, rangs max, noms, icônes) dans
--- QuestifyVanillaDB.talentDump[<jeu>][<classe>] : sert à écrire et vérifier les presets.
+-- QuestifyVanillaDB.talentDump[<classe>] : sert à écrire et vérifier les presets.
 COMMANDS.talents = function()
   local n = Q.Talents and Q.Talents:Dump() or 0
   Q:Print(L.UI_SLASH_TALENTS_DUMPED, n)

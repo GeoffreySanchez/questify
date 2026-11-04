@@ -50,7 +50,7 @@ function Bug:Text()
   local function add(fmt, ...) lines[#lines + 1] = string.format(fmt, ...) end
   local version, build, _, iface = call(GetBuildInfo)
   add("Questify Vanilla %s | client %s (%s, interface %s) | %s | %s", tostring(Q.version), tostring(version),
-    tostring(build), tostring(iface), (GetLocale and GetLocale()) or "?", Q.IsClassicEra() and "Era" or "Forever")
+    tostring(build), tostring(iface), (GetLocale and GetLocale()) or "?", Q.IsForever() and "Forever" or "?")
   local qdb = Q.QDB and Q.QDB.Status and Q.QDB:Status() or "?"
   add("QuestieDB %s (%s)", addonVersion("QuestieDB"), tostring(qdb))
   add("Perso : %s %s niveau %s %s", plain(P.raceKey), plain(P.classFile), plain(P.level), plain(P.faction))

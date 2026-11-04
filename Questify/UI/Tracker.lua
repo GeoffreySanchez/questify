@@ -418,7 +418,8 @@ function Tracker:Create()
   tr:Hide()
   self.trainerAlert, self.trainerText, self.trainerPulse = tr, trText, trPulse
 
-  -- Alerte des talents (point à dépenser, talent conseillé) : clic = fenêtre des talents
+  -- Alerte des talents (point à dépenser, talent conseillé) : clic = la popup des talents (spec 7.6),
+  -- sinon (elle ne peut pas s'afficher) la fenêtre des talents
   local ta = CreateFrame("Button", nil, f)
   ta:SetHeight(20)
   ta:RegisterForClicks("LeftButtonUp")
@@ -441,7 +442,7 @@ function Tracker:Create()
   taText:SetPoint("RIGHT", ta, "RIGHT", -2, 0)
   taText:SetJustifyH("LEFT")
   taText:SetWordWrap(false)
-  ta:SetScript("OnClick", function() Q.SafeCall(function() Q.Talents:OpenFrame() end) end)
+  ta:SetScript("OnClick", function() Q.SafeCall(Tracker.OnTalentClick, Tracker) end)
   ta:SetScript("OnEnter", function(btn) Q.SafeCall(Tracker.TalentTooltip, Tracker, btn) end)
   ta:SetScript("OnLeave", hideTooltip)
   ta:Hide()
@@ -763,15 +764,41 @@ end
 
 local TALENT_ICON = "Interface\\Icons\\Ability_Marksmanship"
 
+-- Premier talent à prendre : -> nom, icône (du jeu, d'après le spellID) ou nil.
+local function nextTalent(alert)
+  local entry = alert.due and alert.due[1]
+  if not entry then return nil end
+  local name = C_Spell and C_Spell.GetSpellName and C_Spell.GetSpellName(entry.spellID)
+  local icon = C_Spell and C_Spell.GetSpellTexture and C_Spell.GetSpellTexture(entry.spellID)
+  if Q.Util.IsSecret(name) or type(name) ~= "string" then name = nil end
+  if Q.Util.IsSecret(icon) or not icon then icon = nil end
+  return name, icon
+end
+
+-- Clic sur la ligne talents : la popup (I6) ; si elle ne peut pas s'afficher maintenant (arbre pas prêt…),
+-- la fenêtre des talents. En combat la popup se remet à la fin du combat, rien d'autre ne s'ouvre.
+function Tracker:OnTalentClick()
+  local P = Q.UI.TalentPopup
+  if P and P:Show() then return end
+  if InCombatLockdown and InCombatLockdown() then return end
+  Q.Talents:OpenFrame()
+end
+
+local function obsoleteText(reason)
+  return string.format(L.TALENT_BAND_OBSOLETE, L["BUILD_OBSOLETE_" .. tostring(reason)] or tostring(reason))
+end
+
 function Tracker:TalentTooltip(owner)
   local alert = Q.Talents and Q.Talents:Alert()
   if not alert then return end
   local lines = { string.format(L.UI_TALENT_ALERT, alert.unspent) }
-  local advice = Q.Talents:Advice(alert.next)
-  if advice then
+  local advice = alert.due[1] and Q.Talents:Advice(alert.due[1], alert.tree)
+  if alert.obsolete then
+    lines[#lines + 1] = obsoleteText(alert.obsolete)
+  elseif advice then
     lines[#lines + 1] = string.format(L.UI_TALENT_NEXT, advice)
-  elseif not Q.Talents:Chosen() then
-    lines[#lines + 1] = L.UI_TALENT_NO_PRESET
+  elseif not alert.build then
+    lines[#lines + 1] = L.UI_TALENT_NO_BUILD
   end
   lines[#lines + 1] = L.UI_TALENT_HINT
   showTooltip(owner, lines)
@@ -784,10 +811,13 @@ function Tracker:LayoutTalentAlert(y)
     self.talentPulse:Stop()
     return y
   end
-  local nxt = alert.next
-  if nxt and nxt.name then
-    self.talentText:SetFormattedText(L.UI_TALENT_ALERT_NEXT, nxt.name)
-    self.talentIcon:SetTexture(nxt.icon or TALENT_ICON)
+  local name, icon = nextTalent(alert)
+  if alert.obsolete then
+    self.talentText:SetText(L.UI_TALENT_ALERT_OBSOLETE)
+    self.talentIcon:SetTexture(TALENT_ICON)
+  elseif name then
+    self.talentText:SetFormattedText(L.UI_TALENT_ALERT_NEXT, name)
+    self.talentIcon:SetTexture(icon or TALENT_ICON)
   else
     self.talentText:SetFormattedText(L.UI_TALENT_ALERT, alert.unspent)
     self.talentIcon:SetTexture(TALENT_ICON)

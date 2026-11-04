@@ -1,11 +1,10 @@
 local addonName, Q = ...
 
--- Talents : points à dépenser et talent conseillé par le preset de build choisi.
+-- Talents : points à dépenser et talents à prendre d'après le build suivi (Engine/Builds.lua).
 -- Dès le niveau 10 (un point par niveau), le suivi affiche une alerte tant qu'un point reste à
--- dépenser ; au niveau 10, un message présente les talents, puis à chaque niveau un message dit quel
--- talent prendre. Le joueur choisit au niveau 10 un preset (montée en niveau, donjon…) parmi ceux de
--- sa classe (Data/TalentBuilds.lua) : une liste ordonnée de talents désignés par leur arbre, leur
--- palier et leur colonne, pour ne pas dépendre de la langue du client (le nom vient du jeu).
+-- dépenser, avec le prochain talent du build ; un personnage sans build choisi suit le build fourni
+-- préféré de sa spécialisation (Builds:AutoPick). Les talents sont désignés par leur spellID : le nom
+-- vient du jeu, donc de la langue du client. L'alerte est recalculée à chaque TALENTS_CHANGED (I7).
 local Talents = {}
 Q.Talents = Talents
 
@@ -27,18 +26,7 @@ end
 -- Forever (famille Mainline 12.x) expose les talents par C_ClassTalents et C_Traits (voir
 -- Blizzard_PlayerSpells/Camelot/ClassTalents) : un arbre de classe dont les trois « arbres »
 -- classiques sont des groupes de nœuds. GetNumTalentTabs, GetTalentInfo et UnitCharacterPoints
--- n'y existent pas ; les fonctions qui les lisent (Find, Spent) restent pour les presets et
--- renvoient « rien » sans elles.
-
--- Talent à (arbre, palier, colonne) : -> index, nom, icône, rang, rang max ; nil si absent.
-function Talents:Find(tab, tier, column)
-  local n = call(GetNumTalents, tab) or 0
-  for i = 1, n do
-    local name, icon, ti, col, rank, maxRank = call(GetTalentInfo, tab, i)
-    if ti == tier and col == column then return i, name, icon, rank or 0, maxRank or 0 end
-  end
-  return nil
-end
+-- n'y existent pas.
 
 local function plain(v)
   if Q.Util.IsSecret(v) then return nil end
@@ -214,118 +202,129 @@ function Talents:Dump()
   return #out.nodes
 end
 
--- Points déjà placés dans tous les arbres (API Classic des presets, absente de Forever).
-function Talents:Spent()
-  local total = 0
-  for tab = 1, (call(GetNumTalentTabs) or 0) do
-    for i = 1, (call(GetNumTalents, tab) or 0) do
-      local _, _, _, _, rank = call(GetTalentInfo, tab, i)
-      total = total + (tonumber(rank) or 0)
-    end
-  end
-  return total
-end
-
--- Points à dépenser : ancienne API du client, sinon la monnaie des arbres (C_Traits, Forever),
--- sinon niveau - 9 - points placés (arbres Classic) ; 0 (rappel muet) si rien ne répond.
+-- Points à dépenser : la monnaie des arbres (C_Traits, Forever ; points en attente déjà comptés comme
+-- dépensés), sinon l'ancienne API du client ; 0 (rappel muet) si rien ne répond. Ne lit jamais l'arbre (M1).
 function Talents:Unspent()
   if playerLevel() < FIRST_LEVEL then return 0 end
-  local v = call(UnitCharacterPoints, "player")
+  local v = self:TreeCurrencyUnspent()
+  if type(v) == "number" then return v end
+  v = call(UnitCharacterPoints, "player")
   if type(v) == "number" and not Q.Util.IsSecret(v) then return math.max(0, v) end
   v = call(GetUnspentTalentPoints)
   if type(v) == "number" and not Q.Util.IsSecret(v) then return math.max(0, v) end
-  v = self:TreeCurrencyUnspent()
-  if v then return v end
-  if (call(GetNumTalentTabs) or 0) == 0 then return 0 end
-  return math.max(0, playerLevel() - (FIRST_LEVEL - 1) - self:Spent())
+  return 0
 end
 
----------------------------------------------------------------------------
--- Presets
----------------------------------------------------------------------------
--- Presets de la classe du personnage (Data/TalentBuilds.lua).
-function Talents:Presets()
-  local data = Q.TalentBuildData
-  local list = type(data) == "table" and Q.Player.classFile and data[Q.Player.classFile]
-  if type(list) ~= "table" then return {} end
-  local out = {}
-  for _, p in ipairs(list) do out[#out + 1] = p end
-  return out
-end
+-- État vu par la dernière alerte, pour décider de TALENTS_DUE.
+local lastDue, lastUnspent = 0, 0
 
-function Talents:PresetTitle(preset)
-  if type(preset) ~= "table" then return "" end
-  local t = preset.title
-  if type(t) == "table" then return t[GetLocale and GetLocale() or "enUS"] or t.enUS or preset.key end
-  return tostring(t or preset.key)
-end
-
-function Talents:Chosen()
-  local key = Q.char and Q.char.talentPreset
-  if not key then return nil end
-  for _, p in ipairs(self:Presets()) do
-    if p.key == key then return p end
-  end
-  return nil
-end
-
-function Talents:HasAnswered()
-  return Q.char ~= nil and Q.char.talentPreset ~= nil
-end
-
--- key = clé d'un preset, ou false pour « aucun ».
-function Talents:Choose(key)
-  if not Q.char then return end
-  Q.char.talentPreset = key or false
-  Q:Fire("TALENTS_CHANGED")
-end
-
--- Prochain talent du preset : le premier rang de la liste pas encore pris.
--- -> { name, icon, tab, tabName, rank, maxRank, index } ou nil (preset fini, absent, ou arbre inconnu).
-function Talents:Next()
-  local preset = self:Chosen()
-  if not preset or type(preset.order) ~= "table" then return nil end
-  local need = {}
-  for _, pos in ipairs(preset.order) do
-    local tab, tier, col = pos[1], pos[2], pos[3]
-    local k = tab .. ":" .. tier .. ":" .. col
-    need[k] = (need[k] or 0) + 1
-    local index, name, icon, rank, maxRank = self:Find(tab, tier, col)
-    if not index then return nil end   -- arbre différent de celui du preset : on ne conseille rien
-    -- vérifications : rang max, et nom anglais quand le client est en anglais
-    if pos[4] and pos[4] ~= maxRank then return nil end
-    if pos[5] and GetLocale and GetLocale() == "enUS" and pos[5] ~= name then return nil end
-    if rank < need[k] and rank < maxRank then
-      local tabName = call(GetTalentTabInfo, tab)
-      if type(tabName) == "number" then tabName = select(2, call(GetTalentTabInfo, tab)) end
-      return { name = name, icon = icon, tab = tab, tabName = tabName, rank = rank, maxRank = maxRank, index = index }
+-- État des talents pour n points à dépenser : build suivi pour le groupe actif (choisi, sinon le fourni
+-- préféré de la spécialisation, Builds:AutoPick), validé contre l'arbre (Builds:Obsolete, en cache) ; un build
+-- obsolète ne donne aucun point dû (anti-objectif 4 : jamais suivi sans le dire) ; sinon points dus
+-- (Builds:Due) et écart au build.
+local function stateOf(tree, n)
+  local B = Q.Builds
+  local build = B and (B:AutoPick(B:ActiveGroup(), tree) or B:Active()) or nil
+  local due, deviates, obsolete = {}, false, nil
+  if build and tree then
+    obsolete = B:Obsolete(build, tree)
+    if not obsolete then
+      due = B:Due(build, tree)
+      deviates = B:Deviates(build, tree)
     end
   end
-  return nil
+  return { unspent = n, due = due, build = build, tree = tree, deviates = deviates, obsolete = obsolete }
 end
 
--- Alert() -> { unspent, next } quand un point est à dépenser, sinon nil.
+-- State() -> { unspent, due, build, tree, deviates, obsolete }, même avec 0 point à dépenser, ou nil sans
+-- arbre lisible. obsolete : raison de Builds:Validate quand le build suivi ne convient plus à l'arbre (due
+-- est alors vide). Indépendant du réglage talentAlert (la popup et la ligne du suivi seulement) : le halo,
+-- l'infobulle et la bande de la fenêtre des talents (UI/TalentFrameHook.lua) le lisent. Ne déclenche rien.
+function Talents:State()
+  local tree = Q.TalentTree and Q.TalentTree:Read() or nil
+  if not tree then return nil end
+  local n = playerLevel() >= FIRST_LEVEL and tonumber(tree.unspent) or 0
+  return stateOf(tree, math.max(0, n or 0))
+end
+
+-- Alert() -> le même état quand un point est à dépenser et que talentAlert est actif, sinon nil.
+--   due : points à prendre maintenant, dans l'ordre du build (Builds:Due) ; vide sans build, sans arbre ou
+--   avec un build obsolète ;
+--   build : build suivi pour le groupe actif (choisi, sinon le fourni préféré de la spécialisation), ou nil ;
+--   deviates : le joueur s'est écarté du build ; obsolete : raison, build obsolète.
+-- Le nombre de points vient de Unspent() (monnaie) ; l'arbre n'est lu que s'il y a un point à dépenser
+-- (M1), et sans arbre lisible tree = nil. Le build n'est choisi (AutoPick) que s'il y a un point à dépenser.
+-- Déclenche TALENTS_DUE quand due passe de vide à non vide, ou quand unspent augmente.
 function Talents:Alert()
   if setting("talentAlert") == false then return nil end
   local n = self:Unspent()
-  if n <= 0 then return nil end
-  return { unspent = n, next = self:Next() }
-end
-
--- Texte du conseil : « <talent> (<arbre>, rang r/max) ».
-function Talents:Advice(nxt)
-  if not nxt then return nil end
-  return string.format(Q.L.TALENT_ADVICE, nxt.name or "?", nxt.tabName or "?", (nxt.rank or 0) + 1, nxt.maxRank or 1)
-end
-
--- Ouvre la fenêtre des talents du jeu (hors combat).
-function Talents:OpenFrame()
-  if InCombatLockdown and InCombatLockdown() then return false end
-  if type(TalentFrame_LoadUI) == "function" then pcall(TalentFrame_LoadUI) end
-  if type(ToggleTalentFrame) == "function" then
-    pcall(ToggleTalentFrame)
-    return true
+  if n <= 0 then
+    lastDue, lastUnspent = 0, 0
+    return nil
   end
+  local tree = Q.TalentTree and Q.TalentTree:Read() or nil
+  local alert = stateOf(tree, n)
+  local fire = (#alert.due > 0 and lastDue == 0) or n > lastUnspent
+  lastDue, lastUnspent = #alert.due, n
+  if fire then Q:Fire("TALENTS_DUE", alert) end
+  return alert
+end
+
+-- Texte du conseil : « <talent> (<groupe>, rang r/max) » pour une entrée de `due`.
+function Talents:Advice(entry, tree)
+  if type(entry) ~= "table" then return nil end
+  tree = tree or (Q.TalentTree and Q.TalentTree:Read())
+  local node = entry.node
+  local group = node and tree and tree.groups and tree.groups[node.group]
+  return string.format(Q.L.TALENT_ADVICE, spellName(entry.spellID) or "?", group and group.name or "?",
+    entry.rank or 1, node and node.maxRanks or 1)
+end
+
+-- Touche des talents (raccourci TOGGLETALENTS du jeu), « N » si aucune n'est lisible.
+function Talents:TalentKey()
+  local key = type(GetBindingKey) == "function" and plain(call(GetBindingKey, "TOGGLETALENTS")) or nil
+  if type(key) ~= "string" or key == "" then return "N" end
+  local text = type(GetBindingText) == "function" and plain(call(GetBindingText, key)) or nil
+  if type(text) == "string" and text ~= "" then return text end
+  return key
+end
+
+local function isShown(frame, method)
+  local fn = type(frame) == "table" and frame[method]
+  if type(fn) ~= "function" then return nil end
+  local ok, v = pcall(fn, frame)
+  if not ok then return nil end
+  return plain(v) == true
+end
+
+-- Ouvre l'affichage des talents du jeu, hors combat, sans jamais charger d'addon de Blizzard (I10) :
+-- PlayerSpellsUtil.ToggleClassTalentFrame charge Blizzard_PlayerSpells quand PlayerSpellsFrame n'existe pas
+-- (PlayerSpellsFrame_LoadUI -> LoadAddOnWithErrorHandling, branche forever de wow-ui-source), ce qui
+-- rattache la fenêtre à l'addon (sorts du grimoire bloqués ensuite). Elle n'est donc appelée que sur une
+-- fenêtre déjà chargée par le jeu et cachée (c'est une bascule : montrée, elle la refermerait). Fenêtre
+-- absente ou montrée sur le grimoire : message « Ouvre tes talents avec <touche> » (quiet : pas de message).
+-- -> vrai si l'affichage des talents est ouvert (ou l'était déjà).
+function Talents:OpenFrame(quiet)
+  if InCombatLockdown and InCombatLockdown() then return false end
+  local frame = PlayerSpellsFrame
+  if type(PlayerSpellsUtil) == "table" and type(PlayerSpellsUtil.ToggleClassTalentFrame) == "function"
+      and type(frame) == "table" then
+    local shown = isShown(frame, "IsShown")
+    if shown == false then
+      pcall(PlayerSpellsUtil.ToggleClassTalentFrame)
+      return true
+    end
+    if shown and isShown(frame.TalentsFrame, "IsVisible") then return true end
+  elseif type(PlayerTalentFrame) == "table" and type(ToggleTalentFrame) == "function" then
+    -- ancienne fenêtre (hors Forever), même règle : seulement déjà chargée et cachée
+    local shown = isShown(PlayerTalentFrame, "IsShown")
+    if shown == false then
+      pcall(ToggleTalentFrame)
+      return true
+    end
+    if shown then return true end
+  end
+  if not quiet then Q:Print(Q.L.TALENT_OPEN_KEY, self:TalentKey()) end
   return false
 end
 
@@ -336,13 +335,13 @@ local function announce(level)
   if setting("talentAlert") == false or (level or 0) < FIRST_LEVEL then return end
   local L = Q.L
   if level == FIRST_LEVEL then Q:Print(L.TALENT_FIRST) end
-  local nxt = Talents:Next()
-  if nxt then
-    Q:Print(L.TALENT_LEVEL_ADVICE, Talents:Advice(nxt))
+  local alert = Talents:Alert()
+  local entry = alert and alert.due[1]
+  if entry then
+    Q:Print(L.TALENT_LEVEL_ADVICE, Talents:Advice(entry, alert.tree))
   elseif level > FIRST_LEVEL then
     Q:Print(L.TALENT_LEVEL)
   end
-  if not Talents:HasAnswered() and #Talents:Presets() > 0 then Q:Fire("TALENTS_ASK") end
 end
 Talents.Announce = function(_, level) announce(level) end
 
@@ -355,12 +354,33 @@ for _, event in ipairs({ "CHARACTER_POINTS_CHANGED", "PLAYER_TALENT_UPDATE", "SP
     "TRAIT_TREE_CURRENCY_INFO_UPDATED", "TRAIT_CONFIG_UPDATED" }) do
   Q:RegisterEvent(event, function() Q:Fire("TALENTS_CHANGED") end)
 end
-Q:On("LOGIN", function()
-  -- personnage déjà au niveau 10 ou plus sans preset : on pose la question une fois
-  if playerLevel() >= FIRST_LEVEL and not Talents:HasAnswered() and #Talents:Presets() > 0 then
-    Q:After(6, function() Q:Fire("TALENTS_ASK") end)
-  end
-end)
 Q:On("SETTINGS_CHANGED", function(path)
   if path == "talentAlert" then Q:Fire("TALENTS_CHANGED") end
 end)
+
+-- I7 : l'alerte (et donc TALENTS_DUE, qui ouvre la popup) ne dépend pas du dessin du suivi, qui sort tôt
+-- sans QuestieDB ou sans guide : Talents la calcule lui-même à chaque TALENTS_CHANGED, au plus une fois par
+-- ALERT_GAP secondes (un appel tout de suite, puis un seul en fin de fenêtre). Le suivi continue de l'appeler
+-- pour son affichage : l'émission de TALENTS_DUE reste idempotente.
+local ALERT_GAP = 0.5
+local alertAt, alertQueued = nil, false
+
+local function now() return type(GetTime) == "function" and tonumber(GetTime()) or 0 end
+
+local function selfAlert()
+  local t = now()
+  if alertAt and t - alertAt < ALERT_GAP then
+    if not alertQueued then
+      alertQueued = true
+      Q:After(ALERT_GAP - (t - alertAt), function()
+        alertQueued = false
+        alertAt = now()
+        Talents:Alert()
+      end)
+    end
+    return
+  end
+  alertAt = t
+  Talents:Alert()
+end
+Q:On("TALENTS_CHANGED", selfAlert)

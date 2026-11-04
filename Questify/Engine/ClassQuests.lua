@@ -122,6 +122,22 @@ function ClassQuests:Add(key)
   return true
 end
 
+-- Track(key) : les étapes de la chaîne passent en tête des étapes insérées (elles sont d'abord ajoutées si
+-- la quête est au journal sans étapes insérées) ; le suivi et la flèche pointent alors sur l'étape en cours
+-- (STEP_CHANGED). -> vrai si la chaîne est en tête.
+function ClassQuests:Track(key)
+  if not Q.Progress:IsEnabled() or not findChain(key) then return false end
+  local tag = TAG_PREFIX .. key
+  local inserted = false
+  for _, e in ipairs(Q.Progress:Entries()) do
+    if e.tag == tag then inserted = true; break end
+  end
+  if not inserted then
+    if not self:Add(key) then return false end   -- Add range le groupe en fin : on le remonte
+  end
+  return Q.Progress:MoveInsertedFirst(tag)
+end
+
 -- Ignore(key) : retire les étapes insérées et mémorise le choix.
 function ClassQuests:Ignore(key)
   local cq = saved()

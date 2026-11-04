@@ -46,5 +46,5 @@ jobs:
             --prerelease \
             --target "$GITHUB_SHA" \
             --title "Dernier build (main)" \
-            --notes "Build automatique du commit $GITHUB_SHA. WoW: Forever : Questify_Vanilla-*-forever.zip."
+            --notes "Build automatique du commit $GITHUB_SHA. WoW: Forever : Questify-*-forever.zip."
 

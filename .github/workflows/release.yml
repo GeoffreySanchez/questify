@@ -4,8 +4,8 @@
 # tags ; une pull request ne déclenche jamais ce workflow, les secrets ne sortent donc pas).
 #
 # Pour publier la version X.Y.Z :
-#   1. mettre « ## Version: X.Y.Z » dans Questify_Vanilla/Questify_Vanilla.toc et dans
-#      Questify_Vanilla/Questify_Vanilla_Camelot.toc (identiques), et une section « ## X.Y.Z (date) »
+#   1. mettre « ## Version: X.Y.Z » dans Questify/Questify.toc et dans
+#      Questify/Questify_Camelot.toc (identiques), et une section « ## X.Y.Z (date) »
 #      dans CHANGELOG.md ; fusionner dans main ;
 #   2. git tag vX.Y.Z && git push origin vX.Y.Z
 #   Suffixes admis : vX.Y.Z-beta.1 (bêta), vX.Y.Z-alpha.1 (alpha) ; le TOC porte alors X.Y.Z-beta.1.
@@ -31,13 +31,13 @@
 #     sur CurseForge, 1.60.1 par défaut (WoW: Forever). Les ID sont lus sur
 #     https://wow.curseforge.com/api/game/versions (en-tête X-Api-Token) : tous ceux dont le nom
 #     est égal à cette valeur. Aucun ID trouvé : le job échoue.
-#   - Pas de packager BigWigs : l'addon est dans le sous-dossier Questify_Vanilla/ et le packager
+#   - Pas de packager BigWigs : l'addon est dans le sous-dossier Questify/ et le packager
 #     cherche le TOC à la racine du dépôt. Le zip de tools/package.sh est envoyé tel quel par l'API
 #     d'envoi : POST https://wow.curseforge.com/api/projects/$CF_PROJECT_ID/upload-file, en-tête
 #     X-Api-Token, multipart « file » (le zip) + « metadata » (JSON) :
 #       changelog      notes de la release GitHub (section du CHANGELOG ou notes générées)
 #       changelogType  "markdown"
-#       displayName    "Questify Vanilla X.Y.Z"
+#       displayName    "Questify X.Y.Z"
 #       releaseType    "release" pour vX.Y.Z, "alpha" si le tag contient -alpha, "beta" s'il
 #                      contient -beta (ou tout autre suffixe)
 #       gameVersions   ID trouvés ci-dessus
@@ -79,7 +79,7 @@ jobs:
             echo "::error::Tag « $GITHUB_REF_NAME » : attendu vMAJOR.MINOR.PATCH ou vMAJOR.MINOR.PATCH-suffixe."
             exit 1
           fi
-          TOC=Questify_Vanilla/Questify_Vanilla.toc
+          TOC=Questify/Questify.toc
           TOC_VERSION="$(sed -n 's/^##[[:space:]]*Version:[[:space:]]*//p' "$TOC" | head -n 1 | tr -d '\r' | sed 's/[[:space:]]*$//')"
           if [ "$VERSION" != "$TOC_VERSION" ]; then
             echo "::error file=$TOC::Le tag $GITHUB_REF_NAME demande la version $VERSION, mais le TOC indique « ## Version: $TOC_VERSION ». Mettre le TOC à jour, ou retirer le tag."
@@ -126,7 +126,7 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           TAG="$GITHUB_REF_NAME"
-          ZIP="dist/Questify_Vanilla-$VERSION-forever.zip"
+          ZIP="dist/Questify-$VERSION-forever.zip"
           [ -f "$ZIP" ] || { echo "::error::$ZIP absent après tools/package.sh."; exit 1; }
           PRE=()
           case "$VERSION" in *-*) PRE=(--prerelease) ;; esac
@@ -186,10 +186,10 @@ jobs:
           VERSION: ${{ needs.release.outputs.version }}
         run: |
           mkdir -p dist
-          gh release download "$GITHUB_REF_NAME" --pattern "Questify_Vanilla-$VERSION-forever.zip" --dir dist
+          gh release download "$GITHUB_REF_NAME" --pattern "Questify-$VERSION-forever.zip" --dir dist
           gh release view "$GITHUB_REF_NAME" --json body --jq .body > changelog.md
           if ! grep -q '[^[:space:]]' changelog.md; then
-            printf 'Questify Vanilla %s\n' "$VERSION" > changelog.md
+            printf 'Questify %s\n' "$VERSION" > changelog.md
           fi
 
       - name: Envoyer sur CurseForge
@@ -201,7 +201,7 @@ jobs:
           VERSION: ${{ needs.release.outputs.version }}
         run: |
           set -euo pipefail
-          ZIP="dist/Questify_Vanilla-$VERSION-forever.zip"
+          ZIP="dist/Questify-$VERSION-forever.zip"
           GAME_VERSION="${CF_GAME_VERSION:-1.60.1}"
 
           case "$GITHUB_REF_NAME" in
@@ -235,7 +235,7 @@ jobs:
 
           jq -n \
             --rawfile changelog changelog.md \
-            --arg name "Questify Vanilla $VERSION" \
+            --arg name "Questify $VERSION" \
             --arg type "$RELEASE_TYPE" \
             --argjson versions "$GAME_IDS" \
             --argjson relations "$RELATIONS" \

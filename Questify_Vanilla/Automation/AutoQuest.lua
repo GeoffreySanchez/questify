@@ -63,6 +63,7 @@ end
 local function invalidate() routeSet = nil end
 Q:On("GUIDE_CHANGED", invalidate)
 Q:On("CLASSQUESTS_CHANGED", invalidate)
+Q:On("DUNGEONS_CHANGED", invalidate)   -- donjon ajouté, ignoré ou terminé (Engine/Dungeons.lua)
 Q:On("LOGIN", invalidate)
 Q:On("SETTINGS_CHANGED", function(path)
   if path == "dungeonQuests" then invalidate() end

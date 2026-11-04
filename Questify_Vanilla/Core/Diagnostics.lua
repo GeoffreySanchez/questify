@@ -297,6 +297,36 @@ local SETTING_PATHS = {
   "tracker.locked", "tracker.scale", "tracker.nextSteps", "tracker.showMobs", "nameplates", "telemetry",
 }
 
+-- Toutes les autres options (Q.Settings.defaults, parcours récursif, ordre alphabétique) : une option
+-- ajoutée apparaît dans le rapport sans toucher à cette liste (confort, donjons, assistant…).
+local function otherSettingPaths()
+  local seen, out = {}, {}
+  for _, p in ipairs(SETTING_PATHS) do seen[p] = true end
+  local function walk(t, prefix, depth)
+    if type(t) ~= "table" or depth > 4 then return end
+    for k, v in pairs(t) do
+      if type(k) == "string" then
+        local path = prefix and (prefix .. "." .. k) or k
+        if type(v) == "table" then
+          walk(v, path, depth + 1)
+        elseif not seen[path] then
+          out[#out + 1] = path
+        end
+      end
+    end
+  end
+  walk(Q.Settings and Q.Settings.defaults, nil, 1)
+  table.sort(out)
+  return out
+end
+
+-- Valeur courte : on/off pour les cases à cocher, la valeur sinon.
+local function compactValue(v)
+  if v == true then return "on" end
+  if v == false then return "off" end
+  return tostring(v)
+end
+
 local function formatTime(t)
   if type(t) ~= "number" or t <= 0 or type(date) ~= "function" then return "?" end
   local ok, s = pcall(date, "%Y-%m-%d %H:%M:%S", t)
@@ -435,6 +465,11 @@ function Diag:Report()
   local settings = {}
   for _, path in ipairs(SETTING_PATHS) do settings[#settings + 1] = path .. "=" .. tostring(Q.Settings:Get(path)) end
   add("Settings: %s", table.concat(settings, " "))
+  local options = {}
+  for _, path in ipairs(otherSettingPaths()) do
+    options[#options + 1] = path .. "=" .. compactValue(Q.Settings:Get(path))
+  end
+  if #options > 0 then add("Options: %s", table.concat(options, " ")) end
 
   add("")
   add("Checks:")

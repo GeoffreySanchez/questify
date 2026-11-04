@@ -14,6 +14,9 @@ Guide de leveling **gratuit et open source** pour **World of Warcraft: Forever**
   personnage sont sautées.
 - Navigation vers chaque étape (marqueur natif du jeu, ou TomTom, WaypointUI, ShortestPath Forever).
 - Monstres à tuer sous chaque objectif (clic ou touche de ciblage auto : cible + crâne), quêtes de classe, acceptation et rendu automatiques (désactivables).
+- Donjons conseillés selon ton niveau et ta faction (non publié) : un clic ajoute ses quêtes à prendre
+  en ville, l'entrée et les rendus à la route (option pour couper l'alerte).
+- Repères numérotés de l'étape courante et des 5 suivantes sur la carte du monde et la minicarte (non publié, option).
 - Un assistant de premier démarrage : addons installés ou manquants (avec leur lien CurseForge),
   itinéraire, repère, automatisations.
 
@@ -129,6 +132,10 @@ Maintenir Maj (Shift) suspend l'acceptation et le rendu automatiques.
 GPL-3.0-or-later (voir `LICENSE`). Les données de QuestieDB ne sont pas redistribuées : elles sont
 lues en jeu depuis l'addon QuestieDB.
 
+Bibliothèques incluses dans `Questify_Vanilla/Libs/`, copiées sans modification :
+- HereBeDragons 2.18 (Nevcairiel, licence BSD indiquée dans son TOC) : épingles sur la carte.
+- LibStub (domaine public) et CallbackHandler-1.0 (BSD), depuis Ace3 `Release-r1403`.
+
 ---
 
 ## English
@@ -140,6 +147,9 @@ lues en jeu depuis l'addon QuestieDB.
 - Navigation to every step (native in-game marker, or TomTom, WaypointUI, ShortestPath Forever).
 - Monsters to kill under each objective in the tracker (click or auto-targeting key: target +
   skull), class quests, automatic accept and turn-in (can be turned off).
+- Suggested dungeons for your level and faction (unreleased): one click adds its quests to pick up
+  in town, the entrance and the turn-ins to the route (the alert can be turned off).
+- Numbered pins for the current step and the next 5 on the world map and minimap (unreleased, can be turned off).
 - A first-launch wizard: installed or missing addons (with their CurseForge link), routing, marker,
   automations.
 
@@ -247,6 +257,10 @@ Holding Shift pauses automatic accept and turn-in.
 ### License
 GPL-3.0-or-later (see `LICENSE`). QuestieDB data is not redistributed: it is read in game from the
 QuestieDB addon.
+
+Libraries bundled in `Questify_Vanilla/Libs/`, copied unchanged:
+- HereBeDragons 2.18 (Nevcairiel, BSD license stated in its TOC): map pins.
+- LibStub (public domain) and CallbackHandler-1.0 (BSD), from Ace3 `Release-r1403`.
 
 ---
 

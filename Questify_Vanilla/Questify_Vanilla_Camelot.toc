@@ -11,6 +11,11 @@
 ## AddonCompartmentFunc: QuestifyVanilla_OnAddonCompartmentClick
 ## X-License: GPL-3.0-or-later
 
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\HereBeDragons\HereBeDragons-2.0.lua
+Libs\HereBeDragons\HereBeDragons-Pins-2.0.lua
+
 Locales\Locale.lua
 Locales\StringsCore.lua
 Locales\StringsNav.lua
@@ -18,6 +23,8 @@ Locales\StringsUI.lua
 Locales\StringsDiag.lua
 Locales\StringsWizard.lua
 Locales\StringsComfort.lua
+Locales\StringsDungeons.lua
+Locales\StringsMap.lua
 
 Core\Init.lua
 Core\Util.lua
@@ -45,6 +52,7 @@ Engine\XPRate.lua
 Engine\Hearth.lua
 Engine\Danger.lua
 Engine\Supplies.lua
+Engine\Dungeons.lua
 
 Nav\Navigation.lua
 
@@ -61,6 +69,8 @@ UI\UpgradePopup.lua
 UI\ProfessionPicker.lua
 UI\TalentPicker.lua
 UI\ClassQuestPopup.lua
+UI\DungeonPopup.lua
+UI\MapPins.lua
 UI\Journal.lua
 UI\Wizard.lua
 UI\QuestItemButton.lua
@@ -68,3 +78,4 @@ UI\Report.lua
 UI\Slash.lua
 
 Guides\Guides.xml
+Guides\DungeonData.lua

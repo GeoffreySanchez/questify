@@ -3,6 +3,7 @@ local addonName, Q = ...
 -- Suivi sous la minimap (spec § 5.8) :
 --   en-tête : titre du chapitre, niveaux, barre de progression « faites/total » ;
 --   alerte de quête de classe (lueur pulsée) quand une chaîne devient disponible ;
+--   alerte de donjon conseillé (Engine/Dungeons.lua), clic = fenêtre du donjon ;
 --   étape courante en gros : icône d'action, texte coloré, distance (mise à jour toutes les 0,5 s),
 --   et sous chaque ligne d'objectif les monstres à tuer (crâne, nom, niveau) ;
 --   les étapes suivantes en petit et en gris.
@@ -334,6 +335,37 @@ function Tracker:Create()
   alert:Hide()
   self.alert, self.alertText, self.alertPulse, self.alertGlow = alert, alertText, pulse, glow
 
+  -- Alerte de donjon conseillé (Engine/Dungeons.lua) : clic = fenêtre du donjon
+  local dg = CreateFrame("Button", nil, f)
+  dg:SetHeight(20)
+  dg:RegisterForClicks("LeftButtonUp")
+  local dgGlow = dg:CreateTexture(nil, "BACKGROUND")
+  dgGlow:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
+  dgGlow:SetBlendMode("ADD")
+  dgGlow:SetVertexColor(1, 0.5, 0.2)
+  dgGlow:SetAllPoints(dg)
+  local dgPulse = dgGlow:CreateAnimationGroup()
+  dgPulse:SetLooping("BOUNCE")
+  local dgFade = dgPulse:CreateAnimation("Alpha")
+  dgFade:SetFromAlpha(0.15)
+  dgFade:SetToAlpha(0.9)
+  dgFade:SetDuration(0.8)
+  local dgIcon = dg:CreateTexture(nil, "ARTWORK")
+  dgIcon:SetTexture("Interface\\Icons\\INV_Misc_Bone_HumanSkull_01")
+  dgIcon:SetSize(16, 16)
+  dgIcon:SetPoint("LEFT", dg, "LEFT", 2, 0)
+  local dgText = dg:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+  dgText:SetPoint("LEFT", dgIcon, "RIGHT", 4, 0)
+  dgText:SetPoint("RIGHT", dg, "RIGHT", -2, 0)
+  dgText:SetJustifyH("LEFT")
+  dgText:SetWordWrap(false)
+  dgText:SetTextColor(1, 0.7, 0.4)
+  dg:SetScript("OnClick", function() Q.SafeCall(function() Tracker:OpenDungeonAlert() end) end)
+  dg:SetScript("OnEnter", function(btn) Q.SafeCall(showTooltip, btn, { dgText:GetText() or "", L.DUNGEON_ALERT_HINT }) end)
+  dg:SetScript("OnLeave", hideTooltip)
+  dg:Hide()
+  self.dungeonAlert, self.dungeonText, self.dungeonPulse = dg, dgText, dgPulse
+
   -- Alerte du maître de classe (nouveaux sorts) : clic = étape vers le plus proche
   local tr = CreateFrame("Button", nil, f)
   tr:SetHeight(20)
@@ -561,6 +593,80 @@ function Tracker:OpenAlert()
 end
 
 ---------------------------------------------------------------------------
+-- Alerte de donjon conseillé
+---------------------------------------------------------------------------
+-- Donjons en alerte (lignes { dungeon, state } ou donjons seuls) : liste vide si le module manque,
+-- échoue ou si l'option dungeonSuggest est coupée.
+local function dungeonAlerts()
+  local D = Q.Dungeons
+  if not (D and D.Alerts) then return {} end
+  local ok, list = pcall(D.Alerts, D)
+  if not ok then
+    Q:ReportError(list)
+    return {}
+  end
+  local out = {}
+  if type(list) == "table" then
+    for _, item in ipairs(list) do
+      local d = type(item) == "table" and (item.dungeon or item) or nil
+      if type(d) == "table" and type(d.key) == "string" then out[#out + 1] = d end
+    end
+  end
+  return out
+end
+Tracker.DungeonAlerts = function() return dungeonAlerts() end
+
+local function dungeonName(d)
+  local P = Q.UI.DungeonPopup
+  if P and P.DungeonName then return P.DungeonName(d) end
+  return tostring(d.name or d.key or "?")
+end
+
+-- Ouvre le donjon suivant parmi les alertes (chaque clic passe au suivant, en boucle).
+function Tracker:OpenDungeonAlert()
+  local list = dungeonAlerts()
+  if #list == 0 or not Q.UI.DungeonPopup then return end
+  local index = 1
+  if self.lastDungeonKey then
+    for i, d in ipairs(list) do
+      if d.key == self.lastDungeonKey then
+        index = i % #list + 1
+        break
+      end
+    end
+  end
+  local d = list[index]
+  self.lastDungeonKey = d.key
+  Q.UI.DungeonPopup:Show(d, index, #list)
+end
+
+-- Place l'alerte de donjon à la hauteur y si un donjon est conseillé ; -> nouvelle hauteur.
+function Tracker:LayoutDungeonAlert(y)
+  local btn = self.dungeonAlert
+  if not btn then return y end
+  local alerts = dungeonAlerts()
+  if #alerts == 0 then
+    btn:Hide()
+    self.dungeonPulse:Stop()
+    return y
+  end
+  if #alerts == 1 then
+    local d = alerts[1]
+    self.dungeonText:SetFormattedText(L.DUNGEON_ALERT_ONE, dungeonName(d), tonumber(d.minLevel) or 1,
+      tonumber(d.maxLevel) or 60)
+  else
+    self.dungeonText:SetFormattedText(L.DUNGEON_ALERT_MANY, #alerts)
+  end
+  local f = self.frame
+  btn:ClearAllPoints()
+  btn:SetPoint("TOPLEFT", f, "TOPLEFT", PAD, -y)
+  btn:SetPoint("TOPRIGHT", f, "TOPRIGHT", -PAD, -y)
+  btn:Show()
+  if not self.dungeonPulse:IsPlaying() then self.dungeonPulse:Play() end
+  return y + 20 + 4
+end
+
+---------------------------------------------------------------------------
 -- Alerte du maître de classe
 ---------------------------------------------------------------------------
 local MAX_TOOLTIP_SPELLS = 10
@@ -667,6 +773,10 @@ function Tracker:ShowMessage(text)
   for _, r in ipairs({ self.title, self.levels, self.bar, self.alert, self.trainerAlert, self.talentAlert, self.current }) do r:Hide() end
   self.trainerPulse:Stop()
   self.talentPulse:Stop()
+  if self.dungeonAlert then
+    self.dungeonAlert:Hide()
+    self.dungeonPulse:Stop()
+  end
   self.mobSlots = {}
   for _, line in ipairs(self.nextLines) do line.icon:Hide(); line.text:Hide() end
   self.xpLine:Hide()
@@ -959,6 +1069,7 @@ function Tracker:Refresh()
     self.alert:Hide()
     self.alertPulse:Stop()
   end
+  y = self:LayoutDungeonAlert(y)
   y = self:LayoutTrainerAlert(y)
   y = self:LayoutTalentAlert(y)
 
@@ -1047,6 +1158,7 @@ Q:On("PROGRESS_UPDATED", refresh)
 Q:On("STEP_CHANGED", refresh)
 Q:On("GUIDE_CHANGED", refresh)
 Q:On("CLASSQUESTS_CHANGED", refresh)
+Q:On("DUNGEONS_CHANGED", refresh)
 Q:On("TRAINER_CHANGED", refresh)
 Q:On("TALENTS_CHANGED", refresh)
 -- Confort : un nouveau texte XP/h se met à jour sur place ; le reste redessine le suivi.

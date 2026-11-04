@@ -764,6 +764,160 @@ local function itemInfo(item)
   return info
 end
 
+---------------------------------------------------------------------------
+-- Bibliothèques embarquées (Libs\ : LibStub, CallbackHandler-1.0, HereBeDragons-2.0 et -Pins-2.0) :
+-- le strict nécessaire pour qu'elles se chargent et tournent sans erreur dans chaque test.
+-- Carte du monde réduite au MapCanvas (fournisseurs de données, réserves de repères), minicarte
+-- avec zoom et rayon de vue, position monde du joueur (UnitPosition) calculée comme
+-- C_Map.GetWorldPosFromMapPos.
+--   WorldMapFrame:SetMapID(id)   affiche une carte : les fournisseurs redessinent leurs repères
+--   Mock.callsTo("WorldMapFrame:AcquirePin")   repères posés sur la carte du monde
+---------------------------------------------------------------------------
+local function newPool(createFunc, resetFunc)
+  local pool = { active = {}, inactive = {}, createFunc = createFunc, resetFunc = resetFunc }
+  function pool:Acquire()
+    local obj = table.remove(self.inactive)
+    local new = false
+    if not obj then
+      obj = self.createFunc(self)
+      new = true
+    end
+    self.active[obj] = true
+    return obj, new
+  end
+  function pool:Release(obj)
+    if not self.active[obj] then return false end
+    self.active[obj] = nil
+    if self.resetFunc then self.resetFunc(self, obj) end
+    self.inactive[#self.inactive + 1] = obj
+    return true
+  end
+  function pool:ReleaseAll()
+    for obj in pairs(self.active) do self:Release(obj) end
+  end
+  function pool:EnumerateActive() return pairs(self.active) end
+  function pool:GetNumActive()
+    local n = 0
+    for _ in pairs(self.active) do n = n + 1 end
+    return n
+  end
+  return pool
+end
+
+local function newWorldMap()
+  local map = Mock.newObject("Frame", "WorldMapFrame", UIParent)
+  rawset(map, "_shown", false)   -- fermée, comme en jeu
+  local canvas = Mock.newObject("Frame", "WorldMapFrameCanvas", map)
+  rawset(map, "pinPools", {})
+  rawset(map, "dataProviders", {})
+  rawset(map, "GetCanvas", function() return canvas end)
+  rawset(map, "GetMapID", function(self) return rawget(self, "_mapID") end)
+  rawset(map, "SetMapID", function(self, id)
+    rawset(self, "_mapID", id)
+    for p in pairs(self.dataProviders) do
+      if p.OnMapChanged then p:OnMapChanged() end
+    end
+  end)
+  rawset(map, "AddDataProvider", function(self, p)
+    self.dataProviders[p] = true
+    p:OnAdded(self)
+  end)
+  rawset(map, "RemoveDataProvider", function(self, p)
+    p:RemoveAllData()
+    self.dataProviders[p] = nil
+    p:OnRemoved(self)
+  end)
+  rawset(map, "AcquirePin", function(self, template, ...)
+    local pool = self.pinPools[template]
+    if not pool then
+      pool = newPool(function() return CreateFrame("Frame", nil, canvas) end)
+      self.pinPools[template] = pool
+    end
+    local pin, new = pool:Acquire()
+    pin.pinTemplate = template
+    pin.owningMap = self
+    if new and pin.OnLoad then pin:OnLoad() end
+    pin:Show()
+    if pin.OnAcquired then pin:OnAcquired(...) end
+    record("WorldMapFrame:AcquirePin", template, ...)
+    return pin
+  end)
+  rawset(map, "RemovePin", function(self, pin)
+    local pool = self.pinPools[pin.pinTemplate]
+    if pool then pool:Release(pin) end
+  end)
+  rawset(map, "RemoveAllPinsByTemplate", function(self, template)
+    local pool = self.pinPools[template]
+    if pool then pool:ReleaseAll() end
+  end)
+  rawset(map, "EnumeratePinsByTemplate", function(self, template)
+    local pool = self.pinPools[template]
+    if pool then return pool:EnumerateActive() end
+    return function() end
+  end)
+  rawset(map, "GetNumActivePinsByTemplate", function(self, template)
+    local pool = self.pinPools[template]
+    return pool and pool:GetNumActive() or 0
+  end)
+  return map
+end
+
+function Mock.installMapLibsApi(P)
+  local cvars = { rotateMinimap = "0", minimapZoom = "0", minimapInsideZoom = "0" }
+  securecallfunction = function(fn, ...) return fn(...) end
+  IsLoggedIn = function() return false end   -- les fichiers de l'addon se chargent avant PLAYER_LOGIN
+  GetCVar = function(name) return cvars[name] end
+  GetPlayerFacing = function() return 0 end
+  -- Position monde : X vers le nord, Y vers l'ouest, puis z et l'instance (continent).
+  UnitPosition = function(unit)
+    if unit ~= "player" or P().instance or not P().x or not P().y then return nil end
+    local m = Mock.maps[P().map]
+    if not m then return nil end
+    return m.top - (P().y / 100) * m.height, m.left - (P().x / 100) * m.width, 0, m.continent
+  end
+  C_Minimap = { GetViewRadius = function() return 233 end }
+  rawset(Minimap, "GetZoom", function() return 0 end)
+  rawset(Minimap, "SetZoom", function() end)
+  C_Map.GetMapChildrenInfo = function(mapID)
+    local out = {}
+    for id, m in pairs(Mock.maps) do
+      if m.parent == mapID then
+        out[#out + 1] = { mapID = id, name = m.name, mapType = m.parent and 3 or 2, parentMapID = m.parent or 0 }
+      end
+    end
+    table.sort(out, function(a, b) return a.mapID < b.mapID end)
+    return out
+  end
+  C_Map.GetMapGroupID = function() return nil end
+  C_Map.GetMapGroupMembersInfo = function() return nil end
+  C_Map.GetMapRectOnMap = function() return nil end
+
+  MapCanvasDataProviderMixin = {
+    OnAdded = function(self, map) self.owningMap = map end,
+    OnRemoved = function(self) self.owningMap = nil end,
+    GetMap = function(self) return self.owningMap end,
+    RemoveAllData = function() end,
+    RefreshAllData = function() end,
+    OnShow = function() end,
+    OnHide = function() end,
+    OnMapChanged = function(self) self:RefreshAllData() end,
+  }
+  MapCanvasPinMixin = {
+    OnLoad = function() end,
+    OnAcquired = function() end,
+    OnReleased = function() end,
+    GetMap = function(self) return self.owningMap end,
+    SetPosition = function(self, x, y) self.normalizedX, self.normalizedY = x, y end,
+    GetPosition = function(self) return self.normalizedX, self.normalizedY end,
+    UseFrameLevelType = function(self, t) self.pinFrameLevelType = t end,
+    SetScalingLimits = function() end,
+  }
+  CreateUnsecuredRegionPoolInstance = function(_, createFunc, resetFunc)
+    return newPool(createFunc, resetFunc)
+  end
+  WorldMapFrame = newWorldMap()
+end
+
 local function installApi()
   local P = function() return Mock.player end
 
@@ -1065,7 +1219,8 @@ local function installApi()
   C_SkillInfo = { GetSkillLineInfo = function() return nil end }
   C_TooltipInfo = setmetatable({}, { __index = function() return function() return nil end end })
   TooltipDataProcessor = { AddTooltipPostCall = function() end }
-  Enum = setmetatable({ TooltipDataType = { Unit = 2, Item = 0 } }, {
+  Enum = setmetatable({ TooltipDataType = { Unit = 2, Item = 0 },
+    UIMapType = { Cosmic = 0, World = 1, Continent = 2, Zone = 3, Dungeon = 4, Micro = 5, Orphan = 6 } }, {
     __index = function() return setmetatable({}, { __index = function() return 0 end }) end,
   })
 
@@ -1118,6 +1273,8 @@ local function installApi()
     end,
     GetNamePlateForUnit = function(unit) return Mock.nameplates[unit] end,
   }
+
+  Mock.installMapLibsApi(P)
 end
 
 ---------------------------------------------------------------------------

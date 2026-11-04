@@ -65,6 +65,11 @@
   session indique `/qf bug`.
 - Classic Era n'est plus pris en charge : l'addon vise WoW: Forever seul, avec un seul zip
   (`Questify_Vanilla-<version>-forever.zip`).
+- Donjons selon le niveau et la faction : alerte « Donjon conseillé : X (niv a-b) » dans le suivi ;
+  « Ajouter à la route » insère ses quêtes à prendre en ville (la plus proche d'abord, ville par
+  ville), l'entrée du donjon, puis les rendus. Jamais le Gouffre de Ragefeu pour l'Alliance. Section
+  « Donjons » dans l'onglet Quêtes de classe du journal, option pour couper l'alerte.
+- Carte du monde et minicarte : repères numérotés de l'étape courante et des 5 suivantes (option).
 
 ### English
 - Automatic flights: at the flight master, a "Take a flight to X" step picks and takes the right
@@ -125,6 +130,11 @@
   raised while loading, and survive `/reload`; the first error of a session points to `/qf bug`.
 - Classic Era is no longer supported: the addon targets WoW: Forever only, with a single zip
   (`Questify_Vanilla-<version>-forever.zip`).
+- Dungeons by level and faction: "Suggested dungeon: X (lvl a-b)" alert in the tracker; "Add to
+  route" inserts its quests to pick up in town (nearest first, city by city), the dungeon entrance,
+  then the turn-ins. Never Ragefire Chasm for the Alliance. "Dungeons" section in the journal's
+  Class quests tab, and an option to turn the alert off.
+- World map and minimap: numbered pins for the current step and the next 5 (option, on by default).
 
 ## 0.1.0 (2026-11-03)
 

@@ -128,17 +128,11 @@ PROVIDERS.tomtom = {
   end,
 }
 
-local nativeHintShown  -- Era : le conseil « installe TomTom » n'est affiché qu'une fois par session
-
 PROVIDERS.native = {
   set = function(t)
     -- Q.API.SetNativeWaypoint : sur une carte refusée, l'ancien point trompeur est retiré ;
-    -- nil = client sans repère natif (Classic Era) : rien à poser, le suivi reste seul guide.
-    local placed = Q.API.SetNativeWaypoint(t.mapId, t.x / 100, t.y / 100, t.title)
-    if placed == nil and Q.IsClassicEra() and not nativeHintShown then
-      nativeHintShown = true
-      Q:Print(Q.L.NAV_NO_NATIVE_ERA)
-    end
+    -- API du repère absente : rien à poser, le suivi reste seul guide.
+    Q.API.SetNativeWaypoint(t.mapId, t.x / 100, t.y / 100, t.title)
     return true
   end,
   clear = function()

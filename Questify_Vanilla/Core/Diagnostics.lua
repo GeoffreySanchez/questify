@@ -91,11 +91,10 @@ local API_COMMON = {
   "C_Map.GetBestMapForUnit", "C_Map.GetPlayerMapPosition", "C_Map.GetWorldPosFromMapPos",
   "C_Timer.After", "C_Timer.NewTicker", "InCombatLockdown", "GetBuildInfo",
 }
-local API_QUESTLOG_FOREVER = {
+local API_QUESTLOG = {
   "C_QuestLog.GetInfo", "C_QuestLog.GetLogIndexForQuestID", "C_QuestLog.IsComplete",
   "C_QuestLog.GetTitleForQuestID",
 }
-local API_QUESTLOG_ERA = { "GetQuestLogTitle", "GetQuestLogIndexByID", "C_QuestLog.IsOnQuest" }
 local API_AUTOMATION = {
   "GetQuestID", "AcceptQuest", "IsQuestCompletable", "CompleteQuest", "GetNumQuestChoices",
   "GetQuestReward", "C_GossipInfo.GetActiveQuests", "C_GossipInfo.SelectActiveQuest",
@@ -119,7 +118,6 @@ check("client", "DIAG_CLIENT", function()
   local version, build, _, interface = GetBuildInfo()
   local detail = string.format("%s (%s), interface %s", tostring(version), tostring(build), tostring(interface))
   if Q.IsForever() then return "ok", "Forever " .. detail end
-  if Q.IsClassicEra() then return "ok", "Classic Era " .. detail end
   return "warn", string.format(L.DIAG_CLIENT_UNKNOWN, detail)
 end)
 
@@ -135,7 +133,7 @@ end)
 check("questlog", "DIAG_QUESTLOG", function()
   local paths = {}
   for _, p in ipairs(API_COMMON) do paths[#paths + 1] = p end
-  for _, p in ipairs(Q.IsClassicEra() and API_QUESTLOG_ERA or API_QUESTLOG_FOREVER) do paths[#paths + 1] = p end
+  for _, p in ipairs(API_QUESTLOG) do paths[#paths + 1] = p end
   return apiCheck(paths)
 end)
 
@@ -162,7 +160,6 @@ check("position", "DIAG_POSITION", function()
 end)
 
 check("waypoint", "DIAG_WAYPOINT", function()
-  if Q.IsClassicEra() then return "info", L.DIAG_WAYPOINT_ERA end
   if not Q.API.HasNativeWaypoint() then return "fail", L.DIAG_WAYPOINT_MISSING end
   local warn
   if not (C_SuperTrack and C_SuperTrack.SetSuperTrackedUserWaypoint) then warn = L.DIAG_WAYPOINT_NO_3D end
@@ -195,7 +192,6 @@ check("navigation", "DIAG_NAVIGATION", function()
   if Q.Settings:Get("nav.routing") == true and not routing then
     return "warn", string.format(L.DIAG_NAV_FALLBACK, providerLabel("shortestpath"), providerLabel(display))
   end
-  if display == "native" and Q.IsClassicEra() then return "warn", L.NAV_NO_NATIVE_ERA end
   local st = Q.Nav:Status()
   local using = routing and (providerLabel(routing) .. " > " .. providerLabel(display)) or providerLabel(display)
   if st.target and not st.provider then

@@ -104,7 +104,6 @@ local DUAL_WIELD = set("WARRIOR", "ROGUE", "HUNTER")
 -- Si l'objet n'est pas encore en cache, les infos instantanées (type, classe) restent lisibles.
 local function readItem(link)
   local out = { stats = {}, sellPrice = 0, minLevel = 0, loaded = false }
-  -- Q.API : C_Item sur Forever, GetItemInfo / GetItemStats globaux sur Era
   if type(link) ~= "string" then return out end
   local name, _, _, _, minLevel, _, _, _, equipLoc, _, sellPrice, classID, subclassID = Q.API.GetItemInfo(link)
   if name then

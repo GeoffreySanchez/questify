@@ -15,7 +15,7 @@ Q:RegisterStrings({
     DIAG_API_MISSING = "missing game functions: %s",
 
     DIAG_CLIENT = "Game client",
-    DIAG_CLIENT_UNKNOWN = "neither Forever nor Classic Era: %s",
+    DIAG_CLIENT_UNKNOWN = "not a WoW: Forever client: %s",
     DIAG_QUESTIEDB = "QuestieDB",
     DIAG_QUESTIEDB_OK = "loaded, version %s",
     DIAG_QUESTLOG = "Quest log",
@@ -25,7 +25,6 @@ Q:RegisterStrings({
     DIAG_POSITION_NO_MAP = "the game gives no map for you here",
     DIAG_POSITION_NO_POS = "no position on %s (normal inside an instance)",
     DIAG_WAYPOINT = "Game map pin",
-    DIAG_WAYPOINT_ERA = "Classic Era has no map pin or 3D marker",
     DIAG_WAYPOINT_MISSING = "C_Map.SetUserWaypoint or UiMapPoint is missing: no map pin",
     DIAG_WAYPOINT_NO_3D = "C_SuperTrack is missing: map pin without the 3D marker",
     DIAG_WAYPOINT_REFUSED = "the game refuses a pin on %s: no marker for this step",
@@ -70,7 +69,7 @@ Q:RegisterStrings({
     DIAG_API_MISSING = "fonctions du jeu absentes : %s",
 
     DIAG_CLIENT = "Client du jeu",
-    DIAG_CLIENT_UNKNOWN = "ni Forever ni Classic Era : %s",
+    DIAG_CLIENT_UNKNOWN = "client autre que WoW: Forever : %s",
     DIAG_QUESTIEDB = "QuestieDB",
     DIAG_QUESTIEDB_OK = "chargé, version %s",
     DIAG_QUESTLOG = "Journal de quêtes",
@@ -80,7 +79,6 @@ Q:RegisterStrings({
     DIAG_POSITION_NO_MAP = "le jeu ne donne pas de carte ici",
     DIAG_POSITION_NO_POS = "pas de position sur %s (normal dans une instance)",
     DIAG_WAYPOINT = "Repère du jeu",
-    DIAG_WAYPOINT_ERA = "Classic Era n'a ni repère de carte ni marqueur 3D",
     DIAG_WAYPOINT_MISSING = "C_Map.SetUserWaypoint ou UiMapPoint absent : pas de repère",
     DIAG_WAYPOINT_NO_3D = "C_SuperTrack absent : repère sur la carte sans marqueur 3D",
     DIAG_WAYPOINT_REFUSED = "le jeu refuse un repère sur %s : pas de marqueur pour cette étape",

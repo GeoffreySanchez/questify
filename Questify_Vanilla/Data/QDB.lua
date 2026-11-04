@@ -255,7 +255,7 @@ end
 function QDB:QuestName(id)
   local q = self:Quest(id)
   if q and type(q.name) == "string" and q.name ~= "" then return q.name end
-  -- Q.API.QuestTitle : C_QuestLog.GetTitleForQuestID sur Forever, C_QuestLog.GetQuestInfo sur Era
+  -- Q.API.QuestTitle : C_QuestLog.GetTitleForQuestID
   local title = Q.API and Q.API.QuestTitle(id)
   if title then return title end
   return "#" .. tostring(id)

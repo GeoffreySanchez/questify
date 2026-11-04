@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 # Contrôle de version puis zip pour installation manuelle.
 #
-# Ordre : tools/check_syntax.sh, luajit tests/run.lua (Forever et Era), luajit tools/validate_guides.lua,
-# validation des guides Classic Era (build_era.lua --validate-only), cohérence des TOC et des fichiers
-# listés (TOC Forever et TOC Era _Vanilla), puis deux zips : dist/Questify_Vanilla-<version>-forever.zip et
-# dist/Questify_Vanilla-<version>-era.zip. SKIP_GUIDE_VALIDATION=1 saute la validation des guides (CI sans clone).
+# Ordre : tools/check_syntax.sh, luajit tests/run.lua, luajit tools/validate_guides.lua, cohérence des
+# TOC et des fichiers listés, puis le zip dist/Questify_Vanilla-<version>-forever.zip (WoW: Forever).
+# SKIP_GUIDE_VALIDATION=1 saute la validation des guides (CI sans clone).
 # Le premier contrôle qui échoue arrête tout : aucun zip n'est produit.
 #
 # La version vient de « ## Version: » dans Questify_Vanilla/Questify_Vanilla.toc (0.1.0 si absente).
@@ -18,7 +17,6 @@ ADDON="Questify_Vanilla"
 ADDON_DIR="$ROOT/$ADDON"
 TOC="$ADDON_DIR/$ADDON.toc"
 TOC_FOREVER="$ADDON_DIR/${ADDON}_Camelot.toc"
-TOC_ERA="$ADDON_DIR/${ADDON}_Vanilla.toc"
 DEFAULT_VERSION="0.1.0"
 
 LUAJIT="${LUAJIT:-luajit}"
@@ -42,23 +40,17 @@ echo "OK"
 step "2/5 Tests (luajit tests/run.lua)"
 "$LUAJIT" tests/run.lua || fail "tests/run.lua a échoué"
 
-step "3/5 Guides (luajit tools/validate_guides.lua, puis guides Classic Era)"
+step "3/5 Guides (luajit tools/validate_guides.lua)"
 # La validation lit le clone QuestieDB de .cache/ : SKIP_GUIDE_VALIDATION=1 la saute (CI GitHub, sans clone).
 if [ "${SKIP_GUIDE_VALIDATION:-0}" = "1" ]; then
   echo "Sautée (SKIP_GUIDE_VALIDATION=1)"
 else
   "$LUAJIT" tools/validate_guides.lua || fail "validate_guides.lua a échoué"
-  "$LUAJIT" tools/routebuilder/build_era.lua --validate-only || fail "validation des guides Era échouée"
 fi
 
 step "4/5 TOC et fichiers listés"
 [ -f "$TOC_FOREVER" ] || fail "TOC Forever introuvable : $TOC_FOREVER"
 cmp -s "$TOC" "$TOC_FOREVER" || fail "$ADDON.toc et ${ADDON}_Camelot.toc diffèrent (ils doivent être identiques)"
-[ -f "$TOC_ERA" ] || fail "TOC Classic Era introuvable : $TOC_ERA"
-# La TOC Era liste les mêmes fichiers que la TOC Forever, sauf Guides\Guides.xml remplacé par Guides\GuidesEra.xml.
-tocFiles() { grep -v -E '^[[:space:]]*(#|$)' "$1" | tr -d '\r'; }
-diff <(tocFiles "$TOC" | sed 's/^Guides\\Guides\.xml$/Guides\\GuidesEra.xml/') <(tocFiles "$TOC_ERA") >/dev/null \
-  || fail "${ADDON}_Vanilla.toc ne liste pas les mêmes fichiers que $ADDON.toc (hors GuidesEra.xml)"
 
 VERSION="$(sed -n 's/^##[[:space:]]*Version:[[:space:]]*//p' "$TOC" | head -n 1 | tr -d '\r' | sed 's/[[:space:]]*$//')"
 if [ -z "$VERSION" ]; then
@@ -72,7 +64,6 @@ echo "Version : $VERSION"
 
 missing=0
 # Fichiers du TOC : une ligne par fichier, chemins avec « \ » (lignes vides et commentaires ignorés).
-for toc in "$TOC" "$TOC_ERA"; do
 while IFS= read -r line; do
   line="$(printf '%s' "$line" | tr -d '\r')"
   case "$line" in ""|"#"*) continue ;; esac
@@ -96,18 +87,16 @@ while IFS= read -r line; do
       fi
       ;;
   esac
-done < "$toc"
-done
+done < "$TOC"
 [ "$missing" -eq 0 ] || fail "des fichiers listés dans le TOC ou dans un XML sont absents"
 echo "OK"
 
-step "5/5 Zips (Forever et Classic Era)"
+step "5/5 Zip (Forever)"
 STAGE="$(mktemp -d "${TMPDIR:-/tmp}/questify-package.XXXXXX")" || fail "mktemp a échoué"
 trap 'rm -rf "$STAGE"' EXIT
 mkdir -p "$ROOT/dist" || fail "création de dist/ échouée"
 
-# stageAddon <saveur> <chemins à retirer...> : copie l'addon dans $STAGE/<saveur>, retire ce qui ne sert
-# pas à cette saveur et les fichiers système.
+# stageAddon <saveur> : copie l'addon dans $STAGE/<saveur> et retire les fichiers système.
 stageAddon() {
   local flavor="$1"; shift
   local dir="$STAGE/$flavor"
@@ -116,8 +105,6 @@ stageAddon() {
   if [ -f "$ROOT/LICENSE" ]; then
     cp "$ROOT/LICENSE" "$dir/$ADDON/LICENSE" || fail "copie de LICENSE échouée"
   fi
-  local rel
-  for rel in "$@"; do rm -rf "${dir:?}/$ADDON/$rel"; done
   find "$dir" \( -name '.DS_Store' -o -name '._*' -o -name '*.swp' -o -name '*~' \) -delete
 }
 
@@ -144,21 +131,8 @@ $bad"
   echo "OK : $ZIP ($(du -h "$ZIP" | cut -f1), $(printf '%s\n' "$entries" | wc -l | tr -d ' ') entrées)"
 }
 
-# Forever : TOC de base + _Camelot (Interface 16001), routes Forever. Aucun fichier Era.
-stageAddon forever "${ADDON}_Vanilla.toc" "Guides/GuidesEra.xml" "Guides/Era"
+# Forever : TOC de base + _Camelot (Interface 16001), routes Forever.
+stageAddon forever
 zipAddon forever
 checkZip "$ADDON.toc" "${ADDON}_Camelot.toc" "Guides/Guides.xml" "Guides/ClassQuestData.lua" \
   "Guides/Alliance/A_DwarfGnome_01.lua"
-if unzip -Z1 "$ZIP" | grep -q -E "/Era/|GuidesEra\.xml|${ADDON}_Vanilla\.toc"; then
-  fail "fichier Era dans le zip Forever"
-fi
-
-# Classic Era : la TOC de base devient la TOC Era (le client Era la lit si le suffixe _Vanilla ne l'est pas),
-# routes Era uniquement.
-stageAddon era "${ADDON}_Camelot.toc" "Guides/Guides.xml" "Guides/ClassQuestData.lua" \
-  "Guides/Alliance" "Guides/Horde" "Guides/Skyborne"
-cp "$TOC_ERA" "$STAGE/era/$ADDON/$ADDON.toc" || fail "copie de la TOC Era échouée"
-zipAddon era
-checkZip "$ADDON.toc" "${ADDON}_Vanilla.toc" "Guides/GuidesEra.xml" \
-  "Guides/Era/ERA_A_DwarfGnome_01.lua" "Guides/Era/ERA_A_DwarfGnome_02.lua"
-unzip -p "$ZIP" "$ADDON/$ADDON.toc" | grep -q '^## Interface: 115' || fail "la TOC de base du zip Era n'est pas la TOC Era"

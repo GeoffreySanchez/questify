@@ -87,10 +87,9 @@ function Progress:IsTurnedIn(id)
   return C_QuestLog.IsQuestFlaggedCompleted(id) == true
 end
 
--- Q.API : C_QuestLog sur Forever, GetQuestLogIndexByID / GetQuestLogTitle sur Era.
 function Progress:InLog(id)
   if type(id) ~= "number" then return false end
-  return Q.API.IsOnQuest(id)
+  return Q.API.QuestLogIndex(id) ~= nil
 end
 
 function Progress:IsComplete(id)

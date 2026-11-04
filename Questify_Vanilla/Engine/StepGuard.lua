@@ -52,7 +52,7 @@ Q:RegisterEvent("QUEST_GREETING", function()
   local offered = {}
   for i = 1, GetNumAvailableQuests() or 0 do
     local questId = select(5, GetAvailableQuestInfo(i))
-    if type(questId) ~= "number" or questId == 0 then return end   -- Era : titres seulement, on ne juge pas
+    if type(questId) ~= "number" or questId == 0 then return end   -- ID inconnu : on ne juge pas
     offered[#offered + 1] = questId
   end
   Q.SafeCall(Guard.Check, Guard, offered)

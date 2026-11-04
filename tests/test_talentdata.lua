@@ -5,12 +5,9 @@ local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
 return {
   presets_are_consistent = function(t)
     local Q = Mock.loadAddon(TOC, { skipGuides = true })
-    local n = 0
     for class, list in pairs(Q.TalentBuildData) do
       for _, p in ipairs(list) do
-        n = n + 1
         local label = class .. " " .. tostring(p.key)
-        t.ok(p.flavor == "era" or p.flavor == "forever", label .. " flavor")
         t.ok(p.kind == "leveling" or p.kind == "dungeon", label .. " kind")
         t.ok(type(p.title) == "table" and p.title.enUS and p.title.frFR, label .. " titles")
         t.eq(#p.order, 51, label .. " points")
@@ -32,11 +29,14 @@ return {
         end
       end
     end
-    t.ok(n >= 2, "at least the warrior presets")
   end,
 
-  presets_filtered_by_game = function(t)
+  presets_of_the_character_class = function(t)
     local Q = Mock.loadAddon(TOC, { skipGuides = true })
-    t.eq(#Q.Talents:Presets(), 0, "Forever client: no Era warrior build")
+    t.eq(#Q.Talents:Presets(), #(Q.TalentBuildData[Q.Player.classFile] or {}))
+    Q.TalentBuildData[Q.Player.classFile] = { { key = "T1", kind = "leveling", order = {} } }
+    t.eq(#Q.Talents:Presets(), 1, "presets of the character class")
+    Q.TalentBuildData[Q.Player.classFile] = nil
+    t.eq(#Q.Talents:Presets(), 0, "no preset for this class")
   end,
 }

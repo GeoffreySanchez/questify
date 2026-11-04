@@ -1,16 +1,14 @@
 -- tools/routebuilder/build_trainers.lua : liste des maîtres de classe pour l'addon.
 -- Lua 5.1 / LuaJIT, hors jeu, lancé depuis la racine du projet :
 --   luajit tools/routebuilder/build_trainers.lua [--db PATH] [--questie PATH] [--out FILE] [--date YYYY-MM-DD]
--- Lit la vue Forever et la vue Classic Era de QuestieDB et écrit Questify_Vanilla/Data/ClassTrainers.lua :
+-- Lit la vue Forever de QuestieDB et écrit Questify_Vanilla/Data/ClassTrainers.lua :
 -- pour chaque classe et chaque faction, les IDs des PNJ dont le sous-titre anglais est exactement
 -- « <Classe> Trainer », qui portent le drapeau TRAINER et ont au moins une position ; puis, pour
 -- chaque métier, les maîtres qui l'enseignent (sous-titre reconnu par les motifs de PROFS, hors
--- spécialistes de haut niveau). L'union des
--- deux vues est gardée : un ID absent du client (Era) est simplement ignoré à l'exécution, où les
+-- spécialistes de haut niveau). Un ID absent du client est simplement ignoré à l'exécution, où les
 -- positions sont relues dans le QuestieDB du joueur.
 package.path = "tools/routebuilder/?.lua;" .. package.path
 local qdb = require("qdb")
-local qdbEra = require("qdb_era")
 
 local CLASSES = {
   { "WARRIOR", "Warrior" }, { "PALADIN", "Paladin" }, { "HUNTER", "Hunter" }, { "ROGUE", "Rogue" },
@@ -110,13 +108,11 @@ local function main(argv)
   local found, profs = {}, {}
   local forever = qdb.load({ db = o.db, faction = "Alliance", questie = o.questie })
   collect(forever, found, profs)
-  local era = qdbEra.load({ db = o.db, faction = "Alliance", questie = o.questie })
-  collect(era, found, profs)
   local lines = {
     "local addonName, Q = ...",
     "-- Généré par tools/routebuilder/build_trainers.lua. Ne pas modifier à la main.",
     ("-- Source : QuestieDB commit %s, généré le %s."):format(tostring(forever.commit), o.date),
-    "-- Maîtres de classe par classe et faction (A = Alliance, H = Horde) : IDs de PNJ (vues Forever et Era).",
+    "-- Maîtres de classe par classe et faction (A = Alliance, H = Horde) : IDs de PNJ.",
     "Q.ClassTrainerData = {",
   }
   for _, c in ipairs(CLASSES) do

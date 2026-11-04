@@ -974,7 +974,6 @@ local function installApi()
       return nil
     end,
     GetQuestIDForLogIndex = function(i) return sortedLogIds()[i] end,
-    IsOnQuest = function(id) return Mock.quests.log[id] ~= nil end,
     IsComplete = function(id) local q = Mock.quests.log[id]; return q ~= nil and q.complete == true end,
     ReadyForTurnIn = function(id) local q = Mock.quests.log[id]; return q ~= nil and q.complete == true end,
     GetQuestObjectives = function(id)

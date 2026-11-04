@@ -78,9 +78,6 @@ local function applyPosition(f)
       (tonumber(p[4]) or 0) / k)
   elseif ObjectiveTrackerFrame then
     f:SetPoint("TOPRIGHT", ObjectiveTrackerFrame, "TOPLEFT", -8, 0)
-  elseif QuestWatchFrame then
-    -- Classic Era : suivi de quêtes de Blizzard (QuestWatchFrame) sous la minimap, on se met à sa gauche
-    f:SetPoint("TOPRIGHT", QuestWatchFrame, "TOPLEFT", -8, 0)
   elseif MinimapCluster then
     f:SetPoint("TOPRIGHT", MinimapCluster, "BOTTOMRIGHT", 0, -10)
   else

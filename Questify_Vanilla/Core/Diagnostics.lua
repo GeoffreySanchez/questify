@@ -418,6 +418,7 @@ function Diag:Report()
     tostring(GetLocale and GetLocale() or "?"))
   add("Character: %s %s %s, level %s", tostring(P.faction), tostring(P.raceKey), tostring(P.classFile), tostring(P.level))
   add("Reward role: %s", tostring(Q.Rewards and Q.Rewards:Role(P.classFile) or (Q.char and Q.char.rewardRole) or "auto"))
+  add("Spec: %s", Q.SpecRole and select(2, pcall(Q.SpecRole.Describe, Q.SpecRole)) or "-")
 
   local addons = {}
   for _, name in ipairs({ "QuestieDB", "TomTom", "WaypointUI", "ShortestPathForever" }) do

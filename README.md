@@ -44,6 +44,9 @@ Captures et vidéos à venir : liste des prises de vue dans [docs/media/README.m
   en ville, l'entrée et les rendus à la route (option pour couper l'alerte).
 - Repères numérotés de l'étape courante et des 5 suivantes sur la carte du monde et la minicarte (non publié, option).
 - Mode zone (non publié, option) : objectifs proches de plusieurs quêtes regroupés en une seule visite (repère vert, puis objets, nommés et monstres par priorité).
+- Bouton de la minicarte (non publié, option) : profil de butin de quête (Élémentaire, Soigneur, Tank…)
+  et choix rapides d'un clic ; à partir du niveau 10, Questify propose le profil de la spécialisation
+  choisie quand il diffère du tien.
 - Un assistant de premier démarrage : addons installés ou manquants (avec leur lien CurseForge),
   itinéraire, repère, automatisations.
 
@@ -178,6 +181,9 @@ Bibliothèques incluses dans `Questify_Vanilla/Libs/`, copiées sans modificatio
   in town, the entrance and the turn-ins to the route (the alert can be turned off).
 - Numbered pins for the current step and the next 5 on the world map and minimap (unreleased, can be turned off).
 - Zone mode (unreleased, can be turned off): nearby objectives of several quests grouped into one visit (green marker, then objects, named mobs and monsters by priority).
+- Minimap button (unreleased, can be turned off): quest loot profile (Elemental, Healer, Tank…) and
+  one-click quick choices; from level 10, Questify offers your new specialization's profile when it
+  differs from yours.
 - A first-launch wizard: installed or missing addons (with their CurseForge link), routing, marker,
   automations.
 

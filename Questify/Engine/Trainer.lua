@@ -74,12 +74,35 @@ local pending = false     -- relecture déjà programmée (TRAINER_UPDATE regrou
 local UPDATE_DELAY = 0.2  -- secondes : plusieurs TRAINER_UPDATE rapprochés -> une seule lecture
 Trainer.UPDATE_DELAY = UPDATE_DELAY
 
--- Sorts listés par le maître : { name, rank, level, cost } pour ceux qui ne sont pas encore appris.
+-- Le client Forever ne donne pas le spellID d'une ligne du maître (Blizzard_TrainerUI n'appelle
+-- aucune API qui le renvoie) : on le retrouve par nom + rang parmi les sorts de classe (Q.ClassSpellData).
+-- Un nom + rang qui désigne plusieurs sorts reste sans spellID.
+local function spellIdIndex()
+  local list = type(Q.ClassSpellData) == "table" and Q.Player.classFile and Q.ClassSpellData[Q.Player.classFile]
+  if type(list) ~= "table" or not (C_Spell and C_Spell.GetSpellName) then return nil end
+  local index = {}
+  for _, s in ipairs(list) do
+    local okN, name = pcall(C_Spell.GetSpellName, s.spellID)
+    local rank
+    if C_Spell.GetSpellSubtext then
+      local okR, r = pcall(C_Spell.GetSpellSubtext, s.spellID)
+      if okR and not Q.Util.IsSecret(r) and type(r) == "string" and r ~= "" then rank = r end
+    end
+    if okN and not Q.Util.IsSecret(name) and type(name) == "string" then
+      local key = name .. "\1" .. (rank or "")
+      index[key] = index[key] == nil and s.spellID or false
+    end
+  end
+  return index
+end
+
+-- Sorts listés par le maître : { name, rank, level, cost, spellID? } pour ceux qui ne sont pas encore appris.
 -- Ordre Mainline de GetTrainerServiceInfo (Blizzard_TrainerUI/Mainline) : nom, type
 -- ("available", "unavailable", "used", "header"), icône, niveau requis, sous-texte (rang).
 local function readServices()
   if type(GetNumTrainerServices) ~= "function" or type(GetTrainerServiceInfo) ~= "function" then return nil end
   local list = {}
+  local index = spellIdIndex()
   local ok, err = pcall(function()
     for i = 1, (GetNumTrainerServices() or 0) do
       local name, serviceType, _, reqLevel, subText = GetTrainerServiceInfo(i)
@@ -88,7 +111,8 @@ local function readServices()
         if serviceType == "available" and not level then level = 0 end
         local cost = type(GetTrainerServiceCost) == "function" and tonumber((GetTrainerServiceCost(i))) or 0
         local rank = type(subText) == "string" and subText ~= "" and subText or nil
-        list[#list + 1] = { name = name, rank = rank, level = level, cost = cost or 0 }
+        local spellID = index and index[name .. "\1" .. (rank or "")] or nil
+        list[#list + 1] = { name = name, rank = rank, level = level, cost = cost or 0, spellID = spellID }
       end
     end
   end)
@@ -103,7 +127,8 @@ local function sameList(a, b)
   if type(a) ~= "table" or type(b) ~= "table" or #a ~= #b then return false end
   for i, s in ipairs(a) do
     local o = b[i]
-    if type(o) ~= "table" or o.name ~= s.name or o.rank ~= s.rank or o.level ~= s.level or o.cost ~= s.cost then
+    if type(o) ~= "table" or o.name ~= s.name or o.rank ~= s.rank or o.level ~= s.level or o.cost ~= s.cost
+        or o.spellID ~= s.spellID then
       return false
     end
   end
@@ -229,11 +254,24 @@ function Trainer:Alert()
 end
 
 -- Clic sur l'alerte : étape vers le maître de classe le plus proche, avant la route.
-function Trainer:Go()
-  if not self:Learnable() then return false end
+local function insertStep(forced)
+  local t = state()
+  if t and forced then t.forced = true end
   Q.Progress:InsertSteps(TAG, { { "train" } })
   Q:Fire("TRAINER_CHANGED")
   return true
+end
+
+function Trainer:Go()
+  if not self:Learnable() then return false end
+  return insertStep(nil)   -- une étape demandée (GoNearest) reste demandée
+end
+
+-- Bouton « Route vers le maître le plus proche » (onglet Sorts) : même étape que Go(), sans l'exigence
+-- d'un sort apprenable (la liste du maître n'est peut-être pas encore relevée).
+function Trainer:GoNearest()
+  if #self:TrainerIds() == 0 then return false end
+  return insertStep(true)   -- demandée : Sync ne la retire pas faute de sort apprenable, seule la visite le fait
 end
 
 -- Clic droit : plus d'alerte avant le prochain niveau.
@@ -249,7 +287,8 @@ end
 function Trainer:Sync()
   local t = state()
   if not t then return end
-  if self:HasStep() and not self:Learnable() then
+  if not self:HasStep() then t.forced = nil end
+  if self:HasStep() and not t.forced and not self:Learnable() then
     Q.Progress:RemoveInserted(TAG)
     return   -- RemoveInserted relance la progression, donc Sync
   end
@@ -271,6 +310,8 @@ Q:RegisterEvent("TRAINER_SHOW", function()
   open = true
   -- la visite d'un maître de classe valide l'étape, même s'il reste des sorts trop chers
   if Trainer:OnTrainer() and Trainer:HasStep() then
+    local t = state()
+    if t then t.forced = nil end
     Q.Progress:RemoveInserted(TAG)
     Q:Fire("TRAINER_CHANGED")
   end

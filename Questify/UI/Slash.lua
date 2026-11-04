@@ -2,6 +2,7 @@ local addonName, Q = ...
 
 -- Commandes /questify et /qf, et bouton du compartiment d'addons.
 --   /qf            ouvre ou ferme le journal
+--   /qf build      ouvre la fenêtre du build du personnage
 --   /qf skip       passe l'étape courante
 --   /qf back       rouvre l'étape précédente
 --   /qf options    fenêtre d'options (/qf options <texte> : avec cette recherche)
@@ -81,6 +82,13 @@ COMMANDS.options = function(rest)
   if rest and rest ~= "" then O:SetSearch(rest) end
 end
 COMMANDS.config = COMMANDS.options
+
+-- Fenêtre du build du personnage (autonome ; en combat, elle s'ouvre à la fin du combat).
+COMMANDS.build = function()
+  local W = Q.UI and Q.UI.BuildWindow
+  if not W then return end
+  if W:Open("build") == false then Q:Print(L.UI_SLASH_BUILD_COMBAT) end
+end
 
 COMMANDS.wizard = function()
   if Q.UI and Q.UI.Wizard then Q.UI.Wizard:Show() end

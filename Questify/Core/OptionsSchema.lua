@@ -77,8 +77,11 @@ Schema.SECTIONS = {
 -- de chemin de réglage, il n'est donc ni exporté ni changé par un changement de profil.
 Schema.CHAR_STATE = {
   guideId = true, manual = true, skipped = true, inserted = true, classQuests = true, telemetry = true,
-  wizardDone = true, specRoleAnswered = true,
+  wizardDone = true, specRoleAnswered = true, talentPopup = true,
 }
+
+-- Réglages de Settings.defaults dont le contrôle est ailleurs que dans les Options (sans entrée au schéma).
+Schema.ELSEWHERE = { talentAlert = true }
 
 ---------------------------------------------------------------------------
 -- Outils
@@ -233,15 +236,7 @@ add({ id = "lootSingle", section = "loot", category = "profile", type = "info", 
 add({ id = "trainerAlert", section = "class", category = "spells", type = "toggle", path = "trainerAlert",
   label = "UI_OPT_TRAINER", tip = "OPT_TIP_TRAINER",
   keywords = "maitre de classe entraineur sorts trainer spells class" })
-add({ id = "talentAlert", section = "class", category = "spells", type = "toggle", path = "talentAlert",
-  label = "UI_OPT_TALENTS", tip = "OPT_TIP_TALENTS",
-  keywords = "talents talent rappel build conseils reminder advice" })
-add({ id = "talentBuild", section = "class", category = "spells", type = "action",
-  label = "UI_OPT_TALENT_BUILD", tip = "OPT_TIP_TALENT_BUILD", keywords = "talents talent build choisir choose",
-  run = function()
-    local P = ui("TalentPicker")
-    if P then P:Show() end
-  end })
+-- talentAlert n'a plus d'entrée ici : sa case est dans la roue dentée de l'onglet Build (UI/BuildPane.lua).
 add({ id = "professions", section = "class", category = "professions", type = "action",
   label = "UI_OPT_PROFESSIONS", tip = "OPT_TIP_PROFESSIONS",
   keywords = "metiers metier minage herboristerie depecage cuisine professions profession mining herbalism",

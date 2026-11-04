@@ -14,9 +14,9 @@ fusionnées. Classic Era est retiré : l'addon ne vise plus que WoW: Forever (un
   Raccourcis du jeu).
 - Alerte nouveaux sorts et étape vers le maître de classe, annonce « Équipez X », vente de la
   camelote, choix des métiers, largeur du suivi réglable.
-- Talents : rappels de points à dépenser et `/qf talents` (relevé des arbres). Aucun build n'est
-  livré (les builds guerrier Era sont retirés) : pas de choix de build tant que les builds Forever
-  ne sont pas écrits.
+- Talents : rappels de points à dépenser, `/qf talents` (relevé des arbres) et builds niveau par
+  niveau (45 builds, popup « Apprendre », onglets Build et Sorts à apprendre dans la fenêtre des
+  talents, `/qf build`). Voir « À vérifier en jeu ».
 - StepGuard : un donneur qui ne propose pas la quête attendue -> étape passée, `/qf back` pour la rouvrir.
 - `/qf bug` (alias `/qf report`, bouton « Rapport de bug » des options) : un seul rapport à copier
   avec versions, addons, perso, route (étape courante et suivantes, cible), position, navigation,
@@ -31,24 +31,31 @@ puis **relancer le jeu** : de nouveaux fichiers sont dans le TOC (`Core\Diagnost
 autres) et `/reload` ne les charge pas. Supprimer l'ancien `UI\BugReport.lua` s'il reste dans le
 dossier AddOns (il n'est plus chargé).
 
-## Au lancement de Forever (ce soir, minuit à Paris)
+## À vérifier en jeu (lancement de Forever)
 
-1. Sur le perso Forever : `/qf check`, puis `/qf talents` et `/reload` (relevé des vrais arbres de
-   talents par `C_ClassTalents` / `C_Traits` dans
-   `WTF\Account\...\SavedVariables\Questify.lua`, clé `talentDump.forever[<classe>]` :
-   nœuds avec position `posX`/`posY`, rangs, groupes (les trois arbres), sorts et noms, monnaie de
-   l'arbre). Si la discussion dit « pas encore de configuration de talents active », ouvrir une fois
-   la fenêtre des talents puis relancer `/qf talents`.
-2. Lire ce relevé, vérifier comment le jeu expose le talent « Talented » (points hors des trois
-   arbres) et que la monnaie de l'arbre (`trees[1].currencies[*].quantity`, lue par le rappel des
-   points à dépenser) donne bien les points restants. Les conseils de build lisent encore
-   `GetTalentInfo` (arbre, palier, colonne), absent de Forever : adapter `Talents:Find` aux nœuds
-   `C_Traits` du relevé (groupe, `posX`, `posY`) avant d'écrire les builds.
-3. Écrire les builds Forever (monde ouvert / donjon) dans `Data/TalentBuilds.lua` sur ces arbres,
-   d'après les guides mis à jour après le lancement (Icy Veins : le calculateur intégré donne le
-   build final, le texte donne les niveaux ; le texte du 21 octobre n'est plus à jour). Le test
-   `test_talentdata` bloque les builds impossibles.
-4. Jouer avec `/qf bug` sous la main : coller chaque rapport pour corriger les étapes cassées.
+Chaque point débloque une partie ; aucun ne bloque tout. Jouer avec `/qf bug` sous la main.
+
+1. `/qf check`, puis `/qf talents` sur un Chaman : les `spellID` des nœuds correspondent à ceux d'Icy Veins.
+2. « Apprendre » par l'addon (achat du rang + validation) fonctionne hors combat.
+3. Le maître de classe liste aussi les sorts pas encore disponibles (liste complète de la classe dès
+   la première visite) et donne ou non leur `spellID`.
+4. Le grimoire de Forever liste les sorts à venir (`FutureSpell`).
+5. Comment le jeu compte les points de talent hors des trois arbres, s'il y en a (monnaies de
+   l'arbre dans le relevé).
+6. Rang lu = `currentRank`, points en attente compris : un point posé sans « Appliquer » fait avancer
+   le halo et la bande ; `C_Traits.ConfigHasStagedChanges` est alors vrai et « Apprendre » demande de
+   valider d'abord.
+7. `C_ClassTalents.CommitConfig` renvoie `true` en cas de succès, et « Talent appris » ne s'affiche qu'à
+   la fin de l'incantation d'application (`TRAIT_CONFIG_UPDATED`).
+8. Les `specID` de Mainline correspondent à ceux de `GetSpecializationInfo` de Forever (sinon le build
+   fourni est choisi par l'index de spé ; `/qf bug` affiche la ligne « Talent spec: group, index, specID »).
+9. Placement de l'onglet, du bandeau et du halo dans la vraie fenêtre des talents.
+10. Incantation d'application interrompue (bouger pendant « Apprendre ») : `CONFIG_COMMIT_FAILED` arrive,
+    message d'échec, « Apprendre » reste disponible ; les points restent-ils en attente ?
+11. Premier affichage des talents via la popup (« Ouvrir les talents ») puis sort lancé depuis le
+    grimoire : pas d'action bloquée. Tant que le jeu n'a pas chargé la fenêtre des talents (pas encore
+    ouverte depuis la connexion), « Ouvrir les talents » dit « Ouvre tes talents avec N » (touche lue
+    des raccourcis).
 
 ## Demandé, pas encore commencé
 
@@ -68,15 +75,12 @@ dossier AddOns (il n'est plus chargé).
 - **Boucle télémétrie -> générateur** : importer les exports `/qf export` (temps réels par étape) dans
   `tools/routebuilder` pour recaler les constantes (vitesse de marche, temps par mob, temps PNJ) et régénérer les routes.
 
-### Talents
-- Builds Forever des 9 classes (voir « Au lancement »).
-
 ### Divers
 - Marqueurs sur la carte du monde : préciser ce qui est voulu.
 - Comparaison avec la route RestedXP : accès au dossier `RXPGuides` non accordé (fenêtre expirée) ;
   objectif = en tirer des règles pour le générateur, sans recopier leurs étapes.
 - README anglais : la liste « First launch » parle encore du « mob panel » (les monstres sont
   maintenant sous l'objectif dans le suivi, comme dans la version française).
-- CHANGELOG : ajouter les talents (rappels, `/qf talents`), le bouton d'objet de quête et StepGuard,
-  absents de la section « Non publié ».
+- CHANGELOG : ajouter les rappels de talents, `/qf talents`, le bouton d'objet de quête et StepGuard
+  (les builds de talents y sont).
 - Publier une release versionnée (tag `vX.Y.Z`) quand le jeu aura été testé.

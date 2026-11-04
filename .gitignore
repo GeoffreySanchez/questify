@@ -9,3 +9,9 @@ dist/
 
 # Fichiers système
 .DS_Store
+
+# Grandes tables DB2 : se récupèrent avec tools/spells/fetch_db2.sh
+tools/routebuilder/data/SpellEffect.csv
+tools/routebuilder/data/SpellMisc.csv
+tools/routebuilder/data/SpellName.csv
+tools/routebuilder/data/*.csv.tmp

@@ -111,5 +111,22 @@ return {
     t.ok(a:find("## AddonCompartmentFunc: Questify_OnAddonCompartmentClick", 1, true), "compartment")
     t.ok(a:find("Guides\\Guides.xml", 1, true), "guides xml listed")
     t.ok(a:find("UI\\Slash.lua", 1, true), "complete file list")
+    local count = 0
+    for line in a:gmatch("[^\r\n]+") do
+      if not line:match("^%s*#") and line:match("%S") then
+        count = count + 1
+        local f = io.open(Mock.root .. "/Questify/" .. line:gsub("\\", "/"):gsub("%s+$", ""), "rb")
+        t.ok(f, "listed file exists: " .. line)
+        if f then f:close() end
+      end
+    end
+    t.ok(count > 50, "TOC lists its files")
+    for _, name in ipairs({ "Engine\\TalentTree.lua", "Engine\\Builds.lua", "Engine\\TalentLearn.lua",
+      "Engine\\BuildEditor.lua", "Engine\\BuildCodec.lua", "Engine\\SpellList.lua", "UI\\TalentPopup.lua",
+      "UI\\TalentFrameHook.lua", "UI\\BuildWindow.lua", "UI\\BuildPane.lua", "UI\\SpellsPane.lua",
+      "Data\\TalentBuilds.lua", "Data\\ClassSpells.lua", "Data\\SpellQuests.lua" }) do
+      t.ok(a:find(name, 1, true), "TOC lists " .. name)
+    end
+    t.ok(not a:find("TalentPicker", 1, true), "old picker not listed")
   end,
 }

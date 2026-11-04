@@ -3,6 +3,17 @@
 ## Non publié
 
 ### Français
+- Builds de talents niveau par niveau : 45 builds pour les 9 classes (Icy Veins, Wowhead, théorie de Questify), « <Spé> — Leveling / Donjon / PvP / Raid ». Un build actif par spécialisation, suivi automatiquement.
+  - Fenêtre au centre de l'écran quand un point de talent est disponible : « Apprendre » achète les points dus en une validation ; jamais en combat, une seule fois par point. « Talent appris » s'affiche à la fin de l'incantation ; avec des points déjà posés en attente, elle demande « Valide d'abord tes points en attente (bouton Appliquer) ».
+  - Build obsolète ou arbre qui ne suit plus le build : la fenêtre dit seulement « Tu as un point de talent à dépenser », sans bouton, et se ferme d'un clic ou après 10 secondes.
+  - Un clic sur la ligne talents du suivi rouvre cette fenêtre.
+  - Tant que le jeu n'a pas encore ouvert la fenêtre des talents, « Ouvrir les talents » ne la charge pas et dit « Ouvre tes talents avec N » (ta touche des talents).
+  - Les builds fournis incomplets (moins de 51 points) finissent par « · partiel » et ne sont plus choisis d'office.
+  - Dans la fenêtre des talents du jeu : onglets « Build » et « Sorts à apprendre », halo doré sur le prochain talent (et ligne dans son infobulle), bandeau « Build suivi » avec « Créer un build à partir de mon arbre » quand l'arbre s'écarte. Rien en inspection ni sur la spécialisation inactive.
+  - Éditeur : trois arbres et ordre niveau par niveau ; Enregistrer, Dupliquer, Utiliser ; builds obsolètes grisés, copie qui garde la partie valide ; import/export `QFYB1:`, export de tous les builds, import d'un lien du calculateur Icy Veins ; menu à roue dentée avec l'option de la fenêtre (retirée des options).
+  - Onglet « Sorts à apprendre » : sorts par niveau, état, coût chez le maître, filtres, « Route vers le maître le plus proche », « Suivre la quête » / « Récupérer la quête » pour les sorts liés à une quête (totems du chaman).
+  - `/qf build` et l'entrée « Build du personnage » du menu de la minicarte ouvrent la fenêtre seule ; `/qf bug` indique pourquoi l'apprentissage en un clic est indisponible.
+  - L'ancien sélecteur de préréglages est retiré.
 - Nouvelle fenêtre d'options (`/qf options`, « Options… » du bouton de la minicarte et du journal, ou Échap > Options > AddOns > Questify).
   - Les sections sont à gauche : Route, Navigation, Automatisation, Butin, Classe et donjons, Carte et repères, Suivi, Thème, Confort, Outils, Profils.
   - Dans chaque section, des catégories, et une icône « i » sur chaque option qui explique ce qu'elle fait.
@@ -128,6 +139,17 @@
 - Carte du monde et minicarte : repères numérotés de l'étape courante et des 5 suivantes (option).
 
 ### English
+- Level-by-level talent builds: 45 builds for the 9 classes (Icy Veins, Wowhead, Questify theorycraft), "<Spec> — Leveling / Dungeon / PvP / Raid". One active build per specialization, followed automatically.
+  - Popup in the middle of the screen when a talent point is available: "Learn" buys the due points with one confirmation; never in combat, once per point. "Talent learned" shows when the apply cast ends; with points already pending, it asks "Apply your pending points first (Apply button)".
+  - Obsolete build, or a tree that no longer follows the build: the popup only says "You have a talent point to spend", with no button, and closes on a click or after 10 seconds.
+  - Clicking the talent line of the tracker reopens this popup.
+  - Until the game has opened the talent window once, "Open talents" does not load it and says "Open your talents with N" (your talent key).
+  - Provided builds that are incomplete (under 51 points) end with "· partial" and are no longer picked by default.
+  - In the game's talent window: "Build" and "Spells to learn" tabs, a gold halo on the next talent (and a line in its tooltip), a "Followed build" band offering "Create a build from my tree" when the tree drifts. Nothing while inspecting or on the inactive specialization.
+  - Editor: three trees and level-by-level order; Save, Duplicate, Use; obsolete builds greyed out, a copy keeps the valid part; `QFYB1:` import/export, export of all builds, import of an Icy Veins calculator link; gear menu with the popup toggle (removed from the options).
+  - "Spells to learn" tab: spells by level, state, trainer cost, filters, "Route to the nearest trainer", "Track the quest" / "Pick up the quest" for quest-gated spells (Shaman totems).
+  - `/qf build` and the minimap menu entry "Character build" open the window on its own; `/qf bug` reports why one-click learning is unavailable.
+  - The old preset picker is removed.
 - New options window (`/qf options`, "Options…" in the minimap button menu and the journal, or Esc > Options > AddOns > Questify).
   - Sections on the left: Route, Navigation, Automation, Loot, Class and dungeons, Map and markers, Tracker, Theme, Comfort, Tools, Profiles.
   - Each section has categories, and each option has an "i" icon that explains what it does.

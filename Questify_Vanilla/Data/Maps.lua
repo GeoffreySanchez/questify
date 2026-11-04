@@ -110,9 +110,16 @@ end
 -- qui croît vers le nord et Y vers l'ouest, alors que x carte croît vers l'est et y vers le sud.
 -- La conversion est affine par carte : on l'ajuste une fois à partir de trois points
 -- ((0,0), (1,0), (0,1)), ce qui couvre toute orientation des axes, puis on la met en cache.
--- Un échec (données de carte pas encore chargées, instance) n'est pas mis en cache.
+-- Un échec (données de carte pas encore chargées, instance) n'est gardé que FAIL_RETRY secondes :
+-- une carte sans position monde ne coûte plus trois appels à chaque WorldPos, et un échec
+-- passager est retenté ensuite.
 ---------------------------------------------------------------------------
 local transforms = {}
+local failedUntil = {}    -- [uiMapID] = instant (GetTime) avant lequel on ne retente pas
+local FAIL_RETRY = 30
+Maps.FAIL_RETRY = FAIL_RETRY
+
+local function clock() return (GetTime and GetTime()) or 0 end
 
 local function makeVector(x, y)
   if CreateVector2D then return CreateVector2D(x, y) end
@@ -132,17 +139,26 @@ local function transform(m)
   local t = transforms[m]
   if t then return t end
   if type(m) ~= "number" or not (C_Map and C_Map.GetWorldPosFromMapPos) then return nil end
+  local now = clock()
+  local untilT = failedUntil[m]
+  if untilT and now < untilT then return nil end
   local ok, c0, ox, oy, c1, ax, ay, c2, bx, by = pcall(function()
     local a, b, c = sample(m, 0, 0)
+    if a == nil then return nil end           -- premier point absent : inutile d'appeler les deux autres
     local d, e, f = sample(m, 1, 0)
     local g, h, i = sample(m, 0, 1)
     return a, b, c, d, e, f, g, h, i
   end)
   if not ok then
+    failedUntil[m] = now + FAIL_RETRY
     Q:ReportError(c0)
     return nil
   end
-  if c0 == nil or c0 ~= c1 or c0 ~= c2 then return nil end
+  if c0 == nil or c0 ~= c1 or c0 ~= c2 then
+    failedUntil[m] = now + FAIL_RETRY
+    return nil
+  end
+  failedUntil[m] = nil
   t = {
     continent = c0,
     ox = ox, oy = oy,              -- monde du coin (0,0)

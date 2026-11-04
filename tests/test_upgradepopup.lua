@@ -147,4 +147,57 @@ return {
       stats = { [STR] = 2 } }))
     t.ok(not shown(Q))
   end,
+
+  -- Jamais affichée en combat : l'annonce attend la fin du combat.
+  never_shown_in_combat_waits_for_regen = function(t)
+    local Q = load()
+    Mock.player.combat = true
+    Mock.fire("PLAYER_REGEN_DISABLED")
+    receive(1, item(3060, { name = "Ringmail Gloves", equipLoc = "INVTYPE_HAND", classID = 4, subclassID = 3,
+      stats = { [STR] = 2 } }))
+    local P = Q.UI.UpgradePopup
+    t.ok(not shown(Q), "not in combat")
+    t.eq(#P.queue, 1, "queued")
+    Mock.advance(10)
+    t.eq(#P.queue, 1, "still waiting after the display time")
+    Mock.player.combat = false
+    Mock.fire("PLAYER_REGEN_ENABLED")
+    t.ok(shown(Q), "shown after the fight")
+    t.eq(P.current.link, "item:3060")
+    t.eq(#Mock.errors, 0)
+  end,
+
+  -- Combat qui commence pendant l'annonce : cachée, remise en tête de file, puis de retour.
+  fight_starting_hides_and_requeues = function(t)
+    local Q = load()
+    receive(1, item(3061, { name = "Ringmail Boots", equipLoc = "INVTYPE_FEET", classID = 4, subclassID = 3,
+      stats = { [STA] = 2 } }))
+    t.ok(shown(Q))
+    Mock.player.combat = true
+    Mock.fire("PLAYER_REGEN_DISABLED")
+    t.ok(not shown(Q), "hidden during the fight")
+    Mock.advance(10)
+    Mock.player.combat = false
+    Mock.fire("PLAYER_REGEN_ENABLED")
+    t.ok(shown(Q), "back after the fight")
+    t.eq(Q.UI.UpgradePopup.current.link, "item:3061")
+    t.eq(#Mock.errors, 0)
+  end,
+
+  -- Clic gauche en combat : rien n'est équipé et l'annonce reste.
+  left_click_in_combat_keeps_popup = function(t)
+    local Q = load()
+    receive(1, item(3062, { name = "Ringmail Belt", equipLoc = "INVTYPE_WAIST", classID = 4, subclassID = 3,
+      stats = { [STR] = 3 } }))
+    local P = Q.UI.UpgradePopup
+    Mock.player.combat = true                    -- combat sans PLAYER_REGEN_DISABLED encore reçu
+    P.frame:GetScript("OnClick")(P.frame, "LeftButton")
+    t.eq(equipped, {}, "nothing equipped in combat")
+    t.ok(shown(Q), "not dismissed")
+    t.eq(P.current.link, "item:3062")
+    Mock.player.combat = false
+    P.frame:GetScript("OnClick")(P.frame, "LeftButton")
+    t.eq(equipped, { "item:3062" })
+    t.ok(not shown(Q))
+  end,
 }

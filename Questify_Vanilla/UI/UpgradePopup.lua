@@ -6,6 +6,8 @@ local addonName, Q = ...
 -- (pas de lecture du chat, dont le texte peut être secret en combat). Le gain vient des poids de
 -- stats par classe de Q.Rewards (le moins bon des emplacements comparés).
 -- Clic : équiper l'objet (hors combat) ; clic droit : fermer. Option upgradePopup.
+-- Jamais affichée en combat : l'annonce attend PLAYER_REGEN_ENABLED (celle à l'écran au début d'un
+-- combat est remise en tête de file). Un clic gauche en combat ne la ferme pas (rien n'est équipé).
 Q.UI = Q.UI or {}
 local Popup = { queue = {}, snapshot = nil, pendingItems = {} }
 Q.UI.UpgradePopup = Popup
@@ -148,7 +150,11 @@ function Popup:Create()
 
   f:SetScript("OnClick", function(_, button)
     Q.SafeCall(function()
-      if button == "LeftButton" then Popup:EquipCurrent() end
+      if button == "LeftButton" then
+        -- en combat le jeu refuse d'équiper : l'annonce reste, rien n'est perdu
+        if inCombat() then return end
+        Popup:EquipCurrent()
+      end
       Popup:Next()
     end)
   end)
@@ -193,17 +199,41 @@ function Popup:ShowEntry(entry)
   end)
 end
 
--- Annonce suivante, ou fermeture.
+local function hideFrame()
+  if Popup.frame then
+    Popup.pulse:Stop()
+    Popup.frame:SetAlpha(0)
+    Popup.frame:Hide()
+  end
+end
+
+-- Annonce suivante, ou fermeture. En combat : rien ne s'affiche, la file attend la fin du combat.
 function Popup:Next()
   self.serial = (self.serial or 0) + 1
   local entry = table.remove(self.queue, 1)
+  if entry and inCombat() then
+    table.insert(self.queue, 1, entry)
+    entry = nil
+  end
   if entry then return self:ShowEntry(entry) end
   self.current = nil
-  if self.frame then
-    self.pulse:Stop()
-    self.frame:SetAlpha(0)
-    self.frame:Hide()
-  end
+  hideFrame()
+end
+
+-- Début de combat : l'annonce affichée repart en tête de file, sans être perdue.
+function Popup:Suspend()
+  local cur = self.current
+  if not cur then return end
+  self.serial = (self.serial or 0) + 1
+  self.current = nil
+  table.insert(self.queue, 1, cur)
+  hideFrame()
+end
+
+-- Fin de combat : reprise de la file.
+function Popup:Resume()
+  if self.current or #self.queue == 0 or inCombat() then return end
+  self:Next()
 end
 
 -- Équipe l'objet affiché (hors combat : le jeu refuse d'équiper en combat).
@@ -224,6 +254,12 @@ Q:On("LOGIN", function()
 end)
 Q:RegisterEvent("BAG_UPDATE_DELAYED", function()
   Q.SafeCall(Popup.ScanBags, Popup)
+end)
+Q:RegisterEvent("PLAYER_REGEN_DISABLED", function()
+  Q.SafeCall(Popup.Suspend, Popup)
+end)
+Q:RegisterEvent("PLAYER_REGEN_ENABLED", function()
+  Q.SafeCall(Popup.Resume, Popup)
 end)
 Q:On("SETTINGS_CHANGED", function(path)
   if path == "upgradePopup" and setting("upgradePopup") == false then

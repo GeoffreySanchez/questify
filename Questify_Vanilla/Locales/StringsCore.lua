@@ -57,6 +57,8 @@ Q:RegisterStrings({
     REASON_ERROR = "Could not check this step",
     DUNGEON_TAG = "Dungeon: %s",
     GUARD_UNAVAILABLE = "%s is not offered by %s (quest changed?): step skipped. /qf back to reopen it.",
+    GUARD_HINT_TRIVIAL = "%s is not offered by %s: it may be hidden as a low-level (gray) quest. Turn on low-level quest tracking (minimap), or right-click the step to skip it.",
+    GUARD_HINT_PREREQ = "%s is not offered by %s: an earlier quest of its chain is not done yet. Right-click the step to skip it.",
   },
   frFR = {
     NEED_QUESTIEDB = "QuestieDB est requis : installe-le depuis CurseForge.",
@@ -112,5 +114,7 @@ Q:RegisterStrings({
     REASON_ERROR = "Vérification impossible",
     DUNGEON_TAG = "Donjon : %s",
     GUARD_UNAVAILABLE = "%s n'est pas proposée par %s (quête modifiée ?) : étape passée. /qf back pour la rouvrir.",
+    GUARD_HINT_TRIVIAL = "%s n'est pas proposée par %s : elle est peut-être cachée comme quête de bas niveau (grise). Active le suivi des quêtes de bas niveau (minicarte), ou clic droit sur l'étape pour la passer.",
+    GUARD_HINT_PREREQ = "%s n'est pas proposée par %s : une quête précédente de sa chaîne n'est pas encore faite. Clic droit sur l'étape pour la passer.",
   },
 })

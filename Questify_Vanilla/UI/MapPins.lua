@@ -8,7 +8,7 @@ local addonName, Q = ...
 --   goto, fp, sethearth, boat : l'icône de l'étape (celle du suivi) à son point.
 -- Chaque repère porte le numéro d'ordre de son étape ; ceux de l'étape courante sont un peu plus
 -- grands. La minicarte ne montre que l'étape courante. Survol : texte de l'étape ; clic : cible
--- de navigation (Q.Nav:SetTarget).
+-- de navigation (Q.Nav:SetManualTarget : prioritaire jusqu'à l'étape suivante).
 -- Mode zone (Engine/ZoneMode.lua) : un repère vert au centre de la zone, en plus des repères
 -- numérotés (sur la minicarte seulement hors de la zone).
 -- Rien ici n'est protégé, mais le calcul attend la fin du combat (rien d'utile à redessiner
@@ -257,7 +257,7 @@ local function onClick(self)
   local d = self.pinData
   if not d then return end
   Q.SafeCall(function()
-    Q.Nav:SetTarget(d.mapId, d.x, d.y, d.title)
+    Q.Nav:SetManualTarget(d.mapId, d.x, d.y, d.title)
   end)
 end
 

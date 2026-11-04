@@ -253,6 +253,7 @@ Q.charDefaults = {
   classQuests = { added = {}, ignored = {}, seen = {} },
   telemetry = {},
   wizardDone = nil,
+  rewardRole = "auto",   -- Automation/Rewards.lua : profil de récompense du personnage
 }
 
 local function onAddonLoaded(event, name)

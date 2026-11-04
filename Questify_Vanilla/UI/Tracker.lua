@@ -143,7 +143,9 @@ Tracker.Comfort = comfort
 ---------------------------------------------------------------------------
 -- Actions de la souris sur l'étape courante
 ---------------------------------------------------------------------------
-local MANUAL_DONE = { note = true, ["goto"] = true }
+-- Étapes validées par un clic gauche : leur validation automatique peut manquer (coordonnées de quai
+-- estimées, vol ou foyer pris autrement que prévu).
+local MANUAL_DONE = { note = true, ["goto"] = true, boat = true, fly = true, hearth = true, fp = true, sethearth = true }
 
 local function onCurrentClick(button)
   local cur = Q.Progress:Current()

@@ -521,4 +521,20 @@ return {
     Mock.advance(1)
     t.eq(#Mock.errors, 0)
   end,
+
+  -- Index d'objectif faux dans le guide : la quête complète valide quand même l'étape.
+  complete_with_wrong_objective_index_done_when_quest_complete = function(t)
+    local Q = load()
+    local list = useGuide(Q, "T_WrongObj", { { "complete", 179, obj = 3 }, { "note", "after" } })
+    accept179()
+    Mock.advance(0.3)
+    t.eq(Q.Progress:State(list[1]), "active", "objective 3 does not exist, quest not complete")
+    Mock.quests.log[179].complete = true
+    Mock.quests.log[179].objectives[1].finished = true
+    Mock.fire("QUEST_LOG_UPDATE")
+    Mock.advance(0.3)
+    t.eq(Q.Progress:State(list[1]), "done", "complete quest: step done before the turn-in")
+    t.eq(Q.Progress:Current(), list[2])
+    t.eq(#Mock.errors, 0)
+  end,
 }

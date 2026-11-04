@@ -55,6 +55,46 @@ return {
     Ext.removePlate("nameplate3")
     Ext.addPlate("nameplate4", { name = "Boss", level = -1, npcId = 99 })
     t.eq(plain(Q.Danger:Line()), string.format(Q.L.COMFORT_DANGER_HIGH, "Boss", "??"))
+    t.eq(Mock.countPrinted("Wendigo"), 0, "higher level only: tracker line, no chat")
+    t.eq(Mock.countPrinted("Boss"), 0)
+  end,
+
+  -- Monstre seulement 3 niveaux au-dessus : ligne du suivi, jamais de message dans la discussion.
+  high_level_mob_gets_tracker_line_only = function(t)
+    local Q = load()
+    Ext.addPlate("nameplate1", HIGH)
+    t.eq(plain(Q.Danger:Line()), string.format(Q.L.COMFORT_DANGER_HIGH, "Wendigo", "4"))
+    t.eq(warnTexts(Q), { string.format(Q.L.COMFORT_DANGER_HIGH, "Wendigo", "4") })
+    Ext.removePlate("nameplate1")
+    Mock.advance(301)
+    Ext.addPlate("nameplate2", HIGH)
+    Mock.units.target = HIGH
+    Mock.fire("PLAYER_TARGET_CHANGED")
+    t.eq(#Mock.prints, 0, "no chat line for a mob that is only higher level")
+    t.eq(#Mock.errors, 0)
+  end,
+
+  -- Rare : ligne du suivi et un message par PNJ (npcID) toutes les 5 minutes.
+  rare_warns_once_per_npc_id = function(t)
+    local Q = load()
+    local RARE = { name = "Timber", level = 3, classification = "rare", npcId = 1132 }
+    Ext.addPlate("nameplate1", RARE)
+    t.eq(plain(Q.Danger:Line()), string.format(Q.L.COMFORT_DANGER_RARE, "Timber", "3"))
+    local msg = string.format(Q.L.COMFORT_DANGER_CHAT_RARE, "Timber", "3")
+    t.eq(Mock.countPrinted(msg), 1)
+    Ext.addPlate("nameplate2", RARE)
+    t.eq(Mock.countPrinted(msg), 1, "same npc id: once per 5 minutes")
+    -- élite passe devant le rare dans le suivi
+    Ext.addPlate("nameplate3", ELITE)
+    t.eq(plain(Q.Danger:Line()), string.format(Q.L.COMFORT_DANGER_ELITE, "Rockjaw Bonesnapper", "3"))
+    Ext.removePlate("nameplate3")
+    Ext.addPlate("nameplate4", { name = "Timber", level = 3, classification = "rare", npcId = 1133 })
+    t.eq(Mock.countPrinted(msg), 2, "another npc id")
+    Mock.advance(301)
+    Ext.removePlate("nameplate1")
+    Ext.addPlate("nameplate1", RARE)
+    t.eq(Mock.countPrinted(msg), 3, "again after 5 minutes")
+    t.eq(#Mock.errors, 0)
   end,
 
   ignores_friends_players_and_dead = function(t)
@@ -84,6 +124,7 @@ return {
     Mock.units.target = HIGH
     Mock.fire("PLAYER_TARGET_CHANGED")
     t.eq(plain(Q.Danger:Line()), string.format(Q.L.COMFORT_DANGER_HIGH, "Wendigo", "4"))
+    t.eq(#Mock.prints, 0, "tracker line only")
     Mock.units.target = nil
     Mock.fire("PLAYER_TARGET_CHANGED")
     t.eq(Q.Danger:Line(), nil)

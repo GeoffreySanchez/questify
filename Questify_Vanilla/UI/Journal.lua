@@ -759,7 +759,7 @@ local OPTION_GROUPS = {
   { title = "UI_OPT_AUTOMATION", checks = { { "autoQuest", "UI_OPT_AUTOQUEST" }, { "autoReward", "UI_OPT_AUTOREWARD" },
     { "upgradePopup", "UI_OPT_UPGRADE" }, { "sellJunk", "UI_OPT_SELLJUNK" },
     { "tracker.autoTarget", "UI_OPT_AUTOTARGET" }, { "trainerAlert", "UI_OPT_TRAINER" },
-    { "talentAlert", "UI_OPT_TALENTS" } } },
+    { "talentAlert", "UI_OPT_TALENTS" } }, rewardRole = true },
   { title = "UI_OPT_ROUTE", checks = { { "dungeonQuests", "UI_OPT_DUNGEON" },
     { "dungeonSuggest", "DUNGEON_OPT_SUGGEST" }, { "zoneMode", "ZONE_OPT" } } },
   { title = "UI_OPT_DISPLAY", checks = { { "nameplates", "UI_OPT_NAMEPLATES" },
@@ -862,6 +862,20 @@ function Journal:BuildOptions(parent)
       self.checks[def[1]] = cb
       y = y + 24
     end
+    if group.rewardRole then
+      -- Profil de récompense : bouton qui fait défiler les profils de la classe (rien si un seul).
+      local b = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+      b:SetSize(CLASS_W - 40, 22)
+      b:SetPoint("TOPLEFT", panel, "TOPLEFT", 14, -y - 2)
+      b:SetScript("OnClick", safe(function()
+        local Rw = Q.Rewards
+        if not Rw then return end
+        playSound("IG_MAINMENU_OPTION_CHECKBOX_ON")
+        Rw:SetRole(Rw:NextRole(Rw:Role()))
+      end))
+      self.rewardRoleButton = b
+      y = y + 28
+    end
     if group.scale then
       local down = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
       down:SetSize(26, 22)
@@ -938,6 +952,16 @@ function Journal:RefreshOptions()
   if not self.frame then return end
   for path, cb in pairs(self.checks) do
     cb:SetChecked(Q.Settings:Get(path) == true)
+  end
+  local rb, Rw = self.rewardRoleButton, Q.Rewards
+  if rb and Rw then
+    local classFile = Q.Player and Q.Player.classFile
+    if Rw:HasChoice(classFile) then
+      rb:SetText(string.format(L.UI_OPT_REWARD_ROLE, Rw:RoleLabel(Rw:Role(classFile), classFile)))
+      rb:Show()
+    else
+      rb:Hide()
+    end
   end
   if self.scaleText then
     self.scaleText:SetFormattedText(L.UI_OPT_SCALE, math.floor(scaleValue() * 100 + 0.5))

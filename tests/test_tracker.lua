@@ -139,6 +139,29 @@ return {
     t.eq(#Mock.errors, 0)
   end,
 
+  -- Bateau, vol, foyer, point de vol, lien du foyer : un clic gauche les valide aussi (quais
+  -- estimés, trajet pris autrement que prévu), avec l'aide dans l'infobulle.
+  tracker_left_click_validates_travel_steps = function(t)
+    local Q = load()
+    local T = Q.UI.Tracker
+    Q:RegisterGuide({ id = "T_travel", faction = "Alliance", steps = {
+      { "boat", 1437, 4.6, 57.1 }, { "fly", 1432 }, { "hearth", 1426 }, { "fp", 1426, 70, 20 },
+      { "sethearth", 1426, 30.4, 71.2 }, { "level", 10 } } })
+    Q.Progress:SetGuide("T_travel")
+    for i, action in ipairs({ "boat", "fly", "hearth", "fp", "sethearth" }) do
+      local cur = Q.Progress:Current()
+      t.eq(cur.key, "g:T_travel:" .. i)
+      t.eq(cur.step.action, action)
+      Mock.tooltip.lines = {}
+      T.current:GetScript("OnEnter")(T.current)
+      t.ok(Ext.tooltipHas(Q.L.UI_TRACKER_HINT_DONE), action .. ": hint in the tooltip")
+      Mock.click(T.current, "LeftButton")
+      t.eq(Q.char.manual[cur.key], true, action .. " marked done")
+    end
+    t.eq(Q.Progress:Current().key, "g:T_travel:6")
+    t.eq(#Mock.errors, 0)
+  end,
+
   tracker_distance_every_half_second = function(t)
     local Q = load()
     local T = Q.UI.Tracker

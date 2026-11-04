@@ -3,6 +3,30 @@
 ## Non publié
 
 ### Français
+- Choix de la récompense par rôle (Élémentaire, Amélioration, Restauration, tank, distance…),
+  par personnage, dans les options et l'assistant ; « Automatique » garde le comportement de classe.
+- Maître de classe : lecture des sorts dans l'ordre de Forever (niveau requis, rang) ; l'alerte
+  revient à chaque niveau après la première visite ; les filtres de la fenêtre ne sont plus touchés
+  (fini la fenêtre qui se redessinait sans arrêt).
+- Une étape « Faire » avec un objectif précis est validée dès que la quête est complète, même si
+  l'objectif indiqué par le guide est faux.
+- Clic gauche sur une étape bateau, vol, pierre de foyer, point de vol ou lien du foyer : marquée
+  faite (les quais sont des positions estimées).
+- Clic sur un repère de la carte : la flèche y reste jusqu'à l'étape suivante (la minuterie et le
+  mode zone ne la reprennent plus au bout de 3 s).
+- Métiers : évènement LEARNED_SPELL_IN_SKILL_LINE (LEARNED_SPELL_IN_TAB n'existe plus en 12.x).
+- Annonce « Équipez X » : jamais en combat ; elle attend la fin du combat, et un clic en combat ne
+  la ferme plus.
+- Talents : /qf talents relève les vrais arbres de Forever (C_ClassTalents / C_Traits : nœuds,
+  positions, rangs, sorts, monnaie) dans talentDump.forever[<classe>] ; le rappel des points à
+  dépenser lit la monnaie de l'arbre ; sans API, message clair et rappel muet.
+- Alerte danger : message dans la discussion pour les élites et les rares seulement (une fois par
+  monstre toutes les 5 minutes) ; un monstre plus haut en niveau n'a que la ligne du suivi.
+- Distances : une carte sans position monde n'est plus réinterrogée à chaque calcul (nouvel essai
+  après 30 s).
+- StepGuard : une quête grise (cachée sans le suivi des quêtes de bas niveau) ou dont les prérequis
+  ne sont pas faits n'est plus passée ; une ligne d'aide l'explique.
+- Avis de nouvelle version : « mets à jour (CurseForge ou GitHub) ».
 - Vérification de version entre joueurs : Questify envoie sa version par un message d'addon invisible à la
   guilde (une fois, après la connexion) et au groupe (au plus une fois par minute, jamais en combat). Si un
   joueur a une version plus récente, une ligne dans la discussion et un message à l'écran le disent une fois
@@ -79,6 +103,21 @@
 - Carte du monde et minicarte : repères numérotés de l'étape courante et des 5 suivantes (option).
 
 ### English
+- Reward choice by role (Elemental, Enhancement, Restoration, tank, ranged…), per character, in the
+  options and the wizard; "Automatic" keeps the class behaviour.
+- Class trainer: reads spells in Forever's order; the alert comes back at every level; the trainer
+  filters are no longer touched (no more endless redraw).
+- A "Do" step with a specific objective is done as soon as the quest is complete.
+- Left-click marks boat, flight, hearthstone, flight-path and bind steps done.
+- Map pin click: the arrow stays on it until the next step.
+- Professions: LEARNED_SPELL_IN_SKILL_LINE event (LEARNED_SPELL_IN_TAB no longer exists).
+- "Equip X" popup: never in combat, it waits for combat to end.
+- Talents: /qf talents dumps the real Forever trees (C_ClassTalents / C_Traits); the unspent-points
+  reminder reads the tree currency.
+- Danger alert: chat message for elites and rares only.
+- Distances: a map without a world position is retried after 30 s instead of on every computation.
+- StepGuard: a gray quest or one with missing prerequisites is no longer skipped; a hint explains why.
+- New-version notice: "update it (CurseForge or GitHub)".
 - Version check between players: Questify sends its version in a hidden addon message to your guild (once,
   after login) and to your group (at most once a minute, never in combat). If a player has a newer version,
   a chat line and an on-screen message tell you once per session: update via CurseForge. Option

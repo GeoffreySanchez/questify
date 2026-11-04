@@ -13,7 +13,6 @@ local Trainer = {}
 Q.Trainer = Trainer
 
 local TAG = "trainer"
-local FILTERS = { "available", "unavailable", "used" }
 
 local function setting(path) return Q.Settings:Get(path) end
 
@@ -66,42 +65,49 @@ end
 ---------------------------------------------------------------------------
 -- Lecture de la fenêtre du maître
 ---------------------------------------------------------------------------
-local reading = false
+-- Les filtres de la fenêtre (disponible / indisponible / déjà appris) ne sont jamais touchés :
+-- les changer relance TRAINER_UPDATE, donc une nouvelle lecture, et la fenêtre se redessinait
+-- sans fin. On lit ce que le joueur voit (par défaut : disponibles et indisponibles).
+local reading = false     -- lecture en cours : les TRAINER_UPDATE qu'elle causerait sont ignorés
+local open = false        -- fenêtre du maître ouverte (TRAINER_SHOW -> TRAINER_CLOSED)
+local pending = false     -- relecture déjà programmée (TRAINER_UPDATE regroupés)
+local UPDATE_DELAY = 0.2  -- secondes : plusieurs TRAINER_UPDATE rapprochés -> une seule lecture
+Trainer.UPDATE_DELAY = UPDATE_DELAY
 
--- Tous les sorts du maître (les filtres de la fenêtre sont ouverts le temps de la lecture, puis
--- remis comme avant) : { name, rank, level, cost } pour ceux qui ne sont pas encore appris.
+-- Sorts listés par le maître : { name, rank, level, cost } pour ceux qui ne sont pas encore appris.
+-- Ordre Mainline de GetTrainerServiceInfo (Blizzard_TrainerUI/Mainline) : nom, type
+-- ("available", "unavailable", "used", "header"), icône, niveau requis, sous-texte (rang).
 local function readServices()
   if type(GetNumTrainerServices) ~= "function" or type(GetTrainerServiceInfo) ~= "function" then return nil end
-  local canFilter = type(GetTrainerServiceTypeFilter) == "function" and type(SetTrainerServiceTypeFilter) == "function"
-  local saved = {}
-  if canFilter then
-    for _, f in ipairs(FILTERS) do
-      saved[f] = GetTrainerServiceTypeFilter(f) and true or false
-      if not saved[f] then SetTrainerServiceTypeFilter(f, 1) end
-    end
-  end
   local list = {}
   local ok, err = pcall(function()
     for i = 1, (GetNumTrainerServices() or 0) do
-      local name, rank, category = GetTrainerServiceInfo(i)
-      if type(name) == "string" and name ~= "" and category ~= "header" and category ~= "used" then
-        local level = type(GetTrainerServiceLevelReq) == "function" and tonumber(GetTrainerServiceLevelReq(i)) or nil
-        if category == "available" and not level then level = 0 end
-        local cost = type(GetTrainerServiceCost) == "function" and tonumber(GetTrainerServiceCost(i)) or 0
-        list[#list + 1] = { name = name, rank = type(rank) == "string" and rank or nil, level = level, cost = cost or 0 }
+      local name, serviceType, _, reqLevel, subText = GetTrainerServiceInfo(i)
+      if type(name) == "string" and name ~= "" and serviceType ~= "header" and serviceType ~= "used" then
+        local level = tonumber(reqLevel)
+        if serviceType == "available" and not level then level = 0 end
+        local cost = type(GetTrainerServiceCost) == "function" and tonumber((GetTrainerServiceCost(i))) or 0
+        local rank = type(subText) == "string" and subText ~= "" and subText or nil
+        list[#list + 1] = { name = name, rank = rank, level = level, cost = cost or 0 }
       end
     end
   end)
-  if canFilter then
-    for _, f in ipairs(FILTERS) do
-      if not saved[f] then SetTrainerServiceTypeFilter(f, 0) end
-    end
-  end
   if not ok then
     Q:ReportError(err)
     return nil
   end
   return list
+end
+
+local function sameList(a, b)
+  if type(a) ~= "table" or type(b) ~= "table" or #a ~= #b then return false end
+  for i, s in ipairs(a) do
+    local o = b[i]
+    if type(o) ~= "table" or o.name ~= s.name or o.rank ~= s.rank or o.level ~= s.level or o.cost ~= s.cost then
+      return false
+    end
+  end
+  return true
 end
 
 -- Visite d'un maître : la liste est relevée si c'est un maître de classe du joueur.
@@ -117,11 +123,25 @@ function Trainer:OnTrainer()
   local list = readServices()
   reading = false
   if not list then return false end
+  local changed = not sameList(list, t.services) or t.visitLevel ~= playerLevel()
   t.services = list
   t.visitLevel = playerLevel()
-  self:Sync()
-  Q:Fire("TRAINER_CHANGED")
+  if changed then
+    self:Sync()
+    Q:Fire("TRAINER_CHANGED")
+  end
   return true
+end
+
+-- TRAINER_UPDATE (sort appris, filtre changé par le joueur) : une seule relecture différée, et
+-- seulement fenêtre ouverte (fermée, la liste du client est vide).
+function Trainer:OnUpdateEvent()
+  if reading or pending or not open then return end
+  pending = true
+  Q:After(UPDATE_DELAY, function()
+    pending = false
+    if open then Trainer:OnTrainer() end
+  end)
 end
 
 ---------------------------------------------------------------------------
@@ -248,13 +268,15 @@ end
 -- Évènements
 ---------------------------------------------------------------------------
 Q:RegisterEvent("TRAINER_SHOW", function()
+  open = true
   -- la visite d'un maître de classe valide l'étape, même s'il reste des sorts trop chers
   if Trainer:OnTrainer() and Trainer:HasStep() then
     Q.Progress:RemoveInserted(TAG)
     Q:Fire("TRAINER_CHANGED")
   end
 end)
-Q:RegisterEvent("TRAINER_UPDATE", function() Trainer:OnTrainer() end)
+Q:RegisterEvent("TRAINER_UPDATE", function() Trainer:OnUpdateEvent() end)
+Q:RegisterEvent("TRAINER_CLOSED", function() open = false end)
 -- l'or change : l'alerte apparaît ou disparaît
 Q:RegisterEvent("PLAYER_MONEY", function()
   Trainer:Sync()

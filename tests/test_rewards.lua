@@ -320,4 +320,124 @@ return {
     t.eq(Q.Rewards:EquippedScore(5, warrior()), 0)
     for _, e in ipairs(Mock.errors) do t.ok(not tostring(e):find("Rewards.lua", 1, true), tostring(e)) end
   end,
+
+  -- Profils de rôle ------------------------------------------------------
+
+  caster_shaman_prefers_int_over_str_and_dps = function(t)
+    local Q = load()
+    Q.char.rewardRole = "caster"
+    local int = item(9001, { equipLoc = "INVTYPE_CHEST", classID = 4, subclassID = 2,
+      stats = { [INT] = 8, [STA] = 4, [ARMOR] = 60 } })
+    local str = item(9002, { equipLoc = "INVTYPE_CHEST", classID = 4, subclassID = 3,
+      stats = { [STR] = 9, [STA] = 4, [ARMOR] = 120 } })
+    local mace = item(9003, { equipLoc = "INVTYPE_WEAPON", classID = 2, subclassID = 4, stats = { [DPS] = 12 } })
+    local shaman = { classFile = "SHAMAN", level = 20 }
+    local i1 = Q.Rewards:Pick({ choiceOf(Mock.items[9001], 1), choiceOf(Mock.items[9002], 2) }, shaman)
+    t.eq(i1, 1, "INT chest over STR chest")
+    local i2 = Q.Rewards:Pick({ choiceOf(Mock.items[9001], 1), choiceOf(Mock.items[9003], 2) }, shaman)
+    t.eq(i2, 1, "INT chest over a higher-DPS mace")
+    -- puissance des sorts
+    item(9004, { equipLoc = "INVTYPE_HEAD", classID = 4, subclassID = 2, stats = { ITEM_MOD_SPELL_POWER_SHORT = 10 } })
+    item(9005, { equipLoc = "INVTYPE_HEAD", classID = 4, subclassID = 2, stats = { [STA] = 10 } })
+    local i3 = Q.Rewards:Pick({ choiceOf(Mock.items[9005], 1), choiceOf(Mock.items[9004], 2) }, shaman)
+    t.eq(i3, 2, "spell power beats stamina")
+  end,
+
+  melee_shaman_keeps_current_behaviour = function(t)
+    local Q = load()
+    local shaman = { classFile = "SHAMAN", level = 20 }
+    item(9101, { equipLoc = "INVTYPE_CHEST", classID = 4, subclassID = 2, stats = { [INT] = 8, [STA] = 4, [ARMOR] = 60 } })
+    item(9102, { equipLoc = "INVTYPE_CHEST", classID = 4, subclassID = 2, stats = { [STR] = 9, [STA] = 4, [ARMOR] = 120 } })
+    local choices = { choiceOf(Mock.items[9101], 1), choiceOf(Mock.items[9102], 2) }
+    local auto = Q.Rewards:Pick(choices, shaman)
+    Q.char.rewardRole = "melee"
+    t.eq(Q.Rewards:Pick(choices, shaman), auto, "melee = auto for a shaman")
+    t.eq(auto, 2, "STR mail still wins")
+    t.eq(Q.Rewards:Weights("SHAMAN", "melee"), Q.Rewards:Weights("SHAMAN", "auto"))
+  end,
+
+  hunter_ranged_prefers_bow_upgrade = function(t)
+    local Q = load()
+    Q.char.rewardRole = "ranged"
+    Mock.inventory[18] = item(9201, { equipLoc = "INVTYPE_RANGED", classID = 2, subclassID = 2, stats = { [DPS] = 5 } })
+    Mock.inventory[16] = item(9202, { equipLoc = "INVTYPE_WEAPON", classID = 2, subclassID = 7, stats = { [DPS] = 5 } })
+    item(9203, { equipLoc = "INVTYPE_RANGED", classID = 2, subclassID = 2, stats = { [DPS] = 8 } })
+    item(9204, { equipLoc = "INVTYPE_2HWEAPON", classID = 2, subclassID = 8, stats = { [DPS] = 12 } })
+    local hunter = { classFile = "HUNTER", level = 20 }
+    local idx, reason = Q.Rewards:Pick({ choiceOf(Mock.items[9204], 1), choiceOf(Mock.items[9203], 2) }, hunter)
+    t.eq(idx, 2); t.eq(reason, "upgrade")
+    t.eq(Q.Rewards:Score({ [DPS] = 10 }, "HUNTER", true), 30)
+    t.eq(Q.Rewards:Score({ [DPS] = 10 }, "HUNTER", false), 5)
+  end,
+
+  role_persists_and_auto_equals_old_tables = function(t)
+    local Q = load()
+    t.eq(Q.char.rewardRole, "auto", "default")
+    Q.Player.classFile = "SHAMAN"
+    t.ok(Q.Rewards:SetRole("caster"))
+    t.eq(Q.char.rewardRole, "caster")
+    t.eq(Q.Rewards:Role(), "caster")
+    t.ok(not Q.Rewards:SetRole("tank"), "tank is not a shaman profile")
+    t.eq(Q.char.rewardRole, "caster")
+    t.ok(Q.Rewards:SetRole("auto"))
+    local stats = { [STR] = 4, [INT] = 3, [STA] = 2, [AGI] = 1, [SPI] = 5, [ARMOR] = 100, [DPS] = 7 }
+    -- ancienne table du chaman : STR .8 INT .8 STA .5 AGI .4 SPI .3 ARMOR .015 DPS 2.5
+    local old = 4 * 0.8 + 3 * 0.8 + 2 * 0.5 + 1 * 0.4 + 5 * 0.3 + 100 * 0.015 + 7 * 2.5
+    t.near(Q.Rewards:Score(stats, "SHAMAN"), old, 1e-9)
+    -- un profil enregistré qui ne convient pas à la classe retombe sur auto
+    Q.char.rewardRole = "tank"
+    t.eq(Q.Rewards:Role("SHAMAN"), "auto")
+    t.eq(Q.Rewards:Role("WARRIOR"), "tank")
+  end,
+
+  class_role_lists = function(t)
+    local Q = load()
+    t.eq(Q.Rewards:Roles("SHAMAN"), { "auto", "caster", "melee", "healer" })
+    t.eq(Q.Rewards:Roles("HUNTER"), { "auto", "ranged", "melee" })
+    t.eq(Q.Rewards:Roles("MAGE"), { "auto", "caster" })
+    t.ok(not Q.Rewards:HasChoice("MAGE") and Q.Rewards:HasChoice("PRIEST"))
+    t.eq(Q.L.REWARD_SPEC_SHAMAN_CASTER ~= nil, true)
+  end,
+
+  journal_selector_shows_only_class_profiles = function(t)
+    local Q = load()
+    local J = Q.UI.Journal
+    Q.Player.classFile = "SHAMAN"
+    J:ShowTab("options")
+    local b = J.rewardRoleButton
+    t.ok(b and b:IsShown(), "selector shown for a shaman")
+    t.eq(b:GetText(), string.format(Q.L.UI_OPT_REWARD_ROLE, Q.L.REWARD_ROLE_AUTO))
+    local seen = {}
+    for _ = 1, 4 do
+      Mock.click(b, "LeftButton")
+      seen[#seen + 1] = Q.char.rewardRole
+    end
+    t.eq(seen, { "caster", "melee", "healer", "auto" })
+    Mock.click(b, "LeftButton")
+    t.eq(b:GetText(), string.format(Q.L.UI_OPT_REWARD_ROLE, Q.L.REWARD_SPEC_SHAMAN_CASTER))
+    Q.Player.classFile = "ROGUE"
+    J:RefreshOptions()
+    t.ok(not b:IsShown(), "no selector for a single-profile class")
+  end,
+
+  wizard_selector_shows_only_class_profiles_and_saves = function(t)
+    local Ext = dofile(Mock.root .. "/tests/mock_ext_d.lua")
+    local WExt = dofile(Mock.root .. "/tests/mock_ext_wizard.lua")
+    Ext.install(); WExt.install()
+    local Q = Mock.loadAddon(TOC, { extraFiles = { GUIDES }, skipGuides = true })
+    local W = Q.UI.Wizard
+    Q.Player.classFile = "SHAMAN"
+    W:Show(4)
+    local b = W.rewardRoleButton
+    t.ok(b:IsShown())
+    Mock.click(b, "LeftButton")
+    t.eq(W.choice.rewardRole, "caster")
+    t.eq(Q.char.wizardDraft.rewardRole, "caster", "kept in the draft")
+    t.eq(Q.char.rewardRole, "auto", "not applied before Finish")
+    W:Finish()
+    t.eq(Q.char.rewardRole, "caster")
+    Q.Player.classFile = "MAGE"
+    W:Show(4)
+    t.ok(not W.rewardRoleButton:IsShown(), "hidden for a single-profile class")
+  end,
 }

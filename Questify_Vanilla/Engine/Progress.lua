@@ -253,8 +253,9 @@ local function evaluate(ctx, e)
     local id = step.questId
     if Progress:IsTurnedIn(id) then return "done" end
     if not Progress:InLog(id) then return "skipped", "notinlog" end
+    -- quête complète : l'étape est faite même si l'index d'objectif du guide est faux
     if step.obj then
-      if Progress:ObjectiveDone(id, step.obj) then return "done" end
+      if Progress:ObjectiveDone(id, step.obj) or Progress:IsComplete(id) then return "done" end
     elseif Progress:IsComplete(id) then
       return "done"
     end

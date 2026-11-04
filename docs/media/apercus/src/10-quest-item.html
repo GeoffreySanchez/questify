@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Questify, aperçu 10 : objet de quête</title>
+<link rel="stylesheet" href="apercu.css">
+<style>
+  /* Bouton de l'objet de quête (UI/QuestItemButton.lua) : 36 x 36, coin haut droit à 6 à gauche du
+     suivi et 40 sous son haut ; bordure UI-ActionButton-Border dorée en ADD (1,8 x la taille). */
+  .qitem { position: absolute; left: -42px; top: 40px; width: 36px; height: 36px; }
+  .qitem img { width: 36px; height: 36px; display: block; box-shadow: 0 0 0 1px #000; }
+  .qitem .border { position: absolute; left: -14.4px; top: -14.4px; width: 64.8px; height: 64.8px; border-radius: 12px;
+    background: radial-gradient(closest-side, rgba(255,209,0,0) 62%, rgba(255,209,0,.85) 72%, rgba(255,209,0,.35) 86%, rgba(255,209,0,0) 100%); }
+  .tip.item { width: 190px; right: 48px; bottom: -6px; }
+  .tip.item .tt { color: #fff; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap" style="width:560px">
+    <div class="brand">Questify</div>
+    <h1>L'objet de quête à utiliser</h1>
+    <p>Quand l'étape en cours demande d'utiliser un objet, un bouton apparaît à gauche du suivi. Un clic l'utilise&nbsp;; une touche peut lui être donnée dans les Raccourcis du jeu.</p>
+    <p>Ici, le piège à ours de «&nbsp;Terres malades&nbsp;», en Sombrivage.</p>
+  </div>
+
+  <div class="ui" style="left:1196px; top:300px">
+    <div style="zoom:2.4; position:relative">
+      <div class="qitem">
+        <div class="border"></div>
+        <img src="https://wow.zamimg.com/images/wow/icons/large/inv_misc_orb_03.jpg" alt="">
+        <div class="tip item">
+          <div class="tt">Espoir de Tharnariun</div>
+          <div class="tl">Objet de quête</div>
+          <div class="tl" style="color:#99ccff">Clic : utiliser l'objet</div>
+        </div>
+      </div>
+      <div class="trk th-parchment">
+        <div class="bg"></div><div class="edge"></div>
+        <div class="row head">
+          <div class="title fn t-title">Darkshore</div>
+          <div class="levels fhs t-levels">16-19</div>
+        </div>
+        <div class="bar">
+          <div class="bbg"></div><div class="fill" style="width:27.7%"></div>
+          <div class="btxt fhs t-bar" style="white-space:pre">33/119  ·  ~37,3k XP restants</div>
+        </div>
+        <div class="xp fhs t-xp">22,8k XP/h · niveau dans 26 min</div>
+        <div class="cur">
+          <img class="cicon ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt="">
+          <div class="dist fhs t-dist">96 yd</div>
+          <div class="chunk fh t-body wrap">Faire : <span class="c-quest">Terres malades</span><br>&nbsp;&nbsp;<span class="c-todo">Ours des chardons enragé capturé&nbsp;: 0/1</span></div>
+          <div class="mob">
+            <span class="skull ico i-skull"></span>
+            <span class="mname fhs t-body"><span class="c-mob">Ours des chardons enragé</span></span>
+            <span class="mlvl fds t-dim"><span class="c-lvl">Niveau 13-14</span></span>
+          </div>
+        </div>
+        <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Rendre : Un maître perdu</span></div>
+        <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Rendre : Terres malades</span></div>
+        <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Rendre : Les absences du Prospecteur</span></div>
+        <div class="grip ico i-grip"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="badge"><div class="t">Aperçu de l'interface</div><div class="s">Maquette tirée du code de Questify, pas une capture en jeu</div></div>
+</div>
+</body>
+</html>

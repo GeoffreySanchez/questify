@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Questify, aperçu bonus : les thèmes du suivi</title>
+<link rel="stylesheet" href="apercu.css">
+<style>
+  .cards { position: absolute; left: 48px; right: 48px; top: 420px; display: flex; gap: 24px; justify-content: center; }
+  /* Fond de chaque carte : la couleur « monde » de l'aperçu des thèmes dans les options
+     (UI/Options.lua, Build.themes : 0.30, 0.36, 0.26), pour que le thème transparent reste lisible. */
+  .card { width: 438px; padding: 22px 24px 20px; border-radius: 10px; background: #4d5c42;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.06), 0 10px 30px rgba(0,0,0,.45); }
+  .card .lbl { margin-top: 16px; font-family: var(--sans); font-size: 21px; font-weight: 600; color: #f2f2f2; }
+  .card .lbl small { font-weight: 400; color: #cfd6c7; font-size: 17px; margin-left: 6px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap" style="width:1400px; top:84px">
+    <div class="brand">Questify</div>
+    <h1>Quatre thèmes pour le suivi</h1>
+    <p>Fond, bordure et couleurs du texte changent tout de suite, depuis les options ou avec /qf theme.<br>L'opacité du fond se règle à part (ici 90&nbsp;%)&nbsp;; le texte, lui, reste toujours net.</p>
+  </div>
+
+  <div class="cards">
+    <!-- Parchemin -->
+    <div class="card">
+      <div style="zoom:1.5">
+        <div class="trk th-parchment">
+          <div class="bg"></div><div class="edge"></div>
+          <div class="row head"><div class="title fn t-title">Coldridge Valley</div><div class="levels fhs t-levels">1-6</div></div>
+          <div class="bar"><div class="bbg"></div><div class="fill" style="width:30%"></div><div class="btxt fhs t-bar" style="white-space:pre">12/40  ·  ~3,5k XP restants</div></div>
+          <div class="xp fhs t-xp">11,8k XP/h · niveau dans 4 min</div>
+          <div class="cur">
+            <img class="cicon ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt="">
+            <div class="dist fhs t-dist">142 yd</div>
+            <div class="chunk fh t-body wrap">Faire : <span class="c-quest">La caverne des trolls</span><br>&nbsp;&nbsp;<span class="c-todo">Jeune troll Frostmane tué&nbsp;: 5/14</span></div>
+            <div class="mob"><span class="skull ico i-skull"></span><span class="mname fhs t-body"><span class="c-mob">Jeune troll Frostmane</span></span><span class="mlvl fds t-dim"><span class="c-lvl">Niveau 3-4</span></span></div>
+          </div>
+          <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Rendre : La caverne des trolls</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Prendre : Le journal volé</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Prendre : Une livraison de thé brûlant</span></div>
+          <div class="grip ico i-grip"></div>
+        </div>
+      </div>
+      <div class="lbl">Parchemin <small>(par défaut)</small></div>
+    </div>
+
+    <!-- Noir -->
+    <div class="card">
+      <div style="zoom:1.5">
+        <div class="trk th-dark">
+          <div class="bg"></div><div class="edge"></div>
+          <div class="row head"><div class="title fn t-title">Coldridge Valley</div><div class="levels fhs t-levels">1-6</div></div>
+          <div class="bar"><div class="bbg"></div><div class="fill" style="width:30%"></div><div class="btxt fhs t-bar" style="white-space:pre">12/40  ·  ~3,5k XP restants</div></div>
+          <div class="xp fhs t-xp">11,8k XP/h · niveau dans 4 min</div>
+          <div class="cur">
+            <img class="cicon ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt="">
+            <div class="dist fhs t-dist">142 yd</div>
+            <div class="chunk fh t-body wrap">Faire : <span class="c-quest">La caverne des trolls</span><br>&nbsp;&nbsp;<span class="c-todo">Jeune troll Frostmane tué&nbsp;: 5/14</span></div>
+            <div class="mob"><span class="skull ico i-skull"></span><span class="mname fhs t-body"><span class="c-mob">Jeune troll Frostmane</span></span><span class="mlvl fds t-dim"><span class="c-lvl">Niveau 3-4</span></span></div>
+          </div>
+          <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Rendre : La caverne des trolls</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Prendre : Le journal volé</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Prendre : Une livraison de thé brûlant</span></div>
+          <div class="grip ico i-grip"></div>
+        </div>
+      </div>
+      <div class="lbl">Noir</div>
+    </div>
+
+    <!-- Transparent -->
+    <div class="card">
+      <div style="zoom:1.5">
+        <div class="trk th-transparent">
+          <div class="row head"><div class="title fn t-title">Coldridge Valley</div><div class="levels fhs t-levels">1-6</div></div>
+          <div class="bar"><div class="bbg"></div><div class="fill" style="width:30%"></div><div class="btxt fhs t-bar" style="white-space:pre">12/40  ·  ~3,5k XP restants</div></div>
+          <div class="xp fhs t-xp">11,8k XP/h · niveau dans 4 min</div>
+          <div class="cur">
+            <img class="cicon ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt="">
+            <div class="dist fhs t-dist">142 yd</div>
+            <div class="chunk fh t-body wrap">Faire : <span class="c-quest">La caverne des trolls</span><br>&nbsp;&nbsp;<span class="c-todo">Jeune troll Frostmane tué&nbsp;: 5/14</span></div>
+            <div class="mob"><span class="skull ico i-skull"></span><span class="mname fhs t-body"><span class="c-mob">Jeune troll Frostmane</span></span><span class="mlvl fds t-dim"><span class="c-lvl">Niveau 3-4</span></span></div>
+          </div>
+          <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Rendre : La caverne des trolls</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Prendre : Le journal volé</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Prendre : Une livraison de thé brûlant</span></div>
+          <div class="grip ico i-grip"></div>
+        </div>
+      </div>
+      <div class="lbl">Transparent</div>
+    </div>
+
+    <!-- Fondu de gris -->
+    <div class="card">
+      <div style="zoom:1.5">
+        <div class="trk th-gradient">
+          <div class="bg"></div>
+          <div class="row head"><div class="title fn t-title">Coldridge Valley</div><div class="levels fhs t-levels">1-6</div></div>
+          <div class="bar"><div class="bbg"></div><div class="fill" style="width:30%"></div><div class="btxt fhs t-bar" style="white-space:pre">12/40  ·  ~3,5k XP restants</div></div>
+          <div class="xp fhs t-xp">11,8k XP/h · niveau dans 4 min</div>
+          <div class="cur">
+            <img class="cicon ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt="">
+            <div class="dist fhs t-dist">142 yd</div>
+            <div class="chunk fh t-body wrap">Faire : <span class="c-quest">La caverne des trolls</span><br>&nbsp;&nbsp;<span class="c-todo">Jeune troll Frostmane tué&nbsp;: 5/14</span></div>
+            <div class="mob"><span class="skull ico i-skull"></span><span class="mname fhs t-body"><span class="c-mob">Jeune troll Frostmane</span></span><span class="mlvl fds t-dim"><span class="c-lvl">Niveau 3-4</span></span></div>
+          </div>
+          <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Rendre : La caverne des trolls</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Prendre : Le journal volé</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Prendre : Une livraison de thé brûlant</span></div>
+          <div class="grip ico i-grip"></div>
+        </div>
+      </div>
+      <div class="lbl">Fondu de gris</div>
+    </div>
+  </div>
+
+  <div class="badge"><div class="t">Aperçu de l'interface</div><div class="s">Maquette tirée du code de Questify, pas une capture en jeu</div></div>
+</div>
+</body>
+</html>

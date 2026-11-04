@@ -3,6 +3,13 @@
 ## Non publié
 
 ### Français
+- Quêtes de classe : une suite à plusieurs donneurs ou à plusieurs branches ne propose plus que celle
+  du maître le plus proche. Exemple : un Guerrier nain de niveau 10 se voit proposer « Muren Stormpike »
+  (Granis Swiftaxe, Kharanos), et non plus la suite de Hurlevent ou de Darnassus. La fenêtre de la
+  quête nomme le donneur le plus proche, et une suite déjà prise, ajoutée ou ignorée garde la main.
+- Quêtes de classe : chaque branche a ses propres quêtes, récompenses et XP. Les branches du Guerrier 10
+  (Hurlevent, Forgefer, Darnassus et, côté Horde, Orc/Troll/Tauren et Mort-vivant) étaient fondues en
+  une seule suite, et « Ajouter à la route » y insérait les étapes des autres branches.
 - Nouvelle fenêtre d'options (`/qf options`, « Options… » du bouton de la minicarte et du journal, ou Échap > Options > AddOns > Questify).
   - Les sections sont à gauche : Route, Navigation, Automatisation, Butin, Classe et donjons, Carte et repères, Suivi, Thème, Confort, Outils, Profils.
   - Dans chaque section, des catégories, et une icône « i » sur chaque option qui explique ce qu'elle fait.
@@ -128,6 +135,13 @@
 - Carte du monde et minicarte : repères numérotés de l'étape courante et des 5 suivantes (option).
 
 ### English
+- Class quests: a chain offered by several trainers, or split into branches, now only shows the one
+  whose quest giver is nearest. A level 10 Dwarf Warrior gets "Muren Stormpike" (Granis Swiftaxe,
+  Kharanos) instead of the Stormwind or Darnassus chain. The quest window names the nearest giver, and
+  a chain already taken, added or ignored keeps priority.
+- Class quests: each branch now has its own quests, rewards and XP. The level 10 Warrior branches
+  (Stormwind, Ironforge, Darnassus, and on the Horde side Orc/Troll/Tauren and Undead) were merged into
+  one chain, and "Add to route" inserted the steps of the other branches.
 - New options window (`/qf options`, "Options…" in the minimap button menu and the journal, or Esc > Options > AddOns > Questify).
   - Sections on the left: Route, Navigation, Automation, Loot, Class and dungeons, Map and markers, Tracker, Theme, Comfort, Tools, Profiles.
   - Each section has categories, and each option has an "i" icon that explains what it does.

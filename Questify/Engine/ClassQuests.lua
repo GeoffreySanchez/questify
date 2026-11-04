@@ -70,9 +70,101 @@ local function chainState(chain, cq)
 end
 
 ---------------------------------------------------------------------------
+-- Donneur le plus proche
+---------------------------------------------------------------------------
+-- FirstQuest(chain) -> première quête de la chaîne pas encore rendue (la tête si tout est rendu).
+function ClassQuests:FirstQuest(chain)
+  local quests = type(chain) == "table" and type(chain.quests) == "table" and chain.quests or {}
+  for _, id in ipairs(quests) do
+    if not isTurnedIn(id) then return id end
+  end
+  return quests[1]
+end
+
+-- Starter(questId) -> { name, kind = "npc" | "object" | "item", id, mapId, x, y, dist } ou nil.
+-- Parmi les PNJ et objets de départ (QuestieDB), celui dont un point d'apparition est le plus proche
+-- du joueur. Distance inconnue (position du joueur absente, autre continent) : un départ placé sur
+-- la carte passe avant un départ sans position, puis l'ordre des données.
+function ClassQuests:Starter(questId)
+  local q = Q.QDB:Quest(questId)
+  if not q then return nil end
+  local pm, px, py = Q.Maps:PlayerPos()
+  local best
+  local function consider(kind, id, rec)
+    if type(rec) ~= "table" or type(rec.name) ~= "string" or rec.name == "" then return end
+    local cand = { name = rec.name, kind = kind, id = id }
+    if type(rec.spawns) == "table" then
+      local m, x, y, d = Q.Maps:Nearest(rec.spawns, pm, px, py)
+      cand.mapId, cand.x, cand.y, cand.dist = m, x, y, d
+    end
+    if not best then
+      best = cand
+    elseif cand.dist and (not best.dist or cand.dist < best.dist) then
+      best = cand
+    elseif not best.dist and not best.mapId and cand.mapId then
+      best = cand
+    end
+  end
+  for _, id in ipairs(q.starters.npcs) do consider("npc", id, Q.QDB:Npc(id)) end
+  for _, id in ipairs(q.starters.objects) do consider("object", id, Q.QDB:Object(id)) end
+  if not best and q.starters.items[1] then
+    local item = q.starters.items[1]
+    best = { name = Q.QDB:ItemName(item), kind = "item", id = item }
+  end
+  return best
+end
+
+-- Chaînes qui s'excluent (champ exclusive des données : la même étape chez plusieurs maîtres, ou
+-- les branches du Guerrier 10 à Hurlevent, Forgefer et Darnassus) : une seule reste. D'abord celle
+-- que le joueur a déjà prise (en cours, ajoutée, faite, ignorée), puis la disponible avant celle à
+-- venir, puis celle dont le donneur est le plus proche, enfin l'ordre des données.
+local STATE_RANK = { inprogress = 1, added = 2, done = 3, ignored = 4, available = 5, upcoming = 6 }
+
+local function onePerExclusiveGroup(rows)
+  local cand = {}
+  for i, r in ipairs(rows) do
+    local ex = r.chain.exclusive
+    if type(ex) == "table" and #ex > 0 then cand[#cand + 1] = { row = r, index = i } end
+  end
+  if #cand == 0 then return rows end
+  local dist = {}
+  local function distanceOf(c)
+    if dist[c] == nil then
+      local ok, d = pcall(function()
+        local s = ClassQuests:Starter(ClassQuests:FirstQuest(c.row.chain))
+        return s and s.dist
+      end)
+      dist[c] = (ok and type(d) == "number") and d or math.huge
+    end
+    return dist[c]
+  end
+  table.sort(cand, function(a, b)
+    local ra, rb = STATE_RANK[a.row.state] or 9, STATE_RANK[b.row.state] or 9
+    if ra ~= rb then return ra < rb end
+    local da, db = distanceOf(a), distanceOf(b)
+    if da ~= db then return da < db end
+    return a.index < b.index
+  end)
+  local kept, dropped = {}, {}
+  for _, c in ipairs(cand) do
+    local blocked = false
+    for _, k in ipairs(c.row.chain.exclusive) do
+      if kept[k] then blocked = true; break end
+    end
+    if blocked then dropped[c.row.chain.key] = true else kept[c.row.chain.key] = true end
+  end
+  local out = {}
+  for _, r in ipairs(rows) do
+    if not dropped[r.chain.key] then out[#out + 1] = r end
+  end
+  return out
+end
+
+---------------------------------------------------------------------------
 -- API
 ---------------------------------------------------------------------------
--- List() -> { { chain, state }, ... } dans l'ordre des données.
+-- List() -> { { chain, state }, ... } dans l'ordre des données, une seule chaîne par groupe de
+-- chaînes exclusives.
 function ClassQuests:List()
   local out = {}
   local cq = Q.Progress:IsEnabled() and saved()
@@ -80,7 +172,7 @@ function ClassQuests:List()
   for _, chain in ipairs(chainsForPlayer()) do
     out[#out + 1] = { chain = chain, state = chainState(chain, cq) }
   end
-  return out
+  return onePerExclusiveGroup(out)
 end
 
 -- Alerts() -> chaînes disponibles que le joueur n'a pas encore vues : { { chain, state }, ... }.

@@ -24,10 +24,12 @@
   niveau sûr (quête au plus +1, monstres au plus +1).
 - `/qf check` : autodiagnostic en jeu (fonctions du jeu utilisées, QuestieDB, repère natif et
   marqueur 3D, navigation choisie et réellement utilisée, route du personnage, ciblage, erreurs).
-- `/qf report` (et bouton « Rapport de bug » des options) : rapport de bug à copier, avec version,
-  client, personnage, étape, cible, réglages, résultat du diagnostic et erreurs Lua.
+- `/qf bug` (alias `/qf report`, et bouton « Rapport de bug » des options) : rapport de bug à copier,
+  avec version, client, personnage, addons, route (étape courante et suivantes, cible), position,
+  navigation, journal de quêtes, réglages, résultat du diagnostic et erreurs Lua.
 - Les erreurs Lua sont gardées avec leur pile d'appels (les 20 dernières, nombre de répétitions
-  compris) et survivent à `/reload` ; la première erreur d'une session indique `/qf report`.
+  compris), y compris celles du chargement, et survivent à `/reload` ; la première erreur d'une
+  session indique `/qf bug`.
 
 ### English
 - Monsters to kill are shown in the tracker, under the objective line of the current "Complete"
@@ -50,10 +52,11 @@
   safe level (quest at most +1, monsters at most +1).
 - `/qf check`: in-game self-check (game functions used, QuestieDB, native pin and 3D marker,
   chosen and actually used navigation, character route, targeting, errors).
-- `/qf report` (and a "Bug report" button in the options): a bug report to copy, with version,
-  client, character, step, target, settings, self-check results and Lua errors.
-- Lua errors are kept with their call stack (the last 20, with repeat counts) and survive
-  `/reload`; the first error of a session points to `/qf report`.
+- `/qf bug` (alias `/qf report`, and a "Bug report" button in the options): a bug report to copy,
+  with version, client, character, addons, route (current and next steps, target), position,
+  navigation, quest log, settings, self-check results and Lua errors.
+- Lua errors are kept with their call stack (the last 20, with repeat counts), including those
+  raised while loading, and survive `/reload`; the first error of a session points to `/qf bug`.
 
 ## 0.1.0 (2026-11-03)
 

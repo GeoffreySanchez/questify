@@ -1,4 +1,4 @@
--- Tests de l'autodiagnostic (/qf check), du rapport de bug (/qf report) et du journal d'erreurs.
+-- Tests de l'autodiagnostic (/qf check), du rapport de bug (/qf bug, alias /qf report) et du journal d'erreurs.
 local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local EARLY = "tests/fixtures/early_error_fixture.lua"
@@ -207,6 +207,30 @@ return {
     t.ok(text:find("traceback", 1, true), "stack included")
   end,
 
+  bug_report_has_route_context = function(t)
+    local Q = load()
+    Mock.quests.log[179] = { title = "Dwarven Outfitters", complete = true }
+    Q:ReportError("Interface/AddOns/Questify_Vanilla/X.lua:1: boom")
+    qf("bug")
+    t.ok(QuestifyVanillaReport:IsShown(), "/qf bug opens the report window")
+    local text = Q.UI.Report.box:GetText()
+    for _, needle in ipairs({ "Addons: QuestieDB", "WARRIOR", "(1426)", "Route: A_DwarfGnome_01", "accept 179",
+      "  next: g:A_DwarfGnome_01:", "Step target: ", "Navigation: routing -, display native",
+      "Quest log (1): 179*", "boom" }) do
+      t.ok(text:find(needle, 1, true), needle)
+    end
+    t.eq(#Mock.errors, 1, "only the error we reported")
+  end,
+
+  report_alias_and_check_alias = function(t)
+    local Q = load()
+    qf("report")
+    t.ok(QuestifyVanillaReport:IsShown(), "/qf report is an alias")
+    Q.UI.Report:Hide()
+    qf("diag")
+    t.ok(Mock.printed("Self-check:"), "/qf diag is an alias of /qf check")
+  end,
+
   report_is_read_only_and_refreshed = function(t)
     local Q = load()
     qf("report")
@@ -223,7 +247,7 @@ return {
   report_clear = function(t)
     local Q = load()
     Q.SafeCall(function() error("to clear") end)
-    qf("report  CLEAR ")
+    qf("bug  CLEAR ")
     t.eq(#Q:SavedErrors(), 0)
     t.ok(Mock.printed(Q.L.REPORT_CLEARED))
     t.ok(not (QuestifyVanillaReport and QuestifyVanillaReport:IsShown()), "clear does not open the window")

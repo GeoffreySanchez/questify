@@ -1,8 +1,9 @@
 local addonName, Q = ...
 
--- Fenêtre du rapport de bug (/qf report, bouton des options) : texte multi-ligne en lecture
--- seule, sélectionné à l'ouverture pour Ctrl + C. Aucun bouton sécurisé : elle s'ouvre aussi
--- en combat. Le texte est recalculé à chaque ouverture (Q.Diagnostics:Report()).
+-- Fenêtre du rapport de bug (/qf bug, alias /qf report, bouton des options) : texte multi-ligne
+-- en lecture seule, sélectionné à l'ouverture pour Ctrl + C. Aucun bouton sécurisé : elle s'ouvre
+-- aussi en combat. Le texte est recalculé à chaque ouverture (Q.Diagnostics:Report() : contexte de
+-- la route, vérifications de /qf check et erreurs gardées, y compris celles du chargement).
 Q.UI = Q.UI or {}
 local Report = {}
 Q.UI.Report = Report

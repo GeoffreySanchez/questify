@@ -1,6 +1,6 @@
 local addonName, Q = ...
 
--- Diagnostic du client (/qf check) et rapport de bug (/qf report).
+-- Diagnostic du client (/qf check) et texte du rapport de bug (/qf bug, alias /qf report).
 -- Les vérifications lisent le jeu au moment de l'appel et ne changent rien : aucune quête,
 -- aucun repère, aucun réglage n'est modifié. Les points qui ne se vérifient qu'en jeu
 -- (README, « Première connexion ») sont ainsi lisibles en une commande, le soir du lancement.
@@ -303,9 +303,16 @@ local function formatTime(t)
   return ok and s or "?"
 end
 
-local function stepText(cur)
-  if not cur then return "-" end
-  local s = cur.step or {}
+local NEXT_STEPS = 3   -- étapes suivantes non faites listées dans le rapport
+
+local function coords(mapId, x, y)
+  return string.format("%s %.1f, %.1f", tostring(mapId), tonumber(x) or 0, tonumber(y) or 0)
+end
+
+-- Une étape sur une ligne : clé [état/raison] action, quête, objectif, métier, point, titre affiché.
+local function stepText(e)
+  if not e then return "-" end
+  local s = e.step or {}
   local parts = { tostring(s.action) }
   if s.questId then
     local name = Q.QDB:IsAvailable() and Q.QDB:QuestName(s.questId) or nil
@@ -313,14 +320,49 @@ local function stepText(cur)
     if type(name) == "string" and name ~= "" and name:sub(1, 1) ~= "#" then parts[#parts + 1] = "\"" .. name .. "\"" end
   end
   if s.obj then parts[#parts + 1] = "obj " .. tostring(s.obj) end
+  if s.prof then parts[#parts + 1] = tostring(s.prof) end
   if s.mapId and s.x and s.y then
-    parts[#parts + 1] = string.format("@ %d %.1f, %.1f", s.mapId, s.x, s.y)
+    parts[#parts + 1] = "@ " .. coords(s.mapId, s.x, s.y)
   elseif s.at then
-    parts[#parts + 1] = string.format("@ %d %.1f, %.1f", s.at.mapId, s.at.x, s.at.y)
+    parts[#parts + 1] = "@ " .. coords(s.at.mapId, s.at.x, s.at.y)
   end
-  local state, reason = Q.Progress:State(cur)
-  return string.format("%s [%s] %s%s", cur.key, tostring(state), table.concat(parts, " "),
-    reason and (" (" .. tostring(reason) .. ")") or "")
+  local okTitle, title = pcall(Q.Format.StepTitle, Q.Format, e)
+  if okTitle and type(title) == "string" and title ~= "" then parts[#parts + 1] = "- \"" .. title .. "\"" end
+  local state, reason = Q.Progress:State(e)
+  return string.format("%s [%s%s] %s", tostring(e.key), tostring(state), reason and ("/" .. tostring(reason)) or "",
+    table.concat(parts, " "))
+end
+
+-- Les NEXT_STEPS étapes non faites qui suivent l'étape courante.
+local function nextSteps(cur)
+  local out = {}
+  if not cur then return out end
+  local started = false
+  for _, e in ipairs(Q.Progress:Entries()) do
+    if started then
+      local state = Q.Progress:State(e)
+      if state ~= "done" and state ~= "skipped" then
+        out[#out + 1] = e
+        if #out >= NEXT_STEPS then break end
+      end
+    elseif e == cur or e.key == cur.key then
+      started = true
+    end
+  end
+  return out
+end
+
+-- Quêtes du journal : "179*" (* = prête à rendre), séparées par des virgules.
+local function questLog()
+  local ids = {}
+  local n = read(C_QuestLog and C_QuestLog.GetNumQuestLogEntries)
+  for i = 1, tonumber(n) or 0 do
+    local info = read(C_QuestLog.GetInfo, i)
+    if type(info) == "table" and info.questID and not info.isHeader then
+      ids[#ids + 1] = tostring(info.questID) .. (read(C_QuestLog.IsComplete, info.questID) and "*" or "")
+    end
+  end
+  return ids
 end
 
 local function addonVersion(name)
@@ -330,8 +372,9 @@ local function addonVersion(name)
   return metadata(name, "Version") or (isLoaded and "?" or "-")
 end
 
--- Report() -> texte multi-ligne : version, client, personnage, route, navigation, réglages,
--- vérifications et erreurs gardées (pile comprise).
+-- Report() -> texte multi-ligne : version, client, personnage, addons, route (étape courante et
+-- suivantes, cible de l'étape), position, navigation, journal de quêtes, réglages, vérifications
+-- et erreurs gardées (pile comprise, y compris celles survenues pendant le chargement).
 function Diag:Report()
   local out = {}
   local function add(fmt, ...)
@@ -345,10 +388,21 @@ function Diag:Report()
     tostring(GetLocale and GetLocale() or "?"))
   add("Character: %s %s %s, level %s", tostring(P.faction), tostring(P.raceKey), tostring(P.classFile), tostring(P.level))
 
+  local addons = {}
+  for _, name in ipairs({ "QuestieDB", "TomTom", "WaypointUI", "ShortestPathForever" }) do
+    addons[#addons + 1] = name .. " " .. addonVersion(name)
+  end
+  add("Addons: %s", table.concat(addons, ", "))
+
   local g = Q.Progress:IsEnabled() and Q.Progress:Guide() or nil
   local cur = g and Q.Progress:Current() or nil
   add("Route: %s", g and string.format("%s \"%s\" (%d steps)", g.id, tostring(g.title), #g.steps) or "-")
   add("Step: %s", stepText(cur))
+  for _, e in ipairs(nextSteps(cur)) do add("  next: %s", stepText(e)) end
+  local tg = cur and Q.Targets and Q.Targets:ForEntry(cur)
+  if type(tg) == "table" then
+    add("Step target: %s %s @ %s", tostring(tg.kind), tostring(tg.id or "-"), coords(tg.mapId, tg.x, tg.y))
+  end
 
   local map = playerMap()
   local pos = map and read(C_Map.GetPlayerMapPosition, map, "player")
@@ -371,16 +425,16 @@ function Diag:Report()
   else
     add("Target: -")
   end
+  local routing, display
+  if Q.Nav and Q.Nav.Active then routing, display = Q.Nav:Active() end
+  add("Navigation: routing %s, display %s", tostring(routing or "-"), tostring(display or "-"))
+
+  local log = questLog()
+  add("Quest log (%d): %s", #log, #log > 0 and table.concat(log, ", ") or "-")
 
   local settings = {}
   for _, path in ipairs(SETTING_PATHS) do settings[#settings + 1] = path .. "=" .. tostring(Q.Settings:Get(path)) end
   add("Settings: %s", table.concat(settings, " "))
-
-  local addons = {}
-  for _, name in ipairs({ "QuestieDB", "TomTom", "WaypointUI", "ShortestPathForever" }) do
-    addons[#addons + 1] = name .. " " .. addonVersion(name)
-  end
-  add("Addons: %s", table.concat(addons, ", "))
 
   add("")
   add("Checks:")

@@ -58,7 +58,6 @@ UI\ClassQuestPopup.lua
 UI\Journal.lua
 UI\Wizard.lua
 UI\QuestItemButton.lua
-UI\BugReport.lua
 UI\Report.lua
 UI\Slash.lua
 

@@ -182,7 +182,7 @@ function Nav:SetTarget(mapId, x, y, title)
   apply()
 end
 
--- Status() -> copie de l'état pour /qf check et /qf report :
+-- Status() -> copie de l'état pour /qf check et /qf bug :
 -- { target = { mapId, x, y, title } ou nil, provider = fournisseur posé ou nil,
 --   wanted = fournisseur qui serait utilisé, retryPending = bool }
 function Nav:Status()

@@ -7,7 +7,7 @@ Guide de leveling **gratuit et open source** pour **World of Warcraft: Forever**
 
 | Addon | Statut / Status | Lien / Link |
 |---|---|---|
-| **Questify** | requis / required | [Télécharger / Download](https://github.com/GeoffreySanchez/questify/releases/tag/latest) (`Questify-<version>-forever.zip`) |
+| **Questify** | requis / required | [Télécharger / Download](https://github.com/questify-addon/questify/releases/tag/latest) (`Questify-<version>-forever.zip`) |
 | **QuestieDB** | **requis / required** | [CurseForge](https://www.curseforge.com/wow/addons/questiedb) |
 | ShortestPath Forever | optionnel / optional | [CurseForge](https://www.curseforge.com/wow/addons/shortest-path-forever) |
 | WaypointUI | optionnel / optional | [CurseForge](https://www.curseforge.com/wow/addons/waypointui) |
@@ -74,7 +74,7 @@ Captures et vidéos à venir : liste des prises de vue dans [docs/media/README.m
 
 ### Installation
 Un seul zip, pour WoW: Forever, dans la dernière version publiée du dépôt GitHub :
-<https://github.com/GeoffreySanchez/questify/releases/tag/latest>.
+<https://github.com/questify-addon/questify/releases/tag/latest>.
 1. Télécharge `Questify-<version>-forever.zip` et décompresse-le dans
    `World of Warcraft\_forever_\Interface\AddOns\` (le dossier `Questify` doit se trouver
    directement dans `AddOns`).
@@ -242,7 +242,7 @@ Bibliothèques incluses dans `Questify/Libs/`, copiées sans modification :
 
 ### Installation
 A single zip, for WoW: Forever, in the GitHub repository's latest release:
-<https://github.com/GeoffreySanchez/questify/releases/tag/latest>.
+<https://github.com/questify-addon/questify/releases/tag/latest>.
 1. Download `Questify-<version>-forever.zip` and unzip it into
    `World of Warcraft\_forever_\Interface\AddOns\` (the `Questify` folder must sit directly
    inside `AddOns`).

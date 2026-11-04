@@ -11,6 +11,6 @@ Guide de leveling **gratuit et open source** pour **World of Warcraft: Forever**
 Ces pages sont versionnées dans le dépôt, dossier `docs/wiki/`, puis copiées dans le wiki GitHub.
 *These pages live in the repository under `docs/wiki/`, then are copied to the GitHub wiki.*
 
-- Code et versions / Code and releases : <https://github.com/GeoffreySanchez/questify>
+- Code et versions / Code and releases : <https://github.com/questify-addon/questify>
 - Signaler un problème / Report a problem : `/qf bug` en jeu, puis une
-  [issue GitHub](https://github.com/GeoffreySanchez/questify/issues) avec le rapport collé.
+  [issue GitHub](https://github.com/questify-addon/questify/issues) avec le rapport collé.

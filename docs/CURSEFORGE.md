@@ -15,12 +15,12 @@ l'envoi automatique des versions.
 | **Additional categories** | Map & Minimap ; Class (si la catégorie est proposée) |
 | **Allow Comments** | coché |
 | **Unlisted project** | décoché (cocher seulement pour un essai privé avant les premiers retours en jeu) |
-| **Social Links** | GitHub : `https://github.com/GeoffreySanchez/questify` |
+| **Social Links** | GitHub : `https://github.com/questify-addon/questify` |
 
 Après la création, dans les réglages du projet :
 - **License** : GNU General Public License version 3 (GPLv3), comme le dépôt.
-- **Source / Issues / Wiki** : `https://github.com/GeoffreySanchez/questify`,
-  `https://github.com/GeoffreySanchez/questify/issues`, `https://github.com/GeoffreySanchez/questify/wiki`.
+- **Source / Issues / Wiki** : `https://github.com/questify-addon/questify`,
+  `https://github.com/questify-addon/questify/issues`, `https://github.com/questify-addon/questify/wiki`.
 - **Description** : le texte de la section 3 ci-dessous (éditeur en Markdown).
 - **Images** : les captures de `docs/media/` (en attendant, les aperçus de `docs/media/apercus/`,
   marqués « Aperçu de l'interface »). Vidéos : liens YouTube.
@@ -35,11 +35,11 @@ deux secrets existent. À faire une fois, par toi (les jetons ne passent jamais 
 3. Enregistre les deux secrets dans le dépôt GitHub (chaque commande demande la valeur, à coller) :
 
 ```bash
-gh secret set CF_PROJECT_ID --repo GeoffreySanchez/questify
+gh secret set CF_PROJECT_ID --repo questify-addon/questify
 ```
 
 ```bash
-gh secret set CF_API_KEY --repo GeoffreySanchez/questify
+gh secret set CF_API_KEY --repo questify-addon/questify
 ```
 
 La version du jeu envoyée est `1.60.1` (WoW: Forever) ; pour une autre, crée la variable
@@ -90,4 +90,4 @@ every race and both factions.
 **Required:** QuestieDB. **Optional:** ShortestPath Forever, WaypointUI, TomTom.
 
 Talent builds credit their sources (Icy Veins, Wowhead) or come from Questify's own analysis.
-Code, issues, wiki and installation guide: <https://github.com/GeoffreySanchez/questify>
+Code, issues, wiki and installation guide: <https://github.com/questify-addon/questify>

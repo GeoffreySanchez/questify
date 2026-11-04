@@ -10,7 +10,7 @@
 
 | Addon | Statut | Lien CurseForge | À quoi il sert |
 |---|---|---|---|
-| **Questify** | requis | [GitHub (release « latest »)](https://github.com/GeoffreySanchez/questify/releases/tag/latest) | Le guide lui-même |
+| **Questify** | requis | [GitHub (release « latest »)](https://github.com/questify-addon/questify/releases/tag/latest) | Le guide lui-même |
 | **QuestieDB** | **requis** | [curseforge.com/wow/addons/questiedb](https://www.curseforge.com/wow/addons/questiedb) | Données des quêtes, PNJ et objets |
 | **ShortestPath Forever** | optionnel | [curseforge.com/wow/addons/shortest-path-forever](https://www.curseforge.com/wow/addons/shortest-path-forever) | Itinéraire complet entre zones (vols, bateaux, portails) |
 | **WaypointUI** | optionnel | [curseforge.com/wow/addons/waypointui](https://www.curseforge.com/wow/addons/waypointui) | Joli repère 3D flottant vers la destination |
@@ -21,7 +21,7 @@ Conseil : **ShortestPath Forever + WaypointUI** pour le meilleur confort.
 
 ### 2. Installer Questify
 1. Télécharge `Questify-<version>-forever.zip` depuis la
-   [release « latest »](https://github.com/GeoffreySanchez/questify/releases/tag/latest).
+   [release « latest »](https://github.com/questify-addon/questify/releases/tag/latest).
 2. Décompresse-le dans `World of Warcraft\_forever_\Interface\AddOns\`.
 3. Vérifie le chemin : le dossier `Questify` doit être **directement** dans `AddOns`
    (`…\AddOns\Questify\Questify.toc`), pas dans un sous-dossier en double.
@@ -55,7 +55,7 @@ Conseil : **ShortestPath Forever + WaypointUI** pour le meilleur confort.
 
 | Addon | Status | CurseForge link | What it does |
 |---|---|---|---|
-| **Questify** | required | [GitHub ("latest" release)](https://github.com/GeoffreySanchez/questify/releases/tag/latest) | The guide itself |
+| **Questify** | required | [GitHub ("latest" release)](https://github.com/questify-addon/questify/releases/tag/latest) | The guide itself |
 | **QuestieDB** | **required** | [curseforge.com/wow/addons/questiedb](https://www.curseforge.com/wow/addons/questiedb) | Quest, NPC and object data |
 | **ShortestPath Forever** | optional | [curseforge.com/wow/addons/shortest-path-forever](https://www.curseforge.com/wow/addons/shortest-path-forever) | Full routing across zones (flights, boats, portals) |
 | **WaypointUI** | optional | [curseforge.com/wow/addons/waypointui](https://www.curseforge.com/wow/addons/waypointui) | Nice floating 3D marker to the destination |
@@ -66,7 +66,7 @@ Tip: **ShortestPath Forever + WaypointUI** for the best experience.
 
 ### 2. Install Questify
 1. Download `Questify-<version>-forever.zip` from the
-   ["latest" release](https://github.com/GeoffreySanchez/questify/releases/tag/latest).
+   ["latest" release](https://github.com/questify-addon/questify/releases/tag/latest).
 2. Unzip it into `World of Warcraft\_forever_\Interface\AddOns\`.
 3. Check the path: the `Questify` folder must sit **directly** in `AddOns`
    (`…\AddOns\Questify\Questify.toc`), not in a duplicated subfolder.

@@ -3,7 +3,7 @@
 ## Notes: Free leveling guide for World of Warcraft: Forever (1-30).
 ## Notes-frFR: Guide de leveling gratuit pour World of Warcraft: Forever (1-30).
 ## Author: Questify contributors
-## Version: 0.1.0
+## Version: 0.2.0
 ## IconTexture: Interface\Icons\INV_Misc_Book_09
 ## OptionalDeps: QuestieDB, TomTom, WaypointUI, ShortestPathForever
 ## SavedVariables: QuestifyDB

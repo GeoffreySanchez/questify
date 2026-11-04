@@ -1,5 +1,5 @@
 -- Tests de la pierre de foyer dans le suivi (Q.Hearth, Engine/Hearth.lua).
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_comfort.lua")
 

@@ -1,8 +1,8 @@
-# Questify Vanilla — reste à faire (4 novembre 2026)
+# Questify — reste à faire (4 novembre 2026)
 
 Branche : `main`. Les branches `claude/cibles-dans-objectifs` et `claude/lucid-planck-m8c36r` y sont
 fusionnées. Classic Era est retiré : l'addon ne vise plus que WoW: Forever (un seul zip,
-`Questify_Vanilla-<version>-forever.zip`).
+`Questify-<version>-forever.zip`).
 
 ## Fait, mais pas encore déployé dans le jeu
 
@@ -25,7 +25,7 @@ fusionnées. Classic Era est retiré : l'addon ne vise plus que WoW: Forever (un
 - `/qf check` (alias `/qf diag`) : autodiagnostic dans la discussion, une ligne par point.
 
 **À faire au rallumage :** mettre à jour le clone du Bureau (`git pull` sur `main`), copier
-`Questify_Vanilla/` dans `_forever_\Interface\AddOns\` (ou installer le zip de la release `latest`),
+`Questify/` dans `_forever_\Interface\AddOns\` (ou installer le zip de la release `latest`),
 puis **relancer le jeu** : de nouveaux fichiers sont dans le TOC (`Core\Diagnostics.lua`,
 `Locales\StringsDiag.lua`, `Engine\StepGuard.lua`, `UI\QuestItemButton.lua`, `UI\Report.lua`, entre
 autres) et `/reload` ne les charge pas. Supprimer l'ancien `UI\BugReport.lua` s'il reste dans le
@@ -35,7 +35,7 @@ dossier AddOns (il n'est plus chargé).
 
 1. Sur le perso Forever : `/qf check`, puis `/qf talents` et `/reload` (relevé des vrais arbres de
    talents par `C_ClassTalents` / `C_Traits` dans
-   `WTF\Account\...\SavedVariables\Questify_Vanilla.lua`, clé `talentDump.forever[<classe>]` :
+   `WTF\Account\...\SavedVariables\Questify.lua`, clé `talentDump.forever[<classe>]` :
    nœuds avec position `posX`/`posY`, rangs, groupes (les trois arbres), sorts et noms, monnaie de
    l'arbre). Si la discussion dit « pas encore de configuration de talents active », ouvrir une fois
    la fenêtre des talents puis relancer `/qf talents`.

@@ -1,4 +1,4 @@
-# Questify Vanilla — wiki
+# Questify — wiki
 
 Guide de leveling **gratuit et open source** pour **World of Warcraft: Forever** (1 à 30).
 *A **free and open-source** leveling guide for **World of Warcraft: Forever** (1 to 30).*

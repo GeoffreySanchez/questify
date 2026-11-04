@@ -1,0 +1,8 @@
+<!-- Raccourcis clavier (chargé automatiquement par le client, hors TOC).
+     Ciblage auto : clic sur le bouton sécurisé caché d'UI/MobPanel.lua. -->
+<Bindings>
+  <Binding name="CLICK QuestifyAutoTarget:LeftButton" header="QUESTIFY">
+  </Binding>
+  <Binding name="CLICK QuestifyQuestItem:LeftButton">
+  </Binding>
+</Bindings>

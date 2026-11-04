@@ -1,5 +1,5 @@
 -- Tests de l'autodiagnostic (/qf check), du rapport de bug (/qf bug, alias /qf report) et du journal d'erreurs.
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local EARLY = "tests/fixtures/early_error_fixture.lua"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_d.lua")
@@ -12,7 +12,7 @@ local function load(opts)
   return Mock.loadAddon(TOC, opts)
 end
 
-local function qf(msg) SlashCmdList.QUESTIFYVANILLA(msg) end
+local function qf(msg) SlashCmdList.QUESTIFY(msg) end
 
 local function byId(results)
   local out = {}
@@ -139,7 +139,7 @@ return {
     for _ = 1, 3 do Q.SafeCall(function() error("boom") end) end
     t.eq(Mock.countPrinted("boom"), 1, "printed once")
     t.eq(Mock.countPrinted(Q.L.ERROR_REPORT_HINT), 1, "hint printed once")
-    local list = QuestifyVanillaDB.errors
+    local list = QuestifyDB.errors
     t.eq(#list, 1)
     t.eq(list[1].count, 3)
     t.eq(list[1].version, Q.version)
@@ -147,8 +147,8 @@ return {
     t.ok(not list[1].msg:find("traceback", 1, true), "message without the stack")
     Q.SafeCall(function() error("second") end)
     t.eq(Mock.countPrinted(Q.L.ERROR_REPORT_HINT), 1, "hint once per session")
-    t.eq(#QuestifyVanillaDB.errors, 2)
-    t.ok(QuestifyVanillaDB.errors[2].msg:find("second", 1, true), "most recent last")
+    t.eq(#QuestifyDB.errors, 2)
+    t.ok(QuestifyDB.errors[2].msg:find("second", 1, true), "most recent last")
     t.eq(run(Q).errors.status, "warn")
   end,
 
@@ -163,12 +163,12 @@ return {
   end,
 
   errors_capped_and_old_versions_ignored = function(t)
-    local Q = load({ savedVariables = { QuestifyVanillaDB = {
+    local Q = load({ savedVariables = { QuestifyDB = {
       errors = { { msg = "from 0.0.9", count = 4, time = 1, version = "0.0.9" } },
     } } })
     t.eq(run(Q).errors.status, "ok", "errors of another version are not counted")
     for i = 1, 25 do Q:ReportError("err " .. i) end
-    local list = QuestifyVanillaDB.errors
+    local list = QuestifyDB.errors
     t.eq(#list, 20, "20 errors at most")
     t.eq(list[20].msg, "err 25")
     t.eq(list[1].msg, "err 6")
@@ -176,13 +176,13 @@ return {
 
   errors_before_saved_variables_are_kept = function(t)
     local Q = load({ extraFiles = { GUIDES, EARLY } })
-    local list = QuestifyVanillaDB.errors
+    local list = QuestifyDB.errors
     t.eq(#list, 1)
     t.eq(list[1].msg, "early error before saved variables")
   end,
 
   debug_mode_prints_stack = function(t)
-    local Q = load({ savedVariables = { QuestifyVanillaDB = { debug = true } } })
+    local Q = load({ savedVariables = { QuestifyDB = { debug = true } } })
     Q.SafeCall(function() error("loud") end)
     t.ok(Mock.printed("stack traceback"), "stack in the chat in debug mode")
   end,
@@ -191,9 +191,9 @@ return {
     local Q = load()
     Q.SafeCall(function() error("boom in report") end)
     qf("report")
-    t.ok(QuestifyVanillaReport:IsShown())
+    t.ok(QuestifyReport:IsShown())
     local text = Q.UI.Report.box:GetText()
-    t.ok(text:find("Questify Vanilla " .. Q.version .. " - bug report", 1, true), "title line")
+    t.ok(text:find("Questify " .. Q.version .. " - bug report", 1, true), "title line")
     t.ok(text:find("Client: 1.60.1 (70291), interface 16001, enUS", 1, true), "client line")
     t.ok(text:find("Character: Alliance Dwarf WARRIOR, level 1", 1, true), "character line")
     t.ok(text:find("Route: A_DwarfGnome_01", 1, true), "route line")
@@ -216,9 +216,9 @@ return {
   bug_report_has_route_context = function(t)
     local Q = load()
     Mock.quests.log[179] = { title = "Dwarven Outfitters", complete = true }
-    Q:ReportError("Interface/AddOns/Questify_Vanilla/X.lua:1: boom")
+    Q:ReportError("Interface/AddOns/Questify/X.lua:1: boom")
     qf("bug")
-    t.ok(QuestifyVanillaReport:IsShown(), "/qf bug opens the report window")
+    t.ok(QuestifyReport:IsShown(), "/qf bug opens the report window")
     local text = Q.UI.Report.box:GetText()
     for _, needle in ipairs({ "Addons: QuestieDB", "WARRIOR", "(1426)", "Route: A_DwarfGnome_01", "accept 179",
       "  next: g:A_DwarfGnome_01:", "Step target: ", "Navigation: routing -, display native",
@@ -231,7 +231,7 @@ return {
   report_alias_and_check_alias = function(t)
     local Q = load()
     qf("report")
-    t.ok(QuestifyVanillaReport:IsShown(), "/qf report is an alias")
+    t.ok(QuestifyReport:IsShown(), "/qf report is an alias")
     Q.UI.Report:Hide()
     qf("diag")
     t.ok(Mock.printed("Self-check:"), "/qf diag is an alias of /qf check")
@@ -256,7 +256,7 @@ return {
     qf("bug  CLEAR ")
     t.eq(#Q:SavedErrors(), 0)
     t.ok(Mock.printed(Q.L.REPORT_CLEARED))
-    t.ok(not (QuestifyVanillaReport and QuestifyVanillaReport:IsShown()), "clear does not open the window")
+    t.ok(not (QuestifyReport and QuestifyReport:IsShown()), "clear does not open the window")
   end,
 
   report_survives_a_failing_diagnostic = function(t)
@@ -270,7 +270,7 @@ return {
     local Q = load()
     qf("options")
     Q.UI.Journal.reportButton:Click()
-    t.ok(QuestifyVanillaReport:IsShown())
+    t.ok(QuestifyReport:IsShown())
   end,
 
   help_lists_new_commands = function(t)
@@ -282,14 +282,14 @@ return {
   french_strings_complete = function(t)
     local captured
     local fake = { RegisterStrings = function(_, tables) captured = tables end }
-    assert(loadfile(Mock.root .. "/Questify_Vanilla/Locales/StringsDiag.lua"))("Questify_Vanilla", fake)
+    assert(loadfile(Mock.root .. "/Questify/Locales/StringsDiag.lua"))("Questify", fake)
     for k in pairs(captured.enUS) do t.ok(captured.frFR[k], "frFR has " .. k) end
     for k in pairs(captured.frFR) do t.ok(captured.enUS[k], "enUS has " .. k) end
     -- chaque clé utilisée par le diagnostic et la fenêtre existe
     Mock.locale = "frFR"
     local Q = load()
-    for _, file in ipairs({ "Questify_Vanilla/Core/Diagnostics.lua", "Questify_Vanilla/UI/Report.lua",
-                            "Questify_Vanilla/UI/Slash.lua", "Questify_Vanilla/Core/Init.lua" }) do
+    for _, file in ipairs({ "Questify/Core/Diagnostics.lua", "Questify/UI/Report.lua",
+                            "Questify/UI/Slash.lua", "Questify/Core/Init.lua" }) do
       local src = readFile(file)
       for key in src:gmatch("L%.([%u%d_]+)") do t.ok(rawget(Q.L, key), file .. ": " .. key) end
       for key in src:gmatch("\"(DIAG_[%u%d_]+)\"") do t.ok(rawget(Q.L, key), file .. ": " .. key) end

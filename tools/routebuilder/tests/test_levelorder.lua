@@ -108,7 +108,7 @@ return {
   -- Les vols générés portent le nœud TaxiNodes de leur destination, situé sur la carte de l'étape.
   generated_fly_steps_have_node = function(t)
     local W = H.W()
-    local g = readFile(H.ROOT .. "/../../Questify_Vanilla/Guides/Alliance/A_DwarfGnome_03.lua")
+    local g = readFile(H.ROOT .. "/../../Questify/Guides/Alliance/A_DwarfGnome_03.lua")
     t.ok(g, "guide readable")
     local n = 0
     for m, node in (g or ""):gmatch('{ "fly", (%d+), node = (%d+),') do

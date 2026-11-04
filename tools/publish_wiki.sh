@@ -6,7 +6,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ORIGIN="$(git -C "$ROOT" remote get-url origin)"
-WIKI_URL="${ORIGIN%.git}.wiki.git"
+WIKI_URL="${WIKI_URL:-${ORIGIN%.git}.wiki.git}"   # WIKI_URL=https://… pour passer par HTTPS
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/questify-wiki.XXXXXX")"
 trap 'rm -rf "$WORK"' EXIT
 

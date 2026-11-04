@@ -1,7 +1,7 @@
 -- tools/routebuilder/build_trainers.lua : liste des maîtres de classe pour l'addon.
 -- Lua 5.1 / LuaJIT, hors jeu, lancé depuis la racine du projet :
 --   luajit tools/routebuilder/build_trainers.lua [--db PATH] [--questie PATH] [--out FILE] [--date YYYY-MM-DD]
--- Lit la vue Forever de QuestieDB et écrit Questify_Vanilla/Data/ClassTrainers.lua :
+-- Lit la vue Forever de QuestieDB et écrit Questify/Data/ClassTrainers.lua :
 -- pour chaque classe et chaque faction, les IDs des PNJ dont le sous-titre anglais est exactement
 -- « <Classe> Trainer », qui portent le drapeau TRAINER et ont au moins une position ; puis, pour
 -- chaque métier, les maîtres qui l'enseignent (sous-titre reconnu par les motifs de PROFS, hors
@@ -44,7 +44,7 @@ local function matchesProf(subName, def)
 end
 
 local function parseArgs(argv)
-  local o = { db = qdb.DEFAULT_DB, questie = nil, out = "Questify_Vanilla/Data/ClassTrainers.lua",
+  local o = { db = qdb.DEFAULT_DB, questie = nil, out = "Questify/Data/ClassTrainers.lua",
     date = os.date("%Y-%m-%d") }
   local i = 1
   while i <= #argv do

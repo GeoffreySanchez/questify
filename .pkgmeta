@@ -4,7 +4,7 @@
 # Dépendances CurseForge. Slug et ID confirmés le 2026-11-03 sur la page du projet :
 #   https://www.curseforge.com/wow/addons/questiedb  (ID 1696795, publié depuis github.com/Questie/QuestieDB)
 #   shortest-path-forever = 1708599, waypointui = 1275146, tomtom = 18808
-package-as: Questify_Vanilla
+package-as: Questify
 
 required-dependencies:
   - questiedb
@@ -14,8 +14,8 @@ optional-dependencies:
   - waypointui
   - tomtom
 
-# Le fichier Questify_Vanilla_Camelot.toc (Interface 16xxx) est reconnu par le packager
-# comme la variante « Forever », le seul jeu visé. Le dépôt garde l'addon dans le sous-dossier Questify_Vanilla/ :
+# Le fichier Questify_Camelot.toc (Interface 16xxx) est reconnu par le packager
+# comme la variante « Forever », le seul jeu visé. Le dépôt garde l'addon dans le sous-dossier Questify/ :
 # un packager lancé à la racine du dépôt doit donc être réglé pour prendre ce sous-dossier
 # comme racine de l'addon (ou le dépôt doit être réorganisé) avant une publication automatique.
 ignore:

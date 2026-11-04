@@ -1,5 +1,5 @@
 -- Tests du maître de classe (Q.Trainer) : sorts à apprendre, alerte du suivi, étape « train ».
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_d.lua")
 

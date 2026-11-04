@@ -1,7 +1,7 @@
 -- tools/validate_guides.lua : vérifie les guides générés contre QuestieDB (hors jeu, LuaJIT).
 --
 -- Usage : luajit tools/validate_guides.lua [--db PATH] [--questie PATH] [--guides DIR]
---   --guides : dossier qui contient Guides.xml (défaut Questify_Vanilla/Guides)
+--   --guides : dossier qui contient Guides.xml (défaut Questify/Guides)
 -- Chaque violation est affichée « <fichier>:<ligne> <message> » ; code de sortie 1 s'il y en a une.
 --
 -- Contrôles par étape : action valide ; quête connue ; quête éligible pour au moins une race du
@@ -65,13 +65,13 @@ local function loadGuide(path)
   local Q = {}
   function Q:RegisterGuide(def) defs[#defs + 1] = def end
   setfenv(fn, {})
-  local ok, e = pcall(fn, "Questify_Vanilla", Q)
+  local ok, e = pcall(fn, "Questify", Q)
   if not ok then return nil, e end
   return defs, nil, stepLines(text), Q
 end
 
 function M.run(argv)
-  local opts = { db = qdb.DEFAULT_DB, questie = qdb.DEFAULT_QUESTIE, guides = "Questify_Vanilla/Guides" }
+  local opts = { db = qdb.DEFAULT_DB, questie = qdb.DEFAULT_QUESTIE, guides = "Questify/Guides" }
   local i = 1
   while i <= #argv do
     local a = argv[i]

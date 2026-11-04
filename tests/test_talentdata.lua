@@ -1,6 +1,6 @@
 -- Vérification des presets livrés (Data/TalentBuilds.lua) : 51 points du niveau 10 au 60, jamais
 -- plus que le rang max, paliers respectés (5 points par palier dans l'arbre avant le suivant).
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 
 return {
   presets_are_consistent = function(t)

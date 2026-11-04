@@ -1,6 +1,6 @@
 -- Tests des thèmes du suivi (Q.Themes, UI/Themes.lua) : fond, bordure, couleurs du texte,
 -- opacité, retour au parchemin, réglage à chaud, commandes /qf theme et /qf opacity.
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_d.lua")
 
@@ -12,7 +12,7 @@ local function load(opts)
   return Mock.loadAddon(TOC, opts)
 end
 
-local function qf(msg) SlashCmdList.QUESTIFYVANILLA(msg) end
+local function qf(msg) SlashCmdList.QUESTIFY(msg) end
 
 -- Espion : chaque appel des méthodes nommées est noté dans log[nom] = { { args... }, ... }, puis
 -- passé à la méthode d'origine (celle du mock, ou un appel sans effet).

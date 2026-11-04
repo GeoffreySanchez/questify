@@ -1,5 +1,5 @@
 -- Tests du suivi sous la minimap (Q.UI.Tracker).
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_d.lua")
 
@@ -17,7 +17,7 @@ return {
   tracker_shows_current_step = function(t)
     local Q = load()
     local T = Q.UI.Tracker
-    t.ok(T.frame and T.frame == QuestifyVanillaTracker, "frame named QuestifyVanillaTracker")
+    t.ok(T.frame and T.frame == QuestifyTracker, "frame named QuestifyTracker")
     t.ok(T.frame:IsShown())
     t.ok(plain(T.currentText:GetText()):find("Dwarven Outfitters", 1, true), "current step text")
     t.ok(plain(T.currentText:GetText()):find("Sten Stoutarm", 1, true), "giver in text")
@@ -216,7 +216,7 @@ return {
     t.ok(T.alertPulse:IsPlaying(), "pulsing glow")
     t.eq(T.alertPulse:GetLooping(), "BOUNCE")
     Mock.click(T.alert, "LeftButton")
-    t.ok(QuestifyVanillaClassQuestPopup and QuestifyVanillaClassQuestPopup:IsShown(), "popup shown")
+    t.ok(QuestifyClassQuestPopup and QuestifyClassQuestPopup:IsShown(), "popup shown")
     t.eq(Q.UI.ClassQuestPopup.chain, chain)
     t.eq(#Mock.errors, 0)
   end,

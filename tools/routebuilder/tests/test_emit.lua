@@ -9,7 +9,7 @@ local function loadGuide(src)
   function Q:RegisterGuide(def) got = def end
   local fn = assert(loadstring(src, "=guide"))
   setfenv(fn, {})
-  fn("Questify_Vanilla", Q)
+  fn("Questify", Q)
   return got
 end
 
@@ -132,7 +132,7 @@ return {
     -- le fichier généré se recharge et expose Q.ClassQuestData
     local src = cq.emit(data, { commit = "x", date = "d" })
     local Q = {}
-    local fn = assert(loadstring(src, "=cq")); setfenv(fn, {}); fn("Questify_Vanilla", Q)
+    local fn = assert(loadstring(src, "=cq")); setfenv(fn, {}); fn("Questify", Q)
     t.ok(Q.ClassQuestData and Q.ClassQuestData.WARLOCK, "loads")
   end,
 }

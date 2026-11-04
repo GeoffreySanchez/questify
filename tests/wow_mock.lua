@@ -8,7 +8,7 @@
 --       opts.extraFiles = {chemins}      fichiers exécutés après le TOC, avant ADDON_LOADED
 --       opts.beforeLogin = fn(Q)         appelé juste avant PLAYER_LOGIN
 --       opts.qdb = {quests=, npcs=, objects=, items=, zones=}  fusionné sur la fixture de base
---       opts.savedVariables = {QuestifyVanillaDB=, QuestifyVanillaCharDB=}
+--       opts.savedVariables = {QuestifyDB=, QuestifyCharDB=}
 --       opts.skipGuides = true         ne charge pas Guides\Guides.xml (guides livrés)
 --   Mock.reload(opts) -> Q               simule /reload (conserve les SavedVariables)
 --   Mock.fire(event, ...)                déclenche un évènement sur les frames inscrites
@@ -1079,12 +1079,12 @@ local function installApi()
   -- Addons
   C_AddOns = {
     IsAddOnLoaded = function(name)
-      if name == "Questify_Vanilla" then return true, true end
+      if name == "Questify" then return true, true end
       local v = Mock.addons[name] == true
       return v, v
     end,
     GetAddOnMetadata = function(name, field)
-      if name == "Questify_Vanilla" then return Mock.tocMeta[field] end
+      if name == "Questify" then return Mock.tocMeta[field] end
       return nil
     end,
     GetNumAddOns = function() return 0 end,
@@ -1334,7 +1334,7 @@ end
 ---------------------------------------------------------------------------
 -- Chargement de l'addon
 ---------------------------------------------------------------------------
-local ADDON = "Questify_Vanilla"
+local ADDON = "Questify"
 
 local function runFile(path, ns)
   local full = rootPath(path)
@@ -1421,10 +1421,10 @@ end
 -- Simule /reload : conserve les SavedVariables et l'état du personnage, recrée tout le reste.
 function Mock.reload(opts)
   local saved = {
-    QuestifyVanillaDB = deepcopy(QuestifyVanillaDB),
-    QuestifyVanillaCharDB = deepcopy(QuestifyVanillaCharDB),
+    QuestifyDB = deepcopy(QuestifyDB),
+    QuestifyCharDB = deepcopy(QuestifyCharDB),
   }
-  local toc = Mock.lastToc or "Questify_Vanilla/Questify_Vanilla.toc"
+  local toc = Mock.lastToc or "Questify/Questify.toc"
   local o = {}
   for k, v in pairs(opts or Mock.lastOpts or {}) do o[k] = v end
   o.savedVariables = saved

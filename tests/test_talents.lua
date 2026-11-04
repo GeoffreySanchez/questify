@@ -1,5 +1,5 @@
 -- Tests des talents (Q.Talents, alerte du suivi, Q.UI.TalentPicker).
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_d.lua")
 
@@ -249,9 +249,9 @@ return {
     local Q = load()
     levelUp(12)
     ranks["1:2"] = 2
-    SlashCmdList.QUESTIFYVANILLA("talents")
+    SlashCmdList.QUESTIFY("talents")
     t.eq(Mock.countPrinted(string.format(Q.L.UI_SLASH_TALENTS_DUMPED, 4)), 1)
-    local d = QuestifyVanillaDB.talentDump.forever.WARRIOR
+    local d = QuestifyDB.talentDump.forever.WARRIOR
     t.ok(d, "talentDump[forever][WARRIOR]")
     t.eq(d.configID, CONFIG); t.eq(d.locale, "enUS"); t.eq(d.interface, 16001)
     t.eq(#d.nodes, 4)
@@ -280,11 +280,11 @@ return {
     t.ok(not Q.UI.Tracker.talentAlert:IsShown())
     installForever()
     traits.configID = nil                              -- talents pas encore chargés
-    SlashCmdList.QUESTIFYVANILLA("talents")
+    SlashCmdList.QUESTIFY("talents")
     t.eq(Mock.countPrinted(Q.L.TALENT_DUMP_NO_CONFIG), 1)
     t.eq(Mock.countPrinted(string.format(Q.L.UI_SLASH_TALENTS_DUMPED, 0)), 0, "no misleading count")
     t.eq(Q.Talents:Unspent(), 0)
-    t.eq(QuestifyVanillaDB.talentDump, nil, "nothing recorded")
+    t.eq(QuestifyDB.talentDump, nil, "nothing recorded")
     t.eq(#Mock.errors, 0)
   end,
 }

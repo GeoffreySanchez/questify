@@ -1,8 +1,8 @@
 -- Tests des donjons selon le niveau et la faction (Q.Dungeons, alerte du suivi, fenêtre, journal)
 -- et contrôle des données générées (Guides/DungeonData.lua).
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
-local DATA_FILE = "Questify_Vanilla/Guides/DungeonData.lua"
+local DATA_FILE = "Questify/Guides/DungeonData.lua"
 
 local ALLIANCE = 4294967373
 local HORDE = 8589934770
@@ -449,7 +449,7 @@ return {
     -- lève d'erreur, le Gouffre de Ragefeu n'apparaît jamais côté Alliance, chaque donjon proposé
     -- s'ajoute puis s'ignore.
     local real = {}
-    assert(loadfile(Mock.root .. "/" .. DATA_FILE))("Questify_Vanilla", real)
+    assert(loadfile(Mock.root .. "/" .. DATA_FILE))("Questify", real)
     for _, side in ipairs({ "Alliance", "Horde" }) do
       Mock.reset()
       if side == "Alliance" then alliance(10) else horde(10) end
@@ -483,7 +483,7 @@ return {
   generated_data_is_sane = function(t)
     local Q = {}
     local chunk = assert(loadfile(Mock.root .. "/" .. DATA_FILE))
-    chunk("Questify_Vanilla", Q)
+    chunk("Questify", Q)
     local data = Q.DungeonData
     t.eq(type(data), "table")
     t.ok(#data >= 10, "dungeons generated")

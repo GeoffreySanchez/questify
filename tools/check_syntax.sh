@@ -16,7 +16,7 @@ while IFS= read -r -d '' file; do
     status=1
   fi
   case "$file" in
-    "$ROOT"/Questify_Vanilla/*)
+    "$ROOT"/Questify/*)
       if grep -nE '^[[:space:]]*goto[[:space:]]+[A-Za-z_][A-Za-z0-9_]*[[:space:]]*(--.*)?$|::[A-Za-z_][A-Za-z0-9_]*::' "$file" >/dev/null; then
         grep -nE '^[[:space:]]*goto[[:space:]]+[A-Za-z_][A-Za-z0-9_]*[[:space:]]*(--.*)?$|::[A-Za-z_][A-Za-z0-9_]*::' "$file" \
           | sed "s|^|$file:|; s|\$| (goto/labels are not Lua 5.1)|"
@@ -24,5 +24,5 @@ while IFS= read -r -d '' file; do
       fi
       ;;
   esac
-done < <(find "$ROOT/Questify_Vanilla" "$ROOT/tools" "$ROOT/tests" -type f -name '*.lua' -print0 2>/dev/null)
+done < <(find "$ROOT/Questify" "$ROOT/tools" "$ROOT/tests" -type f -name '*.lua' -print0 2>/dev/null)
 exit $status

@@ -1,5 +1,5 @@
 -- Tests de la spécialisation et du profil de butin (Automation/SpecRole.lua).
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 
 local function ext() return dofile(Mock.root .. "/tests/mock_ext_specrole.lua") end
@@ -181,7 +181,7 @@ return {
     Mock.spec.initialized = false   -- données pas encore prêtes à la connexion
     -- assistant déjà terminé (sinon il s'ouvre à la connexion et la question l'attend)
     local Q = Mock.loadAddon(TOC, { extraFiles = { GUIDES },
-      savedVariables = { QuestifyVanillaCharDB = { wizardDone = true } } })
+      savedVariables = { QuestifyCharDB = { wizardDone = true } } })
     t.eq(Q.char.rewardRole, "auto")
     Mock.advance(6)
     t.ok(not Q.SpecRole:IsShown(), "waits for the spec data")

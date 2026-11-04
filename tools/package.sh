@@ -2,18 +2,18 @@
 # Contrôle de version puis zip pour installation manuelle.
 #
 # Ordre : tools/check_syntax.sh, luajit tests/run.lua, luajit tools/validate_guides.lua, cohérence des
-# TOC et des fichiers listés, puis le zip dist/Questify_Vanilla-<version>-forever.zip (WoW: Forever).
+# TOC et des fichiers listés, puis le zip dist/Questify-<version>-forever.zip (WoW: Forever).
 # SKIP_GUIDE_VALIDATION=1 saute la validation des guides (CI sans clone).
 # Le premier contrôle qui échoue arrête tout : aucun zip n'est produit.
 #
-# La version vient de « ## Version: » dans Questify_Vanilla/Questify_Vanilla.toc (0.1.0 si absente).
-# Le dossier Questify_Vanilla/ est à la racine du zip ; LICENSE y est copiée (GPL) ; .DS_Store et
+# La version vient de « ## Version: » dans Questify/Questify.toc (0.1.0 si absente).
+# Le dossier Questify/ est à la racine du zip ; LICENSE y est copiée (GPL) ; .DS_Store et
 # les fichiers temporaires d'éditeur sont exclus. tests/, tools/ et docs/ n'y figurent jamais.
 set -u
 set -o pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-ADDON="Questify_Vanilla"
+ADDON="Questify"
 ADDON_DIR="$ROOT/$ADDON"
 TOC="$ADDON_DIR/$ADDON.toc"
 TOC_FOREVER="$ADDON_DIR/${ADDON}_Camelot.toc"
@@ -108,14 +108,14 @@ stageAddon() {
   find "$dir" \( -name '.DS_Store' -o -name '._*' -o -name '*.swp' -o -name '*~' \) -delete
 }
 
-# zipAddon <saveur> : zippe $STAGE/<saveur>/Questify_Vanilla en dist/Questify_Vanilla-<version>-<saveur>.zip.
+# zipAddon <saveur> : zippe $STAGE/<saveur>/Questify en dist/Questify-<version>-<saveur>.zip.
 zipAddon() {
   ZIP="$ROOT/dist/$ADDON-$VERSION-$1.zip"
   rm -f "$ZIP"
   ( cd "$STAGE/$1" && zip -r -X -q "$ZIP" "$ADDON" ) || fail "zip $1 a échoué"
 }
 
-# checkZip <entrée requise...> : tout sous Questify_Vanilla/, rien d'interdit, entrées requises présentes.
+# checkZip <entrée requise...> : tout sous Questify/, rien d'interdit, entrées requises présentes.
 checkZip() {
   local entries bad required
   entries="$(unzip -Z1 "$ZIP")" || fail "zip illisible : $ZIP"

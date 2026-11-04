@@ -1,5 +1,5 @@
 -- Tests des cibles de navigation et des monstres d'objectif (Q.Targets).
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 
 local function load(opts)

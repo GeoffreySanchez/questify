@@ -1,5 +1,5 @@
 -- Tests du journal (onglets Route, Quêtes de classe, Options) et de la fenêtre des quêtes de classe.
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_d.lua")
 
@@ -26,12 +26,12 @@ end
 return {
   slash_toggles_journal = function(t)
     local Q = load()
-    t.eq(SLASH_QUESTIFYVANILLA1, "/questify")
-    t.eq(SLASH_QUESTIFYVANILLA2, "/qf")
-    SlashCmdList.QUESTIFYVANILLA("")
-    local J = QuestifyVanillaJournal
+    t.eq(SLASH_QUESTIFY1, "/questify")
+    t.eq(SLASH_QUESTIFY2, "/qf")
+    SlashCmdList.QUESTIFY("")
+    local J = QuestifyJournal
     t.ok(J and J:IsShown(), "journal shown")
-    SlashCmdList.QUESTIFYVANILLA("")
+    SlashCmdList.QUESTIFY("")
     t.ok(not J:IsShown(), "journal hidden again")
     t.eq(#Mock.errors, 0)
   end,
@@ -39,12 +39,12 @@ return {
   journal_frame_layout = function(t)
     local Q = load()
     Q.UI.Journal:Toggle()
-    local f = QuestifyVanillaJournal
+    local f = QuestifyJournal
     t.eq(f._template, "ButtonFrameTemplate")
     t.eq({ f:GetSize() }, { 520, 560 })
     t.ok(f:IsMovable(), "movable")
     local special = false
-    for _, n in ipairs(UISpecialFrames) do if n == "QuestifyVanillaJournal" then special = true end end
+    for _, n in ipairs(UISpecialFrames) do if n == "QuestifyJournal" then special = true end end
     t.ok(special, "closes with Escape (UISpecialFrames)")
     t.eq(Q.UI.Journal.tab, "route", "route tab by default")
     t.eq(#Q.UI.Journal.tabs, 3)
@@ -236,7 +236,7 @@ return {
     t.eq(J.exportBox:GetText(), Q.L.UI_TELEMETRY_UNAVAILABLE)
     -- assistant
     Mock.click(J.wizardButton, "LeftButton")
-    t.ok(QuestifyVanillaWizard and QuestifyVanillaWizard:IsShown(), "wizard opened")
+    t.ok(QuestifyWizard and QuestifyWizard:IsShown(), "wizard opened")
     t.eq(#Mock.errors, 0)
   end,
 
@@ -245,7 +245,7 @@ return {
     Ext.fakeClassQuests(Q, { { chain = Ext.warlockChain(), state = "available" } })
     local P = Q.UI.ClassQuestPopup
     P:Show(Ext.warlockChain())
-    local f = QuestifyVanillaClassQuestPopup
+    local f = QuestifyClassQuestPopup
     t.ok(f and f:IsShown(), "popup shown")
     t.ok(plain(P.title:GetText()):find("The Stolen Tome", 1, true))
     t.ok(plain(P.level:GetText()):find("4", 1, true))
@@ -272,17 +272,17 @@ return {
 
   compartment_click_toggles_journal = function(t)
     local Q = load()
-    QuestifyVanilla_OnAddonCompartmentClick("Questify_Vanilla", "LeftButton")
-    t.ok(QuestifyVanillaJournal:IsShown())
-    QuestifyVanilla_OnAddonCompartmentClick("Questify_Vanilla", "LeftButton")
-    t.ok(not QuestifyVanillaJournal:IsShown())
+    Questify_OnAddonCompartmentClick("Questify", "LeftButton")
+    t.ok(QuestifyJournal:IsShown())
+    Questify_OnAddonCompartmentClick("Questify", "LeftButton")
+    t.ok(not QuestifyJournal:IsShown())
   end,
 
   journal_without_questiedb = function(t)
     Mock.addons.QuestieDB = false
     local Q = load()
     Q.UI.Journal:Toggle()
-    t.ok(QuestifyVanillaJournal:IsShown())
+    t.ok(QuestifyJournal:IsShown())
     t.eq(Q.UI.Journal.routeMessage:GetText(), Q.L.NEED_QUESTIEDB)
     Ext.fakeClassQuests(Q, { { chain = Ext.warlockChain(), state = "available" } })
     Q.UI.Journal:ShowTab("class")

@@ -1,5 +1,5 @@
 -- Tests des métiers (Q.Professions, Q.UI.ProfessionPicker) : choix, étapes chez les maîtres.
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_d.lua")
 
@@ -29,7 +29,7 @@ local function plain(s) return (tostring(s or ""):gsub("|c%x%x%x%x%x%x%x%x", "")
 
 return {
   picker_once_after_wizard = function(t)
-    local Q = load({ QuestifyVanillaCharDB = { wizardDone = true } })
+    local Q = load({ QuestifyCharDB = { wizardDone = true } })
     Mock.advance(4)
     local P = Q.UI.ProfessionPicker
     t.ok(P.frame and P.frame:IsShown(), "asked at login")
@@ -52,14 +52,14 @@ return {
     t.ok(W:IsShown(), "wizard open")
     P.AutoShow()
     t.ok(not (P.frame and P.frame:IsShown()), "never while the wizard is open")
-    QuestifyVanillaWizard:Hide()                    -- croix : l'assistant n'est pas terminé
+    QuestifyWizard:Hide()                    -- croix : l'assistant n'est pas terminé
     t.eq(Q.char.wizardDone, nil)
     Mock.advance(1)
     t.ok(P.frame and P.frame:IsShown(), "asked once the wizard is closed")
     P.laterButton:GetScript("OnClick")(P.laterButton)
     -- une fois par session : ni une nouvelle fermeture de l'assistant ni LOGIN ne la rouvrent
-    SlashCmdList.QUESTIFYVANILLA("wizard")
-    QuestifyVanillaWizard:Hide()
+    SlashCmdList.QUESTIFY("wizard")
+    QuestifyWizard:Hide()
     Q:Fire("LOGIN")
     Mock.advance(5)
     t.ok(not P.frame:IsShown(), "once per session")
@@ -79,7 +79,7 @@ return {
   end,
 
   two_primaries_max = function(t)
-    local Q = load({ QuestifyVanillaCharDB = { wizardDone = true } })
+    local Q = load({ QuestifyCharDB = { wizardDone = true } })
     local P = Q.UI.ProfessionPicker
     P:Show()
     for _, key in ipairs({ "MINING", "SKINNING", "HERBALISM" }) do
@@ -97,7 +97,7 @@ return {
   end,
 
   step_inserted_near_a_trainer_only = function(t)
-    local Q = load({ QuestifyVanillaCharDB = { wizardDone = true } })
+    local Q = load({ QuestifyCharDB = { wizardDone = true } })
     Q.Professions:SetChosen({ MINING = true, SKINNING = true })
     local cur = Q.Progress:Current()
     t.eq(cur.step.action, "trainprof")
@@ -113,14 +113,14 @@ return {
   end,
 
   step_removed_when_learned_or_visited = function(t)
-    local Q = load({ QuestifyVanillaCharDB = { wizardDone = true } })
+    local Q = load({ QuestifyCharDB = { wizardDone = true } })
     Q.Professions:SetChosen({ MINING = true })
     t.ok(Q.Professions:HasStep("MINING"))
     known[2575] = true
     Mock.advance(5)
     t.ok(not Q.Professions:HasStep("MINING"), "Apprentice Mining known")
     -- autre personnage : visite du maître
-    local Q2 = load({ QuestifyVanillaCharDB = { wizardDone = true } })
+    local Q2 = load({ QuestifyCharDB = { wizardDone = true } })
     Q2.Professions:SetChosen({ MINING = true })
     Mock.units.npc = { guid = "Creature-0-1-0-1-90100-0000ABCD", name = "Test Miner" }
     Mock.fire("TRAINER_SHOW")
@@ -131,7 +131,7 @@ return {
   end,
 
   unchosen_profession_steps_removed = function(t)
-    local Q = load({ QuestifyVanillaCharDB = { wizardDone = true } })
+    local Q = load({ QuestifyCharDB = { wizardDone = true } })
     Q.Professions:SetChosen({ MINING = true })
     t.ok(Q.Professions:HasStep("MINING"))
     Q.Professions:SetChosen({})
@@ -141,7 +141,7 @@ return {
 
   -- 12.x : LEARNED_SPELL_IN_SKILL_LINE remplace LEARNED_SPELL_IN_TAB (absent de Forever).
   learned_spell_in_skill_line_checks_at_once = function(t)
-    local Q = load({ QuestifyVanillaCharDB = { wizardDone = true } })
+    local Q = load({ QuestifyCharDB = { wizardDone = true } })
     Q.Professions:SetChosen({ MINING = true })
     t.ok(Q.Professions:HasStep("MINING"))
     known[2575] = true

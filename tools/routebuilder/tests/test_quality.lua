@@ -113,7 +113,7 @@ return {
 
   -- guide généré : 830 « The Admiral's Orders » est pris dans le coffre après l'objectif de 784
   generated_830_after_784 = function(t)
-    local g = readFile(H.ROOT .. "/../../Questify_Vanilla/Guides/Horde/H_OrcTroll_02.lua") or ""
+    local g = readFile(H.ROOT .. "/../../Questify/Guides/Horde/H_OrcTroll_02.lua") or ""
     local c784 = g:find('{ "complete", 784', 1, true)
     local a830 = g:find('{ "accept", 830', 1, true)
     t.ok(c784 and a830 and c784 < a830, "784 objective before the chest")

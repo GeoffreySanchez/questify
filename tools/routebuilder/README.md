@@ -1,8 +1,8 @@
-# Questify Vanilla route builder
+# Questify route builder
 
 Offline LuaJIT tool that reads World of Warcraft: Forever quest data from a local QuestieDB clone
 plus the Forever DB2 tables in `data/`, simulates a character chapter by chapter, and writes the
-guide files of `Questify_Vanilla/Guides/` with one Markdown report per chapter.
+guide files of `Questify/Guides/` with one Markdown report per chapter.
 
 The route is 100 % our own: the tool only reads facts (quest, NPC and object IDs, spawn
 coordinates, XP values). Public guides are never read by the tool.
@@ -29,7 +29,7 @@ luajit tools/routebuilder/tests/run.lua [pattern]
 | `--questie` | `~/dev/questify/.cache/questie` | Questie root, for the quest blacklist |
 | `--faction` | `all` | `Alliance`, `Horde` or `all` |
 | `--only` | none | Write only this chapter. Earlier chapters of its race path are still simulated, so the character state (level, done quests, known flight paths) is right. |
-| `--out` | `Questify_Vanilla/Guides` | Guide output root: `<out>/<Alliance\|Horde\|Skyborne>/<planId>.lua`, `<out>/ClassQuestData.lua`, `<out>/Guides.xml` |
+| `--out` | `Questify/Guides` | Guide output root: `<out>/<Alliance\|Horde\|Skyborne>/<planId>.lua`, `<out>/ClassQuestData.lua`, `<out>/Guides.xml` |
 | `--report` | `docs/routes` | Markdown reports, `<report>/<planId>.md` |
 | `--overrides` | `tools/routebuilder/overrides.lua` | Hand fixes (see below) |
 | `--date` | today | Date written in the file headers (set it for reproducible output) |

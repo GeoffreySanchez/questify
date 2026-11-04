@@ -1,6 +1,6 @@
 -- Tests du bouton de la minicarte (UI/MinimapButton.lua) : icône du profil de butin, menu des
 -- choix rapides, angle gardé, option.
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 
 local function ext() return dofile(Mock.root .. "/tests/mock_ext_specrole.lua") end
@@ -62,7 +62,7 @@ return {
     local B = Q.UI.MinimapButton
     B:SelectRole("caster")
     local lines = B:TooltipLines()
-    t.eq(lines[1], "Questify Vanilla")
+    t.eq(lines[1], "Questify")
     t.eq(lines[2], string.format(Q.L.MINIMAP_TIP_ROLE, Q.L.REWARD_SPEC_SHAMAN_CASTER))
     t.eq(lines[3], Q.L.MINIMAP_TIP_LEFT)
     t.eq(#lines, 6)
@@ -78,7 +78,7 @@ return {
     t.eq(Mock.countCalls("MenuUtil.CreateContextMenu"), 1)
     t.eq(Mock.lastMenu.owner, B.button)
     local titles = Ext.menuElements("title")
-    t.eq(titles[1].text, "Questify Vanilla")
+    t.eq(titles[1].text, "Questify")
     t.eq(titles[2].text, Q.L.MINIMAP_MENU_LOOT)
     local radios = Ext.menuElements("radio")
     t.eq(keys(radios), { "auto", "caster", "melee", "healer" }, "only the class profiles")
@@ -174,7 +174,7 @@ return {
     local Q, Ext = load("SHAMAN", { spec = true })
     local B = Q.UI.MinimapButton
     B:SetAngle(90)
-    t.eq(QuestifyVanillaDB.minimapAngle, 90)
+    t.eq(QuestifyDB.minimapAngle, 90)
     local p, rel, rp, x, y = B.button:GetPoint(1)
     t.eq({ p, rel, rp }, { "CENTER", Minimap, "CENTER" })
     t.near(x, 0, 1e-6); t.ok(y > 50, "above the centre")
@@ -184,7 +184,7 @@ return {
     t.ok(B.button._scripts.OnUpdate ~= nil)
     B.button._scripts.OnUpdate(B.button, 0.1)
     B.button._scripts.OnDragStop(B.button)
-    t.near(QuestifyVanillaDB.minimapAngle, 270, 1e-6)
+    t.near(QuestifyDB.minimapAngle, 270, 1e-6)
     t.ok(not B.dragging)
     -- /reload : même angle
     local Q2 = Mock.reload()

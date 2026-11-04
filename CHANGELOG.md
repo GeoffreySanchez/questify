@@ -79,7 +79,7 @@
 - Les monstres à tuer s'affichent dans le suivi, sous la ligne d'objectif de l'étape « Faire »
   (crâne, nom, niveau), au lieu du panneau « Cibles » séparé. Un clic cible toujours le plus proche
   et lui pose un crâne.
-- Nouvelle option « Touche de ciblage auto » : un raccourci (Échap > Raccourcis > Questify Vanilla)
+- Nouvelle option « Touche de ciblage auto » : un raccourci (Échap > Raccourcis > Questify)
   cible le monstre d'objectif le plus proche de l'étape courante et le marque d'un crâne, hors
   combat seulement.
 - Forever : animation dorée (ondes et étoile qui tourne) autour de l'objet à utiliser quand l'étape
@@ -105,7 +105,7 @@
   compris), y compris celles du chargement, et survivent à `/reload` ; la première erreur d'une
   session indique `/qf bug`.
 - Classic Era n'est plus pris en charge : l'addon vise WoW: Forever seul, avec un seul zip
-  (`Questify_Vanilla-<version>-forever.zip`).
+  (`Questify-<version>-forever.zip`).
 - Donjons selon le niveau et la faction : alerte « Donjon conseillé : X (niv a-b) » dans le suivi ;
   « Ajouter à la route » insère ses quêtes à prendre en ville (la plus proche d'abord, ville par
   ville), l'entrée du donjon, puis les rendus. Jamais le Gouffre de Ragefeu pour l'Alliance. Section
@@ -178,7 +178,7 @@
 - Monsters to kill are shown in the tracker, under the objective line of the current "Complete"
   step (skull, name, level), instead of the separate "Targets" panel. Clicking still targets the
   nearest one and marks it with a skull.
-- New "Auto targeting key" option: a key binding (Esc > Key Bindings > Questify Vanilla) targets
+- New "Auto targeting key" option: a key binding (Esc > Key Bindings > Questify) targets
   the nearest objective monster of the current step and marks it with a skull, out of combat only.
 - Forever: golden animation (waves and a spinning star) around the object to use when the step
   points at a world object (chest, bucket…), with the built-in marker. "Animate the object to use"
@@ -201,7 +201,7 @@
 - Lua errors are kept with their call stack (the last 20, with repeat counts), including those
   raised while loading, and survive `/reload`; the first error of a session points to `/qf bug`.
 - Classic Era is no longer supported: the addon targets WoW: Forever only, with a single zip
-  (`Questify_Vanilla-<version>-forever.zip`).
+  (`Questify-<version>-forever.zip`).
 - Dungeons by level and faction: "Suggested dungeon: X (lvl a-b)" alert in the tracker; "Add to
   route" inserts its quests to pick up in town (nearest first, city by city), the dungeon entrance,
   then the turn-ins. Never Ragefire Chasm for the Alliance. "Dungeons" section in the journal's
@@ -212,7 +212,7 @@
 
 ### Français
 
-Première version de **Questify Vanilla**, guide de leveling gratuit et open source pour
+Première version de **Questify**, guide de leveling gratuit et open source pour
 World of Warcraft: Forever (niveaux 1 à 30).
 
 #### Nouveautés
@@ -239,7 +239,7 @@ World of Warcraft: Forever (niveaux 1 à 30).
 - À vérifier en jeu le jour du lancement :
   - `/tm` (marqueur de crâne) en solo ;
   - valeurs secrètes en combat (aucune erreur attendue, mais non testé sur le vrai client) ;
-  - reconnaissance du fichier `Questify_Vanilla_Camelot.toc` par le client Forever ;
+  - reconnaissance du fichier `Questify_Camelot.toc` par le client Forever ;
   - affichage du marqueur natif.
 - Pas de routes 30-60, de guides de donjon, de métiers, de réputation ni de raids. Pas de mode
   Hardcore.
@@ -256,7 +256,7 @@ World of Warcraft: Forever (niveaux 1 à 30).
 
 ### English
 
-First release of **Questify Vanilla**, a free and open-source leveling guide for World of Warcraft:
+First release of **Questify**, a free and open-source leveling guide for World of Warcraft:
 Forever (levels 1 to 30).
 
 #### What is new
@@ -282,7 +282,7 @@ Forever (levels 1 to 30).
 - To check in game on launch day:
   - `/tm` (skull marker) when playing solo;
   - secret values in combat (no error expected, but untested on the real client);
-  - the Forever client recognizing `Questify_Vanilla_Camelot.toc`;
+  - the Forever client recognizing `Questify_Camelot.toc`;
   - the native waypoint display.
 - No 30-60 routes, dungeon guides, professions, reputation or raids. No Hardcore mode.
 - No pins on the world map or the minimap: the 3D waypoint and navigation are enough for this

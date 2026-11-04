@@ -1,5 +1,5 @@
 -- Tests des vols automatiques (Q.Taxi, Automation/Taxi.lua).
-local TOC = "Questify_Vanilla/Questify_Vanilla.toc"
+local TOC = "Questify/Questify.toc"
 local GUIDES = "tests/fixtures/guide_fixture.lua"
 local Ext = dofile(Mock.root .. "/tests/mock_ext_comfort.lua")
 

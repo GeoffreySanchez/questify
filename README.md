@@ -1,4 +1,4 @@
-# Questify Vanilla
+# Questify
 
 Guide de leveling **gratuit et open source** pour **World of Warcraft: Forever** (niveaux 1 à 30).
 *A **free and open-source** leveling guide for **World of Warcraft: Forever** (levels 1 to 30).*
@@ -7,7 +7,7 @@ Guide de leveling **gratuit et open source** pour **World of Warcraft: Forever**
 
 | Addon | Statut / Status | Lien / Link |
 |---|---|---|
-| **Questify Vanilla** | requis / required | [Télécharger / Download](https://github.com/questify-addon/questify/releases/tag/latest) (`Questify_Vanilla-<version>-forever.zip`) |
+| **Questify** | requis / required | [Télécharger / Download](https://github.com/questify-addon/questify/releases/tag/latest) (`Questify-<version>-forever.zip`) |
 | **QuestieDB** | **requis / required** | [CurseForge](https://www.curseforge.com/wow/addons/questiedb) |
 | ShortestPath Forever | optionnel / optional | [CurseForge](https://www.curseforge.com/wow/addons/shortest-path-forever) |
 | WaypointUI | optionnel / optional | [CurseForge](https://www.curseforge.com/wow/addons/waypointui) |
@@ -53,8 +53,8 @@ Captures et vidéos à venir : liste des prises de vue dans [docs/media/README.m
 ### Installation
 Un seul zip, pour WoW: Forever, dans la dernière version publiée du dépôt GitHub :
 <https://github.com/questify-addon/questify/releases/tag/latest>.
-1. Télécharge `Questify_Vanilla-<version>-forever.zip` et décompresse-le dans
-   `World of Warcraft\_forever_\Interface\AddOns\` (le dossier `Questify_Vanilla` doit se trouver
+1. Télécharge `Questify-<version>-forever.zip` et décompresse-le dans
+   `World of Warcraft\_forever_\Interface\AddOns\` (le dossier `Questify` doit se trouver
    directement dans `AddOns`).
 2. Installe [**QuestieDB**](https://www.curseforge.com/wow/addons/questiedb) depuis CurseForge :
    c'est une dépendance obligatoire (les données de quêtes viennent de là).
@@ -106,7 +106,7 @@ celles du chargement).
 Si le jeu indique l'addon « périmé » (numéro d'interface changé par un patch), coche « Charger les
 addons périmés ».
 - [ ] L'addon apparaît dans la liste des addons, sans message d'erreur Lua au chargement (le client
-      reconnaît `Questify_Vanilla_Camelot.toc` ; QuestieDB est chargé, sinon le client ou Questify le signale).
+      reconnaît `Questify_Camelot.toc` ; QuestieDB est chargé, sinon le client ou Questify le signale).
 - [ ] L'assistant s'ouvre environ 3 secondes après la première connexion et applique les choix à
       « Terminer ». Les liens CurseForge se sélectionnent d'un clic et Ctrl+C les copie. « Activer »
       puis « Recharger l'interface » rouvrent l'assistant sur la même page, avec l'addon chargé.
@@ -118,7 +118,7 @@ addons périmés ».
       de foyer liée. Le rayon de 15 yards des étapes `goto` n'est pas trop serré.
 - [ ] `/tm` fonctionne en solo : un clic sur un monstre sous l'objectif cible le plus proche et lui pose
       un crâne, une seule fois par clic, avec `ActionButtonUseKeyDown` à 0 puis à 1.
-- [ ] Option « Touche de ciblage auto » : une touche liée dans Échap > Raccourcis > Questify Vanilla
+- [ ] Option « Touche de ciblage auto » : une touche liée dans Échap > Raccourcis > Questify
       cible le monstre d'objectif le plus proche et lui pose un crâne hors combat, et ne fait rien
       en combat.
 - [ ] Étape avec un objet à utiliser (coffre, seau) et marqueur natif : animation dorée centrée sur
@@ -162,7 +162,7 @@ Maintenir Maj (Shift) suspend l'acceptation et le rendu automatiques.
 GPL-3.0-or-later (voir `LICENSE`). Les données de QuestieDB ne sont pas redistribuées : elles sont
 lues en jeu depuis l'addon QuestieDB.
 
-Bibliothèques incluses dans `Questify_Vanilla/Libs/`, copiées sans modification :
+Bibliothèques incluses dans `Questify/Libs/`, copiées sans modification :
 - HereBeDragons 2.18 (Nevcairiel, licence BSD indiquée dans son TOC) : épingles sur la carte.
 - LibStub (domaine public) et CallbackHandler-1.0 (BSD), depuis Ace3 `Release-r1403`.
 
@@ -190,8 +190,8 @@ Bibliothèques incluses dans `Questify_Vanilla/Libs/`, copiées sans modificatio
 ### Installation
 A single zip, for WoW: Forever, in the GitHub repository's latest release:
 <https://github.com/questify-addon/questify/releases/tag/latest>.
-1. Download `Questify_Vanilla-<version>-forever.zip` and unzip it into
-   `World of Warcraft\_forever_\Interface\AddOns\` (the `Questify_Vanilla` folder must sit directly
+1. Download `Questify-<version>-forever.zip` and unzip it into
+   `World of Warcraft\_forever_\Interface\AddOns\` (the `Questify` folder must sit directly
    inside `AddOns`).
 2. Install [**QuestieDB**](https://www.curseforge.com/wow/addons/questiedb) from CurseForge: it is a
    required dependency (quest data comes from it).
@@ -239,7 +239,7 @@ log, settings, the `/qf check` results and the Lua errors with their call stack 
 If the game says the addon is out of date (interface number changed by a patch), tick "Load out of
 date AddOns".
 - [ ] The addon shows in the addon list with no Lua error on load (the client recognizes
-      `Questify_Vanilla_Camelot.toc`; QuestieDB is loaded, otherwise the client or Questify warns you).
+      `Questify_Camelot.toc`; QuestieDB is loaded, otherwise the client or Questify warns you).
 - [ ] The wizard opens about 3 seconds after the first login and applies your choices on Finish.
       CurseForge links get selected with one click and Ctrl+C copies them. "Enable" then
       "Reload UI" reopen the wizard on the same page, with the addon loaded. Closed with the X, it
@@ -251,7 +251,7 @@ date AddOns".
       hearthstone. The 15-yard radius of `goto` steps is not too tight.
 - [ ] `/tm` works solo: clicking a mob under the objective in the tracker targets the nearest one
       and puts a skull on it, once per click, with `ActionButtonUseKeyDown` set to 0 and then 1.
-- [ ] "Auto targeting key" option: a key bound in Esc > Key Bindings > Questify Vanilla targets the
+- [ ] "Auto targeting key" option: a key bound in Esc > Key Bindings > Questify targets the
       nearest objective mob and puts a skull on it out of combat, and does nothing in combat.
 - [ ] Step with an object to use (chest, bucket) and the native marker: golden animation centered on
       the object, which disappears off screen or beyond 50 m ("Animate the object to use" option).
@@ -292,7 +292,7 @@ Holding Shift pauses automatic accept and turn-in.
 GPL-3.0-or-later (see `LICENSE`). QuestieDB data is not redistributed: it is read in game from the
 QuestieDB addon.
 
-Libraries bundled in `Questify_Vanilla/Libs/`, copied unchanged:
+Libraries bundled in `Questify/Libs/`, copied unchanged:
 - HereBeDragons 2.18 (Nevcairiel, BSD license stated in its TOC): map pins.
 - LibStub (public domain) and CallbackHandler-1.0 (BSD), from Ace3 `Release-r1403`.
 
@@ -302,8 +302,8 @@ Libraries bundled in `Questify_Vanilla/Libs/`, copied unchanged:
 
 ### Publier une version / Publishing a release
 
-1. Mettre la nouvelle version dans `## Version:` des deux TOC (`Questify_Vanilla.toc` et
-   `Questify_Vanilla_Camelot.toc`, identiques), au format `X.Y.Z` (ou `X.Y.Z-beta.1`), et ajouter une
+1. Mettre la nouvelle version dans `## Version:` des deux TOC (`Questify.toc` et
+   `Questify_Camelot.toc`, identiques), au format `X.Y.Z` (ou `X.Y.Z-beta.1`), et ajouter une
    section `## X.Y.Z (date)` dans `CHANGELOG.md`. Fusionner dans `main`.
 2. Créer et pousser le tag : `git tag vX.Y.Z && git push origin vX.Y.Z`.
 3. Le workflow « Release » vérifie que le tag correspond au TOC, lance les tests, construit le zip, crée la
@@ -322,5 +322,5 @@ builds the zip, creates the GitHub release and uploads to CurseForge once the `C
 - Tests: `luajit tests/run.lua [pattern]` (WoW API mock in `tests/wow_mock.lua`).
 - Syntax check: `tools/check_syntax.sh`.
 - Release check and zip: `tools/package.sh` runs the syntax check, the tests and `tools/validate_guides.lua`,
-  then writes `dist/Questify_Vanilla-<version>-forever.zip` (version read from `## Version:` in the TOC).
+  then writes `dist/Questify-<version>-forever.zip` (version read from `## Version:` in the TOC).
   Changes are listed in `CHANGELOG.md`.

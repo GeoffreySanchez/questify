@@ -1,8 +1,8 @@
-# Questify Vanilla Implementation Plan
+# Questify Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Ship by 2026-11-04 evening a free WoW Forever leveling-guide addon (`Questify_Vanilla`) with generated, optimized 1-30 routes for every race (Alliance first, then Horde, then Skyborne).
+**Goal:** Ship by 2026-11-04 evening a free WoW Forever leveling-guide addon (`Questify`) with generated, optimized 1-30 routes for every race (Alliance first, then Horde, then Skyborne).
 
 **Architecture:** The in-game addon reads quest/NPC/object data at runtime from the QuestieDB addon, a declared dependency. It ships only route step lists that our offline LuaJIT generator writes from a local QuestieDB clone and the Forever DB2 tables. Modules share one namespace table `Q` and talk through `Q:On`/`Q:Fire` messages. Every WoW API call is guarded, so a missing API never breaks the UI.
 
@@ -18,17 +18,17 @@
 
 ### Project and addon layout
 - Project root: `~/dev/questify`. Never read from or write to `~/dev/quick_path`.
-- Addon folder: `Questify_Vanilla/`.
-- TOC files: `Questify_Vanilla.toc` and `Questify_Vanilla_Camelot.toc`, with identical content.
+- Addon folder: `Questify/`.
+- TOC files: `Questify.toc` and `Questify_Camelot.toc`, with identical content.
 - TOC header:
   - `## Interface: 16001`
   - `## Dependencies: QuestieDB`
   - `## OptionalDeps: QuestieDB, TomTom, WaypointUI, ShortestPathForever`
-  - `## SavedVariables: QuestifyVanillaDB`
-  - `## SavedVariablesPerCharacter: QuestifyVanillaCharDB`
-  - `## AddonCompartmentFunc: QuestifyVanilla_OnAddonCompartmentClick`
+  - `## SavedVariables: QuestifyDB`
+  - `## SavedVariablesPerCharacter: QuestifyCharDB`
+  - `## AddonCompartmentFunc: Questify_OnAddonCompartmentClick`
   - `## X-License: GPL-3.0-or-later`
-- Every addon file starts with `local addonName, Q = ...`. The only global is `QuestifyVanilla = Q`, set in `Core/Init.lua`.
+- Every addon file starts with `local addonName, Q = ...`. The only global is `Questify = Q`, set in `Core/Init.lua`.
 - Slash commands: `/questify` and `/qf`.
 
 ### Lua and WoW API rules
@@ -42,7 +42,7 @@
 - Secret values: every `UnitGUID` / `UnitName` / `UnitCreatureID` result goes through `Q.Util.IsSecret(v)`, and secret values are ignored.
 - Event handlers and timers must not break the UI:
   - wrap them in `Q.SafeCall`;
-  - print each distinct error once with prefix `Questify Vanilla:`.
+  - print each distinct error once with prefix `Questify:`.
 - Coordinates:
   - Guides, the QuestieDB facade and the `Q.Nav` interface all use 0-100 map percentages with uiMapIDs.
   - Providers convert to their own scale: TomTom and ShortestPath use 0-1, WaypointUI uses 0-100, `UiMapPoint` uses 0-1.
@@ -96,11 +96,11 @@ Inside a stream, run tasks in order. Streams that run in parallel must not edit 
 
 **Files:**
 - Create:
-  - `Questify_Vanilla/Questify_Vanilla.toc` and `Questify_Vanilla/Questify_Vanilla_Camelot.toc`;
-  - `Questify_Vanilla/Locales/enUS.lua` and `Questify_Vanilla/Locales/frFR.lua`;
-  - `Questify_Vanilla/Core/Init.lua`, `Core/Util.lua`, `Core/Settings.lua`;
-  - `Questify_Vanilla/Data/Constants.lua`;
-  - `Questify_Vanilla/Guides/Guides.xml` (empty `<Ui>` for now);
+  - `Questify/Questify.toc` and `Questify/Questify_Camelot.toc`;
+  - `Questify/Locales/enUS.lua` and `Questify/Locales/frFR.lua`;
+  - `Questify/Core/Init.lua`, `Core/Util.lua`, `Core/Settings.lua`;
+  - `Questify/Data/Constants.lua`;
+  - `Questify/Guides/Guides.xml` (empty `<Ui>` for now);
   - `tests/run.lua`, `tests/wow_mock.lua`, `tests/fixtures/qdb_fixture.lua`;
   - `tests/test_boot.lua`, `tests/test_util.lua`;
   - `tools/check_syntax.sh`;
@@ -113,12 +113,12 @@ Inside a stream, run tasks in order. Streams that run in parallel must not edit 
     - `Q:RegisterEvent(event, fn)` and `Q:UnregisterEvent(event, fn)`: one hidden frame dispatches to several handlers. Each call is `fn(event, ...)` inside `Q.SafeCall`.
     - `Q.SafeCall(fn, ...) -> ok, ...`
   - **Logging and detection:**
-    - `Q:Print(fmt, ...)` prints with the prefix `|cff33ccffQuestify Vanilla|r:`.
-    - `Q:Debug(...)` prints only when `QuestifyVanillaDB.debug`.
+    - `Q:Print(fmt, ...)` prints with the prefix `|cff33ccffQuestify|r:`.
+    - `Q:Debug(...)` prints only when `QuestifyDB.debug`.
     - `Q.IsForever() -> boolean`, true when the interface is between 16000 and 16999.
   - **Saved state** (after `"INIT"`):
-    - `Q.db = QuestifyVanillaDB`, holding `settings` and `debug`;
-    - `Q.char = QuestifyVanillaCharDB`, holding `guideId`, `manual = {[stepKey]=true}`, `skipped = {[stepKey]=true}`, `inserted = { {tag=string, steps={...}} }`, `classQuests = {added={}, ignored={}, seen={}}`, `telemetry = {}` and `wizardDone`.
+    - `Q.db = QuestifyDB`, holding `settings` and `debug`;
+    - `Q.char = QuestifyCharDB`, holding `guideId`, `manual = {[stepKey]=true}`, `skipped = {[stepKey]=true}`, `inserted = { {tag=string, steps={...}} }`, `classQuests = {added={}, ignored={}, seen={}}`, `telemetry = {}` and `wizardDone`.
     - `"LOGIN"` fires on `PLAYER_LOGIN`, after `"INIT"`.
   - **`Q.Util`:**
     - `HasBit(mask, bitValue) -> boolean`;
@@ -137,7 +137,7 @@ Inside a stream, run tasks in order. Streams that run in parallel must not edit 
   - `Q.L` is a locale table. A missing key returns the key itself (`__index`).
   - **`tests/wow_mock.lua`, a `Mock` table:**
     - `Mock.reset()`;
-    - `Mock.loadAddon("Questify_Vanilla/Questify_Vanilla.toc", opts) -> Q`: parses the TOC and runs `Locales\*.lua`, `*.lua` and `Guides\Guides.xml` `<Script file>` entries in order, with varargs `("Questify_Vanilla", ns)`, then fires `ADDON_LOADED` and `PLAYER_LOGIN`. It takes two options:
+    - `Mock.loadAddon("Questify/Questify.toc", opts) -> Q`: parses the TOC and runs `Locales\*.lua`, `*.lua` and `Guides\Guides.xml` `<Script file>` entries in order, with varargs `("Questify", ns)`, then fires `ADDON_LOADED` and `PLAYER_LOGIN`. It takes two options:
       - `opts.extraFiles = {paths}`: files run after the TOC files and before `ADDON_LOADED`, with the same varargs;
       - `opts.beforeLogin = fn(Q)`: called just before `PLAYER_LOGIN`;
     - `Mock.fire(event, ...)` and `Mock.advance(seconds)`, which drives `C_Timer.After` and `C_Timer.NewTicker`;
@@ -168,15 +168,15 @@ Inside a stream, run tasks in order. Streams that run in parallel must not edit 
 return {
   loads_and_fires_login = function(t)
     local loginSeen = false
-    local Q = Mock.loadAddon("Questify_Vanilla/Questify_Vanilla.toc", { beforeLogin = function(Q) Q:On("LOGIN", function() loginSeen = true end) end })
-    t.ok(QuestifyVanilla == Q, "global set")
+    local Q = Mock.loadAddon("Questify/Questify.toc", { beforeLogin = function(Q) Q:On("LOGIN", function() loginSeen = true end) end })
+    t.ok(Questify == Q, "global set")
     t.ok(loginSeen, "LOGIN fired")
     t.eq(Q.Settings:Get("nav.display"), "native")
     t.ok(Q.IsForever())
   end,
   boots_without_questiedb = function(t)
     Mock.addons.QuestieDB = false            -- the mock then defines no QuestieDB globals
-    local Q = Mock.loadAddon("Questify_Vanilla/Questify_Vanilla.toc")
+    local Q = Mock.loadAddon("Questify/Questify.toc")
     t.ok(Mock.printed("QuestieDB"), "explains missing dependency")
     t.eq(#Mock.errors, 0, "no Lua error")
   end,
@@ -184,20 +184,20 @@ return {
 -- tests/test_util.lua
 return {
   hasbit_above_32_bits = function(t)
-    local Q = Mock.loadAddon("Questify_Vanilla/Questify_Vanilla.toc")
+    local Q = Mock.loadAddon("Questify/Questify.toc")
     t.ok(Q.Util.HasBit(4294967373, 4))             -- Alliance mask includes Dwarf
     t.ok(Q.Util.HasBit(4294967373, 4294967296))    -- and Skyborne Alliance
     t.ok(not Q.Util.HasBit(4294967373, 2))         -- not Orc
     t.ok(Q.Util.MaskAllows(0, 2) and Q.Util.MaskAllows(nil, 2))
   end,
   settings_set_fires = function(t)
-    local Q = Mock.loadAddon("Questify_Vanilla/Questify_Vanilla.toc")
+    local Q = Mock.loadAddon("Questify/Questify.toc")
     local got; Q:On("SETTINGS_CHANGED", function(p, v) got = p .. "=" .. tostring(v) end)
     Q.Settings:Set("autoQuest", false)
     t.eq(got, "autoQuest=false"); t.eq(Q.Settings:Get("autoQuest"), false)
   end,
   safecall_reports_once = function(t)
-    local Q = Mock.loadAddon("Questify_Vanilla/Questify_Vanilla.toc")
+    local Q = Mock.loadAddon("Questify/Questify.toc")
     Q.SafeCall(function() error("boom") end); Q.SafeCall(function() error("boom") end)
     t.eq(Mock.countPrinted("boom"), 1)
   end,
@@ -209,7 +209,7 @@ return {
 - [ ] **Step 2: Run the tests to verify they fail.** Run `cd ~/dev/questify && luajit tests/run.lua`. Expected: FAIL, because the TOC is not found.
 - [ ] **Step 3: Implement the files listed above.** TOC file order: Locales, Core, Data, Engine, Nav, Automation, UI, `Guides\Guides.xml`. List only files that exist so far; later tasks append theirs. The QuestieDB-missing message is localized key `L.NEED_QUESTIEDB`, in French "QuestieDB est requis : installe-le depuis CurseForge.".
 - [ ] **Step 4: Run the tests to verify they pass.** Run `luajit tests/run.lua`. Expected: all PASS.
-- [ ] **Step 5: Write `tools/check_syntax.sh`.** It runs `luajit -bl` on every `.lua` under `Questify_Vanilla/`, `tools/` and `tests/` and exits non-zero on any error. Run it. Expected: no output, exit code 0.
+- [ ] **Step 5: Write `tools/check_syntax.sh`.** It runs `luajit -bl` on every `.lua` under `Questify/`, `tools/` and `tests/` and exits non-zero on any error. Run it. Expected: no output, exit code 0.
 
 ---
 
@@ -217,8 +217,8 @@ return {
 
 **Files:**
 - Create:
-  - `Questify_Vanilla/Data/QDB.lua`, `Questify_Vanilla/Data/Maps.lua`;
-  - `Questify_Vanilla/Engine/Guides.lua`;
+  - `Questify/Data/QDB.lua`, `Questify/Data/Maps.lua`;
+  - `Questify/Engine/Guides.lua`;
   - `tests/test_qdb.lua`, `tests/test_guides.lua`;
   - `tests/fixtures/guide_fixture.lua`, with two Alliance chapters: Dwarf/Gnome 1-6 and Dwarf/Gnome 6-11 with `next`.
 
@@ -299,7 +299,7 @@ Write these as functions in the Task 1 file format. Load the guide fixture with 
 ### Task 3: Progress engine
 
 **Files:**
-- Create: `Questify_Vanilla/Engine/Progress.lua`, `tests/test_progress.lua`.
+- Create: `Questify/Engine/Progress.lua`, `tests/test_progress.lua`.
 
 **Interfaces:**
 - Consumes: Task 2 (`Q.QDB`, `Q.Guides`, `Q.Maps`).
@@ -374,7 +374,7 @@ chapter_rollover:      mark every entry of A_DwarfGnome_01 done → Guide().id =
 ### Task 4: Targets (where to go, which mobs)
 
 **Files:**
-- Create: `Questify_Vanilla/Engine/Targets.lua`, `tests/test_targets.lua`.
+- Create: `Questify/Engine/Targets.lua`, `tests/test_targets.lua`.
 
 **Interfaces:**
 - Consumes: Tasks 2 and 3.
@@ -406,7 +406,7 @@ chapter_rollover:      mark every entry of A_DwarfGnome_01 done → Guide().id =
 ### Task 5: Navigation providers
 
 **Files:**
-- Create: `Questify_Vanilla/Nav/Navigation.lua`, `tests/test_nav.lua`.
+- Create: `Questify/Nav/Navigation.lua`, `tests/test_nav.lua`.
 
 **Interfaces:**
 - Consumes: `Q.Targets:ForEntry` (Task 4), `Q.Settings`, and the messages `STEP_CHANGED` and `PROGRESS_UPDATED`.
@@ -420,13 +420,13 @@ chapter_rollover:      mark every entry of A_DwarfGnome_01 done → Guide().id =
     - WaypointUI: `WaypointUIAPI and WaypointUIAPI.Navigation`;
     - TomTom: `TomTom and TomTom.AddWaypoint`.
   - **Behaviour:**
-    - `nav.routing == true` and ShortestPath present: call `ShortestPathForever.API.Navigate("QuestifyVanilla", mapId, x/100, y/100, title, "quest")` and nothing else. If it returns false (combat), keep the target and retry once on `PLAYER_REGEN_ENABLED`.
+    - `nav.routing == true` and ShortestPath present: call `ShortestPathForever.API.Navigate("Questify", mapId, x/100, y/100, title, "quest")` and nothing else. If it returns false (combat), keep the target and retry once on `PLAYER_REGEN_ENABLED`.
     - Otherwise use the display set in `nav.display`, falling back to `native` if that one is missing:
       - `"waypointui"`: `WaypointUIAPI.Navigation.NewUserNavigation({ name = title, mapID = mapId, x = x, y = y })`;
       - `"tomtom"`: remove the previous uid, then `TomTom:AddWaypoint(mapId, x/100, y/100, { title = title, crazy = true, persistent = false, minimap = true, world = true })`;
       - `"native"`: if `C_Map.CanSetUserWaypointOnMap(mapId)`, then `C_Map.SetUserWaypoint(UiMapPoint.CreateFromCoordinates(mapId, x/100, y/100))` and `C_SuperTrack.SetSuperTrackedUserWaypoint(true)`.
     - Skip the update when map, title, and x/y rounded to 0.1 are unchanged.
-    - `Clear()` clears the provider in use: `ShortestPathForever.API.Cancel("QuestifyVanilla")`, `WaypointUIAPI.Navigation.ClearUserNavigation()`, `TomTom:RemoveWaypoint(uid)`, or `C_Map.ClearUserWaypoint()`.
+    - `Clear()` clears the provider in use: `ShortestPathForever.API.Cancel("Questify")`, `WaypointUIAPI.Navigation.ClearUserNavigation()`, `TomTom:RemoveWaypoint(uid)`, or `C_Map.ClearUserWaypoint()`.
     - Update on `STEP_CHANGED`, and every 5 s while the current step is `complete` without `at`.
     - Clear when the current entry is nil.
     - Changing `nav.*` settings clears the old provider and re-applies the target.
@@ -448,7 +448,7 @@ chapter_rollover:      mark every entry of A_DwarfGnome_01 done → Guide().id =
 ### Task 6: Quest automation and reward choice
 
 **Files:**
-- Create: `Questify_Vanilla/Automation/AutoQuest.lua`, `Questify_Vanilla/Automation/Rewards.lua`, `tests/test_autoquest.lua`, `tests/test_rewards.lua`.
+- Create: `Questify/Automation/AutoQuest.lua`, `Questify/Automation/Rewards.lua`, `tests/test_autoquest.lua`, `tests/test_rewards.lua`.
 
 **Interfaces:**
 - Consumes: `Q.Guides:All()`, `Q.Progress:Entries()`, `Q.Settings`, `Q.Player`.
@@ -525,8 +525,8 @@ chapter_rollover:      mark every entry of A_DwarfGnome_01 done → Guide().id =
 
 **Files:**
 - Create:
-  - `Questify_Vanilla/Engine/ClassQuests.lua`, `Questify_Vanilla/Engine/Telemetry.lua`, `Questify_Vanilla/Engine/Format.lua`;
-  - `Questify_Vanilla/Guides/ClassQuestData.lua` (a placeholder with the shape below and one Warlock chain; Task 13 regenerates it);
+  - `Questify/Engine/ClassQuests.lua`, `Questify/Engine/Telemetry.lua`, `Questify/Engine/Format.lua`;
+  - `Questify/Guides/ClassQuestData.lua` (a placeholder with the shape below and one Warlock chain; Task 13 regenerates it);
   - `tests/test_classquests.lua`, `tests/test_format.lua`.
 
 **Interfaces:**
@@ -566,7 +566,7 @@ chapter_rollover:      mark every entry of A_DwarfGnome_01 done → Guide().id =
 
       `step.note`, when present, is appended on its own line in grey.
     - `Q.Format:ActionIcon(action) -> texturePath`, using built-in textures only: `Interface\GossipFrame\AvailableQuestIcon`, `ActiveQuestIcon`, `Interface\Minimap\Tracking\FlightMaster`, `Interface\Icons\INV_Misc_Rune_01`, `Interface\Icons\Ability_Rogue_Sprint`.
-  - Also define `QuestifyVanilla_OnAddonCompartmentClick` here as a stub that calls `Q.UI.Journal:Toggle()` if it exists.
+  - Also define `Questify_OnAddonCompartmentClick` here as a stub that calls `Q.UI.Journal:Toggle()` if it exists.
 
 - [ ] **Step 1: Write the failing tests.**
   - `warlock_chain_listed_for_warlock_only`.
@@ -586,13 +586,13 @@ chapter_rollover:      mark every entry of A_DwarfGnome_01 done → Guide().id =
 ### Task 8: Tracker, mob panel, nameplates
 
 **Files:**
-- Create: `Questify_Vanilla/UI/Tracker.lua`, `Questify_Vanilla/UI/MobPanel.lua`, `Questify_Vanilla/UI/Nameplates.lua`, `tests/test_tracker.lua`, `tests/test_mobpanel.lua`, `tests/test_nameplates.lua`.
+- Create: `Questify/UI/Tracker.lua`, `Questify/UI/MobPanel.lua`, `Questify/UI/Nameplates.lua`, `tests/test_tracker.lua`, `tests/test_mobpanel.lua`, `tests/test_nameplates.lua`.
 
 **Interfaces:**
 - Consumes: `Q.Progress`, `Q.Targets`, `Q.Format`, `Q.ClassQuests:Alerts()`, `Q.Maps`, `Q.Settings`.
 - Produces:
   - **`Q.UI.Tracker`:**
-    - `Q.UI.Tracker:Refresh()` and `Q.UI.Tracker.frame`. Name the frame `QuestifyVanillaTracker`.
+    - `Q.UI.Tracker:Refresh()` and `Q.UI.Tracker.frame`. Name the frame `QuestifyTracker`.
     - The default anchor is `TOPRIGHT` of `MinimapCluster`, `BOTTOMRIGHT`, offset (0, -10). The frame is movable when unlocked, and its position is saved in `settings.tracker.point`.
     - Header: chapter title, `minLevel-maxLevel`, progress `done/total` as a StatusBar.
     - Current entry: action icon, `Format:StepText`, and distance from `Q.Maps:Distance` to `Targets:ForEntry`, updated every 0.5 s.
@@ -604,8 +604,8 @@ chapter_rollover:      mark every entry of A_DwarfGnome_01 done → Guide().id =
   - **`Q.UI.MobPanel`:**
     - `Q.UI.MobPanel:Refresh()` builds up to 6 rows, anchored below the tracker, from `Q.Targets:ObjectiveMobs()` (not-done rows first).
     - Each row is a `Button` with `SecureActionButtonTemplate`. Attributes: `type="macro"`, `macrotext="/cleartarget\n/targetexact "..name.."\n/tm !8"`. The row shows the name, level range and the objective text. Register clicks with `RegisterForClicks("AnyUp", "AnyDown")`.
-    - Hovering shows a shared 160x160 `PlayerModel` called `QuestifyVanillaMobModel`, beside the row, with `SetCreature(npcId)`.
-    - `QuestifyVanillaMobModel` shows an icon fallback when `GetModelFileID()` is nil after 0.3 s.
+    - Hovering shows a shared 160x160 `PlayerModel` called `QuestifyMobModel`, beside the row, with `SetCreature(npcId)`.
+    - `QuestifyMobModel` shows an icon fallback when `GetModelFileID()` is nil after 0.3 s.
     - **In combat** (`InCombatLockdown()`), `Refresh` only sets `pending = true` and changes no attribute. It applies on `PLAYER_REGEN_ENABLED`.
   - **`Q.UI.Nameplates`:**
     - On `NAME_PLATE_UNIT_ADDED(unit)`, read the npcID with `UnitCreatureID(unit)` if it exists, otherwise from field 6 of `strsplit("-", UnitGUID(unit))`. Ignore it when `IsSecret`.
@@ -629,13 +629,13 @@ chapter_rollover:      mark every entry of A_DwarfGnome_01 done → Guide().id =
 ### Task 9: Journal, class-quest popup, wizard, slash commands
 
 **Files:**
-- Create: `Questify_Vanilla/UI/Journal.lua`, `Questify_Vanilla/UI/ClassQuestPopup.lua`, `Questify_Vanilla/UI/Wizard.lua`, `Questify_Vanilla/UI/Slash.lua`, `tests/test_journal.lua`, `tests/test_wizard.lua`.
+- Create: `Questify/UI/Journal.lua`, `Questify/UI/ClassQuestPopup.lua`, `Questify/UI/Wizard.lua`, `Questify/UI/Slash.lua`, `tests/test_journal.lua`, `tests/test_wizard.lua`.
 
 **Interfaces:**
 - Consumes: everything above.
 - Produces:
   - **`Q.UI.Journal`:**
-    - `Q.UI.Journal:Toggle()` and `:ShowTab(name)`, with `name` one of `"route"`, `"class"`, `"options"`. The frame is called `QuestifyVanillaJournal`, uses `ButtonFrameTemplate` (fallback `BasicFrameTemplateWithInset`), measures 520x560, is movable and is added to `UISpecialFrames`.
+    - `Q.UI.Journal:Toggle()` and `:ShowTab(name)`, with `name` one of `"route"`, `"class"`, `"options"`. The frame is called `QuestifyJournal`, uses `ButtonFrameTemplate` (fallback `BasicFrameTemplateWithInset`), measures 520x560, is movable and is added to `UISpecialFrames`.
     - **Route tab:**
       - left: a scrollable chapter list from `Q.Guides:All()`, filtered to the player's faction; clicking one calls `Progress:SetGuide`;
       - right: a scrollable step list of `Progress:Entries()` with state icons (done = check, skipped = grey, current = arrow, blocked = lock and reason);
@@ -657,7 +657,7 @@ chapter_rollover:      mark every entry of A_DwarfGnome_01 done → Guide().id =
     - no argument: toggle the journal;
     - `skip`, `back`, `options`, `wizard`;
     - `export`: telemetry;
-    - `debug`: toggle `QuestifyVanillaDB.debug`;
+    - `debug`: toggle `QuestifyDB.debug`;
     - `reset`: confirm through `StaticPopup`, then wipe `Q.char`.
 
 - [ ] **Step 1: Write the failing tests.**
@@ -823,8 +823,8 @@ chapter_rollover:      mark every entry of A_DwarfGnome_01 done → Guide().id =
 **Interfaces:**
 - Produces:
   - **`luajit tools/routebuilder/build.lua [--db PATH] [--questie PATH] [--faction Alliance|Horde|all] [--only <planId>] [--report docs/routes]`**:
-    - writes `Questify_Vanilla/Guides/<Faction>/<planId>.lua`;
-    - rewrites `Questify_Vanilla/Guides/Guides.xml` with every guide file, then `ClassQuestData.lua` last;
+    - writes `Questify/Guides/<Faction>/<planId>.lua`;
+    - rewrites `Questify/Guides/Guides.xml` with every guide file, then `ClassQuestData.lua` last;
     - writes `docs/routes/<planId>.md` reports with XP/h, kept and dropped quests and warnings;
     - prints one summary line per chapter.
   - **`emit.guide(plan, steps, report) -> string`**: one step per line, followed by a comment `-- <quest name> (lvl <questLevel>, ~<xp> xp, sim lvl <n>)`. The header comment says it was generated, from which QuestieDB commit, and on which date.
@@ -837,7 +837,7 @@ chapter_rollover:      mark every entry of A_DwarfGnome_01 done → Guide().id =
   - **`classquests.lua`**: for each class, the chains of quests with `classes` including that class and `questLevel <= 30`, from QuestieDB.
     - A chain follows `preSingle`/`next`. Its `faction`/`races` come from `requiredRaces`.
     - Rewards are the items whose `questRewards` contain the quest id, plus `xp` from `D.xp`.
-    - The output is written to `Questify_Vanilla/Guides/ClassQuestData.lua` in Task 7's shape.
+    - The output is written to `Questify/Guides/ClassQuestData.lua` in Task 7's shape.
   - **`luajit tools/validate_guides.lua [--db PATH]`**: loads every guide file with a stub `Q:RegisterGuide` and checks each step:
     - its action is valid;
     - its quest id exists in D;
@@ -863,7 +863,7 @@ chapter_rollover:      mark every entry of A_DwarfGnome_01 done → Guide().id =
 **Files:**
 - Create or modify:
   - `tools/routebuilder/plans.lua` (Alliance entries);
-  - generated `Questify_Vanilla/Guides/Alliance/*.lua`, `Questify_Vanilla/Guides/ClassQuestData.lua`, `docs/routes/A_*.md`;
+  - generated `Questify/Guides/Alliance/*.lua`, `Questify/Guides/ClassQuestData.lua`, `docs/routes/A_*.md`;
   - `tools/routebuilder/overrides.lua`, which holds hand fixes applied after generation:
     - `force = { [questId] = true }`;
     - `drop = { [questId] = "reason" }`;
@@ -923,17 +923,17 @@ Plans `A_Skyborne_01..` and `H_Skyborne_01..`:
 
 **Content:**
 - `.pkgmeta`:
-  - `package-as: Questify_Vanilla`;
+  - `package-as: Questify`;
   - `required-dependencies: [questiedb]` (confirm the slug on CurseForge before publishing; leave a `# TODO confirm slug` comment if unconfirmed);
   - `optional-dependencies: [shortest-path-forever, waypointui, tomtom]`;
   - `ignore: [docs, tools, tests, .pkgmeta, CHANGELOG.md]`.
 - `tools/package.sh`:
   1. run `tools/check_syntax.sh`, `luajit tests/run.lua` and `luajit tools/validate_guides.lua`;
-  2. zip `Questify_Vanilla/` to `dist/Questify_Vanilla-<version from TOC>.zip`, with the `Questify_Vanilla` folder at the zip root.
+  2. zip `Questify/` to `dist/Questify-<version from TOC>.zip`, with the `Questify` folder at the zip root.
 - `CHANGELOG.md`: 0.1.0 with the feature list and the known limits from spec § 8.
 
 - [ ] **Step 1: Run the release check.** Run `tools/package.sh`. Expected: all checks pass and the zip exists.
-- [ ] **Step 2: Inspect the zip.** Run `unzip -l dist/Questify_Vanilla-0.1.0.zip | head`. Expected: the paths start with `Questify_Vanilla/`, and there is no `tests/` or `tools/`.
+- [ ] **Step 2: Inspect the zip.** Run `unzip -l dist/Questify-0.1.0.zip | head`. Expected: the paths start with `Questify/`, and there is no `tests/` or `tools/`.
 - [ ] **Step 3: Install note.** Add to `README.md` the manual install steps:
   1. unzip into `World of Warcraft\_forever_\Interface\AddOns\`;
   2. install QuestieDB from CurseForge;

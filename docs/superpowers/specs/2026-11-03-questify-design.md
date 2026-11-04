@@ -1,9 +1,9 @@
-# Questify Vanilla — guide de leveling gratuit pour WoW Forever
+# Questify — guide de leveling gratuit pour WoW Forever
 
 Document de conception, 2026-11-03.
 
-Nom de l'addon : **Questify Vanilla**, dossier `Questify_Vanilla/`, espace de noms et globale
-`QuestifyVanilla`. Dans la suite du document, « Questify » désigne cet addon.
+Nom de l'addon : **Questify**, dossier `Questify/`, espace de noms et globale
+`Questify`. Dans la suite du document, « Questify » désigne cet addon.
 
 Version **indépendante** : elle ne reprend rien du projet `~/dev/quick_path`
 (QuickPath), qui ne doit pas être modifié.
@@ -157,9 +157,9 @@ GPL-3.0 pour le code et les guides générés.
 
 ```
 questify/
-  Questify_Vanilla/                     dossier de l'addon (ce qui est publié)
-    Questify_Vanilla.toc                Interface 16001 (secours si le suffixe n'est pas reconnu)
-    Questify_Vanilla_Camelot.toc        identique
+  Questify/                     dossier de l'addon (ce qui est publié)
+    Questify.toc                Interface 16001 (secours si le suffixe n'est pas reconnu)
+    Questify_Camelot.toc        identique
     Locales/                    enUS (défaut) + frFR
     Core/                       init, évènements, réglages (SavedVariables), utilitaires, log
     Data/                       façade QuestieDB, cartes, constantes races/classes
@@ -175,8 +175,8 @@ questify/
 ```
 
 Espace de noms : tous les fichiers reçoivent `local addonName, Q = ...`. Une seule globale publique,
-`QuestifyVanilla`, pour les macros et le débogage. SavedVariables : `QuestifyVanillaDB` et
-`QuestifyVanillaCharDB`. Commandes : `/questify`, `/qf`. Pas de bibliothèque tierce obligatoire en v1.
+`Questify`, pour les macros et le débogage. SavedVariables : `QuestifyDB` et
+`QuestifyCharDB`. Commandes : `/questify`, `/qf`. Pas de bibliothèque tierce obligatoire en v1.
 
 ### 5.0 Priorités si le temps manque (mon choix, ordre de livraison)
 1. Moteur de route + suivi + navigation (natif + 3 fournisseurs).
@@ -378,7 +378,7 @@ Champs facultatifs sur toute étape : `race = {...}`, `class = {...}`, `optional
 
 Outil LuaJIT hors jeu. Il lit QuestieDB (clone local, chemin en argument) avec le chargeur isolé
 déjà écrit (`questie_extract.lua` : fichiers lus en texte, exécutés sans `os`/`io`/`load`) et écrit
-les fichiers de `Questify_Vanilla/Guides/`.
+les fichiers de `Questify/Guides/`.
 
 1. **Données** :
    - vue Forever (Era convertie + corrections + nouvelles quêtes), filtrée par faction ;
@@ -449,16 +449,16 @@ les fichiers de `Questify_Vanilla/Guides/`.
 ## 9. Packaging
 
 - `.pkgmeta` :
-  - `package-as: Questify_Vanilla` ;
+  - `package-as: Questify` ;
   - `required-dependencies` : QuestieDB (slug à confirmer) ;
   - `optional-dependencies` : `shortest-path-forever`, `waypointui`, `tomtom`.
 - TOC :
   - `## Dependencies: QuestieDB` ;
   - `## OptionalDeps: ShortestPathForever, WaypointUI, TomTom` (noms de dossiers à confirmer) ;
-  - `## SavedVariables: QuestifyVanillaDB` ;
-  - `## SavedVariablesPerCharacter: QuestifyVanillaCharDB` ;
+  - `## SavedVariables: QuestifyDB` ;
+  - `## SavedVariablesPerCharacter: QuestifyCharDB` ;
   - `## AddonCompartmentFunc`.
-- Script `tools/package.sh` qui produit `dist/Questify_Vanilla-<version>.zip` pour une installation manuelle.
+- Script `tools/package.sh` qui produit `dist/Questify-<version>.zip` pour une installation manuelle.
 
 ## 10. Laissé au constructeur
 
@@ -468,7 +468,7 @@ rapports), découpage précis des chapitres.
 
 ## 11. Mes choix (à vérifier par l'utilisateur)
 
-1. Nom de l'addon : **Questify Vanilla** (demandé par l'utilisateur), version indépendante de QuickPath.
+1. Nom de l'addon : **Questify** (demandé par l'utilisateur), version indépendante de QuickPath.
 2. QuestieDB lu à l'exécution plutôt que copié, pour la licence et les mises à jour automatiques.
 3. Marqueur 3D natif du client comme solution de secours sans addon tiers (pas de flèche maison).
 4. Ordre des zones fixé à la main, contenu des zones choisi par le générateur.

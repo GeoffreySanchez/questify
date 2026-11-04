@@ -1,4 +1,4 @@
-**Questify Vanilla**
+**Questify**
 
 - [Accueil / Home](Home)
 - [Installation](Installation)

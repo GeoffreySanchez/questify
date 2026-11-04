@@ -6,7 +6,7 @@ les vidéos sont des liens YouTube.
 
 ---
 
-## Questify Vanilla — free leveling guide for WoW: Forever
+## Questify — free leveling guide for WoW: Forever
 
 **Français** — Guide de leveling **gratuit et open source** pour World of Warcraft: Forever, niveaux 1 à 30,
 toutes les races et les deux factions.

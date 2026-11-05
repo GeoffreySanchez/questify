@@ -11,6 +11,12 @@
 - Itinéraire ShortestPath avec WaypointUI : plus de « ding » à chaque virage (les virages passent en
   silence), un virage identique n'est pas reposé, et le repère ne saute plus sur la cible puis sur le
   virage à chaque nouvelle cible (toutes les 3 s pendant un objectif).
+- Talents : les builds fournis ne sont plus tous marqués « obsolète » en jeu. Dans Forever, un talent
+  appartient à la fois à son arbre (Élémentaire, Amélioration, Restauration…) et à des groupes de
+  palier, dans un ordre quelconque ; Questify prenait le premier groupe pour l'arbre et ne lisait que
+  7 talents sur 50 (relevé du chaman). Il prend maintenant celui qui est un arbre.
+- `/qf talents` : le relevé se fait aussi sans l'API des points restants, et enregistre l'arbre tel que
+  Questify le lit et la validation de chaque build de la classe (raison, point et talent en cause).
 
 ### English
 - ShortestPath routing with WaypointUI: the waypoint no longer lands in the north-west corner of the
@@ -20,6 +26,12 @@
 - ShortestPath routing with WaypointUI: no more "ding" on every turn (turns are silent), an identical
   turn is not placed again, and the waypoint no longer jumps to the target and back to the turn on
   every new target (every 3 s during an objective).
+- Talents: the shipped builds are no longer all marked "obsolete" in game. In Forever, a talent belongs
+  both to its tree (Elemental, Enhancement, Restoration…) and to tier groups, in any order; Questify
+  took the first group as the tree and read only 7 talents out of 50 (shaman dump). It now takes the
+  one that is a tree.
+- `/qf talents`: the dump also works without the unspent-points API, and records the tree as Questify
+  reads it and the validation of each build of the class (reason, point and talent at fault).
 
 ## 0.3.0 (2026-11-05)
 

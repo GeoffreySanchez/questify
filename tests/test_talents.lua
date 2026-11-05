@@ -319,6 +319,31 @@ return {
     t.eq(#d.trees, 1)
     t.eq(d.trees[1].currencies, { { traitCurrencyID = CURRENCY, quantity = 1, spent = 2 } })
     t.eq(d.trees[1].groups[1].displayName, "Arms"); t.eq(d.trees[1].groups[2].displayName, "Fury")
+    -- diagnostic : l'arbre tel que Questify le lit, et chaque build de la classe validé contre lui
+    t.ok(d.read and d.read.nodes, "read tree recorded")
+    t.eq(#d.read.nodes, 4)
+    t.eq(d.read.nodes[2].spellID, 30102); t.eq(d.read.nodes[2].rank, 2)
+    t.ok(d.read.nodes[2].group and d.read.nodes[2].tier, "group and tier")
+    t.ok(type(d.builds) == "table", "build validation recorded")
+    for _, b in ipairs(d.builds) do
+      t.ok(b.key, "build key")
+      if not b.ok then t.ok(b.reason, b.key .. ": reason") end
+    end
+    t.eq(#Mock.errors, 0)
+  end,
+
+  -- Sans C_Traits.GetTreeCurrencyInfo, le relevé se fait quand même (sans les monnaies) : la lecture de
+  -- l'arbre n'en a pas besoin, et c'est elle qui marque les builds obsolètes.
+  dump_without_tree_currency_api = function(t)
+    local Q = load()
+    levelUp(12)
+    C_Traits.GetTreeCurrencyInfo = nil
+    SlashCmdList.QUESTIFY("talents")
+    t.eq(Mock.countPrinted(Q.L.TALENT_DUMP_NO_API), 0)
+    local d = QuestifyDB.talentDump.forever.WARRIOR
+    t.eq(#d.nodes, 4)
+    t.eq(d.trees[1].currencies, {})
+    t.ok(d.read and #d.read.nodes == 4, "read tree recorded")
     t.eq(#Mock.errors, 0)
   end,
 

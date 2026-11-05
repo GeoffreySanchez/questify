@@ -105,11 +105,36 @@ end
 --     nodes = { { treeID, nodeID, posX, posY, maxRanks, currentRank, type, isVisible, groupIDs,
 --                 entries = { { entryID, definitionID, spellID, name, maxRanks } } } } }
 -- -> nombre de nœuds relevés ; 0 avec un message clair si l'API manque ou ne répond pas.
+-- GetTreeCurrencyInfo n'est pas exigée : sans elle, le relevé se fait sans les monnaies (treeCurrencies
+-- renvoie une liste vide), comme la lecture de l'arbre (TalentTree:Read) qui s'en passe.
 local DUMP_API = {
   { "C_ClassTalents", "GetActiveConfigID" }, { "C_Traits", "GetConfigInfo" }, { "C_Traits", "GetTreeNodes" },
   { "C_Traits", "GetNodeInfo" }, { "C_Traits", "GetEntryInfo" }, { "C_Traits", "GetDefinitionInfo" },
-  { "C_Traits", "GetTreeCurrencyInfo" },
 }
+
+-- Arbre tel que Questify le lit (TalentTree:Read) et validation de chaque build de la classe contre lui :
+-- dit pourquoi un build est marqué obsolète en jeu (raison, point fautif, son spellID).
+local function dumpDiagnosis(out)
+  local TT, B = Q.TalentTree, Q.Builds
+  if not (TT and TT.Read) then return end
+  local ok, tree, why = pcall(TT.Read, TT)
+  if not ok then out.read = { error = tostring(tree) }; return end
+  if not tree then out.read = { error = tostring(why) }; return end
+  local nodes = {}
+  for spellID, n in pairs(tree.nodes) do
+    nodes[#nodes + 1] = { spellID = spellID, nodeID = n.nodeID, group = n.group, tier = n.tier, col = n.col,
+      maxRanks = n.maxRanks, rank = n.rank, requires = n.requires }
+  end
+  table.sort(nodes, function(a, b) return a.spellID < b.spellID end)
+  out.read = { configID = tree.configID, treeID = tree.treeID, unspent = tree.unspent, nodes = nodes }
+  if not (B and B.List and B.Validate) then return end
+  out.builds = {}
+  for _, b in ipairs(B:List(Q.Player.classFile) or {}) do
+    local vok, valid, reason, at = pcall(B.Validate, B, b, tree)
+    out.builds[#out.builds + 1] = { key = b.key, ok = vok and valid == true, reason = vok and reason or "error",
+      at = vok and at or nil, spellID = vok and at and b.order and b.order[at] or nil }
+  end
+end
 
 local function hasDumpApi()
   for _, a in ipairs(DUMP_API) do
@@ -193,6 +218,7 @@ function Talents:Dump()
     Q:Print(L.TALENT_DUMP_EMPTY)
     return 0
   end
+  dumpDiagnosis(out)
   QuestifyDB = QuestifyDB or {}
   local db = QuestifyDB
   db.talentDump = type(db.talentDump) == "table" and db.talentDump or {}

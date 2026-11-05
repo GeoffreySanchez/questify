@@ -53,15 +53,26 @@ local function rankOf(values)
   return out
 end
 
+-- Groupe d'affichage du nœud : parmi ses groupIDs, celui qui est un des trois arbres (displayGroups). Un
+-- nœud de Forever appartient aussi à des groupes de palier (relevé du chaman : { 11353, 12795, 12796, 11363 },
+-- arbre 11363 en dernier), dans un ordre quelconque : le premier groupID n'est pas forcément l'arbre.
+local function displayGroupOf(groupIDs, displayGroups)
+  for _, g in ipairs(groupIDs) do
+    local id = num(g)
+    if id and displayGroups[id] then return id end
+  end
+  return nil
+end
+
 -- Nœud lisible ou nil : tout ce qui vient du jeu passe par plain() avant d'être comparé.
-local function readNode(configID, nodeID)
+local function readNode(configID, nodeID, displayGroups)
   local info = call(C_Traits.GetNodeInfo, configID, nodeID)
   if not readable(info) or info.isVisible == false then return nil end
   local posX, posY, maxRanks, rank = num(info.posX), num(info.posY), num(info.maxRanks), currentRank(info)
   if not (posX and posY and maxRanks and rank) then return nil end
   local entryIDs, groupIDs = info.entryIDs, info.groupIDs
   if not readable(entryIDs) or not readable(groupIDs) then return nil end
-  local entryID, groupID = num(entryIDs[1]), num(groupIDs[1])
+  local entryID, groupID = num(entryIDs[1]), displayGroupOf(groupIDs, displayGroups)
   if not (entryID and groupID) then return nil end
   local entry = call(C_Traits.GetEntryInfo, configID, entryID)
   if not readable(entry) then return nil end
@@ -126,7 +137,7 @@ function TalentTree:Read()
   if readable(nodeIDs) then
     for _, nodeID in ipairs(nodeIDs) do
       nodeID = num(nodeID)
-      local node = nodeID and readNode(configID, nodeID)
+      local node = nodeID and readNode(configID, nodeID, groupIndex)
       if node and groupIndex[node.groupID] then raw[#raw + 1] = node end
     end
   end

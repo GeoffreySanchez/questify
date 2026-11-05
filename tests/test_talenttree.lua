@@ -43,6 +43,36 @@ return {
     t.eq(tree.unspent, 2)
   end,
 
+  -- Forever : un nœud appartient aussi à des groupes de palier, et son arbre n'est pas forcément le premier
+  -- de ses groupIDs (relevé du chaman : { 11353, 12795, 12796, 11363 }). Lire groupIDs[1] ne gardait que
+  -- 7 nœuds sur 50, et tous les builds fournis passaient pour obsolètes (« un talent n'est plus dans l'arbre »).
+  read_finds_the_display_group_among_tier_groups = function(t)
+    local Q = load()
+    local getNodeInfo = C_Traits.GetNodeInfo
+    C_Traits.GetNodeInfo = function(c, n)
+      local info = getNodeInfo(c, n)
+      if info then
+        local display = info.groupIDs[1]
+        -- groupes de palier avant l'arbre, sauf pour un nœud sur deux (ordre quelconque, comme en jeu)
+        if n % 2 == 0 then
+          info.groupIDs = { 11300 + n % 7, 12790, display, 12791 }
+        else
+          info.groupIDs = { display, 12790 }
+        end
+      end
+      return info
+    end
+    local tree = Q.TalentTree:Read()
+    local count = 0
+    for _ in pairs(tree.nodes) do count = count + 1 end
+    t.eq(count, 7, "every node kept")
+    t.eq(tree.nodes[16035].group, 1); t.eq(tree.nodes[16036].group, 1)
+    t.eq(tree.nodes[29801].group, 2); t.eq(tree.nodes[29802].group, 2)
+    t.eq(tree.nodes[30001].group, 3)
+    t.eq(tree.nodes[16037].tier, 2); t.eq(tree.nodes[16037].col, 2)
+    t.eq(tree.nodes[16037].requires, { 17036 })
+  end,
+
   -- I4 : l'arbre lu suit l'état courant, points en attente compris (currentRank), comme la monnaie lue.
   read_includes_staged_ranks = function(t)
     local Q = load({ ranks = { [16035] = 2 }, staged = { [16035] = 3 } })

@@ -78,6 +78,7 @@ Schema.SECTIONS = {
 Schema.CHAR_STATE = {
   guideId = true, manual = true, skipped = true, inserted = true, classQuests = true, telemetry = true,
   wizardDone = true, specRoleAnswered = true, talentPopup = true,
+  routeChoices = true, routeChoiceLast = true,
 }
 
 -- Réglages de Settings.defaults dont le contrôle est ailleurs que dans les Options (sans entrée au schéma).
@@ -152,6 +153,9 @@ local function add(e) E[#E + 1] = e; return e end
 add({ id = "zoneMode", section = "route", category = "path", type = "toggle", path = "zoneMode",
   label = "ZONE_OPT", tip = "OPT_TIP_ZONEMODE",
   keywords = "zone mode regrouper grouper objectifs proches visite nearby objectives group" })
+add({ id = "route.choicePopup", section = "route", category = "path", type = "toggle",
+  path = "route.choicePopup", label = "OPT_ROUTE_CHOICE", tip = "OPT_TIP_ROUTE_CHOICE",
+  keywords = "choix suite cartes chapitre suivant zone bifurcation route choice next chapter cards branch" })
 add({ id = "openJournal", section = "route", category = "path", type = "action",
   label = "OPT_OPEN_JOURNAL", tip = "OPT_TIP_OPEN_JOURNAL",
   keywords = "journal chapitre chapitres etapes chapter chapters steps liste",

@@ -70,6 +70,7 @@ Q:RegisterStrings({
 
     -- Libellés
     OPT_OPEN_JOURNAL = "Open the journal (chapters and steps)",
+    OPT_ROUTE_CHOICE = "Choose what comes next at the end of a chapter",
     OPT_INFO_ROUTE_CLICKS = "In the tracker: right-click skips the current step, Shift + right-click goes back to the previous one, left-click marks it as done.",
     OPT_NAV_ROUTING = "Plan the trip with ShortestPath Forever (flights, boats, portals)",
     OPT_NAV_DISPLAY = "Waypoint shown by",
@@ -101,6 +102,7 @@ Q:RegisterStrings({
     OPT_TIP_ZONEMODE = "When several quests have objectives in the same area, the tracker shows them as one visit: all the objectives of the zone, grouped by priority.",
     OPT_TIP_OPEN_JOURNAL = "Opens the journal on the Route tab: choose a chapter, or click a step to make it the current one.",
     OPT_TIP_RESET_CHAPTER = "Clears the steps you ticked or skipped in the current chapter. Other chapters are kept.",
+    OPT_TIP_ROUTE_CHOICE = "When a chapter can be followed by several zones, cards show each one (levels, quests, simulated time and XP/h, travel) with the one Questify recommends. Off: the default route of Questify, without asking. /qf route opens the choice again.",
     OPT_TIP_NAV_ROUTING = "ShortestPath Forever computes the whole trip between zones (flights, boats, portals) and hands each leg to the waypoint below. Needs the ShortestPath Forever addon.",
     OPT_TIP_NAV_DISPLAY = "Which addon shows the destination of the current step: the game's own map pin, a TomTom arrow or a WaypointUI marker. An addon that is not installed cannot be chosen.",
     OPT_TIP_AUTOFLY = "At a flight master, takes the flight of the current step for you. Hold Shift while talking to choose yourself.",
@@ -238,6 +240,7 @@ Q:RegisterStrings({
     OPT_CAT_PROFILES_SHARE = "Partager",
 
     OPT_OPEN_JOURNAL = "Ouvrir le journal (chapitres et étapes)",
+    OPT_ROUTE_CHOICE = "Choisir la suite en fin de chapitre",
     OPT_INFO_ROUTE_CLICKS = "Dans le suivi : clic droit pour passer l'étape courante, Maj + clic droit pour revenir à la précédente, clic gauche pour la marquer comme faite.",
     OPT_NAV_ROUTING = "Calculer le trajet avec ShortestPath Forever (vols, bateaux, portails)",
     OPT_NAV_DISPLAY = "Repère affiché par",
@@ -268,6 +271,7 @@ Q:RegisterStrings({
     OPT_TIP_ZONEMODE = "Quand plusieurs quêtes ont des objectifs dans la même zone, le suivi les montre en une seule visite : tous les objectifs de la zone, groupés par priorité.",
     OPT_TIP_OPEN_JOURNAL = "Ouvre le journal sur l'onglet Route : choisis un chapitre, ou clique sur une étape pour en faire l'étape courante.",
     OPT_TIP_RESET_CHAPTER = "Efface les étapes cochées ou passées du chapitre courant. Les autres chapitres sont gardés.",
+    OPT_TIP_ROUTE_CHOICE = "Quand un chapitre peut être suivi de plusieurs zones, des cartes les montrent (niveaux, quêtes, durée et XP/h simulées, trajet) avec celle que Questify conseille. Désactivé : la route par défaut de Questify, sans demander. /qf route rouvre le choix.",
     OPT_TIP_NAV_ROUTING = "ShortestPath Forever calcule tout le trajet entre les zones (vols, bateaux, portails) et passe chaque tronçon au repère ci-dessous. Demande l'addon ShortestPath Forever.",
     OPT_TIP_NAV_DISPLAY = "L'addon qui montre la destination de l'étape courante : le repère de carte du jeu, une flèche TomTom ou un marqueur WaypointUI. Un addon non installé ne peut pas être choisi.",
     OPT_TIP_AUTOFLY = "Chez le maître de vol, prend pour toi le vol de l'étape courante. Garde Maj enfoncée en lui parlant pour choisir toi-même.",

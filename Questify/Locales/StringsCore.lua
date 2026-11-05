@@ -7,6 +7,7 @@ Q:RegisterStrings({
     NEED_QUESTIEDB = "QuestieDB is required: install it from CurseForge.",
     QUESTIEDB_TOO_OLD = "Your QuestieDB is too old (contract 4 required): update it from CurseForge.",
     ROUTE_END = "End of the route for now: the next chapters are coming soon.",
+    ROUTE_NEXT = "Next chapter: %s.",
     GUIDE_INVALID = "Invalid guide %s: %s",
 
     STEP_ACCEPT = "Accept |cffffd100%s|r from |cff00ff96%s|r",
@@ -65,6 +66,7 @@ Q:RegisterStrings({
     NEED_QUESTIEDB = "QuestieDB est requis : installe-le depuis CurseForge.",
     QUESTIEDB_TOO_OLD = "Ta version de QuestieDB est trop ancienne (contrat 4 requis) : mets-la à jour depuis CurseForge.",
     ROUTE_END = "Fin de la route pour l'instant : les chapitres suivants arrivent bientôt.",
+    ROUTE_NEXT = "Chapitre suivant : %s.",
     GUIDE_INVALID = "Guide %s invalide : %s",
 
     STEP_ACCEPT = "Prendre |cffffd100%s|r auprès de |cff00ff96%s|r",

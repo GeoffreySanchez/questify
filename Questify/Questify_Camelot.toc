@@ -51,6 +51,7 @@ Data\Caves.lua
 
 Engine\Guides.lua
 Engine\Progress.lua
+Engine\RouteChoice.lua
 Engine\Targets.lua
 Engine\ZoneMode.lua
 Engine\Format.lua
@@ -95,6 +96,7 @@ UI\TalentFrameHook.lua
 UI\ProfessionPicker.lua
 UI\ClassQuestPopup.lua
 UI\DungeonPopup.lua
+UI\RouteChoicePopup.lua
 UI\MapPins.lua
 UI\MinimapButton.lua
 UI\Journal.lua

@@ -33,6 +33,8 @@ Settings.defaults = {
   mapPins = true,           -- UI/MapPins.lua
   -- Objectifs proches de plusieurs quêtes regroupés en une seule visite
   zoneMode = true,          -- Engine/ZoneMode.lua
+  -- Fin de chapitre à plusieurs suites : cartes à choisir (sinon la suite par défaut, sans demander)
+  route = { choicePopup = true },   -- UI/RouteChoicePopup.lua
   -- Bouton de la minicarte (profil de butin, choix rapides, journal)
   minimapButton = true,     -- UI/MinimapButton.lua
   -- Proposition du profil de butin de la spécialisation choisie

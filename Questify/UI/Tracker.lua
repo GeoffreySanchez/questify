@@ -165,6 +165,11 @@ local MANUAL_DONE = { note = true, ["goto"] = true, boat = true, fly = true, hea
 
 local function onCurrentClick(button)
   local cur = Q.Progress:Current()
+  if not cur and button == "LeftButton" and Q.Progress.PendingChoice and Q.Progress:PendingChoice() then
+    local P = Q.UI and Q.UI.RouteChoicePopup
+    if P then P:OpenForPlayer() end
+    return
+  end
   if button == "RightButton" then
     if IsShiftKeyDown and IsShiftKeyDown() then
       Q.Progress:Back()
@@ -1069,7 +1074,9 @@ function Tracker:LayoutCurrent(cur, yTop, zone)
     local mobs = Q.UI.MobPanel and Q.UI.MobPanel:MobsFor(cur) or {}
     segs = stepSegments(cur, mobs)
   elseif not segs then
-    segs = { { text = L.UI_TRACKER_DONE } }
+    -- chapitre fini qui attend le choix de sa suite : un clic rouvre le choix (onCurrentClick)
+    local pending = Q.Progress.PendingChoice and Q.Progress:PendingChoice()
+    segs = { { text = pending and L.UI_ROUTECHOICE_TRACKER or L.UI_TRACKER_DONE } }
   end
   local slots = {}
   local nText, nMob, yy = 0, 0, 0

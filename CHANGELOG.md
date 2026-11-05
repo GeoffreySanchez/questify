@@ -21,6 +21,17 @@
   passer au chapitre suivant) peut être rechoisi dans l'onglet Route et reste affiché ; on y rouvre
   l'étape passée avec `/qf back` ou en cliquant dessus. Avant, le journal renvoyait aussitôt au chapitre
   suivant et il n'y avait aucun moyen de revenir.
+- Choix de suite : en fin de chapitre, quand plusieurs zones peuvent suivre, des cartes au milieu de
+  l'écran les présentent (niveaux, quêtes et XP des remises, durée et XP/h simulées, trajet), avec celle
+  que Questify conseille, un liseré doré, le badge « Conseillé » et sa raison (meilleure XP par heure,
+  mieux adapté à ton niveau, trajet le plus court). « Y aller », « Garder la route prévue » ou
+  « Plus tard » : le suivi rappelle alors le choix, et un clic dessus ou `/qf route` le rouvre. On peut
+  aussi choisir d'avance pendant le chapitre, ou revenir sur son choix plus tard (`/qf route`, bouton
+  « Changer de route » du journal). Une seule suite : on y passe comme avant, avec un message
+  « Chapitre suivant : … ». Option « Choisir la suite en fin de chapitre » (section Route) : désactivée,
+  la route par défaut est suivie sans demander. Jamais en combat : le choix s'ouvre à la fin du combat.
+- Premier choix : après Loch Modan (Nain, Gnome), la Marche de l'Ouest (route prévue) ou Sombrivage
+  directement, par le bateau de Stormwind.
 
 ### English
 - ShortestPath routing with WaypointUI: the waypoint no longer lands in the north-west corner of the
@@ -40,6 +51,17 @@
   on to the next chapter) can be chosen again in the Route tab and stays shown; reopen the skipped step
   with `/qf back` or by clicking it. Before, the journal sent you straight back to the next chapter and
   there was no way back.
+- Route choice: at the end of a chapter that can be followed by several zones, cards in the middle of
+  the screen show them (levels, quests and turn-in XP, simulated time and XP/h, travel), with the one
+  Questify recommends: gold border, "Recommended" badge and its reason (best XP per hour, best fit for
+  your level, shortest trip). "Go there", "Keep the planned route" or "Later": the tracker then reminds
+  you, and clicking it or `/qf route` opens the choice again. You can also choose ahead during the
+  chapter, or change your mind later (`/qf route`, "Change route" button of the journal). A single next
+  chapter: you move on as before, with a "Next chapter: …" message. Option "Choose what comes next at
+  the end of a chapter" (Route section): off, the default route is followed without asking. Never in
+  combat: the choice opens when combat ends.
+- First choice: after Loch Modan (Dwarf, Gnome), Westfall (the planned route) or Darkshore right away,
+  by the Stormwind boat.
 
 ## 0.3.0 (2026-11-05)
 

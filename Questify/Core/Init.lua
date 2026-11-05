@@ -257,6 +257,8 @@ Q.charDefaults = {
   -- rewardRole (Automation/Rewards.lua) : profil de butin propre au personnage, hors profils
   -- d'options ; absent = "auto" (pas de valeur par défaut : la migration des profils lit nil)
   specRoleAnswered = {}, -- Automation/SpecRole.lua : spécialisations pour lesquelles « Non » a été répondu
+  routeChoices = {},     -- Engine/Progress.lua : [chapitre] = suite choisie (choix de suite)
+  routeChoiceLast = nil, -- dernier chapitre où une suite a été choisie (/qf route)
 }
 
 local function onAddonLoaded(event, name)

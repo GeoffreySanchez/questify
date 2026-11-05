@@ -154,6 +154,17 @@ function Journal:Create()
     if Q.UI.Options then Q.UI.Options:Open() end
   end))
   self.optionsButton = opt
+  -- Choix de suite (UI/RouteChoicePopup.lua) : rouvre le choix du chapitre courant ou du dernier choisi
+  local route = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
+  route:SetSize(130, 22)
+  route:SetPoint("RIGHT", opt, "LEFT", -6, 0)
+  route:SetText(L.UI_ROUTECHOICE_JOURNAL)
+  route:SetScript("OnClick", safe(function()
+    playSound("IG_MAINMENU_OPTION_CHECKBOX_ON")
+    local P = Q.UI.RouteChoicePopup
+    if P then P:OpenForPlayer() end
+  end))
+  self.routeButton = route
   f:Hide()
   -- Sons d'ouverture et de fermeture branchés après le Hide() initial (pas de son à la création).
   f:HookScript("OnShow", function() playSound("IG_CHARACTER_INFO_OPEN") end)

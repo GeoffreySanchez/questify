@@ -75,6 +75,13 @@ COMMANDS.back = function()
   if not Q.Progress:Back() then Q:Print(L.UI_SLASH_NO_BACK) end
 end
 
+-- Choix de la suite : le chapitre en attente, sinon le chapitre courant (choix d'avance) ou le dernier
+-- chapitre où une suite a été choisie (UI/RouteChoicePopup.lua).
+COMMANDS.route = function()
+  local P = Q.UI and Q.UI.RouteChoicePopup
+  if P then P:OpenForPlayer() end
+end
+
 COMMANDS.options = function(rest)
   local O = Q.UI and Q.UI.Options
   if not O then return end

@@ -30,6 +30,7 @@ local lastKey
 local endPrinted = {}
 local chosen            -- chapitre choisi à la main (SetGuide, journal) : s'il est déjà fini, on y reste
                         -- (pas de bascule) tant que le joueur n'y a rien rouvert (voir checkRollover)
+local pendingChoice     -- chapitre fini qui attend le choix de sa suite (voir resolveNext)
 local ticker
 local logPending = false
 
@@ -124,6 +125,7 @@ function Progress:SetGuide(id, stay)
   if not g or not Q.char then return false end
   Q.char.guideId = id
   chosen = stay and id or nil
+  pendingChoice = nil
   invalidate()
   Q:Fire("GUIDE_CHANGED", g)
   self:Update()
@@ -402,6 +404,48 @@ end
 ---------------------------------------------------------------------------
 -- Mise à jour et messages
 ---------------------------------------------------------------------------
+-- Choix de suite (champ choices des guides, Engine/RouteChoice.lua, UI/RouteChoicePopup.lua) :
+-- Q.char.routeChoices[<chapitre>] = suite choisie par le joueur ; Q.char.routeChoiceLast = dernier
+-- chapitre où il a choisi (/qf route depuis un chapitre plus loin). pendingChoice : chapitre fini qui
+-- attend un choix ; on y reste, aucune étape n'est courante, le suivi le dit (Progress:PendingChoice).
+
+local function choiceState()
+  local c = charState()
+  if type(c.routeChoices) ~= "table" then c.routeChoices = {} end
+  return c.routeChoices
+end
+
+-- Suites possibles du chapitre g pour le personnage (Q.Guides:Choices).
+local function optionsOf(g)
+  local P = Q.Player or {}
+  return Q.Guides:Choices(g, P.raceKey, P.faction)
+end
+
+-- Suite du chapitre fini g : -> chapitre, ou nil, true quand le joueur doit choisir. Une seule suite, ou
+-- l'option route.choicePopup coupée : la suite par défaut, sans demander. Un choix déjà fait est repris.
+-- La demande (ROUTE_CHOICE_NEEDED) part une fois par chapitre et par session, hors de Update (le
+-- gestionnaire peut rappeler Progress, voir Progress:ChooseRoute).
+local function resolveNext(g)
+  local options = optionsOf(g)
+  if #options == 0 then return nil end
+  if #options == 1 then return options[1].guide end
+  local stored = choiceState()[g.id]
+  for _, o in ipairs(options) do
+    if o.guide.id == stored then return o.guide end
+  end
+  if Q.Settings:Get("route.choicePopup") == false then
+    for _, o in ipairs(options) do
+      if o.default then return o.guide end
+    end
+    return options[1].guide
+  end
+  if pendingChoice ~= g.id then
+    pendingChoice = g.id
+    Q:After(0, function() Q:Fire("ROUTE_CHOICE_NEEDED", g.id) end)
+  end
+  return nil, true
+end
+
 local function checkRollover()
   local visited = {}
   while true do
@@ -411,14 +455,17 @@ local function checkRollover()
     if not Progress:GuideFinished() then
       -- une étape du chapitre choisi est (r)ouverte : la bascule normale reprend quand il sera fini
       if g.id == chosen then chosen = nil end
+      if g.id == pendingChoice then pendingChoice = nil end
       return
     end
     if g.id == chosen then return end   -- choisi à la main alors qu'il était fini : on y reste
-    local nxt = Q.Guides:Next(g, Q.Player.raceKey)
+    local nxt, waiting = resolveNext(g)
+    if waiting then return end          -- plusieurs suites : le joueur choisit (ROUTE_CHOICE_NEEDED)
     if nxt and not visited[nxt.id] then
       Q.char.guideId = nxt.id
       invalidate()
       Q:Fire("GUIDE_CHANGED", nxt)
+      Q:Print(Q.L.ROUTE_NEXT, nxt.title or nxt.id)
       Progress:Recompute()
     else
       if not endPrinted[g.id] then
@@ -609,6 +656,59 @@ function Progress:ResetGuide(guideId)
   endPrinted[id] = nil
   cache = nil
   self:Update()
+  return true
+end
+
+---------------------------------------------------------------------------
+-- Choix de suite
+---------------------------------------------------------------------------
+-- Chapitre fini qui attend le choix de sa suite, ou nil.
+function Progress:PendingChoice()
+  return pendingChoice
+end
+
+-- Suites possibles du chapitre guideId (courant par défaut) : liste de Q.Guides:Choices.
+function Progress:RouteOptions(guideId)
+  local g = Q.Guides:Get(guideId or charState().guideId)
+  if not g then return {} end
+  return optionsOf(g)
+end
+
+-- Chapitre dont /qf route rouvre le choix : le chapitre courant s'il a plusieurs suites, sinon le
+-- dernier chapitre où le joueur a choisi ; nil s'il n'y en a pas.
+function Progress:ChoiceNode()
+  local c = charState()
+  if c.guideId and #self:RouteOptions(c.guideId) >= 2 then return c.guideId end
+  local last = c.routeChoiceLast
+  if last and #self:RouteOptions(last) >= 2 then return last end
+  return nil
+end
+
+-- Suite choisie par le joueur : chosenId pour le chapitre fromId (gardée dans Q.char.routeChoices).
+--   fromId courant : fini, on passe à la suite (par la bascule normale) ; en cours, le choix servira à
+--   sa fin ;
+--   fromId derrière le joueur (rechoix, /qf route) : on passe tout de suite à chosenId.
+-- -> false si chosenId n'est pas une suite possible de fromId pour ce personnage.
+function Progress:ChooseRoute(fromId, chosenId)
+  if not Q.char then return false end
+  local from = Q.Guides:Get(fromId)
+  if not from then return false end
+  local found = false
+  for _, o in ipairs(optionsOf(from)) do
+    if o.guide.id == chosenId then found = true; break end
+  end
+  if not found then return false end
+  choiceState()[fromId] = chosenId
+  charState().routeChoiceLast = fromId
+  if pendingChoice == fromId then pendingChoice = nil end
+  local cur = charState().guideId
+  if cur == fromId or cur == chosenId then
+    cache = nil
+    self:Update()
+  else
+    self:SetGuide(chosenId)
+  end
+  Q:Fire("ROUTE_CHOSEN", fromId, chosenId)
   return true
 end
 

@@ -122,6 +122,59 @@ local function invalid(id, reason)
   return false
 end
 
+-- Choix de suite (tools/routebuilder, champ choices) : 1 à 4 entrées
+--   { id = <chapitre>, races = { <raceKey>, ... }?, label = <texte>?, weight = <nombre>?,
+--     travel = { kind = <"walk"|"fly"|"boat"|"zeppelin"|"tram"|"portal"|"hearth">, minutes = <nombre>? }? }
+-- -> copie normalisée, nil (absent) ou false, raison.
+local TRAVEL_KINDS = { walk = true, fly = true, boat = true, zeppelin = true, tram = true, portal = true,
+  hearth = true }
+Guides.TRAVEL_KINDS = TRAVEL_KINDS
+
+local function choiceList(v)
+  if v == nil then return nil end
+  if type(v) ~= "table" then return false, "choices must be a list" end
+  if #v < 1 or #v > 4 then return false, "choices must have 1 to 4 entries" end
+  local out = {}
+  for i, raw in ipairs(v) do
+    if type(raw) ~= "table" or type(raw.id) ~= "string" or raw.id == "" then
+      return false, "choices[" .. i .. "]: missing id"
+    end
+    local races = stringList(raw.races)
+    if races == false then return false, "choices[" .. i .. "]: races must be a list of strings" end
+    if raw.label ~= nil and type(raw.label) ~= "string" then return false, "choices[" .. i .. "]: label must be a string" end
+    if raw.weight ~= nil and not isNum(raw.weight) then return false, "choices[" .. i .. "]: weight must be a number" end
+    local travel
+    if raw.travel ~= nil then
+      local t = raw.travel
+      if type(t) ~= "table" or not TRAVEL_KINDS[t.kind] then
+        return false, "choices[" .. i .. "]: travel.kind must be walk, fly, boat, zeppelin, tram, portal or hearth"
+      end
+      if t.minutes ~= nil and not isNum(t.minutes) then
+        return false, "choices[" .. i .. "]: travel.minutes must be a number"
+      end
+      travel = { kind = t.kind, minutes = t.minutes }
+    end
+    out[i] = { id = raw.id, races = races, label = raw.label, weight = raw.weight, travel = travel }
+  end
+  return out
+end
+
+-- Métriques simulées du chapitre (tools/routebuilder, champ sim) : { steps, endLevel, xpPerHour, minutes }.
+local SIM_FIELDS = { "steps", "endLevel", "xpPerHour", "minutes" }
+
+local function simTable(v)
+  if v == nil then return nil end
+  if type(v) ~= "table" then return false, "sim must be a table" end
+  local out = {}
+  for _, k in ipairs(SIM_FIELDS) do
+    if v[k] ~= nil then
+      if not isNum(v[k]) then return false, "sim." .. k .. " must be a number" end
+      out[k] = v[k]
+    end
+  end
+  return out
+end
+
 -- Q:RegisterGuide(def) : valide et enregistre un chapitre ; un guide invalide est ignoré
 -- avec un seul message d'erreur.
 function Q:RegisterGuide(def)
@@ -138,6 +191,10 @@ function Q:RegisterGuide(def)
   if def.maxLevel ~= nil and not isNum(def.maxLevel) then return invalid(id, "maxLevel must be a number") end
   if def.next ~= nil and type(def.next) ~= "string" then return invalid(id, "next must be a guide id") end
   if def.nextByRace ~= nil and type(def.nextByRace) ~= "table" then return invalid(id, "nextByRace must be a table") end
+  local choices, choiceErr = choiceList(def.choices)
+  if choices == false then return invalid(id, choiceErr) end
+  local sim, simErr = simTable(def.sim)
+  if sim == false then return invalid(id, simErr) end
 
   local steps = {}
   for i, raw in ipairs(def.steps) do
@@ -150,6 +207,8 @@ function Q:RegisterGuide(def)
   for k, v in pairs(def) do guide[k] = v end
   guide.steps = steps
   guide.races = races
+  guide.choices = choices
+  guide.sim = sim
   guide.minLevel = def.minLevel or 1
   guide.maxLevel = def.maxLevel or 61
   guide.title = def.title or id
@@ -211,4 +270,42 @@ function Guides:Next(guide, raceKey)
   if id and registry[id] then return registry[id] end
   if guide.next then return registry[guide.next] end
   return nil
+end
+
+-- Une suite convient-elle au personnage ? Chapitre enregistré, même faction (ou sans faction), races du
+-- chapitre et de l'entrée de choix. Race ou faction inconnue : pas de filtre sur ce critère.
+local function eligible(target, entry, raceKey, faction)
+  if not target then return false end
+  if faction and target.faction and target.faction ~= faction then return false end
+  if raceKey and not racesMatch(target, raceKey) then return false end
+  if raceKey and entry and entry.races and not Q.Util.Contains(entry.races, raceKey) then return false end
+  return true
+end
+
+-- Suites possibles d'un chapitre pour un personnage, dans l'ordre déclaré :
+--   { { guide, entry, default } } ; entry = l'entrée de choices (nil pour la suite par défaut ajoutée) ;
+--   default = vrai pour la suite par défaut (Guides:Next).
+-- Sans choices : la suite par défaut seule (comme Guides:Next, sans filtre), ou une liste vide en fin de
+-- route. Avec choices : les entrées qui conviennent au personnage ; la suite par défaut est ajoutée en
+-- tête si elle convient et n'y est pas déjà.
+function Guides:Choices(guide, raceKey, faction)
+  local out = {}
+  if type(guide) ~= "table" then return out end
+  local def = self:Next(guide, raceKey)
+  if not guide.choices then
+    if def then out[1] = { guide = def, default = true } end
+    return out
+  end
+  local seen = {}
+  for _, entry in ipairs(guide.choices) do
+    local target = registry[entry.id]
+    if not seen[entry.id] and eligible(target, entry, raceKey, faction) then
+      seen[entry.id] = true
+      out[#out + 1] = { guide = target, entry = entry, default = def ~= nil and target == def }
+    end
+  end
+  if def and not seen[def.id] and eligible(def, nil, raceKey, faction) then
+    table.insert(out, 1, { guide = def, default = true })
+  end
+  return out
 end

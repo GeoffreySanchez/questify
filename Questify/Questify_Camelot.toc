@@ -3,7 +3,7 @@
 ## Notes: Free leveling guide for World of Warcraft: Forever (1-30).
 ## Notes-frFR: Guide de leveling gratuit pour World of Warcraft: Forever (1-30).
 ## Author: Questify contributors
-## Version: 0.2.0
+## Version: 0.3.0
 ## IconTexture: Interface\Icons\INV_Misc_Book_09
 ## OptionalDeps: QuestieDB, TomTom, WaypointUI, ShortestPathForever
 ## SavedVariables: QuestifyDB
@@ -47,6 +47,7 @@ Data\ClassTrainers.lua
 Data\TalentBuilds.lua
 Data\ClassSpells.lua
 Data\SpellQuests.lua
+Data\Caves.lua
 
 Engine\Guides.lua
 Engine\Progress.lua
@@ -71,6 +72,7 @@ Engine\Danger.lua
 Engine\Supplies.lua
 Engine\Dungeons.lua
 
+Nav\Caves.lua
 Nav\Navigation.lua
 
 Automation\Rewards.lua

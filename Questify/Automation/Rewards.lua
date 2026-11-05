@@ -211,20 +211,40 @@ end
 -- Classes qui portent une arme à une main en main gauche (pas le chaman : il lui faut un talent).
 local DUAL_WIELD = set("WARRIOR", "ROGUE", "HUNTER")
 
+-- Objets de la main droite seule ou des deux mains au choix (armes à une main), et objets de la
+-- main gauche seule (une arme à une main « INVTYPE_WEAPON » n'en fait pas partie).
+local MAIN_HAND = set("INVTYPE_WEAPON", "INVTYPE_WEAPONMAINHAND")
+local OFF_HAND = set("INVTYPE_SHIELD", "INVTYPE_HOLDABLE", "INVTYPE_WEAPONOFFHAND")
+
+-- Repli quand le jeu ne dit pas si la compétence est apprise (CanDualWield absent) : niveau
+-- d'apprentissage habituel de la classe. Le chaman (talent) n'en fait pas partie.
+local DUAL_WIELD_LEVEL = { ROGUE = 10, WARRIOR = 20, HUNTER = 20 }
+
+-- Arme en main gauche : classe à deux armes, et compétence apprise (CanDualWield quand le jeu le
+-- fournit, sinon le repli par niveau ci-dessus).
+local function dualWields(player)
+  if not (player and DUAL_WIELD[player.classFile]) then return false end
+  if type(CanDualWield) == "function" then return CanDualWield() and true or false end
+  return (player.level or 1) >= (DUAL_WIELD_LEVEL[player.classFile] or math.huge)
+end
+
 ---------------------------------------------------------------------------
 -- Lecture des objets
 ---------------------------------------------------------------------------
--- -> équipement, classe, sous-classe, niveau requis, prix de revente, stats, chargé ?
--- Si l'objet n'est pas encore en cache, les infos instantanées (type, classe) restent lisibles.
+-- -> lien, équipement, classe, sous-classe, niveau requis, prix de revente, lien d'objet (bindType),
+-- stats, chargé ? Si l'objet n'est pas encore en cache, les infos instantanées (type, classe)
+-- restent lisibles.
 local function readItem(link)
   local out = { stats = {}, sellPrice = 0, minLevel = 0, loaded = false }
   if type(link) ~= "string" then return out end
-  local name, _, _, _, minLevel, _, _, _, equipLoc, _, sellPrice, classID, subclassID = Q.API.GetItemInfo(link)
+  out.link = link
+  local name, _, _, _, minLevel, _, _, _, equipLoc, _, sellPrice, classID, subclassID, bindType =
+    Q.API.GetItemInfo(link)
   if name then
     out.loaded = true
     out.name = name
     out.minLevel, out.equipLoc, out.sellPrice = minLevel or 0, equipLoc, sellPrice or 0
-    out.classID, out.subclassID = classID, subclassID
+    out.classID, out.subclassID, out.bindType = classID, subclassID, bindType
   else
     local _, _, _, loc, _, cid, sid = Q.API.GetItemInfoInstant(link)
     out.equipLoc, out.classID, out.subclassID = loc, cid, sid
@@ -261,6 +281,36 @@ function Rewards:AllLoaded(choices)
     if c.loaded == false then return false end
   end
   return true
+end
+
+local BAGS = { 0, 1, 2, 3, 4 }
+
+local function numSlots(bag)
+  if C_Container and C_Container.GetContainerNumSlots then return C_Container.GetContainerNumSlots(bag) or 0 end
+  if GetContainerNumSlots then return GetContainerNumSlots(bag) or 0 end
+  return 0
+end
+
+local function slotLink(bag, slot)
+  if C_Container and C_Container.GetContainerItemLink then return C_Container.GetContainerItemLink(bag, slot) end
+  if GetContainerItemLink then return GetContainerItemLink(bag, slot) end
+  return nil
+end
+
+-- BagItems() -> équipements des sacs, lus comme ReadItem (avec leur lien) : candidats pour l'autre
+-- moitié d'une paire main droite + main gauche. Les objets pas encore en cache sont laissés de côté.
+function Rewards:BagItems()
+  local list = {}
+  for _, bag in ipairs(BAGS) do
+    for slot = 1, numSlots(bag) do
+      local link = slotLink(bag, slot)
+      if not Q.Util.IsSecret(link) and type(link) == "string" then
+        local it = readItem(link)
+        if it.loaded and it.equipLoc and it.equipLoc ~= "" then list[#list + 1] = it end
+      end
+    end
+  end
+  return list
 end
 
 -- Demande au client de charger les objets absents du cache.
@@ -308,17 +358,39 @@ function Rewards:EquippedScore(slot, player)
   return self:Score(readItem(link).stats, player and player.classFile, slot == 18)
 end
 
--- ComparisonSlots(equipLoc, player) -> emplacements auxquels comparer une récompense.
+-- inventoryItem(slot) -> objet porté dans l'emplacement (lu comme ReadItem), nil s'il est vide.
+local function inventoryItem(slot)
+  local link = GetInventoryItemLink("player", slot)
+  if not link then return nil end
+  return readItem(link)
+end
+
+-- slotReader(equipped) -> fonction(slot) -> objet porté ou nil. Quand l'appelant fournit
+-- equipped(slot) (comparaison simulée, cache), c'est la seule lecture de ce qui est porté : jamais
+-- l'inventaire réel à côté. equipped(slot) renvoie l'objet lu (table de ReadItem) ou nil ;
+-- l'ancienne forme qui renvoie un score reste acceptée (objet de nature inconnue).
+local function slotReader(equipped)
+  if not equipped then return inventoryItem end
+  return function(slot)
+    local v = equipped(slot)
+    if type(v) == "number" then return { score = v, stats = {} } end
+    if type(v) == "table" then return v end
+    return nil
+  end
+end
+
+-- ComparisonSlots(equipLoc, player, slotItem) -> emplacements auxquels comparer une récompense.
 -- Bagues et bijoux : les deux emplacements (on compare au moins bon). Arme à une main : la main
 -- gauche (17) ne compte que si la classe peut manier deux armes et y porte une vraie arme ;
 -- sinon une main gauche vide ou un bouclier fausserait la comparaison.
-function Rewards:ComparisonSlots(equipLoc, player)
+-- slotItem(slot) facultatif : lecteur de l'objet porté (par défaut l'inventaire du joueur).
+function Rewards:ComparisonSlots(equipLoc, player, slotItem)
   local slots = self:SlotsFor(equipLoc)
   if equipLoc ~= "INVTYPE_WEAPON" or not slots then return slots end
   player = player or Q.Player
   if player and DUAL_WIELD[player.classFile] then
-    local link = GetInventoryItemLink("player", 17)
-    if link and readItem(link).classID == 2 then return { 16, 17 } end
+    local off = (slotItem or inventoryItem)(17)
+    if off and off.classID == 2 then return { 16, 17 } end
   end
   return { 16 }
 end
@@ -339,54 +411,231 @@ function Rewards:Usable(choice, player)
   return false
 end
 
--- ReadItem(link) -> { name, equipLoc, classID, subclassID, minLevel, sellPrice, stats, loaded }
+-- ReadItem(link) -> { link, name, equipLoc, classID, subclassID, bindType, minLevel, sellPrice, stats, loaded }
 Rewards.ReadItem = function(_, link) return readItem(link) end
 
--- UpgradeGain(item, player, equipped) -> gain de score par rapport à l'objet porté (le moins bon des
--- emplacements comparés), ou nil si l'objet n'est pas portable par la classe à ce niveau.
--- equipped(slot) facultatif : score porté (cache de l'appelant).
-function Rewards:UpgradeGain(item, player, equipped)
-  player = player or Q.Player or {}
-  local slots = self:Usable(item, player) and self:ComparisonSlots(item.equipLoc, player)
-  if not slots then return nil end
-  local base = math.huge
-  for _, s in ipairs(slots) do
-    base = math.min(base, equipped and equipped(s) or self:EquippedScore(s, player))
+---------------------------------------------------------------------------
+-- Paire main droite + main gauche
+---------------------------------------------------------------------------
+-- L'objet peut-il aller en main droite (arme à une main) / en main gauche ?
+local function fitsMain(self, it, player)
+  return MAIN_HAND[it.equipLoc] == true and self:Usable(it, player)
+end
+local function fitsOff(self, it, player)
+  local loc = it.equipLoc
+  if loc == "INVTYPE_WEAPON" or loc == "INVTYPE_WEAPONOFFHAND" then
+    return dualWields(player) and self:Usable(it, player)
   end
-  return self:Score(item.stats, player.classFile, item.equipLoc and SLOTS[item.equipLoc] and SLOTS[item.equipLoc][1] == 18) - base
+  return OFF_HAND[loc] == true and self:Usable(it, player)
+end
+
+-- others(bags, item) : la réserve sans l'objet évalué (un seul exemplaire retiré, par son lien :
+-- l'objet qu'on évalue est souvent lui-même dans les sacs).
+local function others(bags, item)
+  local out, skipped = {}, false
+  for _, it in ipairs(bags or {}) do
+    if not skipped and item.link ~= nil and it.link == item.link then
+      skipped = true
+    else
+      out[#out + 1] = it
+    end
+  end
+  return out
+end
+
+-- bestPoolPair(player, pool) -> valeur de la meilleure paire (ou moitié seule) déjà dans la réserve.
+local function bestPoolPair(self, player, pool)
+  local classFile = player.classFile
+  local best = 0
+  for i, m in ipairs(pool) do
+    local v = self:Score(m.stats, classFile)
+    if fitsMain(self, m, player) then
+      if v > best then best = v end
+      for j, o in ipairs(pool) do
+        if j ~= i and fitsOff(self, o, player) then
+          local pair = v + self:Score(o.stats, classFile)
+          if pair > best then best = pair end
+        end
+      end
+    elseif fitsOff(self, m, player) and v > best then
+      best = v
+    end
+  end
+  return best
+end
+
+-- bestPair(item, player, pool) -> valeur de la meilleure paire qui contient l'objet, main droite,
+-- main gauche. L'autre moitié vient de la réserve, ou la main reste vide.
+local function bestPair(self, item, player, pool)
+  local classFile = player.classFile
+  local bestValue, bestMain, bestOff
+  local function try(main, off)
+    local v = (main and self:Score(main.stats, classFile) or 0) + (off and self:Score(off.stats, classFile) or 0)
+    if not bestValue or v > bestValue + EPSILON then bestValue, bestMain, bestOff = v, main, off end
+  end
+  if fitsMain(self, item, player) then
+    try(item, nil)
+    for _, o in ipairs(pool) do
+      if fitsOff(self, o, player) then try(item, o) end
+    end
+  end
+  if fitsOff(self, item, player) then
+    try(nil, item)
+    for _, m in ipairs(pool) do
+      if fitsMain(self, m, player) then try(m, item) end
+    end
+  end
+  return bestValue, bestMain, bestOff
+end
+
+-- UpgradeGain(item, player, equipped, bags) -> gain de score par rapport à l'objet porté (le moins
+-- bon des emplacements comparés), ou nil si l'objet n'est pas portable par la classe à ce niveau.
+--   equipped(slot) facultatif : objet porté (voir slotReader) ; remplace la lecture de l'inventaire.
+--   bags facultatif : équipements des sacs (liste de ReadItem), par défaut lus dans les sacs.
+-- Arme à deux mains portée : une arme à une main ou un objet de main gauche ne vaut que dans une
+-- paire (meilleure autre moitié des sacs, ou main vide) qui bat à la fois l'arme à deux mains et la
+-- meilleure paire déjà dans les sacs sans lui ; le second résultat est alors cette paire
+-- { main = objet, off = objet } quand l'autre moitié vient des sacs.
+function Rewards:UpgradeGain(item, player, equipped, bags)
+  player = player or Q.Player or {}
+  local slotItem = slotReader(equipped)
+  local slots = self:Usable(item, player) and self:ComparisonSlots(item.equipLoc, player, slotItem)
+  if not slots then return nil end
+  local function score(s)
+    local it = slotItem(s)
+    if not it then return 0 end
+    return it.score or self:Score(it.stats, player.classFile, s == 18)
+  end
+  local loc = item.equipLoc
+  local own = self:Score(item.stats, player.classFile, SLOTS[loc] ~= nil and SLOTS[loc][1] == 18)
+  if loc == "INVTYPE_2HWEAPON" then
+    -- une arme à deux mains libère aussi la main gauche : elle doit battre les deux mains réunies
+    return own - (score(16) + score(17))
+  end
+  local main = slotItem(16)
+  if main and main.equipLoc == "INVTYPE_2HWEAPON" and (MAIN_HAND[loc] or OFF_HAND[loc]) then
+    -- arme à deux mains portée : l'équiper ou équiper une main gauche la retire ; la paire formée
+    -- avec la meilleure autre moitié des sacs (ou une main vide) doit battre l'arme à deux mains,
+    -- et aussi la meilleure paire que les sacs forment déjà sans l'objet
+    local pool = others(bags or self:BagItems(), item)
+    local value, m, o = bestPair(self, item, player, pool)
+    if not value then return nil end
+    local gain = value - math.max(score(16) + score(17), bestPoolPair(self, player, pool))
+    if (m and m ~= item) or (o and o ~= item) then return gain, { main = m, off = o } end
+    return gain
+  end
+  local base = math.huge
+  for _, s in ipairs(slots) do base = math.min(base, score(s)) end
+  return own - base
 end
 Rewards.EPSILON = EPSILON
+
+-- FitsMain(item, player) / FitsOff(item, player) : l'objet, portable par la classe, peut aller en
+-- main droite (arme à une main) / en main gauche (bouclier, objet de main gauche, ou arme pour une
+-- classe qui porte deux armes).
+function Rewards:FitsMain(item, player) return fitsMain(self, item, player or Q.Player or {}) == true end
+function Rewards:FitsOff(item, player) return fitsOff(self, item, player or Q.Player or {}) == true end
+
+-- EquippedItem(slot, equipped) -> objet porté dans l'emplacement (lu comme ReadItem), ou nil.
+function Rewards:EquippedItem(slot, equipped) return slotReader(equipped)(slot) end
+
+-- FillsEmptySlot(item, player, equipped) : l'objet, portable par la classe, irait dans un
+-- emplacement vide. Main gauche : seulement à côté d'une main droite qui la laisse libre (pas
+-- d'arme à deux mains), et pour une arme, seulement si la classe porte deux armes.
+function Rewards:FillsEmptySlot(item, player, equipped)
+  player = player or Q.Player or {}
+  if not self:Usable(item, player) then return false end
+  local slotItem = slotReader(equipped)
+  local loc = item.equipLoc
+  local main = slotItem(16)
+  if (loc == "INVTYPE_2HWEAPON" or MAIN_HAND[loc]) and main == nil then return true end
+  if fitsOff(self, item, player) then
+    return slotItem(17) == nil and not (main and main.equipLoc == "INVTYPE_2HWEAPON")
+  end
+  if loc == "INVTYPE_2HWEAPON" or MAIN_HAND[loc] or OFF_HAND[loc] then return false end
+  for _, s in ipairs(self:SlotsFor(loc) or {}) do
+    if slotItem(s) == nil then return true end
+  end
+  return false
+end
+
+---------------------------------------------------------------------------
+-- Objets recommandés (annonce d'amélioration, récompense choisie pour une paire)
+---------------------------------------------------------------------------
+local RECOMMENDED_TIME = 600   -- secondes pendant lesquelles un objet recommandé n'est pas vendu
+local recommended = {}         -- { [ID d'objet] = GetTime() }
+
+-- ID d'objet d'un lien (ou d'une chaîne « item:123 »), d'un ID, ou d'un nom connu du client ; sinon nil.
+-- Le lien d'une récompense de quête et celui du même objet dans le sac peuvent différer (champs de
+-- niveau, de bonus…) : les objets recommandés sont donc retenus par ID.
+local function itemIdOf(item)
+  if type(item) == "number" then return item end
+  if type(item) ~= "string" then return nil end
+  local id = tonumber(item:match("item:(%d+)"))
+  if id then return id end
+  local ok, instant = pcall(Q.API.GetItemInfoInstant, item)
+  return ok and type(instant) == "number" and instant or nil
+end
+
+-- Recommend(link, ...) : retient les objets qu'on vient de recommander d'équiper.
+function Rewards:Recommend(...)
+  local now = GetTime and GetTime() or 0
+  for i = 1, select("#", ...) do
+    local id = itemIdOf(select(i, ...))
+    if id then recommended[id] = now end
+  end
+end
+
+-- Recommended(link) : objet recommandé il y a peu (seul ou moitié d'une paire), par ID d'objet.
+function Rewards:Recommended(link)
+  local id = itemIdOf(link)
+  local at = id and recommended[id]
+  if not at then return false end
+  local now = GetTime and GetTime() or 0
+  return now - at <= RECOMMENDED_TIME
+end
 
 ---------------------------------------------------------------------------
 -- Choix
 ---------------------------------------------------------------------------
--- Pick(choices, player) -> index, reasonKey, detail
+-- Pick(choices, player, equipped, bags) -> index, reasonKey, detail
 --   "upgrade" : meilleure amélioration ; detail = gain de score
 --   "vendor"  : rien n'améliore ; le plus cher à la revente ; detail = prix en cuivre
--- player = { classFile, level }. Renvoie nil sans choix.
-function Rewards:Pick(choices, player)
+-- player = { classFile, level }. equipped, bags : comme UpgradeGain (par défaut l'inventaire et les
+-- sacs du joueur, lus une fois). Renvoie nil sans choix.
+function Rewards:Pick(choices, player, equipped, bags)
   if type(choices) ~= "table" or #choices == 0 then return nil end
   player = player or Q.Player or {}
+  local read = slotReader(equipped)
   local equippedCache = {}
-  local function equipped(slot)
+  local function cached(slot)
     local v = equippedCache[slot]
-    if v == nil then v = self:EquippedScore(slot, player); equippedCache[slot] = v end
-    return v
+    if v == nil then v = read(slot) or false; equippedCache[slot] = v end
+    return v or nil
+  end
+  -- les sacs ne servent qu'avec une arme à deux mains portée (paire main droite + main gauche)
+  if not bags then
+    local main = cached(16)
+    bags = (main and main.equipLoc == "INVTYPE_2HWEAPON") and self:BagItems() or {}
   end
 
-  local best, bestGain, bestPos
+  local best, bestGain, bestPos, bestPair
   for pos, c in ipairs(choices) do
-    local gain = self:UpgradeGain(c, player, equipped)
+    local gain, pair = self:UpgradeGain(c, player, cached, bags)
     if gain then
       if gain > EPSILON then
         if not best or gain > bestGain + EPSILON
           or (math.abs(gain - bestGain) <= EPSILON and (c.sellPrice or 0) > (best.sellPrice or 0)) then
-          best, bestGain, bestPos = c, gain, pos
+          best, bestGain, bestPos, bestPair = c, gain, pos, pair
         end
       end
     end
   end
-  if best then return best.index or bestPos, "upgrade", bestGain end
+  if best then
+    -- récompense choisie (et l'autre moitié de sa paire) : la vente automatique ne la prend pas
+    self:Recommend(best.link, bestPair and bestPair.main.link, bestPair and bestPair.off.link)
+    return best.index or bestPos, "upgrade", bestGain
+  end
 
   local top, topPos
   for pos, c in ipairs(choices) do

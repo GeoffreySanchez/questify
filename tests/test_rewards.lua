@@ -32,6 +32,14 @@ end
 
 local warrior = function(level) return { classFile = "WARRIOR", level = level or 10 } end
 
+-- Sacs du joueur (bouchon local) : liste de liens dans le sac 0.
+local function setBags(links)
+  C_Container = {
+    GetContainerNumSlots = function(bag) return bag == 0 and 16 or 0 end,
+    GetContainerItemLink = function(bag, slot) return bag == 0 and links[slot] or nil end,
+  }
+end
+
 return {
   pick_upgrade = function(t)
     local Q = load()
@@ -288,6 +296,183 @@ return {
     t.eq(better, "upgrade", "15 beats the off-hand 10")
     local _, worse = Q.Rewards:Pick({ choiceOf(Mock.items[8204], 1) }, rogue)
     t.eq(worse, "vendor", "8 does not beat the off-hand 10")
+  end,
+
+  -- Bâton (deux mains) porté : main gauche vide, mais équiper un bouclier retirerait le bâton.
+  offhand_with_two_hander_equipped_must_beat_it = function(t)
+    local Q = load()
+    Mock.inventory[16] = item(8401, { equipLoc = "INVTYPE_2HWEAPON", classID = 2, subclassID = 10,
+      stats = { [DPS] = 6, [INT] = 3, [STA] = 2 } })   -- score chaman : 15 + 2,4 + 1 = 18,4
+    item(8402, { equipLoc = "INVTYPE_SHIELD", classID = 4, subclassID = 6, sellPrice = 5,
+      stats = { [ARMOR] = 200, [STA] = 1 } })            -- 3 + 0,5 = 3,5
+    item(8403, { equipLoc = "INVTYPE_HOLDABLE", classID = 4, subclassID = 0, sellPrice = 5,
+      stats = { [INT] = 2 } })
+    item(8404, { equipLoc = "INVTYPE_SHIELD", classID = 4, subclassID = 6, sellPrice = 5,
+      stats = { [ARMOR] = 400, [STR] = 10, [INT] = 10, [STA] = 10 } })   -- 6 + 8 + 8 + 5 = 27
+    local shaman = { classFile = "SHAMAN", level = 20 }
+    local _, shield = Q.Rewards:Pick({ choiceOf(Mock.items[8402], 1) }, shaman)
+    t.eq(shield, "vendor", "a shield does not beat the staff it would remove")
+    local _, holdable = Q.Rewards:Pick({ choiceOf(Mock.items[8403], 1) }, shaman)
+    t.eq(holdable, "vendor", "same for an off-hand item")
+    local _, strong = Q.Rewards:Pick({ choiceOf(Mock.items[8404], 1) }, shaman)
+    t.eq(strong, "upgrade", "a shield better than the whole staff still counts")
+    -- sans arme à deux mains, la main gauche vide reste la comparaison
+    Mock.inventory[16] = item(8405, { equipLoc = "INVTYPE_WEAPON", classID = 2, subclassID = 4, stats = { [DPS] = 6 } })
+    local _, withMace = Q.Rewards:Pick({ choiceOf(Mock.items[8402], 1) }, shaman)
+    t.eq(withMace, "upgrade", "shield into the empty off-hand beside a mace")
+  end,
+
+  two_hander_must_beat_both_hands = function(t)
+    local Q = load()
+    Mock.inventory[16] = item(8501, { equipLoc = "INVTYPE_WEAPON", classID = 2, subclassID = 4, stats = { [DPS] = 10 } })
+    Mock.inventory[17] = item(8502, { equipLoc = "INVTYPE_SHIELD", classID = 4, subclassID = 6,
+      stats = { [ARMOR] = 300, [STR] = 5 } })              -- guerrier : 30 + 6 + 5 = 41 pour les deux
+    item(8503, { equipLoc = "INVTYPE_2HWEAPON", classID = 2, subclassID = 1, sellPrice = 5,
+      stats = { [DPS] = 12 } })                            -- 36 : bat la masse seule, pas les deux mains
+    item(8504, { equipLoc = "INVTYPE_2HWEAPON", classID = 2, subclassID = 1, sellPrice = 5,
+      stats = { [DPS] = 14, [STR] = 4 } })                 -- 46
+    local _, worse = Q.Rewards:Pick({ choiceOf(Mock.items[8503], 1) }, warrior(20))
+    t.eq(worse, "vendor", "the shield is lost too")
+    local _, better = Q.Rewards:Pick({ choiceOf(Mock.items[8504], 1) }, warrior(20))
+    t.eq(better, "upgrade")
+  end,
+
+  -- Arme à deux mains portée : une arme à une main ne vaut que dans une paire (main gauche des sacs
+  -- ou vide) qui bat l'arme à deux mains.
+  one_hander_with_two_hander_equipped_needs_the_pair = function(t)
+    local Q = load()
+    Mock.inventory[16] = item(8601, { equipLoc = "INVTYPE_2HWEAPON", classID = 2, subclassID = 8,
+      stats = { [DPS] = 10 } })                            -- guerrier : 30
+    item(8602, { equipLoc = "INVTYPE_WEAPON", classID = 2, subclassID = 7, sellPrice = 5,
+      stats = { [DPS] = 8 } })                             -- 24
+    item(8603, { equipLoc = "INVTYPE_SHIELD", classID = 4, subclassID = 6,
+      stats = { [ARMOR] = 300, [STR] = 2 } })              -- 6 + 2 = 8
+    setBags({})
+    local _, alone = Q.Rewards:Pick({ choiceOf(Mock.items[8602], 1) }, warrior(20))
+    t.eq(alone, "vendor", "one-hander + empty off-hand (24) does not beat the two-hander (30)")
+    t.ok(Q.Rewards:UpgradeGain(choiceOf(Mock.items[8602], 1), warrior(20)) < 0)
+    setBags({ "item:8603" })
+    local _, paired = Q.Rewards:Pick({ choiceOf(Mock.items[8602], 1) }, warrior(20))
+    t.eq(paired, "upgrade", "one-hander + the shield from the bags (32) beats it")
+    local gain, pair = Q.Rewards:UpgradeGain(choiceOf(Mock.items[8602], 1), warrior(20))
+    t.near(gain, 2, 1e-9)
+    t.eq(pair and pair.main and pair.main.link, "item:8602")
+    t.eq(pair and pair.off and pair.off.link, "item:8603")
+  end,
+
+  -- Récompense de quête : un bouclier compte avec la meilleure masse à une main des sacs.
+  offhand_reward_counts_with_the_bag_main_hand = function(t)
+    local Q = load()
+    local shaman = { classFile = "SHAMAN", level = 20 }
+    Mock.inventory[16] = item(8701, { equipLoc = "INVTYPE_2HWEAPON", classID = 2, subclassID = 10,
+      stats = { [DPS] = 4 } })                             -- bâton, chaman : 10
+    item(8702, { equipLoc = "INVTYPE_WEAPON", classID = 2, subclassID = 4, stats = { [DPS] = 3 } })   -- masse : 7,5
+    item(8703, { equipLoc = "INVTYPE_WEAPON", classID = 2, subclassID = 4, stats = { [DPS] = 2 } })   -- masse : 5
+    item(8704, { equipLoc = "INVTYPE_SHIELD", classID = 4, subclassID = 6, sellPrice = 5,
+      stats = { [ARMOR] = 200, [STA] = 2 } })              -- 3 + 1 = 4
+    item(8705, { equipLoc = "INVTYPE_SHIELD", classID = 4, subclassID = 6, sellPrice = 9,
+      stats = { [ARMOR] = 100 } })                         -- 1,5
+    setBags({ "item:8703", "item:8702" })
+    local idx, reason, gain = Q.Rewards:Pick({ choiceOf(Mock.items[8705], 1), choiceOf(Mock.items[8704], 2) }, shaman)
+    t.eq(reason, "upgrade", "best mace (7.5) + shield (4) beats the staff (10)")
+    t.eq(idx, 2); t.near(gain, 1.5, 1e-9)
+    local _, weak = Q.Rewards:Pick({ choiceOf(Mock.items[8705], 1) }, shaman)
+    t.eq(weak, "vendor", "7.5 + 1.5 does not beat 10")
+    local _, pair = Q.Rewards:UpgradeGain(choiceOf(Mock.items[8704], 2), shaman)
+    t.eq(pair.main.link, "item:8702", "the better mace of the bags")
+    t.eq(pair.off.link, "item:8704")
+    -- sans masse dans les sacs : le bouclier seul contre le bâton
+    setBags({})
+    local _, none = Q.Rewards:Pick({ choiceOf(Mock.items[8704], 1) }, shaman)
+    t.eq(none, "vendor")
+  end,
+
+  -- Comparaison simulée : la fonction equipped remplace toute lecture de l'inventaire réel.
+  simulated_equipped_is_honoured = function(t)
+    local Q = load()
+    local shaman = { classFile = "SHAMAN", level = 20 }
+    -- inventaire réel : une masse à une main ; simulé : un bâton
+    Mock.inventory[16] = item(8801, { equipLoc = "INVTYPE_WEAPON", classID = 2, subclassID = 4, stats = { [DPS] = 1 } })
+    item(8802, { equipLoc = "INVTYPE_2HWEAPON", classID = 2, subclassID = 10, stats = { [DPS] = 4 } })   -- 10
+    item(8803, { equipLoc = "INVTYPE_SHIELD", classID = 4, subclassID = 6, stats = { [ARMOR] = 200, [STA] = 2 } }) -- 4
+    local staff = Q.Rewards:ReadItem("item:8802")
+    local function equipped(slot) return slot == 16 and staff or nil end
+    local reads = 0
+    local real = GetInventoryItemLink
+    GetInventoryItemLink = function(...) reads = reads + 1; return real(...) end
+    local gain = Q.Rewards:UpgradeGain(choiceOf(Mock.items[8803], 1), shaman, equipped, {})
+    t.near(gain, -6, 1e-9, "the shield would remove the simulated staff")
+    -- arme à une main, classe à deux armes : la main gauche simulée décide
+    item(8804, { equipLoc = "INVTYPE_WEAPON", classID = 2, subclassID = 15, stats = { [DPS] = 2 } })
+    local dagger = Q.Rewards:ReadItem("item:8804")
+    local rogue = { classFile = "ROGUE", level = 20 }
+    t.eq(Q.Rewards:ComparisonSlots("INVTYPE_WEAPON", rogue, function(slot) return slot == 17 and dagger or nil end),
+      { 16, 17 })
+    t.eq(reads, 0, "no read of the real inventory")
+    GetInventoryItemLink = real
+    -- ancienne forme : equipped(slot) renvoie un score
+    item(8805, { equipLoc = "INVTYPE_FINGER", classID = 4, subclassID = 0, stats = { [STR] = 5 } })
+    t.near(Q.Rewards:UpgradeGain(choiceOf(Mock.items[8805], 1), warrior(), function() return 3 end, {}), 2, 1e-9)
+  end,
+
+  -- Sans CanDualWield : repli par classe et niveau (guerrier 20) ; avec l'API, elle décide.
+  dual_wield_fallback_by_level = function(t)
+    local Q = load()
+    Mock.inventory[16] = item(8901, { equipLoc = "INVTYPE_2HWEAPON", classID = 2, subclassID = 8,
+      stats = { [DPS] = 10 } })                            -- 30
+    item(8902, { equipLoc = "INVTYPE_WEAPON", classID = 2, subclassID = 7, stats = { [DPS] = 8 } })   -- 24
+    item(8903, { equipLoc = "INVTYPE_WEAPON", classID = 2, subclassID = 7, stats = { [DPS] = 3 } })   -- 9
+    local bags = { Q.Rewards:ReadItem("item:8903") }
+    local offered = choiceOf(Mock.items[8902], 1)
+    t.ok(Q.Rewards:UpgradeGain(offered, warrior(12), nil, bags) < 0, "no dual wield before level 20")
+    t.near(Q.Rewards:UpgradeGain(offered, warrior(20), nil, bags), 3, 1e-9, "24 + 9 beats 30 at level 20")
+    CanDualWield = function() return false end
+    t.ok(Q.Rewards:UpgradeGain(offered, warrior(20), nil, bags) < 0, "the game API decides")
+  end,
+
+  -- Une paire déjà dans les sacs qui bat l'arme à deux mains relève la barre.
+  pair_base_includes_the_best_pair_already_in_bags = function(t)
+    local Q = load()
+    local shaman = { classFile = "SHAMAN", level = 20 }
+    Mock.inventory[16] = item(8911, { equipLoc = "INVTYPE_2HWEAPON", classID = 2, subclassID = 10,
+      stats = { [DPS] = 4 } })                             -- 10
+    item(8912, { equipLoc = "INVTYPE_WEAPON", classID = 2, subclassID = 4, stats = { [DPS] = 3.6 } })   -- M2 : 9
+    item(8913, { equipLoc = "INVTYPE_SHIELD", classID = 4, subclassID = 6,
+      stats = { [ARMOR] = 200, [STA] = 2 } })              -- 4 : M2 + bouclier = 13
+    item(8914, { equipLoc = "INVTYPE_WEAPON", classID = 2, subclassID = 4, stats = { [DPS] = 3.2 } })   -- M1 : 8
+    local bags = { Q.Rewards:ReadItem("item:8912"), Q.Rewards:ReadItem("item:8913") }
+    local gain = Q.Rewards:UpgradeGain(choiceOf(Mock.items[8914], 1), shaman, nil, bags)
+    t.near(gain, -1, 1e-9, "M1 + shield (12) does not beat M2 + shield (13)")
+  end,
+
+  -- Récompense choisie pour une paire : les deux moitiés sont retenues (la vente ne les prend pas).
+  pick_remembers_the_chosen_pair = function(t)
+    local Q = load()
+    local shaman = { classFile = "SHAMAN", level = 20 }
+    Mock.inventory[16] = item(8921, { equipLoc = "INVTYPE_2HWEAPON", classID = 2, subclassID = 10,
+      stats = { [DPS] = 4 } })                             -- 10
+    item(8922, { equipLoc = "INVTYPE_WEAPON", classID = 2, subclassID = 4, quality = 0,
+      stats = { [DPS] = 3 } })                             -- masse grise : 7,5
+    item(8923, { equipLoc = "INVTYPE_SHIELD", classID = 4, subclassID = 6, stats = { [ARMOR] = 200, [STA] = 2 } })
+    setBags({ "item:8922" })
+    local _, reason = Q.Rewards:Pick({ choiceOf(Mock.items[8923], 1) }, shaman)
+    t.eq(reason, "upgrade")
+    t.ok(Q.Rewards:Recommended("item:8922"), "gray mace remembered")
+    t.ok(Q.Rewards:Recommended("item:8923"), "chosen shield remembered")
+    t.ok(not Q.Rewards:Recommended("item:8921"))
+  end,
+
+  -- M1 : recommandé par ID d'objet, quel que soit le reste du lien (lien de récompense et lien du sac
+  -- diffèrent).
+  recommended_by_item_id = function(t)
+    local Q = load()
+    Q.Rewards:Recommend("|cffffffff|Hitem:8931::::::::20:::::|h[Mace]|h|r")
+    t.ok(Q.Rewards:Recommended("|cffffffff|Hitem:8931::::::::21:1::::|h[Mace]|h|r"), "same ID, other link")
+    t.ok(Q.Rewards:Recommended("item:8931"))
+    t.ok(not Q.Rewards:Recommended("item:89310"), "another ID")
+    t.ok(not Q.Rewards:Recommended("item:893"), "another ID")
+    Mock.advance(601)
+    t.ok(not Q.Rewards:Recommended("item:8931"), "forgotten after 10 min")
   end,
 
   classes_that_cannot_dual_wield_use_the_main_hand = function(t)

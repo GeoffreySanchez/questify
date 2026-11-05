@@ -7,6 +7,8 @@ Q:RegisterStrings({
     NAV_WAYPOINTUI = "WaypointUI",
     NAV_TOMTOM = "TomTom",
     NAV_NATIVE = "Built-in waypoint",
+    NAV_CAVE_ENTER = "Cave entrance",
+    NAV_CAVE_EXIT = "Cave exit",
 
     REWARD_UPGRADE = "Reward: %s (an upgrade over your equipped item)",
     REWARD_VENDOR = "Reward: %s (nothing improves your gear, so the highest vendor price: %s)",
@@ -20,6 +22,8 @@ Q:RegisterStrings({
     NAV_WAYPOINTUI = "WaypointUI",
     NAV_TOMTOM = "TomTom",
     NAV_NATIVE = "Marqueur du jeu",
+    NAV_CAVE_ENTER = "Entrée de la grotte",
+    NAV_CAVE_EXIT = "Sortie de la grotte",
 
     REWARD_UPGRADE = "Récompense : %s (meilleure que ton objet équipé)",
     REWARD_VENDOR = "Récompense : %s (rien n'améliore ton équipement, donc le plus gros prix de revente : %s)",

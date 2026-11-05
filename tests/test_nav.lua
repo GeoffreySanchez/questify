@@ -72,6 +72,37 @@ return {
     t.eq(Mock.countCalls("C_Map.SetUserWaypoint"), 0)
   end,
 
+  -- Repère du jeu avec WaypointUI chargé : posé par WaypointUI, qui affiche le titre de l'étape
+  -- au lieu de « Repère cartographique ».
+  native_with_waypointui_names_the_pin = function(t)
+    Mock.addons.WaypointUI = true
+    local Q = load()
+    local call = Mock.lastCall("WaypointUIAPI.Navigation.NewUserNavigation")
+    t.ok(call, "WaypointUI called")
+    local arg = call.args[1]
+    t.eq(arg.mapID, 1426); t.eq(arg.x, 29.93); t.eq(arg.y, 71.2)
+    t.ok(arg.name:find("Dwarven Outfitters", 1, true), "step title as name")
+    t.eq(arg.suppressAudio, true, "no sound on every target update")
+    t.eq(Mock.countCalls("C_Map.SetUserWaypoint"), 0, "WaypointUI sets the game pin itself")
+    t.eq(select(2, Q.Nav:Active()), "native")
+    accept179()   -- autre étape, autre titre
+    t.ok(Mock.lastCall("WaypointUIAPI.Navigation.NewUserNavigation").args[1].name ~= arg.name, "renamed")
+    Q.Nav:Clear()
+    t.eq(Mock.countCalls("WaypointUIAPI.Navigation.ClearUserNavigation"), 1)
+    t.eq(Mock.countCalls("C_Map.ClearUserWaypoint"), 1)
+    noNavErrors(t)
+  end,
+
+  native_with_waypointui_refused_map = function(t)
+    Mock.addons.WaypointUI = true
+    local Q = load()
+    Q.Nav:SetTarget(99999, 10, 10, "Nowhere")   -- carte sans repère possible : WaypointUI renvoie nil
+    t.eq(Mock.countCalls("C_Map.SetUserWaypoint"), 0)
+    t.eq(Mock.countCalls("WaypointUIAPI.Navigation.ClearUserNavigation"), 1, "old named pin removed")
+    t.eq(Mock.countCalls("C_Map.ClearUserWaypoint"), 1, "no stale marker left")
+    noNavErrors(t)
+  end,
+
   missing_provider_falls_back_native = function(t)
     local Q = load({ ["nav.display"] = "tomtom" })
     t.eq(Mock.countCalls("C_Map.SetUserWaypoint"), 1)
@@ -123,6 +154,41 @@ return {
     t.eq(Mock.countCalls("C_Map.SetUserWaypoint"), 0)
     local routing, display = Q.Nav:Active()
     t.eq(routing, "shortestpath"); t.eq(display, "tomtom")
+  end,
+
+  -- Calcul ShortestPath + WaypointUI : une navigation WaypointUI nommée est lancée d'abord, pour que
+  -- ShortestPath lui confie ses virages (avec le nom) au lieu de poser des repères sans nom.
+  shortestpath_seeds_a_named_waypointui_navigation = function(t)
+    Mock.addons.ShortestPathForever = true
+    Mock.addons.WaypointUI = true
+    local Q = load({ ["nav.routing"] = true, ["nav.display"] = "waypointui" })
+    local seed = Mock.lastCall("WaypointUIAPI.Navigation.NewUserNavigation")
+    t.ok(seed, "WaypointUI navigation started")
+    t.ok(seed.args[1].name:find("Dwarven Outfitters", 1, true), "named after the step")
+    t.eq(seed.args[1].suppressAudio, true)
+    t.eq(seed.args[1].mapID, 1426); t.eq(seed.args[1].x, 29.93); t.eq(seed.args[1].y, 71.2)
+    local nav = Mock.lastCall("ShortestPathForever.API.Navigate")
+    t.ok(nav, "ShortestPath still computes the route")
+    local pos = {}
+    for i, c in ipairs(Mock.calls) do pos[c] = i end
+    t.ok(pos[seed] < pos[nav], "seeded before the route starts")
+    Q.Nav:Clear()
+    t.eq(Mock.countCalls("ShortestPathForever.API.Cancel"), 1)
+    t.eq(Mock.countCalls("WaypointUIAPI.Navigation.ClearUserNavigation"), 1)
+    noNavErrors(t)
+
+    -- affichage « Repère du jeu » : même chose ; TomTom : rien chez WaypointUI
+    Mock.reset()
+    Mock.addons.ShortestPathForever = true
+    Mock.addons.WaypointUI = true
+    load({ ["nav.routing"] = true })
+    t.eq(Mock.countCalls("WaypointUIAPI.Navigation.NewUserNavigation"), 1)
+    Mock.reset()
+    Mock.addons.ShortestPathForever = true
+    Mock.addons.WaypointUI = true
+    Mock.addons.TomTom = true
+    load({ ["nav.routing"] = true, ["nav.display"] = "tomtom" })
+    t.eq(Mock.countCalls("WaypointUIAPI.Navigation.NewUserNavigation"), 0)
   end,
 
   routing_without_shortestpath_uses_display = function(t)

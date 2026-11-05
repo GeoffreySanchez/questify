@@ -72,6 +72,10 @@ function Guides:Normalize(raw)
     local prof = raw.prof or a2
     if type(prof) ~= "string" or prof == "" then return nil, "trainprof: needs a profession" end
     step.prof = prof
+    if raw.rank ~= nil then
+      if not isNum(raw.rank) then return nil, "trainprof: rank must be a number" end
+      step.rank = raw.rank
+    end
   elseif kind == "text" then
     local txt = raw.text or a2
     if type(txt) ~= "string" then return nil, "note: needs a text" end

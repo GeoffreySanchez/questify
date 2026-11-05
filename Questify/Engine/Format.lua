@@ -100,6 +100,14 @@ end
 
 local OBJ_INDENT = "  "
 
+-- Nom du métier suivi du rang entre parenthèses quand il dépasse Apprenti.
+local function withRank(name, rank)
+  if type(rank) == "number" and rank > 1 then
+    return name .. " (" .. (Q.L["PROF_RANK_" .. rank] or rank) .. ")"
+  end
+  return name
+end
+
 local function mainText(entry, step)
   local L = Q.L
   local a = step.action
@@ -141,6 +149,7 @@ local function mainText(entry, step)
   elseif a == "trainprof" then
     local P = Q.Professions
     local prof = P and P:Name(step.prof) or tostring(step.prof)
+    prof = withRank(prof, step.rank)
     local who = giverName(entry, step, { npcs = P and P:TrainerIds(step.prof) or {} })
     if who then return fmt(L.STEP_TRAINPROF, prof, who) end
     return fmt(L.STEP_TRAINPROF_ANY, prof)
@@ -203,7 +212,9 @@ local function titleText(step)
   if a == "note" then return step.text or "" end
   if a == "train" then return L.TITLE_TRAIN end
   if a == "trainprof" then
-    return fmt(L.TITLE_TRAINPROF, Q.Professions and Q.Professions:Name(step.prof) or tostring(step.prof))
+    local name = Q.Professions and Q.Professions:Name(step.prof) or tostring(step.prof)
+    name = withRank(name, step.rank)
+    return fmt(L.TITLE_TRAINPROF, name)
   end
   return tostring(a)
 end

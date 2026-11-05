@@ -56,6 +56,28 @@ Chaque point débloque une partie ; aucun ne bloque tout. Jouer avec `/qf bug` s
     grimoire : pas d'action bloquée. Tant que le jeu n'a pas chargé la fenêtre des talents (pas encore
     ouverte depuis la connexion), « Ouvrir les talents » dit « Ouvre tes talents avec N » (touche lue
     des raccourcis).
+12. Grotte livrée, entrée à confirmer : The Grizzled Den (Dun Morogh, [42, 55]) (la première : vérifier que le point mène bien à la grotte côté nain).
+13. Grotte livrée, entrée à confirmer : Echo Ridge Mine ([47.8, 31.6]).
+14. Grotte livrée, entrée à confirmer : Dustwind Cave ([52.8, 28.7]).
+15. Grotte livrée, entrée à confirmer : Skull Rock ([55, 11]).
+16. Grotte livrée, entrée à confirmer : Night Web's Hollow ([27, 59]).
+   (Data/Caves.lua : entrées relevées dans des sources publiques ; le point doit montrer l'entrée avant d'entrer.)
+17. Grottes non livrées : relever en jeu l'entrée réelle (la bouche) de Fargodeep Mine, Jasperlode Mine,
+    The Venture Co. Mine et Shadowthread Cave. Les valeurs publiques sont un point d'exploration de quête
+    ou un marqueur de sous-zone (voir `tools/caves/research.md`) ; pour la Venture Co. Mine, choisir aussi
+    des PNJ qui ne vivent que dans la mine (ses PNJ ont des camps à ciel ouvert).
+18. Grottes : dans une grotte, la carte du joueur reste celle de la zone (pas de sous-carte). Sinon
+    `Caves:Track` ne voit pas le passage par l'entrée.
+19. Grottes : `IsIndoors()` vaut vrai dans les grottes livrées (connexion ou pierre de foyer dans une grotte).
+20. ShortestPath Forever expose bien `ShortestPathForever.API.NavigateRoute` (itinéraire entrée de la
+    grotte puis cible) ; sans elle, seule l'entrée est confiée au calcul.
+21. Métiers : coûts réels des rangs (`Professions.RANKS` : Apprenti 10 pc, Compagnon 5 pa, Expert 1 po,
+    Artisan 5 po) et maximums renvoyés par `GetProfessionInfo` (75, 150, 225, 300).
+22. Métiers : le maître le plus proche enseigne bien le rang Expert (sinon l'étape mène chez un maître
+    qui ne l'a pas).
+23. Équipement d'une paire (main droite puis main gauche) : le délai suffit en jeu (3 s pour voir la main
+    droite en place, jusqu'à 30 s quand la confirmation de liaison est ouverte) ; `PLAYER_EQUIPMENT_CHANGED`
+    arrive bien pour l'emplacement 16 et `StaticPopup_Visible("EQUIP_BIND")` voit la confirmation.
 
 ## Demandé, pas encore commencé
 

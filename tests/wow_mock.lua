@@ -645,7 +645,12 @@ local function installNavAddons()
   if Mock.addons.WaypointUI then
     WaypointUIAPI = {
       Navigation = {
-        NewUserNavigation = function(t) record("WaypointUIAPI.Navigation.NewUserNavigation", t) end,
+        -- comme WaypointUI : la navigation créée, ou nil sur une carte sans repère possible
+        NewUserNavigation = function(t)
+          record("WaypointUIAPI.Navigation.NewUserNavigation", t)
+          if Mock.maps[t.mapID] == nil then return nil end
+          return { name = t.name, mapID = t.mapID, x = t.x / 100, y = t.y / 100 }
+        end,
         ClearUserNavigation = function() record("WaypointUIAPI.Navigation.ClearUserNavigation") end,
       },
     }

@@ -195,7 +195,7 @@ add({ id = "autoQuest", section = "automation", category = "quests", type = "tog
   keywords = "accepter rendre quetes automatique accept turn in quests auto" })
 add({ id = "sellJunk", section = "automation", category = "merchants", type = "toggle", path = "sellJunk",
   label = "UI_OPT_SELLJUNK", tip = "OPT_TIP_SELLJUNK",
-  keywords = "vendre camelote gris marchand sell junk grey gray vendor merchant" })
+  keywords = "vendre camelote gris blanc equipement marchand sell junk grey gray white gear vendor merchant" })
 add({ id = "tracker.autoTarget", section = "automation", category = "targeting", type = "toggle",
   path = "tracker.autoTarget", label = "UI_OPT_AUTOTARGET", tip = "OPT_TIP_AUTOTARGET",
   keywords = "cibler ciblage touche crane monstre target targeting key skull monster" })

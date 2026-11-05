@@ -1,5 +1,63 @@
 # Changelog
 
+## 0.3.0 (2026-11-05)
+
+### Français
+- Grottes : avant une quête dont l'objectif est dans une grotte, le repère pointe d'abord l'ENTRÉE de la
+  grotte (« Entrée de la grotte — <étape> »), quel que soit l'affichage (repère du jeu, WaypointUI,
+  TomTom, ShortestPath). Une fois l'entrée passée, la flèche va droit vers l'objectif ; en sortant, le
+  repère repasse par l'entrée. Un joueur sur la montagne au-dessus de la grotte n'a plus la flèche directe.
+  5 grottes du parcours : The Grizzled Den, Echo Ridge Mine, Dustwind Cave, Skull Rock, Night Web's
+  Hollow. Les entrées viennent de sources publiques et sont à confirmer en jeu ; l'intérieur de chaque
+  grotte est calculé à partir de QuestieDB.
+- Repère WaypointUI : il affiche le titre de l'étape ; sur les virages d'un itinéraire ShortestPath, le
+  nom de l'étape reste visible.
+- Équipement :
+  - plus de bouclier ni de main gauche proposés comme amélioration avec une arme à deux mains portée,
+    sauf si la paire fait mieux ;
+  - avec un bâton porté et une masse à une main dans le sac, un bouclier ramassé propose « Équipez
+    <masse> et <bouclier> » quand la paire bat le bâton, et le clic équipe les deux (main droite d'abord) ;
+  - le choix de la récompense de quête compte aussi la meilleure arme des sacs pour une paire.
+- Vente automatique : le gris, et l'équipement BLANC qui ne sert pas. Jamais vendus : le vert et mieux,
+  les objets blancs non équipables (composants, plantes, tissu, nourriture…), les outils, un objet
+  que Questify vient de recommander (10 min), la meilleure arme de main droite et la meilleure main
+  gauche quand une arme à deux mains est portée, un objet qui remplirait un emplacement vide.
+- Métiers :
+  - l'étape « apprendre le métier » n'apparaît que près d'un maître ET avec l'argent nécessaire (coût
+    relevé chez le maître, sinon 10 pc pour Apprenti) ;
+  - passer chez le maître sans payer ne compte plus comme appris : l'étape revient au passage suivant
+    en ville avec l'argent ;
+  - l'étape reste tant qu'on ne s'éloigne pas à plus de 800 yards du maître (ou qu'on ne change pas de
+    zone) : elle ne clignote plus autour de la ville ; aucune étape ne s'ajoute dans une grotte ;
+  - quand la compétence et le niveau le permettent, une étape propose le rang suivant (Compagnon, puis
+    Expert pour les métiers principaux).
+
+### English
+- Caves: before a quest whose objective is inside a cave, the waypoint first points at the cave ENTRANCE
+  ("Cave entrance — <step>"), whatever the display (game waypoint, WaypointUI, TomTom, ShortestPath).
+  Once past the entrance, the arrow goes straight to the objective; on the way out, it goes back through
+  the entrance. A player on the mountain above the cave no longer gets the direct arrow. 5 caves on the
+  route: The Grizzled Den, Echo Ridge Mine, Dustwind Cave, Skull Rock, Night Web's Hollow. Entrances come
+  from public sources and still need an in-game check; the inside of each cave is computed from QuestieDB.
+- WaypointUI waypoint shows the step title; ShortestPath route turns keep the step name.
+- Gear:
+  - no more shield or off-hand offered as an upgrade while a two-hander is worn, unless the pair is better;
+  - with a staff worn and a one-handed mace in the bags, a looted shield offers "Equip <mace> and
+    <shield>" when the pair beats the staff, and the click equips both (main hand first);
+  - quest reward choice also counts the best weapon in the bags for a pair.
+- Auto-sell: grey items, and WHITE gear you don't need. Never sold: green and better, non-equippable white
+  items (trade goods, herbs, cloth, food…), tools, an item Questify has just recommended (10 min), the best
+  main hand and off-hand while a two-hander is worn, an item that would fill an empty slot.
+- Professions:
+  - the "learn the profession" step shows only near a trainer AND with the money needed (cost read at the
+    trainer, otherwise 10c for Apprentice);
+  - visiting the trainer without paying no longer counts as learned: the step comes back on your next
+    visit to town with the money;
+  - the step stays until you are more than 800 yards from the trainer (or change zone): it no longer
+    flickers around town; no step is added while you are in a cave;
+  - when skill and level allow it, a step offers the next rank (Journeyman, then Expert for primary
+    professions).
+
 ## 0.2.0 (2026-11-04)
 
 ### Français

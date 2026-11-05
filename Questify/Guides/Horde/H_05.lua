@@ -8,6 +8,7 @@ Q:RegisterGuide({
   title = "Hillsbrad Foothills",
   faction = "Horde",
   minLevel = 28, maxLevel = 30,
+  sim = { steps = 67, endLevel = 30.00, xpPerHour = 26892, minutes = 191 },
   steps = {
     { "fp", 1454, 45.12, 63.89 }, -- point de vol
     { "boat", 1411, 50.8, 13.5, note = "Take the zeppelin to Undercity (Tirisfal Glades)" }, -- bateau

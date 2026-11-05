@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Undead" },
   minLevel = 1, maxLevel = 6,
   next = "H_Undead_02",
+  sim = { steps = 38, endLevel = 6.03, xpPerHour = 9442, minutes = 49 },
   steps = {
     { "accept", 363 }, -- Rude Awakening (lvl 1, ~40 xp, sim lvl 1)
     { "turnin", 363, xp = 40 }, -- Rude Awakening (lvl 1, ~40 xp, sim lvl 1)

@@ -505,6 +505,14 @@ function build.main(argv)
     print("       [--only <planId>] [--report DIR] [--out DIR] [--overrides FILE] [--date YYYY-MM-DD] [--jit]")
     return 0
   end
+  -- Suites des plans (next, nextByRace, choices) contrôlées avant de charger QuestieDB et de simuler.
+  -- Seule la suite par défaut est simulée ; les autres choix ne sont pas rejoués.
+  local errs = plansm.validate(plansm)
+  if #errs > 0 then
+    for _, e in ipairs(errs) do io.stderr:write(("plans.lua: %s: %s\n"):format(e.id, e.msg)) end
+    io.stderr:write(("build stopped: %d error(s) in tools/routebuilder/plans.lua\n"):format(#errs))
+    return 1
+  end
   -- Interpréteur par défaut (résultat identique d'une exécution à l'autre) ; --jit pour aller plus vite.
   if jit and not o.jit then jit.off() end
   local factions = (o.faction == "all") and { "Alliance", "Horde" } or { o.faction }

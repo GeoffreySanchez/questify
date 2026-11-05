@@ -18,7 +18,17 @@
 --   logCap = n|nil                   -- plafond du journal (défaut 20)
 --   strictLevel = true|nil           -- farm des tâches bloquées par le niveau compté dans l'ordonnancement
 --                                    -- (objectifs jamais avancés vers un niveau plus bas ; plus de marche)
---   next = id | nextByRace = { [raceKey] = id } }
+--   next = id | nextByRace = { [raceKey] = id }
+--   choices = { { id = planId, races = {raceKey,...}|nil, label = "..."|nil, weight = n|nil,
+--                 travel = { kind = "walk"|"fly"|"boat"|"zeppelin"|"tram"|"portal"|"hearth",
+--                            minutes = n|nil }|nil }, ... }|nil
+--                                    -- choix de suite proposés au joueur en fin de chapitre (2 à 4, ordre
+--                                    -- d'affichage) ; la suite par défaut (next, ou nextByRace de chaque race
+--                                    -- concernée) doit en faire partie et reste la seule simulée (pathFor).
+--                                    -- travel.minutes : tools/routebuilder/travel.lua <planId> (sim.route
+--                                    -- depuis la fin du chapitre, d'après les guides et rapports générés).
+--                                    -- Contrôlé par plans.validate (build.lua s'arrête sur une erreur).
+-- }
 --
 -- Identifiants : A_<Start>_<NN>, A_<NN> (tronc commun), H_<Start>_<NN>, H_<NN>, A_Skyborne_<NN>, H_Skyborne_<NN>.
 -- Les rectangles `bounds` et les points `entry` des chapitres autres que A_DwarfGnome_01 sont une
@@ -53,6 +63,13 @@ plans.Alliance = {
     zones = { LOCH_MODAN, IRONFORGE }, endZones = { STORMWIND },
     minLevel = 11, maxLevel = 14, entry = { LOCH_MODAN, 33.9, 51.0 }, next = "A_DwarfGnome_04", strictLevel = true,
     flightPaths = { "Thelsamar, Loch Modan" },
+    -- Fin à Stormwind : Marche de l'Ouest à pied (suite par défaut) ou Sombrivage par le bateau du port
+    -- de Stormwind (A_01 commence par ce bateau). Minutes : travel.lua A_DwarfGnome_03 (guides du
+    -- 2026-11-04) ; Westfall 122 s de marche, Sombrivage 80 s de marche + 300 s de bateau + 44 s de marche.
+    choices = {
+      { id = "A_DwarfGnome_04", travel = { kind = "walk", minutes = 2 } },
+      { id = "A_01", travel = { kind = "boat", minutes = 7 } },
+    },
   },
   {
     id = "A_DwarfGnome_04", title = "Westfall", faction = "Alliance", races = { "Dwarf", "Gnome" },
@@ -279,6 +296,121 @@ function plans.pathIn(list, race)
     p = nid and byId[nid] or nil
   end
   return path
+end
+
+-- Genres de trajet admis dans choices[i].travel.kind (lus tels quels par le jeu).
+plans.TRAVEL_KINDS = { "walk", "fly", "boat", "zeppelin", "tram", "portal", "hearth" }
+-- Races de chaque faction (clés de nextByRace et de choices[i].races).
+plans.RACES = {
+  Alliance = { "Human", "Dwarf", "NightElf", "Gnome", "Skyborne" },
+  Horde = { "Orc", "Undead", "Tauren", "Troll", "Skyborne" },
+}
+
+local function contains(list, v)
+  for _, x in ipairs(list or {}) do if x == v then return true end end
+  return false
+end
+
+local function sortedKeys(t)
+  local keys = {}
+  for k in pairs(t or {}) do keys[#keys + 1] = k end
+  table.sort(keys, function(a, b) return tostring(a) < tostring(b) end)
+  return keys
+end
+
+-- Contrôle des suites d'une table de plans { Alliance = {...}, Horde = {...} } (plans par défaut) :
+-- `next` / `nextByRace` vers des chapitres connus, et `choices` (2 à 4 entrées, chapitres connus de la
+-- même faction, sans doublon ni le chapitre lui-même, races de la faction, genre de trajet admis,
+-- minutes entières, suite par défaut présente pour chaque race qui la suit). Renvoie la liste des
+-- erreurs { id = planId, msg = "..." } (vide si tout va bien). build.lua s'arrête sur la première liste
+-- non vide ; tools/validate_guides.lua applique le même contrôle aux guides générés.
+function plans.validate(p)
+  p = p or plans
+  local errs = {}
+  local function err(id, fmt, ...) errs[#errs + 1] = { id = id, msg = fmt:format(...) } end
+  local byId = {}
+  for _, faction in ipairs({ "Alliance", "Horde" }) do
+    for _, plan in ipairs(p[faction] or {}) do
+      if byId[plan.id] then err(plan.id, "duplicate chapter id") end
+      byId[plan.id] = plan
+    end
+  end
+  local kinds = table.concat(plans.TRAVEL_KINDS, ", ")
+  for _, faction in ipairs({ "Alliance", "Horde" }) do
+    for _, plan in ipairs(p[faction] or {}) do
+      local id = plan.id
+      local races = plan.races or plans.RACES[plan.faction] or {}
+      if plan.next ~= nil and not byId[plan.next] then err(id, "next %q is not a known chapter", tostring(plan.next)) end
+      for _, race in ipairs(sortedKeys(plan.nextByRace)) do
+        local nid = plan.nextByRace[race]
+        if not byId[nid] then err(id, "nextByRace.%s %q is not a known chapter", tostring(race), tostring(nid)) end
+      end
+      local list = plan.choices
+      if list ~= nil and type(list) ~= "table" then
+        err(id, "choices must be a list")
+      elseif list ~= nil then
+        if #list < 2 or #list > 4 then err(id, "choices has %d entries (2 to 4 expected)", #list) end
+        local seen = {}
+        for i, c in ipairs(list) do
+          local at = ("choices[%d]"):format(i)
+          if type(c) ~= "table" or type(c.id) ~= "string" or c.id == "" then
+            err(id, "%s: missing id", at)
+          else
+            local target = byId[c.id]
+            if not target then err(id, "%s: %q is not a known chapter", at, c.id)
+            elseif target.faction ~= plan.faction then
+              err(id, "%s: %q is a %s chapter, this one is %s", at, c.id, tostring(target.faction), tostring(plan.faction))
+            end
+            if c.id == id then err(id, "%s: a chapter cannot be its own choice", at) end
+            if seen[c.id] then err(id, "%s: duplicate id %q", at, c.id) end
+            seen[c.id] = seen[c.id] or c
+            if c.races ~= nil then
+              if type(c.races) ~= "table" or #c.races == 0 then err(id, "%s: races must be a non-empty list", at)
+              else
+                for _, r in ipairs(c.races) do
+                  if not contains(races, r) then err(id, "%s: race %s does not play this chapter", at, tostring(r)) end
+                end
+              end
+            end
+            if c.label ~= nil and type(c.label) ~= "string" then err(id, "%s: label must be a string", at) end
+            if c.weight ~= nil and (type(c.weight) ~= "number" or c.weight <= 0) then
+              err(id, "%s: weight must be a positive number", at)
+            end
+            if c.travel ~= nil then
+              local t = c.travel
+              if type(t) ~= "table" or not contains(plans.TRAVEL_KINDS, t.kind) then
+                err(id, "%s: travel.kind %s is not one of %s", at, tostring(type(t) == "table" and t.kind or t), kinds)
+              elseif t.minutes ~= nil and (type(t.minutes) ~= "number" or t.minutes < 0 or t.minutes ~= math.floor(t.minutes)) then
+                err(id, "%s: travel.minutes must be a whole number of minutes", at)
+              end
+            end
+          end
+        end
+        -- suite par défaut : proposée à chaque race qui la suit (pathFor : nextByRace[race], sinon next)
+        if plan.next == nil and plan.nextByRace == nil then
+          err(id, "choices without a default successor (next or nextByRace)")
+        end
+        for _, race in ipairs(races) do
+          local nid = (plan.nextByRace and plan.nextByRace[race]) or plan.next
+          if nid ~= nil then
+            local c = seen[nid]
+            local field = (plan.nextByRace and plan.nextByRace[race]) and ("nextByRace." .. race) or "next"
+            if not c then err(id, "default successor %s = %q is not in choices", field, tostring(nid))
+            elseif c.races and type(c.races) == "table" and not contains(c.races, race) then
+              err(id, "default successor %s = %q is not offered to %s (choices races)", field, tostring(nid), race)
+            end
+          end
+        end
+      end
+    end
+  end
+  -- une erreur répétée pour plusieurs races n'est donnée qu'une fois
+  local out, dup = {}, {}
+  for _, e in ipairs(errs) do
+    local key = e.id .. "\0" .. e.msg
+    if not dup[key] then dup[key] = true; out[#out + 1] = e end
+  end
+  return out
 end
 
 return plans

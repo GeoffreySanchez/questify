@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Tauren" },
   minLevel = 6, maxLevel = 12,
   nextByRace = { Tauren = "H_01" },
+  sim = { steps = 86, endLevel = 13.65, xpPerHour = 13002, minutes = 229 },
   steps = {
     { "accept", 751 }, -- The Ravaged Caravan (lvl 8, ~530 xp, sim lvl 7)
     { "accept", 766 }, -- Mazzranache (lvl 8, ~700 xp, sim lvl 7)

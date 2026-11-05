@@ -9,6 +9,7 @@ Q:RegisterGuide({
   faction = "Alliance",
   minLevel = 16, maxLevel = 19,
   next = "A_02",
+  sim = { steps = 119, endLevel = 19.90, xpPerHour = 26898, minutes = 158 },
   steps = {
     { "boat", 1453, 24.1, 55.4, note = "Take the boat to Auberdine (Stormwind Harbor)" }, -- bateau
     { "fp", 1439, 36.34, 45.58 }, -- point de vol

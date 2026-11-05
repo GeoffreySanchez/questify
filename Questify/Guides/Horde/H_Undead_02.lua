@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Undead" },
   minLevel = 6, maxLevel = 12,
   next = "H_Undead_03",
+  sim = { steps = 133, endLevel = 13.06, xpPerHour = 15511, minutes = 182 },
   steps = {
     { "accept", 99134 }, -- Discipline (lvl 6, ~540 xp, sim lvl 6)
     { "accept", 427 }, -- At War With The Scarlet Crusade (lvl 8, ~700 xp, sim lvl 6)

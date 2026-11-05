@@ -10,6 +10,11 @@ Q:RegisterGuide({
   races = { "Dwarf", "Gnome" },
   minLevel = 11, maxLevel = 14,
   next = "A_DwarfGnome_04",
+  choices = {
+    { id = "A_DwarfGnome_04", travel = { kind = "walk", minutes = 2 } },
+    { id = "A_01", travel = { kind = "boat", minutes = 7 } },
+  },
+  sim = { steps = 78, endLevel = 15.55, xpPerHour = 21188, minutes = 119 },
   steps = {
     { "accept", 1339 }, -- Mountaineer Stormpike's Task (lvl 15, ~540 xp, sim lvl 12)
     { "sethearth", 1432, 35.53, 48.4 }, -- lier la pierre de foyer

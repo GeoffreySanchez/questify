@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Tauren" },
   minLevel = 1, maxLevel = 6,
   next = "H_Tauren_02",
+  sim = { steps = 48, endLevel = 7.14, xpPerHour = 13031, minutes = 54 },
   steps = {
     { "accept", 752 }, -- A Humble Task (lvl 2, ~85 xp, sim lvl 1)
     { "turnin", 752, xp = 85 }, -- A Humble Task (lvl 2, ~85 xp, sim lvl 1)

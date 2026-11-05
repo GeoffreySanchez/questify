@@ -9,6 +9,7 @@ Q:RegisterGuide({
   faction = "Horde",
   minLevel = 12, maxLevel = 17,
   next = "H_02",
+  sim = { steps = 130, endLevel = 17.87, xpPerHour = 23934, minutes = 174 },
   steps = {
     { "accept", 842, race = { "Orc", "Troll" } }, -- Crossroads Conscription (lvl 12, ~910 xp, sim lvl 13)
     { "fp", 1413, 51.5, 30.34 }, -- point de vol

@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Dwarf", "Gnome" },
   minLevel = 1, maxLevel = 6,
   next = "A_DwarfGnome_02",
+  sim = { steps = 40, endLevel = 6.01, xpPerHour = 12650, minutes = 36 },
   steps = {
     { "accept", 179 }, -- Dwarven Outfitters (lvl 1, ~80 xp, sim lvl 1)
     { "complete", 179, at = { 1426, 28.87, 74.48 } }, -- Dwarven Outfitters (lvl 1, ~80 xp, sim lvl 1)

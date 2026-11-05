@@ -9,6 +9,7 @@ Q:RegisterGuide({
   faction = "Horde",
   minLevel = 25, maxLevel = 28,
   next = "H_05",
+  sim = { steps = 111, endLevel = 28.00, xpPerHour = 26990, minutes = 243 },
   steps = {
     { "goto", 1440, 12.24, 33.8, note = "Flight master" }, -- déplacement
     { "fly", 1413, node = 77, note = "Camp Taurajo, The Barrens" }, -- vol

@@ -19,6 +19,12 @@ luajit tools/routebuilder/build.lua [--db PATH] [--questie PATH] [--faction Alli
 # Check every guide listed in Guides.xml against QuestieDB (exit code 1 on any violation)
 luajit tools/validate_guides.lua [--db PATH] [--questie PATH] [--guides DIR]
 
+# Add the `choices` and `sim` fields to already generated guides, without QuestieDB (see below)
+luajit tools/routebuilder/backfill.lua [--guides DIR] [--check]
+
+# Travel time from the end of a chapter to each of its `choices`, without QuestieDB (see below)
+luajit tools/routebuilder/travel.lua <planId> [--guides DIR] [--report DIR]
+
 # Tests of the generator
 luajit tools/routebuilder/tests/run.lua [pattern]
 ```
@@ -57,13 +63,15 @@ other chapters from the XML.
 | `sim.lua` | Chapter simulation: candidates, objective sites, hubs, value / time ratios, drops, tasks, logistics (fp, sethearth, hearth, fly, level), XP simulation. |
 | `order.lua` | Task ordering: nearest feasible neighbour, then or-opt, with precedence, log cap and final tasks, then the hub / area sweep. |
 | `quality.lua` | Itinerary checker: avoidable revisits, missed pickups, split objective areas, missed passing turn-ins. |
-| `plans.lua` | Chapter plans per faction (spec § 6). |
+| `plans.lua` | Chapter plans per faction (spec § 6), `plans.validate` (successors and `choices`). |
 | `emit.lua` | Guide file writer (spec § 5.2 format, one step per line with a comment). |
 | `classquests.lua` | Class quest chains (level ≤ 30) for `ClassQuestData.lua`. |
 | `overrides.lua` | Hand fixes applied at build time. |
 | `build.lua` | CLI. |
+| `backfill.lua` | Adds `choices` / `sim` to already generated guides (no QuestieDB). |
+| `travel.lua` | Travel time to each `choices` target with `sim.route`, from generated guides and reports (no QuestieDB). |
 | `data/*.csv` | Forever DB2 tables, build 1.60.1.70707 (wago.tools): `UiMapAssignment`, `UiMap`, `TaxiNodes`, `TaxiPath`, `AreaTable`, `Map`. |
-| `tests/` | `run.lua` runner, `test_world.lua`, `test_xp.lua`, `test_sim.lua` (on the synthetic `fixture_zone.lua`), `test_emit.lua`. |
+| `tests/` | `run.lua` runner, `test_world.lua`, `test_xp.lua`, `test_sim.lua` (on the synthetic `fixture_zone.lua`), `test_emit.lua`, `test_choices.lua` (`choices`, `sim`, validation, backfill, travel; no QuestieDB). |
 
 ## Plans (`plans.lua`)
 
@@ -80,6 +88,10 @@ other chapters from the XML.
   entry = { 1426, 29.93, 71.20 },        -- first hub; start position when the character has none
   exit = { mapId, x, y },                -- optional point where the chapter should end
   next = "A_DwarfGnome_02",              -- or nextByRace = { Dwarf = "A_01", ... }
+  choices = {                            -- optional: 2 to 4 successors offered at the end of the chapter
+    { id = "A_DwarfGnome_02", travel = { kind = "walk", minutes = 2 } },  -- must include the default
+    { id = "A_Human_02", races = { "Gnome" }, label = "...", travel = { kind = "tram" }, weight = 1 },
+  },                                     -- (see "Successor choices" below)
   flightPaths = { "Ironforge, Dun Morogh" }, -- TaxiNodes names to pick up in this chapter (planned detour)
   dungeons = { "The Hall of Thanes" },   -- dungeon quests (QuestieDB dungeon names) accepted in passing, optional
   optional = { [96391] = "Hall of Thanes" }, -- forced quests marked optional + dungeon label
@@ -195,6 +207,7 @@ finisher spawn, objectives without a position, missing flight masters).
 3. Check flight paths (`flightPaths`) and the level band (`maxLevel`, `levelSlack`): a chapter that
    overshoots its band makes the next chapter drop quests as "level band reached".
 4. Regenerate and run `luajit tests/run.lua` (the boot test loads every guide).
+5. For a plan with `choices`, run `travel.lua <planId>` and update `travel.minutes` if it changed.
 
 ## Changes from Stream E (Tasks 14-16)
 
@@ -337,6 +350,85 @@ master, written before `note`. Hand-written `fly` steps of a plan's `arrive` get
 name matches their `note`. `tools/validate_guides.lua` fails on a `fly` step without `node`, with an
 unknown node, or with a node that is not on the step's destination map.
 
+## Successor choices and simulated metrics (`choices`, `sim`)
+
+### Guide fields
+
+`emit.lua` writes two fields in `Q:RegisterGuide`, after `next` / `nextByRace` and before `steps`:
+
+```lua
+  choices = {
+    { id = "A_DwarfGnome_04", travel = { kind = "walk", minutes = 2 } },
+    { id = "A_01", travel = { kind = "boat", minutes = 7 } },
+  },
+  sim = { steps = 78, endLevel = 15.55, xpPerHour = 21188, minutes = 119 },
+```
+
+- `choices` is copied from the plan, one entry per line, fields in the order `id`, `races`, `label`,
+  `travel = { kind, minutes }`, `weight` (absent fields are omitted). The game offers the entries, in
+  this order, at the end of the chapter. `kind` is one of `walk`, `fly`, `boat`, `zeppelin`, `tram`,
+  `portal`, `hearth`.
+- `sim` is written for every simulated chapter. It has the same four values as the header comment
+  `-- Simulation : N étapes, niveau final X, ~Y xp/h, Z min.` (`endLevel` with 2 decimals, the
+  others rounded to integers), so the game can show them.
+
+### Default path only
+
+`next` / `nextByRace` stay the default successor: `plans.pathFor`, the simulation (state carried from
+chapter to chapter, merged trunk state, carried turn-ins, race filters) and the race-path replay of
+`tools/validate_guides.lua` follow it only. **The other choices are neither simulated nor replayed
+from the branch point**: each target chapter was simulated from its own default predecessors. A player
+who takes an alternative may arrive at a lower level than the target was tuned for, or with other
+flight paths (for example `A_DwarfGnome_03` -> `A_01` arrives at about 15.5 for a chapter of band
+16-19), and a quest carried across the branch would be lost (none crosses the current branch point).
+
+### Validation (`plans.validate`)
+
+`build.lua` runs `plans.validate` before loading QuestieDB and stops (exit code 1, one
+`plans.lua: <planId>: <message>` line per error) when:
+
+- `next` or `nextByRace` points to an unknown chapter;
+- `choices` is not a list, or has fewer than 2 or more than 4 entries;
+- an entry has no `id`, an unknown `id`, the chapter's own `id`, an `id` already listed, or an `id`
+  of the other faction;
+- the default successor (`next`, or `nextByRace[race]` for each race of the chapter) is not an entry,
+  or its entry has `races` without that race; or the plan has `choices` but no default successor;
+- `travel.kind` is not one of the kinds above, `travel.minutes` is not a whole number of minutes,
+  `races` names a race that does not play the chapter, `label` is not a string, `weight` is not a
+  positive number.
+
+`tools/validate_guides.lua` runs the same checks on the generated guides, and fails when a guide's
+`sim` field differs from its `-- Simulation :` header.
+
+### Travel time (`travel.lua`)
+
+`travel.minutes` is written in `plans.lua` by hand from `luajit tools/routebuilder/travel.lua
+<planId>`, which uses the generator's travel code (`sim.route`: walking inside a walk region, flights
+between known flight paths, `transport.lua` links) without QuestieDB:
+
+- start: `at` of the chapter's last guide step, else the last task of its report itinerary
+  (`docs/routes/<planId>.md`);
+- end: the first task of the target's report itinerary, else the target's `entry`;
+- known flight paths: `fp` steps of the guides on the simulated race's path up to the chapter;
+- the hearthstone is ignored (its cooldown is not known outside the simulation).
+
+The command prints the legs, the main kind (first leg that is not a walk) and the minutes (seconds / 60,
+rounded), and exits 1 when `plans.lua` has other values; `test_choices.lua` runs the same check on the
+shipped guides, so regenerate, run `travel.lua` and update `plans.lua` together. The target's own
+`sim.minutes` already counts its arrival from its default predecessor (`A_01` starts with the boat), so
+the two values overlap and should not be added.
+
+### Backfill (`backfill.lua`)
+
+`build.lua` writes both fields, but a full regeneration needs QuestieDB and rewrites every guide.
+`backfill.lua` adds them to the guides already generated: for each guide listed in `Guides.xml` with a
+`-- Simulation :` header, it removes any `choices` block and `sim` line from the `Q:RegisterGuide`
+header, then writes `emit.choicesLines(plan)` and `emit.simLine` (values read from the header comment)
+right before `steps = {`, exactly where `emit.guide` puts them. A second run changes nothing, a choice
+removed from `plans.lua` disappears, line endings (CRLF or LF) are kept, and a header that `emit.lua`
+would not write is left alone. `--check` writes nothing and exits 1 when a guide is out of date. Run it
+after changing `choices` in `plans.lua` when the guides are not regenerated.
+
 ## Known limits
 
 - Walking is a straight line in world coordinates (no pathing around mountains, no city
@@ -346,3 +438,4 @@ unknown node, or with a node that is not on the step's destination map.
 - XP of the new Forever quests is an estimate (median of known Classic quests of the same level and
   type, × 0.5 for dungeon quests).
 - Trunk chapters are simulated for the primary race path only.
+- Only the default successor is simulated and validated; other `choices` are not replayed.

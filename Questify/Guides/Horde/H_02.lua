@@ -9,6 +9,7 @@ Q:RegisterGuide({
   faction = "Horde",
   minLevel = 17, maxLevel = 21,
   next = "H_03",
+  sim = { steps = 97, endLevel = 21.03, xpPerHour = 25370, minutes = 158 },
   steps = {
     { "accept", 1483 }, -- Ziz Fizziks (lvl 21, ~415 xp, sim lvl 17)
     { "accept", 865 }, -- Raptor Horns (lvl 18, ~1350 xp, sim lvl 17)

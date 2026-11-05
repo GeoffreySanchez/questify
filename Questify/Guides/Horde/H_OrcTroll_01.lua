@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Orc", "Troll" },
   minLevel = 1, maxLevel = 6,
   next = "H_OrcTroll_02",
+  sim = { steps = 40, endLevel = 6.08, xpPerHour = 12346, minutes = 38 },
   steps = {
     { "accept", 4641 }, -- Your Place In The World (lvl 1, ~40 xp, sim lvl 1)
     { "turnin", 4641, xp = 40 }, -- Your Place In The World (lvl 1, ~40 xp, sim lvl 1)

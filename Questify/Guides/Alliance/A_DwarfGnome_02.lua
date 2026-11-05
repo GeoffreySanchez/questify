@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Dwarf", "Gnome" },
   minLevel = 6, maxLevel = 11,
   next = "A_DwarfGnome_03",
+  sim = { steps = 103, endLevel = 12.01, xpPerHour = 19079, minutes = 115 },
   steps = {
     { "accept", 317 }, -- Stocking Jetsteam (lvl 6, ~680 xp, sim lvl 6)
     { "accept", 313 }, -- The Grizzled Den (lvl 7, ~630 xp, sim lvl 6)

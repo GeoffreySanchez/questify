@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "NightElf" },
   minLevel = 1, maxLevel = 6,
   next = "A_NightElf_02",
+  sim = { steps = 44, endLevel = 6.53, xpPerHour = 10037, minutes = 57 },
   steps = {
     { "accept", 456 }, -- The Balance of Nature (lvl 2, ~170 xp, sim lvl 1)
     { "complete", 456, at = { 1438, 61.71, 43.79 } }, -- The Balance of Nature (lvl 2, ~170 xp, sim lvl 1)

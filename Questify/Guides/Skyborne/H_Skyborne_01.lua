@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Skyborne" },
   minLevel = 1, maxLevel = 15,
   nextByRace = { Skyborne = "H_01" },
+  sim = { steps = 208, endLevel = 17.06, xpPerHour = 25514, minutes = 258 },
   steps = {
     { "level", 2, at = { 2521, 47.41, 19.89 }, note = "About 8 mobs here (Al'Aketh Convert, level 2)" }, -- farm de niveau
     { "accept", 92464 }, -- Elemental Unrest (lvl 3, ~250 xp, sim lvl 2)

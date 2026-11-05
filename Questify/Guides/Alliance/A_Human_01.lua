@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Human" },
   minLevel = 1, maxLevel = 6,
   next = "A_Human_02",
+  sim = { steps = 52, endLevel = 6.27, xpPerHour = 11675, minutes = 44 },
   steps = {
     { "accept", 783 }, -- A Threat Within (lvl 1, ~40 xp, sim lvl 1)
     { "turnin", 783, xp = 40 }, -- A Threat Within (lvl 1, ~40 xp, sim lvl 1)

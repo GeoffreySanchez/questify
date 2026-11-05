@@ -9,6 +9,7 @@ Q:RegisterGuide({
   faction = "Alliance",
   minLevel = 20, maxLevel = 22,
   next = "A_03",
+  sim = { steps = 62, endLevel = 22.00, xpPerHour = 29914, minutes = 112 },
   steps = {
     { "fp", 1440, 34.41, 47.99 }, -- point de vol
     { "turnin", 990, xp = 365 }, -- Trek to Ashenvale (lvl 19, ~365 xp, sim lvl 19)

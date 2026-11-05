@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "NightElf" },
   minLevel = 11, maxLevel = 19,
   nextByRace = { NightElf = "A_02" },
+  sim = { steps = 157, endLevel = 19.66, xpPerHour = 23494, minutes = 295 },
   steps = {
     { "accept", 983 }, -- Buzzbox 827 (lvl 10, ~840 xp, sim lvl 12)
     { "sethearth", 1439, 37.04, 44.13 }, -- lier la pierre de foyer

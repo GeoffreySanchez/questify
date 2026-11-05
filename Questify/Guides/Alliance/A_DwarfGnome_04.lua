@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Dwarf", "Gnome" },
   minLevel = 14, maxLevel = 16,
   next = "A_01",
+  sim = { steps = 45, endLevel = 17.05, xpPerHour = 18038, minutes = 78 },
   steps = {
     { "accept", 64 }, -- The Forgotten Heirloom (lvl 12, ~910 xp, sim lvl 15)
     { "accept", 151 }, -- Poor Old Blanchy (lvl 14, ~1250 xp, sim lvl 15)

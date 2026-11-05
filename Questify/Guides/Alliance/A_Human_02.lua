@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Human" },
   minLevel = 6, maxLevel = 11,
   next = "A_Human_03",
+  sim = { steps = 110, endLevel = 11.82, xpPerHour = 17638, minutes = 115 },
   steps = {
     { "accept", 62 }, -- The Fargodeep Mine (lvl 7, ~475 xp, sim lvl 6)
     { "accept", 95998 }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 6)

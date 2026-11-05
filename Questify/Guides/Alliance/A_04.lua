@@ -9,6 +9,7 @@ Q:RegisterGuide({
   faction = "Alliance",
   minLevel = 26, maxLevel = 29,
   next = "A_05",
+  sim = { steps = 87, endLevel = 29.00, xpPerHour = 34361, minutes = 156 },
   steps = {
     { "note", "You pass through Stormwind: run The Stockade now for Crime and Punishment and What Comes Around..., or abandon them", optional = true, dungeon = "The Stockade" },
     { "goto", 1433, 25.5, 59.41, note = "Flight master" }, -- déplacement

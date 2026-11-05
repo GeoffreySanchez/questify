@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "NightElf" },
   minLevel = 6, maxLevel = 11,
   next = "A_NightElf_03",
+  sim = { steps = 117, endLevel = 12.04, xpPerHour = 19372, minutes = 108 },
   steps = {
     { "accept", 929 }, -- Crown of the Earth (lvl 5, ~335 xp, sim lvl 6)
     { "accept", 2438 }, -- The Emerald Dreamcatcher (lvl 6, ~405 xp, sim lvl 6)

@@ -65,8 +65,52 @@ local function comment(step, xpByQuest)
   return nil
 end
 
+-- Métriques simulées d'un chapitre, arrondies comme l'en-tête « -- Simulation : » :
+-- { steps, endLevel, xpPerHour, minutes }, ou nil sans simulation (report.xpPerHour absent).
+function emit.simOf(report, steps)
+  if not (report and report.xpPerHour) then return nil end
+  return { steps = report.steps or #(steps or {}), endLevel = report.endLevel or 0,
+           xpPerHour = math.floor(report.xpPerHour + 0.5), minutes = math.floor((report.time or 0) / 60 + 0.5) }
+end
+
+-- Commentaire d'en-tête (lu par les humains) et champ `sim` (lu par le jeu) : mêmes quatre valeurs.
+function emit.simComment(s)
+  return ("-- Simulation : %d étapes, niveau final %.2f, ~%d xp/h, %d min."):format(s.steps, s.endLevel, s.xpPerHour, s.minutes)
+end
+
+function emit.simLine(s)
+  return ("  sim = { steps = %d, endLevel = %.2f, xpPerHour = %d, minutes = %d },"):format(s.steps, s.endLevel,
+    s.xpPerHour, s.minutes)
+end
+
+-- Une entrée de choices -> `{ id = "A_01", races = {...}, label = "...", travel = { kind = "boat", minutes = 7 }, weight = 2 }`
+-- (champs absents omis, toujours dans cet ordre).
+function emit.choice(c)
+  local parts = { "id = " .. value(c.id) }
+  if c.races ~= nil then parts[#parts + 1] = "races = " .. value(c.races) end
+  if c.label ~= nil then parts[#parts + 1] = "label = " .. value(c.label) end
+  if c.travel ~= nil then
+    local tp = { "kind = " .. value(c.travel.kind) }
+    if c.travel.minutes ~= nil then tp[#tp + 1] = "minutes = " .. value(c.travel.minutes) end
+    parts[#parts + 1] = "travel = { " .. table.concat(tp, ", ") .. " }"
+  end
+  if c.weight ~= nil then parts[#parts + 1] = "weight = " .. value(c.weight) end
+  return "{ " .. table.concat(parts, ", ") .. " }"
+end
+
+-- Bloc `choices` d'un plan (une entrée par ligne) : liste de lignes, vide sans choices.
+function emit.choicesLines(plan)
+  if not plan.choices then return {} end
+  local out = { "  choices = {" }
+  for _, c in ipairs(plan.choices) do out[#out + 1] = "    " .. emit.choice(c) .. "," end
+  out[#out + 1] = "  },"
+  return out
+end
+
 -- emit.guide(plan, steps, report, meta) -> texte du fichier
 --   meta = { commit = "<sha QuestieDB>", date = "AAAA-MM-JJ", summary = "..." }
+-- Champs de Q:RegisterGuide, dans l'ordre : id, title, faction, races, minLevel / maxLevel, next,
+-- nextByRace, choices, sim, steps (tools/routebuilder/backfill.lua insère choices et sim au même endroit).
 function emit.guide(plan, steps, report, meta)
   meta = meta or {}
   report = report or {}
@@ -74,14 +118,12 @@ function emit.guide(plan, steps, report, meta)
   for _, q in ipairs(report.quests or {}) do xpByQuest[q.id] = q.xp end
   local out = {}
   local function w(s) out[#out + 1] = s end
+  local sim = emit.simOf(report, steps)
   w("local addonName, Q = ...")
   w("-- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :")
   w("-- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.")
   w(("-- Source : QuestieDB commit %s, généré le %s."):format(meta.commit or "unknown", meta.date or os.date("%Y-%m-%d")))
-  if report.xpPerHour then
-    w(("-- Simulation : %d étapes, niveau final %.2f, ~%d xp/h, %d min."):format(report.steps or #steps,
-      report.endLevel or 0, math.floor(report.xpPerHour + 0.5), math.floor((report.time or 0) / 60 + 0.5)))
-  end
+  if sim then w(emit.simComment(sim)) end
   w("Q:RegisterGuide({")
   w(("  id = %s,"):format(value(plan.id)))
   w(("  title = %s,"):format(value(plan.title or plan.id)))
@@ -97,6 +139,8 @@ function emit.guide(plan, steps, report, meta)
     for _, k in ipairs(keys) do parts[#parts + 1] = ("%s = %s"):format(k, value(plan.nextByRace[k])) end
     w(("  nextByRace = { %s },"):format(table.concat(parts, ", ")))
   end
+  for _, line in ipairs(emit.choicesLines(plan)) do w(line) end
+  if sim then w(emit.simLine(sim)) end
   w("  steps = {")
   for _, s in ipairs(steps) do
     local line = "    " .. emit.step(s) .. ","

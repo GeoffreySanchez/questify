@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Human" },
   minLevel = 11, maxLevel = 16,
   next = "A_01",
+  sim = { steps = 72, endLevel = 16.09, xpPerHour = 23333, minutes = 133 },
   steps = {
     { "accept", 12 }, -- The People's Militia (lvl 12, ~910 xp, sim lvl 11)
     { "accept", 102 }, -- Patrolling Westfall (lvl 14, ~980 xp, sim lvl 11)

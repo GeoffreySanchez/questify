@@ -9,6 +9,7 @@ Q:RegisterGuide({
   faction = "Alliance",
   minLevel = 22, maxLevel = 26,
   next = "A_04",
+  sim = { steps = 156, endLevel = 26.76, xpPerHour = 31832, minutes = 283 },
   steps = {
     { "hearth", 1440 }, -- pierre de foyer
     { "goto", 1440, 34.41, 47.99, note = "Flight master" }, -- déplacement

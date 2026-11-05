@@ -11,7 +11,11 @@
 -- départ, en suivant next / nextByRace) : prérequis rendus avant l'accept, journal de 20 quêtes au
 -- plus, complete / turnin seulement pour une quête du journal, pas d'accept après le rendu ni de
 -- répétition d'un chapitre à l'autre, `obj` dans la liste des objectifs, vol vers un point de vol
--- découvert, pierre de foyer liée.
+-- découvert, pierre de foyer liée. Seule la suite par défaut est rejouée : les autres entrées de
+-- `choices` ne le sont pas.
+-- Contrôles des suites (plans.validate, comme build.lua sur plans.lua) : next / nextByRace vers des
+-- guides chargés, `choices` de 2 à 4 guides de la même faction avec la suite par défaut ; champ `sim`
+-- égal à l'en-tête « -- Simulation : » (tools/routebuilder/backfill.lua).
 
 local here = (arg and arg[0] or ""):match("^(.*)[/\\]validate_guides%.lua$") or "tools"
 package.path = here .. "/routebuilder/?.lua;" .. package.path
@@ -19,6 +23,8 @@ package.path = here .. "/routebuilder/?.lua;" .. package.path
 local qdb = require("qdb")
 local world = require("world")
 local paths = require("paths")
+local plansm = require("plans")
+local backfill = require("backfill")
 
 local M = {}
 
@@ -67,7 +73,17 @@ local function loadGuide(path)
   setfenv(fn, {})
   local ok, e = pcall(fn, "Questify", Q)
   if not ok then return nil, e end
-  return defs, nil, stepLines(text), Q
+  return defs, nil, stepLines(text), Q, text
+end
+
+-- Numéro de la première ligne du texte qui correspond au motif (0 si aucune).
+local function lineOf(text, pattern)
+  local n = 0
+  for line in (text .. "\n"):gmatch("([^\n]*)\n") do
+    n = n + 1
+    if line:match(pattern) then return n end
+  end
+  return 0
 end
 
 function M.run(argv)
@@ -104,7 +120,7 @@ function M.run(argv)
   local guides, byId = {}, {}
   for _, rel in ipairs(files) do
     local path = opts.guides .. "/" .. rel
-    local defs, err, lines, Q = loadGuide(path)
+    local defs, err, lines, Q, text = loadGuide(path)
     if not defs then
       bad(path, 0, "load error: " .. tostring(err))
     elseif rel:match("ClassQuestData%.lua$") then
@@ -115,10 +131,34 @@ function M.run(argv)
         if type(def.id) ~= "string" then bad(path, 0, "guide without id")
         elseif byId[def.id] then bad(path, 0, "duplicate guide id " .. def.id)
         else
-          local g = { def = def, path = path, lines = lines }
+          local g = { def = def, path = path, lines = lines, text = text }
           guides[#guides + 1] = g
           byId[def.id] = g
         end
+      end
+    end
+  end
+
+  -- suites (next, nextByRace, choices) : même contrôle que build.lua sur plans.lua
+  local byFaction = { Alliance = {}, Horde = {} }
+  for _, g in ipairs(guides) do table.insert(byFaction[g.def.faction == "Horde" and "Horde" or "Alliance"], g.def) end
+  for _, e in ipairs(plansm.validate(byFaction)) do
+    local g = byId[e.id]
+    local line = g and lineOf(g.text, "^%s*choices%s*=")
+    if g and line == 0 then line = lineOf(g.text, "^%s*next") end
+    bad(g and g.path or "?", line, e.msg)
+  end
+  -- champ sim : valeurs de l'en-tête « -- Simulation : » (lu par le jeu, l'en-tête ne l'est pas)
+  for _, g in ipairs(guides) do
+    local want = backfill.parseSim(g.text)
+    local got = g.def.sim
+    if want then
+      local same = type(got) == "table"
+      for k, v in pairs(want) do
+        if same and (type(got[k]) ~= "number" or math.abs(got[k] - v) > 1e-9) then same = false end
+      end
+      if not same then
+        bad(g.path, lineOf(g.text, "^%s*sim%s*="), "sim field missing or different from the Simulation header (run tools/routebuilder/backfill.lua)")
       end
     end
   end

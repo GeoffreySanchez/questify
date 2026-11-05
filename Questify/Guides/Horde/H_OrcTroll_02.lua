@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Orc", "Troll" },
   minLevel = 6, maxLevel = 12,
   nextByRace = { Orc = "H_01", Troll = "H_01" },
+  sim = { steps = 108, endLevel = 13.07, xpPerHour = 15299, minutes = 184 },
   steps = {
     { "accept", 808 }, -- Minshina's Skull (lvl 9, ~780 xp, sim lvl 6)
     { "accept", 823 }, -- Report to Orgnil (lvl 7, ~315 xp, sim lvl 6)

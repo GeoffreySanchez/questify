@@ -9,6 +9,7 @@ Q:RegisterGuide({
   faction = "Horde",
   minLevel = 21, maxLevel = 25,
   next = "H_04",
+  sim = { steps = 101, endLevel = 25.00, xpPerHour = 31256, minutes = 217 },
   steps = {
     { "accept", 1058 }, -- Jin'Zil's Forest Magic (lvl 26, ~2100 xp, sim lvl 21)
     { "accept", 6393 }, -- Elemental War (lvl 25, ~2000 xp, sim lvl 21)

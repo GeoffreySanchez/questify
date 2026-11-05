@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Undead" },
   minLevel = 12, maxLevel = 15,
   nextByRace = { Undead = "H_01" },
+  sim = { steps = 87, endLevel = 16.24, xpPerHour = 22086, minutes = 114 },
   steps = {
     { "accept", 6321 }, -- Supplying the Sepulcher (lvl 10, ~210 xp, sim lvl 13)
     { "sethearth", 1421, 43.18, 41.28 }, -- lier la pierre de foyer

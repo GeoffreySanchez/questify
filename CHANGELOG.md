@@ -17,6 +17,10 @@
   7 talents sur 50 (relevé du chaman). Il prend maintenant celui qui est un arbre.
 - `/qf talents` : le relevé se fait aussi sans l'API des points restants, et enregistre l'arbre tel que
   Questify le lit et la validation de chaque build de la classe (raison, point et talent en cause).
+- Journal : un chapitre fini (par exemple après un clic droit de trop sur sa dernière étape, qui fait
+  passer au chapitre suivant) peut être rechoisi dans l'onglet Route et reste affiché ; on y rouvre
+  l'étape passée avec `/qf back` ou en cliquant dessus. Avant, le journal renvoyait aussitôt au chapitre
+  suivant et il n'y avait aucun moyen de revenir.
 
 ### English
 - ShortestPath routing with WaypointUI: the waypoint no longer lands in the north-west corner of the
@@ -32,6 +36,10 @@
   one that is a tree.
 - `/qf talents`: the dump also works without the unspent-points API, and records the tree as Questify
   reads it and the validation of each build of the class (reason, point and talent at fault).
+- Journal: a finished chapter (for example after one right-click too many on its last step, which moves
+  on to the next chapter) can be chosen again in the Route tab and stays shown; reopen the skipped step
+  with `/qf back` or by clicking it. Before, the journal sent you straight back to the next chapter and
+  there was no way back.
 
 ## 0.3.0 (2026-11-05)
 

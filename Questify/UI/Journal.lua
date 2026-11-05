@@ -261,7 +261,8 @@ local function chapterRow(i)
   row:SetScript("OnClick", safe(function(self)
     if self.guide then
       playSound("IG_MAINMENU_OPTION_CHECKBOX_ON")
-      Q.Progress:SetGuide(self.guide.id)
+      -- true : un chapitre déjà fini reste affiché, pour y rouvrir une étape passée par erreur
+      Q.Progress:SetGuide(self.guide.id, true)
       Journal:RefreshRoute(true)
     end
   end))

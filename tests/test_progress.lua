@@ -296,6 +296,42 @@ return {
     t.eq(Q.Progress:Current().key, "g:A_DwarfGnome_02:1")
   end,
 
+  -- Un clic droit de trop sur la dernière étape finit le chapitre et bascule au suivant. Rechoisi dans
+  -- le journal (SetGuide(id, true)), un chapitre fini reste courant : le joueur y rouvre l'étape passée
+  -- (/qf back, clic sur l'étape) ; la bascule reprend quand il est de nouveau fini. Avant, le journal le
+  -- renvoyait aussitôt au chapitre suivant. Sans `true` (choix automatique), la bascule enchaîne.
+  finished_chapter_chosen_again_stays = function(t)
+    local Q = load()
+    local keys = {}
+    for _, e in ipairs(Q.Progress:Entries()) do
+      if e.source == "guide" then keys[#keys + 1] = e.key end
+    end
+    for _, k in ipairs(keys) do Q.Progress:Skip(k) end
+    t.eq(Q.Progress:Guide().id, "A_DwarfGnome_02", "rolled over")
+    Q.Progress:SetGuide("A_DwarfGnome_01", true)
+    t.eq(Q.Progress:Guide().id, "A_DwarfGnome_01", "stays on the chosen chapter")
+    t.eq(Q.Progress:Current(), nil)
+    t.eq(Mock.countPrinted(Q.L.ROUTE_END), 0, "not the end of the route")
+    local reopened = Q.Progress:Back()
+    t.eq(reopened and reopened.key, keys[#keys], "last skipped step reopened")
+    t.eq(Q.Progress:Current().key, keys[#keys])
+    t.eq(Q.Progress:Guide().id, "A_DwarfGnome_01")
+    Q.Progress:Skip(keys[#keys])
+    t.eq(Q.Progress:Guide().id, "A_DwarfGnome_02", "finished again: normal rollover")
+
+    -- clic sur une étape du chapitre rechoisi (journal) : elle redevient l'étape courante
+    Q.Progress:SetGuide("A_DwarfGnome_01", true)
+    t.ok(Q.Progress:JumpTo(keys[#keys]))
+    t.eq(Q.Progress:Guide().id, "A_DwarfGnome_01")
+    t.eq(Q.Progress:Current().key, keys[#keys])
+
+    -- choix automatique (connexion, /qf reset) : un chapitre fini enchaîne comme avant
+    for _, k in ipairs(keys) do Q.Progress:Skip(k) end
+    t.eq(Q.Progress:Guide().id, "A_DwarfGnome_02")
+    Q.Progress:SetGuide("A_DwarfGnome_01")
+    t.eq(Q.Progress:Guide().id, "A_DwarfGnome_02", "automatic choice rolls over")
+  end,
+
   route_end_message = function(t)
     local Q = load({ savedVariables = { QuestifyCharDB = { guideId = "A_DwarfGnome_02" } } })
     local keys = {}

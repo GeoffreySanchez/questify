@@ -28,6 +28,8 @@ local entriesCache
 local cache             -- { states = {[key] = {state, reason}}, current = entry }
 local lastKey
 local endPrinted = {}
+local chosen            -- chapitre choisi à la main (SetGuide, journal) : s'il est déjà fini, on y reste
+                        -- (pas de bascule) tant que le joueur n'y a rien rouvert (voir checkRollover)
 local ticker
 local logPending = false
 
@@ -113,11 +115,15 @@ function Progress:Guide()
   return Q.Guides:Get(charState().guideId)
 end
 
--- Change de chapitre et recalcule (envoie "GUIDE_CHANGED").
-function Progress:SetGuide(id)
+-- Change de chapitre et recalcule (envoie "GUIDE_CHANGED"). stay = true (choix du joueur dans le
+-- journal) : un chapitre déjà fini (toutes ses étapes faites ou passées) reste le chapitre courant, pour
+-- y rouvrir une étape passée par erreur (clic sur l'étape, /qf back) ; sans stay (choix automatique à la
+-- connexion, /qf reset), la bascule enchaîne comme avant vers le chapitre suivant.
+function Progress:SetGuide(id, stay)
   local g = Q.Guides:Get(id)
   if not g or not Q.char then return false end
   Q.char.guideId = id
+  chosen = stay and id or nil
   invalidate()
   Q:Fire("GUIDE_CHANGED", g)
   self:Update()
@@ -402,7 +408,12 @@ local function checkRollover()
     local g = Progress:Guide()
     if not g or visited[g.id] then return end
     visited[g.id] = true
-    if not Progress:GuideFinished() then return end
+    if not Progress:GuideFinished() then
+      -- une étape du chapitre choisi est (r)ouverte : la bascule normale reprend quand il sera fini
+      if g.id == chosen then chosen = nil end
+      return
+    end
+    if g.id == chosen then return end   -- choisi à la main alors qu'il était fini : on y reste
     local nxt = Q.Guides:Next(g, Q.Player.raceKey)
     if nxt and not visited[nxt.id] then
       Q.char.guideId = nxt.id

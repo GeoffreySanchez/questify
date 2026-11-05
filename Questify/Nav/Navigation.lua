@@ -118,10 +118,75 @@ local function clearWaypointUI()
   end
 end
 
+-- Compatibilité ShortestPath -> WaypointUI. Quand WaypointUI suit une navigation (la nôtre, ou le
+-- repère du jeu qu'il adopte de lui-même et garde après un /reload), ShortestPath (1.22.32) lui confie
+-- chaque virage en coordonnées 0-1, alors que WaypointUIAPI.Navigation.NewUserNavigation attend du
+-- 0-100 : le virage tombe dans le coin nord-ouest de la carte (« Trajet vers … 2129 yds » pour un PNJ à
+-- 65 yd, à Brewnall Village). On enveloppe donc NewUserNavigation : x et y tous deux dans [0, 1] sont
+-- lus en 0-1 et convertis. Un point du parcours n'est jamais dans ce coin (moins de 1 % de la carte sur
+-- chaque axe), et nos propres appels sont en 0-100. Ces virages arrivent aussi sans `suppressAudio` :
+-- WaypointUI sonnait à chaque virage (« ding ding »). Ils passent donc en silence, et un virage
+-- identique au précédent, que WaypointUI suit encore, n'est pas reposé (le repère ne « saute » pas).
+-- Posé une fois, reposé si WaypointUI remplace sa fonction ; seulement quand les deux addons sont chargés.
+local wuiScaled     -- notre enveloppe de NewUserNavigation, si elle est en place
+local wuiLast       -- dernier point transmis à WaypointUI par l'enveloppe : { mapID, x, y (0-100), name }
+
+local function waypointUITracking()
+  local nav = WaypointUIAPI.Navigation
+  if type(nav.IsUserNavigationTracked) ~= "function" then return false end
+  local ok, res = pcall(nav.IsUserNavigationTracked)
+  return ok and res == true
+end
+
+-- Le virage `o` (déjà en 0-100) est-il celui que WaypointUI suit encore ?
+local function sameAsTracked(o)
+  local last = wuiLast
+  if not last or last.mapID ~= o.mapID or last.name ~= o.name then return false end
+  if math.abs(last.x - o.x) > 0.01 or math.abs(last.y - o.y) > 0.01 then return false end
+  if not waypointUITracking() then return false end
+  local nav = WaypointUIAPI.Navigation
+  if type(nav.GetUserNavigation) == "function" then
+    local ok, cur = pcall(nav.GetUserNavigation)
+    if not ok or type(cur) ~= "table" or cur.name ~= o.name then return false end
+  end
+  return true
+end
+
+local function scaleWaypointUIInput()
+  if not (hasWaypointUI() and hasShortestPath()) then return end
+  local nav = WaypointUIAPI.Navigation
+  local original = nav.NewUserNavigation
+  if original == wuiScaled then return end
+  wuiScaled = function(options, ...)
+    if type(options) == "table" then
+      local x, y = options.x, options.y
+      if type(x) == "number" and type(y) == "number" and x >= 0 and x <= 1 and y >= 0 and y <= 1 then
+        local copy = {}
+        for k, v in pairs(options) do copy[k] = v end
+        copy.x, copy.y = x * 100, y * 100
+        copy.suppressAudio = true
+        options = copy
+        if sameAsTracked(options) then
+          if type(nav.GetUserNavigation) ~= "function" then return nil end
+          local ok, current = pcall(nav.GetUserNavigation)
+          return ok and current or nil
+        end
+      end
+      if type(options.x) == "number" and type(options.y) == "number" then
+        wuiLast = { mapID = options.mapID, x = options.x, y = options.y, name = options.name }
+      end
+    end
+    return original(options, ...)
+  end
+  nav.NewUserNavigation = wuiScaled
+end
+
 -- ShortestPath ne confie un virage à WaypointUI (avec le nom de la destination) que si celui-ci
 -- suit déjà une navigation ; sinon il pose à chaque virage un repère du jeu sans nom, que WaypointUI
 -- affiche « Repère cartographique ». Avec un affichage WaypointUI ou natif, on lui en donne donc une
--- avant de lancer le calcul (pas avec TomTom, choisi pour ne pas avoir ce repère).
+-- avant de lancer le calcul (pas avec TomTom, choisi pour ne pas avoir ce repère). Seulement s'il n'en
+-- suit pas déjà une (il adopte aussi le repère du jeu) : sinon, à chaque nouvelle cible (toutes les
+-- 3 s pour un « complete »), le repère sautait sur la cible puis revenait au virage.
 local function waypointUIWithRouting()
   return hasWaypointUI() and displayProvider() ~= "tomtom"
 end
@@ -132,7 +197,7 @@ local PROVIDERS = {}
 -- `via` : points à rejoindre d'abord (entrée ou sortie de grotte, voir apply), une seule route.
 PROVIDERS.shortestpath = {
   set = function(t, via)
-    if waypointUIWithRouting() then setViaWaypointUI(via and via[1] or t) end
+    if waypointUIWithRouting() and not waypointUITracking() then setViaWaypointUI(via and via[1] or t) end
     local api = ShortestPathForever.API
     if via and #via > 0 and type(api.NavigateRoute) ~= "function" then
       -- pas de route à étapes : au moins l'entrée (jamais la cible, que le calcul poserait au-dessus)
@@ -249,6 +314,7 @@ end
 local function apply(retry)
   local t = target
   if not t then return end
+  Q.SafeCall(scaleWaypointUIInput)
   local plan = cavePlan(t)
   local pm, px, py = Q.Maps:PlayerPos()
   cavePos = pm and { mapId = pm, x = px, y = py } or nil
@@ -432,6 +498,8 @@ end)
 -- Au cas où l'étape courante est déjà connue quand nous démarrons : la déduplication évite
 -- tout appel en double.
 Q:On("LOGIN", function()
+  -- aussi pour les trajets que le joueur lance lui-même avec ShortestPath
+  Q.SafeCall(scaleWaypointUIInput)
   if Q.Progress:IsEnabled() then Nav:Refresh() end
   syncTicker()
 end)

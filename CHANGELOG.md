@@ -1,5 +1,26 @@
 # Changelog
 
+## Non publié
+
+### Français
+- Itinéraire ShortestPath avec WaypointUI : le repère ne part plus dans le coin nord-ouest de la
+  carte (« Trajet vers … 2129 yds » pour un PNJ à 65 yards). ShortestPath confie ses virages à
+  WaypointUI en coordonnées 0-1, que WaypointUI lit en 0-100 ; Questify convertit ces coordonnées au
+  passage, quand les deux addons sont chargés. Les trajets lancés soi-même avec ShortestPath en
+  profitent aussi.
+- Itinéraire ShortestPath avec WaypointUI : plus de « ding » à chaque virage (les virages passent en
+  silence), un virage identique n'est pas reposé, et le repère ne saute plus sur la cible puis sur le
+  virage à chaque nouvelle cible (toutes les 3 s pendant un objectif).
+
+### English
+- ShortestPath routing with WaypointUI: the waypoint no longer lands in the north-west corner of the
+  map ("Journey to … 2129 yds" for an NPC 65 yards away). ShortestPath hands its turns to WaypointUI in
+  0-1 coordinates, which WaypointUI reads as 0-100; Questify converts them on the way, when both addons
+  are loaded. Journeys you start yourself with ShortestPath benefit too.
+- ShortestPath routing with WaypointUI: no more "ding" on every turn (turns are silent), an identical
+  turn is not placed again, and the waypoint no longer jumps to the target and back to the turn on
+  every new target (every 3 s during an objective).
+
 ## 0.3.0 (2026-11-05)
 
 ### Français

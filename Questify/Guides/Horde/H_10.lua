@@ -2,14 +2,14 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 39 étapes, niveau final 38.00, ~38998 xp/h, 112 min.
+-- Simulation : 39 étapes, niveau final 38.00, ~38932 xp/h, 111 min.
 Q:RegisterGuide({
   id = "H_10",
   title = "Dustwallow Marsh",
   faction = "Horde",
   minLevel = 37, maxLevel = 38,
   next = "H_11",
-  sim = { steps = 39, endLevel = 38.00, xpPerHour = 38998, minutes = 112 },
+  sim = { steps = 39, endLevel = 38.00, xpPerHour = 38932, minutes = 111 },
   steps = {
     { "note", "Not running City of Dalaran? Abandon Heart of Disruption, The Grave Knight", optional = true, dungeon = "City of Dalaran" },
     { "boat", 1434, 26.08, 73.35, note = "Take the boat to Ratchet (The Barrens)" }, -- bateau
@@ -49,6 +49,6 @@ Q:RegisterGuide({
     { "accept", 1323 }, -- The Black Shield (lvl 37, ~1400 xp, sim lvl 37)
     { "turnin", 1323, xp = 1400 }, -- The Black Shield (lvl 37, ~1400 xp, sim lvl 37)
     { "turnin", 1273, xp = 3550 }, -- Questioning Reethe (lvl 37, ~3550 xp, sim lvl 37)
-    { "level", 38, at = { 1445, 31.86, 21.94 }, note = "About 57 more mobs here (Darkmist Silkspinner, level 38)" }, -- farm de niveau
+    { "level", 38, at = { 1445, 31.86, 21.94 }, note = "About 52 more mobs here (Darkmist Silkspinner, level 38)" }, -- farm de niveau
   },
 })

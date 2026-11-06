@@ -135,11 +135,16 @@ plans.Alliance = {
   },
   {
     id = "A_NightElf_03", title = "Darkshore", faction = "Alliance", races = { "NightElf" },
-    zones = { DARKSHORE }, minLevel = 11, maxLevel = 19, entry = { DARKSHORE, 37.0, 44.0 },
+    zones = { DARKSHORE }, minLevel = 11, maxLevel = 20, entry = { DARKSHORE, 37.0, 44.0 },
     flightPaths = { "Auberdine, Darkshore" },
     strictLevel = true, -- avec A_NightElf_02 (voir là-bas) : sinon jusqu'à 159 mobs de farm pour une tête de chaîne
     dungeons = { "Blackfathom Deeps" },
     nextByRace = { NightElf = "A_02" },
+    -- Lot Alliance 2026-11-07 : A_02 et A_03 rendent à Stormwind ; emportées d'ici, ces deux quêtes faisaient farmer
+    -- 190 mobs au niveau 13 (ordre strictLevel). Fin à 20 : le tronc part du niveau le plus bas des parcours qui
+    -- arrivent à A_02 (A_01 finit à 19.71) ; à 19.27, il coûtait +49 min aux trois autres parcours. Elfe 1-30 -7 min.
+    drop = { [78124] = "Night Elf path: turned in at Stormwind two chapters later; carried from here it costs a 190-mob grind at level 13",
+             [97914] = "Night Elf path: turned in at Stormwind two chapters later; carried from here it costs a 190-mob grind at level 13" },
   },
   -- Skyborne (Alliance) : île de Zephras (1-16 : la zone suffit), bateau pour Dalaran, portail Skyborne
   -- vers Stormwind, puis tronc commun à Sombrivage (A_01)
@@ -163,6 +168,8 @@ plans.Alliance = {
     minLevel = 20, maxLevel = 22, levelSlack = 0, entry = { ASHENVALE, 34.4, 48.0 }, next = "A_03",
     flightPaths = { "Astranaar, Ashenvale" },
     dungeons = { "Blackfathom Deeps" },
+    -- rendus à Stormwind au passage vers les Carmines (A Scroll from Mauren 1075) : 1-30 -7 min par parcours
+    endZones = { STORMWIND },
   },
   {
     id = "A_03", title = "Redridge Mountains and Duskwood", faction = "Alliance", zones = { REDRIDGE, DUSKWOOD },
@@ -173,6 +180,9 @@ plans.Alliance = {
     -- Worgen in the Woods (173) : écartée ici seulement (chaîne de Nightbane 27-31) ; faite en A_07 (30-34).
     -- Avant le lot H (2026-11-06), écartée dans overrides.lua pour toute la route.
     drop = { [173] = "Worgen in the Woods chain: Nightbane mobs 27-31, above the 22-26 band" },
+    -- rendus au passage vers le port de Stormwind (A_04) : Stalvan 67 / 69, Seeking Wisdom 269, An Old History
+    -- Book 337 (lot Alliance 2026-11-07 : avec A_02, 1-30 -53 min sur Humain, Nain/Gnome et Skyborne)
+    endZones = { STORMWIND, ELWYNN, WESTFALL },
   },
   {
     id = "A_04", title = "Wetlands", faction = "Alliance", zones = { WETLANDS },
@@ -211,12 +221,25 @@ plans.Alliance = {
   -- garde ses quêtes hautes pour cette visite). Entrées : maîtres de vol ou donneurs de QuestieDB.
   {
     id = "A_08", title = "Ashenvale", faction = "Alliance", zones = { ASHENVALE },
-    minLevel = 30, maxLevel = 32, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { ASHENVALE, 34.41, 47.99 }, next = "A_07",
+    -- levelBelow 10 (lot Alliance 2026-11-07) : chaîne Raene's Cleansing (1024, niveau 21, puis 1026 -> 1046) ;
+    -- A_08 -11 min, +8 quêtes, -63 mobs
+    minLevel = 30, maxLevel = 32, levelSlack = 0, levelBelow = 10, far = 1600, widen = false, entry = { ASHENVALE, 34.41, 47.99 }, next = "A_07",
     flightPaths = { "Astranaar, Ashenvale" },
     dungeons = { "Blackfathom Deeps" },
   },
   {
-    id = "A_07", title = "Duskwood", faction = "Alliance", zones = { DUSKWOOD },
+    id = "A_07", title = "Duskwood", faction = "Alliance",
+    -- Lot Alliance 2026-11-07 : chaînes Stalvan (66 -> 98 : Old Footlocker en Marche de l'Ouest, Comté-de-l'Or et
+    -- Marshal Haggard en Elwynn, Caretaker Folsom à Stormwind) et Missing Diplomat (1242 -> 1247 : Jorgen, Elling
+    -- Trias et Dashel Stonefist à Stormwind). Rectangles autour de ces donneurs (QuestieDB), rendus partout dans
+    -- ces cartes. A_07 +1 min, +11 quêtes, -64 mobs.
+    zones = { DUSKWOOD, ELWYNN, WESTFALL, STORMWIND },
+    bounds = {
+      [STORMWIND] = { { 40, 70, 45, 75 }, { 64, 72, 68, 76 }, { 74, 83, 78, 87 }, { 72, 57, 76, 61 } },
+      [ELWYNN] = { { 41, 63, 46, 68 }, { 82, 67, 87, 72 } },
+      [WESTFALL] = { { 39, 64, 44, 69 } },
+    },
+    endZones = { STORMWIND, ELWYNN, WESTFALL },
     minLevel = 32, maxLevel = 33, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { DUSKWOOD, 77.49, 44.29 }, next = "A_09",
     flightPaths = { "Darkshire, Duskwood" },
   },
@@ -236,11 +259,18 @@ plans.Alliance = {
     id = "A_11", title = "Desolace", faction = "Alliance", zones = { DESOLACE },
     minLevel = 35, maxLevel = 37, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { DESOLACE, 64.66, 10.54 }, next = "A_12",
     flightPaths = { "Nijel's Point, Desolace" },
+    -- Zones de fin (lot Alliance 2026-11-07, ici et plus bas) : rendus en fin de chapitre dans une capitale ou une zone
+    -- voisine sur la route du chapitre suivant ; chaque ajout mesuré, gardé seulement s'il fait gagner. A_11 : -2 à
+    -- -5 min, -30 mobs.
+    endZones = { IRONFORGE, STORMWIND },
   },
   {
     id = "A_12", title = "Stranglethorn Vale and Swamp of Sorrows", faction = "Alliance", zones = { STV, SWAMP },
     minLevel = 37, maxLevel = 39, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { STV, 27.0, 77.13 }, next = "A_13",
     flightPaths = { "Booty Bay, Stranglethorn" },
+    -- The Caravan Road 1041 (Bois de la Pénombre), livres de Stormwind, Deliver the Shipment 1425 (Terres foudroyées) :
+    -- A_12 -55 min, +8 quêtes
+    endZones = { DUSKWOOD, STORMWIND, BLASTED },
   },
   {
     id = "A_13", title = "Arathi Highlands", faction = "Alliance", zones = { ALTERAC, ARATHI },
@@ -260,13 +290,26 @@ plans.Alliance = {
     id = "A_16", title = "Badlands", faction = "Alliance", zones = { BADLANDS },
     minLevel = 41, maxLevel = 42, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { BADLANDS, 37.90, 10.59 }, next = "A_17",
     dungeons = { "Uldaman" },
+    -- Ironforge, Loch Modan (Murdaloc 739), Stormwind, et la Strangleronce du chapitre suivant : A_16 -15 min,
+    -- +8 quêtes, -82 mobs
+    endZones = { IRONFORGE, LOCH_MODAN, STORMWIND, STV },
+    -- Suites de quêtes d'Uldaman prises seulement au passage (721 A Sign of Hope, 709 Solution to Doom) : la simulation
+    -- les comptait, le rejeu des parcours retirait leurs étapes (« valid for no race »). Écartées pour que le temps
+    -- simulé corresponde au guide.
+    drop = { [722] = "Follow-up of an Uldaman quest the route only picks up (721): the guide cannot accept it",
+             [727] = "Follow-up of an Uldaman quest the route only picks up (709): the guide cannot accept it" },
   },
   {
-    id = "A_17", title = "Stranglethorn Vale", faction = "Alliance", zones = { STV },
+    id = "A_17", title = "Stranglethorn Vale", faction = "Alliance", zones = { STV, SWAMP },
     minLevel = 42, maxLevel = 44, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { STV, 27.0, 77.13 }, next = "A_18",
+    -- rendus à Stormwind et au Marais des Chagrins (Cortello's Riddle 624) : A_17 -73 min, -225 mobs ; Marais en zone
+    -- de quêtes (restes) : -7 min ; titre : aucune étape placée au Marais (mesuré)
+    endZones = { STORMWIND, SWAMP },
   },
   {
-    id = "A_18", title = "Tanaris", faction = "Alliance", zones = { TANARIS },
+    -- Mille pointes en zone de quêtes (restes 41-47) : -5 min, +2 quêtes, -17 mobs (A_19 +4 min) ; titre : aucune
+    -- étape placée à Mille pointes (mesuré)
+    id = "A_18", title = "Tanaris", faction = "Alliance", zones = { TANARIS, NEEDLES },
     minLevel = 44, maxLevel = 45, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { TANARIS, 51.01, 29.34 }, next = "A_19",
     flightPaths = { "Gadgetzan, Tanaris" },
     dungeons = { "Zul'Farrak" },
@@ -294,39 +337,63 @@ plans.Alliance = {
     minLevel = 50, maxLevel = 52, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { SEARING, 37.94, 30.86 }, next = "A_28",
     flightPaths = { "Thorium Point, Searing Gorge", "Nethergarde Keep, Blasted Lands" },
     dungeons = { "Blackrock Depths" },
+    -- Ironforge (Suntara Stones 3368, Rise, Obsidion! 3566), Loch Modan (The Horn of the Beast 3181), Stormwind ;
+    -- 3441 Divine Retribution et 3453 The Torch of Retribution (QuestieDB : « event », sites d'objectif connus)
+    -- forcées : elles ouvrent la chaîne de Thorium Point 3442 -> 3481. A_22 -23 min, +14 quêtes, -259 mobs.
+    endZones = { IRONFORGE, STORMWIND, LOCH_MODAN },
+    force = { [3441] = true, [3453] = true },
   },
   {
     id = "A_28", title = "Burning Steppes", faction = "Alliance", zones = { BURNING },
     minLevel = 52, maxLevel = 53, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { BURNING, 84.33, 68.33 }, next = "A_24",
     flightPaths = { "Morgan's Vigil, Burning Steppes" },
     dungeons = { "Blackrock Depths" },
+    endZones = { REDRIDGE, STORMWIND }, -- The True Masters 4183 (Lakeshire), Stormwind : -8 min, +2 quêtes, -47 mobs
   },
   {
     id = "A_24", title = "Felwood", faction = "Alliance", zones = { FELWOOD },
     minLevel = 53, maxLevel = 54, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { FELWOOD, 62.49, 24.24 }, next = "A_26",
     flightPaths = { "Talonbranch Glade, Felwood" },
+    endZones = { ASHENVALE, UNGORO }, -- Ancient Spirit 4261 (Orneval), Un'Goro du chapitre suivant : -4 min
   },
   {
     id = "A_26", title = "Un'Goro Crater", faction = "Alliance", zones = { UNGORO },
     minLevel = 54, maxLevel = 56, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { UNGORO, 45.23, 5.83 }, next = "A_27",
     flightPaths = { "Marshal's Refuge, Un'Goro Crater" },
+    -- pylônes 4285, 4287, 4288 et 4321 (QuestieDB : « event », sites d'objectif connus) forcés : -8 min, +4 quêtes,
+    -- -41 mobs ; rendus au Gangrebois (Linken's Memory 3942) et au Berceau-de-l'Hiver du chapitre suivant : -4 min,
+    -- +5 quêtes, -83 mobs
+    force = { [4285] = true, [4287] = true, [4288] = true, [4321] = true },
+    endZones = { FELWOOD, WINTERSPRING },
   },
   {
-    id = "A_27", title = "Winterspring", faction = "Alliance", zones = { WINTERSPRING },
+    id = "A_27", title = "Felwood and Winterspring", faction = "Alliance", zones = { WINTERSPRING, FELWOOD },
     minLevel = 56, maxLevel = 57, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { WINTERSPRING, 62.33, 36.61 }, next = "A_23",
     flightPaths = { "Everlook, Winterspring" },
+    -- Gangrebois en zone de quêtes : chaîne Falling to Corruption 5084 -> Mystery Goo 5085 -> Toxic Horrors 5086 ->
+    -- Winterfall Runners 5087 -> High Chief Winterfall 5121 ; -9 min, +5 quêtes, -175 mobs
+    endZones = { FELWOOD },
   },
   {
     id = "A_23", title = "Western Plaguelands", faction = "Alliance", zones = { WPL },
     minLevel = 57, maxLevel = 58, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { WPL, 42.92, 85.06 }, next = "A_29",
     flightPaths = { "Chillwind Camp, Western Plaguelands" },
     dungeons = { "Scholomance" },
+    endZones = { STORMWIND }, -- -15 min, +4 quêtes, -72 mobs (A_29 : +15 min de trajet depuis Stormwind)
   },
   {
     id = "A_29", title = "Eastern Plaguelands", faction = "Alliance", zones = { EPL },
     minLevel = 58, maxLevel = 59, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { EPL, 71.81, 49.60 }, next = "A_30",
     flightPaths = { "Light's Hope Chapel, Eastern Plaguelands" },
     dungeons = { "Stratholme" },
+    -- 5742 Redemption (QuestieDB : « event », histoire de Tirion Fordring) forcée, tête de Of Forgotten Memories 5781 :
+    -- -3 min, +3 quêtes, -53 mobs. Maleterres de l'Ouest en zone de quêtes : -6 min mesurées, mais seulement grâce aux
+    -- suites de 5848 écartées ci-dessous ; sans elles +12 min (non retenu).
+    force = { [5742] = true },
+    -- Suites de quêtes de Stratholme prises seulement au passage (5212, 5848) : retirées par le rejeu des parcours,
+    -- écartées pour que le temps simulé corresponde au guide.
+    drop = { [5213] = "Follow-up of a Stratholme quest the route only picks up (5212): the guide cannot accept it",
+             [5861] = "Follow-up of a Stratholme quest the route only picks up (5848): the guide cannot accept it" },
   },
   {
     id = "A_30", title = "Silithus", faction = "Alliance", zones = { WINTERSPRING, SILITHUS },
@@ -402,7 +469,10 @@ plans.Horde = {
   {
     id = "H_Undead_03", title = "Silverpine Forest", faction = "Horde", races = { "Undead" },
     zones = { SILVERPINE, UNDERCITY }, endZones = { TIRISFAL }, dungeonReqSlack = 1, dungeonLevelHigh = 8,
-    minLevel = 12, maxLevel = 15, entry = { SILVERPINE, 43.0, 41.0 }, nextByRace = { Undead = "H_01" },
+    -- 12-14 sans dépassement (levelSlack = 0) : le tronc des Tarides commence à 12 ; à 16.25, l'Undead y
+    -- arrivait 3.4 niveaux au-dessus du parcours Orc. Mesuré (2026-11-07) : Undead 1-30 -88 min, autres
+    -- parcours -13 min (tronc moins chargé), +43 mobs de farm en H_03-H_04.
+    minLevel = 12, maxLevel = 14, levelSlack = 0, entry = { SILVERPINE, 43.0, 41.0 }, nextByRace = { Undead = "H_01" },
     flightPaths = { "The Sepulcher, Silverpine Forest" },
     dungeons = { "Ruins of Lordaeron" },
   },
@@ -458,6 +528,13 @@ plans.Horde = {
   -- (Tanaris 47-49 : 5 quêtes, ~700 mobs de farm) est hors chaîne, Tanaris I (H_16) prend ses quêtes hautes.
   -- Chaque chapitre est sur un seul continent. Tranches contiguës, levelBelow = 8, far = 1600, widen = false
   -- (sauf H_16). Entrées : maîtres de vol ou donneurs de QuestieDB.
+  -- Optimisation du 2026-11-07 (chaque changement mesuré au simulateur, journal dans le rapport du lot Horde) :
+  -- capitales sur le trajet (Orgrimmar en H_07 et H_25, Fossoyeuse en H_29) et en endZones (livraisons,
+  -- rendus des livres d'Owen Thadd), Rempart de Tirisfal en H_29, tranches 40-49 rééquilibrées (Strangleronce II
+  -- 40-42, Tanaris 44-45, Féralas 45-47, Strangleronce III 47-49), Désolace II remplacée par Âprefange II
+  -- (chaîne de Brackenwall 43-45). Ordre des zones inchangé : les essais avec moins de traversées
+  -- (Âprefange avant Strangleronce, Strangleronce I avant Mille pointes, Silithus avant les Maleterres) coûtent
+  -- +10 à +97 min.
   {
     id = "H_06", title = "Alterac Mountains and Arathi Highlands", faction = "Horde", zones = { HILLSBRAD, ALTERAC, ARATHI },
     minLevel = 30, maxLevel = 32, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { HILLSBRAD, 60.14, 18.62 }, endZones = { UNDERCITY }, next = "H_07",
@@ -468,14 +545,16 @@ plans.Horde = {
     force = { [544] = true, [556] = true, [533] = true, [545] = true, [676] = true },
   },
   {
-    id = "H_07", title = "Thousand Needles", faction = "Horde", zones = { NEEDLES, BARRENS },
+    id = "H_07", title = "Thousand Needles", faction = "Horde", zones = { NEEDLES, BARRENS, ORGRIMMAR },
     bounds = { [BARRENS] = { 44, 26, 53, 32 } }, -- Carrefour et Bastion : The Swarm Grows, The Kolkar of Desolace
+    -- Orgrimmar (zeppelin depuis Fossoyeuse) : The Swarm Grows (1146) et Alliance Relations (1432), têtes des
+    -- chaînes des Mille pointes et de Désolace. Mesuré : -19 min, -154 mobs (H_07 et H_08 sans farm).
     endZones = { ORGRIMMAR, DESOLACE },
     minLevel = 32, maxLevel = 33, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { NEEDLES, 45.14, 49.11 }, next = "H_08",
     force = { [1145] = true, [1362] = true },
   },
   {
-    id = "H_08", title = "Desolace", faction = "Horde", zones = { DESOLACE },
+    id = "H_08", title = "Desolace", faction = "Horde", zones = { DESOLACE }, endZones = { ORGRIMMAR, THUNDERBLUFF },
     minLevel = 33, maxLevel = 35, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { DESOLACE, 21.60, 74.13 }, next = "H_09",
     flightPaths = { "Shadowprey Village, Desolace" },
     dungeons = { "Maraudon" },
@@ -506,39 +585,50 @@ plans.Horde = {
   },
   {
     id = "H_13", title = "Stranglethorn Vale", faction = "Horde", zones = { STV },
-    minLevel = 40, maxLevel = 41, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { STV, 32.54, 29.35 }, next = "H_14",
+    -- 40-42 (au lieu de 40-41) : 12 quêtes 37-44 de Strangleronce y étaient écartées « level band reached », et
+    -- le Marais des Chagrins (42-43) ne farme plus. Mesuré : -55 min, -208 mobs.
+    minLevel = 40, maxLevel = 42, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { STV, 32.54, 29.35 }, next = "H_14",
   },
   {
     id = "H_14", title = "Swamp of Sorrows", faction = "Horde", zones = { SWAMP },
-    minLevel = 41, maxLevel = 43, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { SWAMP, 46.07, 54.83 }, next = "H_15",
+    minLevel = 42, maxLevel = 43, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { SWAMP, 46.07, 54.83 }, next = "H_15",
     flightPaths = { "Stonard, Swamp of Sorrows" },
     dungeons = { "The Temple of Atal'Hakkar" },
   },
   {
-    id = "H_15", title = "Desolace", faction = "Horde", zones = { DESOLACE },
-    minLevel = 43, maxLevel = 44, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { DESOLACE, 21.60, 74.13 }, next = "H_16",
-    dungeons = { "Maraudon" },
+    -- Âprefange II (au lieu de Désolace II : 7 quêtes, 361 mobs de farm) : chaîne de Brackenwall 43-45
+    -- (The Brood of Onyxia 1169-1172, Mok'Morokk, Tharg). Mesuré : -98 mobs, temps égal.
+    id = "H_15", title = "Dustwallow Marsh", faction = "Horde", zones = { DUSTWALLOW }, endZones = { ORGRIMMAR, THUNDERBLUFF },
+    minLevel = 43, maxLevel = 44, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { DUSTWALLOW, 35.56, 31.88 }, next = "H_16",
   },
   {
-    id = "H_16", title = "Tanaris", faction = "Horde", zones = { TANARIS },
-    minLevel = 44, maxLevel = 46, levelSlack = 0, levelBelow = 8, far = 1600, entry = { TANARIS, 51.60, 25.44 }, next = "H_17",
+    id = "H_16", title = "Tanaris", faction = "Horde", zones = { TANARIS }, endZones = { ORGRIMMAR, THUNDERBLUFF },
+    -- 44-45 (au lieu de 44-46) : Féralas prend 45-47. Mesuré : -20 min, -90 mobs.
+    minLevel = 44, maxLevel = 45, levelSlack = 0, levelBelow = 8, far = 1600, entry = { TANARIS, 51.60, 25.44 }, next = "H_17",
     flightPaths = { "Gadgetzan, Tanaris" },
     dungeons = { "Zul'Farrak" },
+    -- Gahz'ridian (3161, rendement bas) et The Thirsty Goblin (2605, loin de Gadgetzan). Mesuré : -8 min, -96 mobs.
+    force = { [3161] = true, [2605] = true },
   },
   {
-    id = "H_17", title = "Feralas", faction = "Horde", zones = { FERALAS },
-    minLevel = 46, maxLevel = 47, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { FERALAS, 75.45, 44.36 }, next = "H_18",
+    id = "H_17", title = "Feralas", faction = "Horde", zones = { FERALAS }, endZones = { ORGRIMMAR, THUNDERBLUFF },
+    minLevel = 45, maxLevel = 47, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { FERALAS, 75.45, 44.36 }, next = "H_18",
     flightPaths = { "Camp Mojache, Feralas" },
+    force = { [3062] = true }, -- Dark Heart, à plus de 1 600 yd de Camp Mojache. Mesuré : -4 min, -24 mobs.
   },
   {
     id = "H_18", title = "Stranglethorn Vale", faction = "Horde", zones = { STV },
-    minLevel = 47, maxLevel = 48, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { STV, 26.87, 77.10 }, next = "H_21",
+    -- 47-49 et Hinterlands 49-51 (au lieu de 47-48 et 48-51). Mesuré : -26 min, -69 mobs.
+    minLevel = 47, maxLevel = 49, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { STV, 26.87, 77.10 }, next = "H_21",
     flightPaths = { "Booty Bay, Stranglethorn" },
   },
   {
     id = "H_21", title = "The Hinterlands", faction = "Horde", zones = { HINTERLANDS },
-    minLevel = 48, maxLevel = 51, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { HINTERLANDS, 81.70, 81.76 }, next = "H_23",
+    -- rendus au passage à Tarren Mill (Venom Bottles 2933) et à Fossoyeuse (Rin'ji's Secret 2782, livres)
+    endZones = { HILLSBRAD, UNDERCITY },
+    minLevel = 49, maxLevel = 51, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { HINTERLANDS, 81.70, 81.76 }, next = "H_23",
     flightPaths = { "Revantusk Village, The Hinterlands" },
+    force = { [7843] = true }, -- The Final Message to the Wildhammer (écartée « far »)
   },
   {
     id = "H_23", title = "Blasted Lands", faction = "Horde", zones = { BLASTED },
@@ -546,23 +636,28 @@ plans.Horde = {
   },
   {
     id = "H_24", title = "Searing Gorge and Burning Steppes", faction = "Horde", zones = { SEARING, BURNING },
+    endZones = { UNDERCITY }, -- livres d'Owen Thadd (81953, 81955). Mesuré : -30 mobs, temps égal.
     minLevel = 52, maxLevel = 53, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { SEARING, 34.84, 30.87 }, next = "H_25",
     flightPaths = { "Thorium Point, Searing Gorge", "Flame Crest, Burning Steppes" },
     dungeons = { "Blackrock Depths" },
-    force = { [4023] = true, [4296] = true, [4726] = true },
+    -- 3441 et 3453 : récits de Kalaran Windblade (drapeau « event » dans QuestieDB), têtes de la chaîne
+    -- The Flawless Flame -> Trinkets... (3442-3481). Mesuré : -11 min, -177 mobs.
+    force = { [4023] = true, [4296] = true, [4726] = true, [3441] = true, [3453] = true },
   },
   {
-    id = "H_25", title = "Azshara", faction = "Horde", zones = { AZSHARA },
+    -- Orgrimmar (zeppelin depuis Grom'gol) : Betrayed (3504) ; livraisons rendues à Orgrimmar et aux
+    -- Pitons-du-Tonnerre (3507, 3518, 3541). Mesuré : -14 min, -117 mobs.
+    id = "H_25", title = "Azshara", faction = "Horde", zones = { AZSHARA, ORGRIMMAR }, endZones = { ORGRIMMAR, THUNDERBLUFF },
     minLevel = 53, maxLevel = 54, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { AZSHARA, 21.96, 49.62 }, next = "H_26",
     flightPaths = { "Valormok, Azshara" },
   },
   {
-    id = "H_26", title = "Felwood", faction = "Horde", zones = { FELWOOD },
+    id = "H_26", title = "Felwood", faction = "Horde", zones = { FELWOOD }, endZones = { ORGRIMMAR, THUNDERBLUFF },
     minLevel = 54, maxLevel = 55, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { FELWOOD, 34.44, 53.96 }, next = "H_27",
     flightPaths = { "Bloodvenom Post, Felwood" },
   },
   {
-    id = "H_27", title = "Un'Goro Crater", faction = "Horde", zones = { UNGORO },
+    id = "H_27", title = "Un'Goro Crater", faction = "Horde", zones = { UNGORO }, endZones = { ORGRIMMAR, THUNDERBLUFF },
     minLevel = 55, maxLevel = 56, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { UNGORO, 45.23, 5.83 }, next = "H_28",
     flightPaths = { "Marshal's Refuge, Un'Goro Crater" },
   },
@@ -572,8 +667,15 @@ plans.Horde = {
     flightPaths = { "Everlook, Winterspring" },
   },
   {
-    id = "H_29", title = "Western Plaguelands and Eastern Plaguelands", faction = "Horde", zones = { WPL, EPL },
-    minLevel = 57, maxLevel = 59, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { WPL, 38.40, 54.05 }, next = "H_30",
+    id = "H_29", title = "Western Plaguelands and Eastern Plaguelands", faction = "Horde", zones = { WPL, EPL, TIRISFAL, UNDERCITY },
+    -- Rempart de Tirisfal (Derrington, Vandis, Dithers : chaîne des chaudrons 5228-5238, Scarlet Diversions,
+    -- A Plague Upon Thee) et Fossoyeuse (A Call to Arms 5094, livres d'Oran Snakewrithe), au débarquement du
+    -- zeppelin. Mesuré : -97 min, -512 mobs ; levelBelow = 10 (une quête basse du Rempart en plus) : -6 min.
+    bounds = { [TIRISFAL] = { 78, 60, 90, 80 } },
+    -- 5342 : le simulateur compte sa suite comme ouverte par 5341, prise au passage pour Scholomance (jamais
+    -- rendue) ; la relecture des parcours retire ses étapes. Écartée pour que les minutes restent justes (+15 min).
+    drop = { [5342] = "The Last Barov needs Barov Family Fortune (5341, Scholomance items), a dungeon quest only picked up here" },
+    minLevel = 57, maxLevel = 59, levelSlack = 0, levelBelow = 10, far = 1600, widen = false, entry = { WPL, 38.40, 54.05 }, next = "H_30",
     flightPaths = { "Light's Hope Chapel, Eastern Plaguelands" },
     dungeons = { "Scholomance", "Stratholme" },
   },

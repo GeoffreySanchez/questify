@@ -4,17 +4,17 @@ Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d30
 
 | Item | Value |
 |---|---|
-| Level band | 11-19 |
-| Simulated level | 12.00 -> 19.27 |
-| Time | 246 min |
-| XP gained | 106612 |
-| XP/h | 26043 |
-| Steps | 161 |
+| Level band | 11-20 |
+| Simulated level | 12.00 -> 20.00 |
+| Time | 288 min |
+| XP gained | 122236 |
+| XP/h | 25463 |
+| Steps | 162 |
 | Quests turned in | 55 |
 | Hubs | 12 |
 | Median ratio (XP/s) | 4.22 |
-| Grinding (level steps) | ~64 mobs |
-| Level band | grinding 74 mobs with quests up to level 22: band widened to level 25 |
+| Grinding (level steps) | ~190 mobs |
+| Level band | grinding 203 mobs with quests up to level 23: band widened to level 26 |
 | Hearthstone | bound to Innkeeper Shaussiy after task 1; 1 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
@@ -100,8 +100,8 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 6124 | Curing the Sick | 14 | class quest (ClassQuestData.lua) |
 | 6343 | Return to Nessa | 10 | finisher outside the chapter zones |
 | 8721 | Starweave the Elder | 60 | Questie blacklist |
-| 78124 | Nar'thalas Almanac | 20 | finisher outside the chapter zones |
-| 97914 | Expanding Horizons | 17 | finisher outside the chapter zones |
+| 78124 | Nar'thalas Almanac | 20 | Night Elf path: turned in at Stormwind two chapters later; carried from here it costs a 190-mob grind at level 13 |
+| 97914 | Expanding Horizons | 17 | Night Elf path: turned in at Stormwind two chapters later; carried from here it costs a 190-mob grind at level 13 |
 | 98461 | Unrequited Love | 21 | finisher outside the chapter zones |
 | 995 | Escape Through Stealth | 20 | exclusive with 994 |
 
@@ -364,6 +364,7 @@ Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint la
 - step 79: `level 15` — About 59 mobs here (Blackwood Windtalker, level 13)
 - step 129: `hearth 1439`
 - step 132: `level 18` — About 5 mobs here (Cat, level 18)
+- step 162: `level 20` — About 126 more mobs here (Cat, level 18)
 
 ## Warnings
 

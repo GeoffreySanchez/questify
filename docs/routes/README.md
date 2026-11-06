@@ -380,3 +380,30 @@ are unchanged.
 - Titles of the 30-60 chapters are zone names; zones missing from `ZONE_MAPS` (`Questify/Engine/Guides.lua`)
   are shown in English on a French client.
 - Transport times (zeppelins, Booty Bay boat) are estimates; nothing was checked in game.
+
+## Optimisation 1-60 (2026-11-07)
+
+Data-only pass over `tools/routebuilder/plans.lua` (Alliance and Horde chapters measured one change at a time against
+the simulator, QuestieDB v1.0.11; APR Forever used only as a hint of quest IDs and zones, nothing copied). The tables
+of the sections above show the values **before** this pass; each chapter report (`A_*.md`, `H_*.md`) shows the current
+values. Totals per race path, simulated (minutes / quests / grind mobs), before → after:
+
+| Path 1-60 | Before | After |
+|---|---|---|
+| Human | 5 398 / 580 / 5 456 | 5 173 / 657 / 4 203 |
+| Dwarf / Gnome | 5 449 / 586 / 5 539 | 5 224 / 663 / 4 286 |
+| Night Elf | 5 370 / 567 / 5 531 | 5 191 / 650 / 4 402 |
+| Skyborne (Alliance) | 5 348 / 566 / 5 539 | 5 123 / 643 / 4 286 |
+| Orc / Troll | 5 414 / 546 / 4 339 | 5 140 / 616 / 2 699 |
+| Tauren | 5 434 / 543 / 4 366 | 5 160 / 613 / 2 726 |
+| Undead | 5 543 / 586 / 4 340 | 5 194 / 637 / 2 700 |
+| Skyborne (Horde) | 5 458 / 566 / 4 396 | 5 184 / 636 / 2 756 |
+
+Main changes: end-of-chapter turn-ins in the capital or the next zone (`endZones`) where measured useful; Felwood joined
+to Winterspring (A_27); Un'Goro pylons, Kalaran's stories (3441/3453), 5742, 3161/2605, 3062, 7843 forced; The Bulwark
+and Undercity in H_29; Horde bands 40-49 reshaped (STV II 40-42, Swamp 42-43, Dustwallow II 43-44, Tanaris 44-45,
+Feralas 45-47, STV III 47-49, Hinterlands 49-51); Silverpine 12-14 for the Undead; dungeon follow-ups that the guide
+drops are dropped in the plan too (722/727, 5213/5861, 5342) so the simulator matches the guides. Rejected after
+measurement (kept out): Hinterlands in the Alliance chain, "carry" over 4 chapters, continent blocks 30-44, and every
+re-ordering tried to remove the remaining continent crossings (+10 to +111 min). APR-COMPARE: APR clearly ahead on 37
+chapters (41 before), Questify on 3, close on 32. Still heavy: A_20 / A_21 (~700 mobs), A_26 (633), H_18 (525).

@@ -2,17 +2,15 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 54 étapes, niveau final 54.00, ~58377 xp/h, 172 min.
+-- Simulation : 52 étapes, niveau final 54.00, ~59826 xp/h, 168 min.
 Q:RegisterGuide({
   id = "A_24",
   title = "Felwood",
   faction = "Alliance",
   minLevel = 53, maxLevel = 54,
   next = "A_26",
-  sim = { steps = 54, endLevel = 54.00, xpPerHour = 58377, minutes = 172 },
+  sim = { steps = 52, endLevel = 54.00, xpPerHour = 59826, minutes = 168 },
   steps = {
-    { "goto", 1428, 84.33, 68.33, note = "Flight master" }, -- déplacement
-    { "fly", 1453, node = 2, note = "Stormwind, Elwynn" }, -- vol
     { "boat", 1453, 24.1, 55.4, note = "Take the boat to Auberdine (Stormwind Harbor)" }, -- bateau
     { "fp", 1448, 62.49, 24.24 }, -- point de vol
     { "accept", 4421 }, -- The Corruption of the Jadefire (lvl 54, ~5450 xp, sim lvl 53)

@@ -2,15 +2,17 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 36 étapes, niveau final 34.00, ~25084 xp/h, 140 min.
+-- Simulation : 38 étapes, niveau final 34.00, ~24793 xp/h, 142 min.
 Q:RegisterGuide({
   id = "A_09",
   title = "Thousand Needles",
   faction = "Alliance",
   minLevel = 33, maxLevel = 34,
   next = "A_10",
-  sim = { steps = 36, endLevel = 34.00, xpPerHour = 25084, minutes = 140 },
+  sim = { steps = 38, endLevel = 34.00, xpPerHour = 24793, minutes = 142 },
   steps = {
+    { "goto", 1453, 71.29, 72.23, note = "Flight master" }, -- déplacement
+    { "fly", 1436, node = 4, note = "Sentinel Hill, Westfall" }, -- vol
     { "boat", 1434, 26.08, 73.35, note = "Take the boat to Ratchet (The Barrens)" }, -- bateau
     { "fp", 1413, 63.08, 37.16 }, -- point de vol
     { "fp", 1445, 67.48, 51.3 }, -- point de vol

@@ -2,17 +2,19 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 62 étapes, niveau final 35.00, ~47704 xp/h, 79 min.
+-- Simulation : 64 étapes, niveau final 35.00, ~44951 xp/h, 84 min.
 Q:RegisterGuide({
   id = "A_10",
   title = "Stranglethorn Vale",
   faction = "Alliance",
   minLevel = 34, maxLevel = 35,
   next = "A_11",
-  sim = { steps = 62, endLevel = 35.00, xpPerHour = 47704, minutes = 79 },
+  sim = { steps = 64, endLevel = 35.00, xpPerHour = 44951, minutes = 84 },
   steps = {
     { "note", "Not running Razorfen Kraul? Abandon Blueleaf Tubers", optional = true, dungeon = "Razorfen Kraul" },
-    { "hearth", 1431 }, -- pierre de foyer
+    { "hearth", 1437 }, -- pierre de foyer
+    { "goto", 1437, 9.49, 59.69, note = "Flight master" }, -- déplacement
+    { "fly", 1436, node = 4, note = "Sentinel Hill, Westfall" }, -- vol
     { "accept", 583 }, -- Welcome to the Jungle (lvl 30, ~245 xp, sim lvl 34)
     { "turnin", 583, xp = 245 }, -- Welcome to the Jungle (lvl 30, ~245 xp, sim lvl 34)
     { "accept", 194 }, -- Raptor Mastery (lvl 34, ~1350 xp, sim lvl 34)

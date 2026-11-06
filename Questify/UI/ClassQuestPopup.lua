@@ -342,7 +342,10 @@ function Popup:Choose(action)
   local cq = Q.ClassQuests
   if chain and cq then
     if cq.MarkSeen then cq:MarkSeen(chain.key) end
-    if cq[action] then cq[action](cq, chain.key) end
+    if cq[action] then
+      local done = cq[action](cq, chain.key)
+      if action == "Add" and done ~= false then Q:Print(L.UI_CQ_ADDED_MSG, Popup.ChainTitle(chain)) end
+    end
   end
   self:Hide()
   if Q.UI.Tracker and Q.UI.Tracker.Refresh then Q.UI.Tracker:Refresh() end

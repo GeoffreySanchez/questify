@@ -138,7 +138,7 @@ return {
     t.ok(plain(row.title:GetText()):find("The Stolen Tome", 1, true))
     t.ok(plain(row.info:GetText()):find(Q.L.UI_CQ_AVAILABLE, 1, true), "state shown")
     t.ok(row.addButton:IsShown() and row.ignoreButton:IsShown(), "available: add + ignore")
-    t.eq(row.addButton:GetText(), Q.L.UI_BTN_ADD)
+    t.eq(row.addButton:GetText(), Q.L.UI_BTN_ADD_ROUTE)
     Mock.click(row.addButton, "LeftButton")
     t.eq(Mock.countCalls("ClassQuests:Add"), 1)
     t.eq(Mock.lastCall("ClassQuests:Add").args[1], "WARLOCK_1598")
@@ -147,7 +147,7 @@ return {
     t.ok(not J.classRows[1].addButton:IsShown())
     t.ok(J.classRows[1].ignoreButton:IsShown())
     -- chaîne ignorée : Ajouter directement, ou Réactiver
-    local ign = J.classRows[2]
+    local ign = J.classRows[3]   -- ignorées en dernier
     t.ok(ign.unignoreButton:IsShown() and ign.addButton:IsShown() and not ign.ignoreButton:IsShown())
     t.eq(ign.unignoreButton:GetText(), Q.L.UI_BTN_UNIGNORE)
     Mock.click(ign.unignoreButton, "LeftButton")
@@ -156,12 +156,66 @@ return {
       { chain = chain, state = "added" }, { chain = other, state = "ignored" }, { chain = done, state = "done" },
     })
     J:RefreshClass()
-    Mock.click(J.classRows[2].addButton, "LeftButton")
+    Mock.click(J.classRows[3].addButton, "LeftButton")
     t.eq(Mock.lastCall("ClassQuests:Add").args[1], "WARLOCK_IGN", "ignored chain added directly")
+    -- ajoutée : elle remonte avant les faites
+    t.eq(J.classRows[2].chain.key, "WARLOCK_IGN")
     t.ok(plain(J.classRows[2].info:GetText()):find(Q.L.UI_CQ_ADDED, 1, true))
     -- chaîne faite : aucun bouton
     local d = J.classRows[3]
     t.ok(not d.addButton:IsShown() and not d.ignoreButton:IsShown() and not d.unignoreButton:IsShown())
+    t.eq(#Mock.errors, 0)
+  end,
+
+  class_tab_late_chains_first_with_late_label = function(t)
+    local Q = load()
+    Mock.player.level = 20
+    Mock.fire("PLAYER_LEVEL_UP", 20)
+    local normal = Ext.warlockChain()
+    normal.key, normal.title, normal.level = "WARLOCK_NEW", "Fresh chain", 20
+    local late = Ext.warlockChain()
+    late.key, late.title, late.level = "WARLOCK_OLD", "Old chain", 8
+    local late2 = Ext.warlockChain()
+    late2.key, late2.title, late2.level = "WARLOCK_OLD2", "Older chain", 4
+    local ign = Ext.warlockChain()
+    ign.key, ign.title, ign.level = "WARLOCK_IGN", "Ignored chain", 4
+    local done = Ext.warlockChain()
+    done.key, done.title = "WARLOCK_DONE", "Done chain"
+    Ext.fakeClassQuests(Q, {
+      { chain = done, state = "done" }, { chain = ign, state = "ignored" },
+      { chain = normal, state = "available" }, { chain = late, state = "available" },
+      { chain = late2, state = "available" },
+    })
+    local J = Q.UI.Journal
+    J:ShowTab("class")
+    local order = {}
+    for i = 1, 5 do order[i] = J.classRows[i].chain.key end
+    t.eq(order, { "WARLOCK_OLD", "WARLOCK_OLD2", "WARLOCK_NEW", "WARLOCK_DONE", "WARLOCK_IGN" },
+      "late first, then available, done, ignored")
+    t.ok(plain(J.classRows[1].info:GetText()):find(string.format(Q.L.UI_CQ_LATE, 8), 1, true), "late label")
+    t.ok(J.classRows[1].info:GetText():find("|cffff", 1, true), "alert colour")
+    t.ok(not plain(J.classRows[3].info:GetText()):find(string.format(Q.L.UI_CQ_LATE, 20), 1, true), "not late")
+    t.ok(J.classRows[1].addButton:IsShown(), "late chain: add button")
+    t.eq(J.classRows[1].addButton:GetText(), Q.L.UI_BTN_ADD_ROUTE)
+    -- un clic : ajoutée, message de confirmation
+    Mock.click(J.classRows[1].addButton, "LeftButton")
+    t.ok(Mock.printed(string.format(Q.L.UI_CQ_ADDED_MSG, "The Stolen Tome")), "confirmation in chat")
+    -- chaîne ajoutée : bouton Suivre
+    local row
+    for _, r in ipairs(J.classRows) do if r:IsShown() and r.chain.key == "WARLOCK_OLD" then row = r end end
+    t.ok(row.trackButton:IsShown() and not row.addButton:IsShown(), "added: track button")
+    t.eq(row.trackButton:GetText(), Q.L.UI_BTN_TRACK)
+    t.eq(#Mock.errors, 0)
+  end,
+
+  class_tab_track_button_calls_track = function(t)
+    local Q = load()
+    Ext.fakeClassQuests(Q, { { chain = Ext.warlockChain(), state = "added" } })
+    Q.ClassQuests.Track = function(_, key) Mock.record("ClassQuests:Track", key); return true end
+    local J = Q.UI.Journal
+    J:ShowTab("class")
+    Mock.click(J.classRows[1].trackButton, "LeftButton")
+    t.eq(Mock.lastCall("ClassQuests:Track").args[1], "WARLOCK_1598")
     t.eq(#Mock.errors, 0)
   end,
 

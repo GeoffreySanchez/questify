@@ -248,6 +248,32 @@ return {
     t.eq(#Mock.errors, 0)
   end,
 
+  tracker_class_alert_says_late = function(t)
+    local Q = load()
+    local T = Q.UI.Tracker
+    Mock.player.level = 20
+    Mock.fire("PLAYER_LEVEL_UP", 20)
+    local a, b = Ext.warlockChain(), Ext.warlockChain()
+    b.key, b.title, b.level, b.quests = "WARLOCK_X", "Other chain", 20, { 999999 }
+    Ext.fakeClassQuests(Q, { { chain = a, state = "available" } })
+    Q:Fire("CLASSQUESTS_CHANGED")
+    t.eq(plain(T.alertText:GetText()), string.format(Q.L.UI_CLASS_ALERT_LATE_ONE, "The Stolen Tome"))
+    Ext.fakeClassQuests(Q, { { chain = a, state = "available" }, { chain = b, state = "available" } })
+    Q:Fire("CLASSQUESTS_CHANGED")
+    t.eq(plain(T.alertText:GetText()), string.format(Q.L.UI_CLASS_ALERT_LATE_ONE, "The Stolen Tome"),
+      "one late chain among others: its name")
+    local a2 = Ext.warlockChain()
+    a2.key, a2.level = "WARLOCK_Y", 5
+    Ext.fakeClassQuests(Q, { { chain = a, state = "available" }, { chain = a2, state = "available" } })
+    Q:Fire("CLASSQUESTS_CHANGED")
+    t.eq(plain(T.alertText:GetText()), string.format(Q.L.UI_CLASS_ALERT_LATE_MANY, 2))
+    -- aucune en retard : texte habituel
+    Ext.fakeClassQuests(Q, { { chain = b, state = "available" } })
+    Q:Fire("CLASSQUESTS_CHANGED")
+    t.eq(plain(T.alertText:GetText()), string.format(Q.L.UI_CLASS_ALERT_ONE, "Other chain"))
+    t.eq(#Mock.errors, 0)
+  end,
+
   tracker_class_alert_uses_quest_name = function(t)
     local Q = load()
     local chain = Ext.warlockChain()

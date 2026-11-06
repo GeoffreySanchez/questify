@@ -190,6 +190,29 @@ return {
     t.eq(#Q.char.inserted, 0)
   end,
 
+  is_late_when_available_below_the_player_level = function(t)
+    warlock()
+    local Q = load()
+    Mock.player.level = 10
+    Mock.fire("PLAYER_LEVEL_UP", 10)
+    local CQ = Q.ClassQuests
+    t.eq(stateOf(Q, "WARLOCK_1598"), "available")
+    t.ok(CQ.IsLate({ level = 1 }, "available"), "level 1 chain, player 10")
+    t.ok(not CQ.IsLate({ level = 10 }, "available"), "same level: not late")
+    t.ok(not CQ.IsLate({ level = 1 }, "ignored"), "ignored: not late")
+    t.ok(not CQ.IsLate({ level = 1 }, "added"), "added: not late")
+    t.ok(not CQ.IsLate({ level = 1 }, "done"), "done: not late")
+  end,
+
+  add_on_an_ignored_chain_adds_it_in_one_call = function(t)
+    warlock()
+    local Q = load()
+    t.eq(Q.ClassQuests:Ignore("WARLOCK_1598"), true)
+    t.eq(Q.ClassQuests:Add("WARLOCK_1598"), true)
+    t.eq(stateOf(Q, "WARLOCK_1598"), "added")
+    t.eq(Q.char.classQuests.ignored.WARLOCK_1598, nil)
+  end,
+
   ignore_removes_steps = function(t)
     warlock()
     local Q = load()

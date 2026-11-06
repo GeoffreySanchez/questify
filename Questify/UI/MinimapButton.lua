@@ -243,6 +243,8 @@ function Button:MenuEntries()
     run = function() Button:OpenOptions() end }
   out[#out + 1] = { kind = "button", key = "journal", text = L.MINIMAP_MENU_JOURNAL,
     run = function() Button:OpenJournal("route") end }
+  out[#out + 1] = { kind = "button", key = "class", text = L.MINIMAP_MENU_CLASS,
+    run = function() Button:OpenJournal("class") end }
   out[#out + 1] = { kind = "button", key = "wizard", text = L.MINIMAP_MENU_WIZARD,
     run = function() Button:OpenWizard() end }
   out[#out + 1] = { kind = "button", key = "bug", text = L.MINIMAP_MENU_BUG,

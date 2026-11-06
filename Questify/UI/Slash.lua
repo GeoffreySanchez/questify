@@ -4,6 +4,7 @@ local addonName, Q = ...
 --   /qf            ouvre ou ferme le journal
 --   /qf skip       passe l'étape courante
 --   /qf back       rouvre l'étape précédente
+--   /qf classe     journal sur l'onglet Quêtes de classe (alias /qf class)
 --   /qf options    fenêtre d'options (/qf options <texte> : avec cette recherche)
 --   /qf wizard     assistant de navigation
 --   /qf export     mesures de temps, prêtes à copier
@@ -79,6 +80,13 @@ COMMANDS.route = function()
   local P = Q.UI and Q.UI.RouteChoicePopup
   if P then P:OpenForPlayer() end
 end
+
+-- Quêtes de classe : retrouver une quête en retard et l'ajouter à la route.
+COMMANDS.classe = function()
+  local J = journal()
+  if J then J:ShowTab("class") end
+end
+COMMANDS.class = COMMANDS.classe
 
 COMMANDS.options = function(rest)
   local O = Q.UI and Q.UI.Options

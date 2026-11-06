@@ -588,6 +588,12 @@ end
 ---------------------------------------------------------------------------
 -- Chaînes en alerte. Alerts() peut renvoyer des chaînes ou des lignes { chain, state } :
 -- on accepte les deux formes.
+-- Une chaîne en alerte est « disponible » : elle est en retard si son niveau est sous celui du joueur.
+local function isLate(chain)
+  local cq = Q.ClassQuests
+  return cq and cq.IsLate and cq.IsLate(chain, "available") or false
+end
+
 local function classAlerts()
   local cq = Q.ClassQuests
   if not (cq and cq.Alerts) then return {} end
@@ -603,7 +609,13 @@ local function classAlerts()
       if type(chain) == "table" and chain.key then out[#out + 1] = chain end
     end
   end
-  return out
+  -- les chaînes en retard passent en tête (l'ordre reste stable pour le reste)
+  local late, rest = {}, {}
+  for _, chain in ipairs(out) do
+    if isLate(chain) then late[#late + 1] = chain else rest[#rest + 1] = chain end
+  end
+  for _, chain in ipairs(rest) do late[#late + 1] = chain end
+  return late
 end
 Tracker.ClassAlerts = function() return classAlerts() end
 
@@ -1168,7 +1180,15 @@ function Tracker:Refresh()
   -- Alerte de quête de classe
   local alerts = classAlerts()
   if #alerts > 0 then
-    if #alerts == 1 then
+    local lateCount = 0
+    for _, chain in ipairs(alerts) do
+      if isLate(chain) then lateCount = lateCount + 1 end
+    end
+    if lateCount == 1 then
+      self.alertText:SetFormattedText(L.UI_CLASS_ALERT_LATE_ONE, chainTitle(alerts[1]))   -- les retards sont en tête
+    elseif lateCount > 1 then
+      self.alertText:SetFormattedText(L.UI_CLASS_ALERT_LATE_MANY, lateCount)
+    elseif #alerts == 1 then
       self.alertText:SetFormattedText(L.UI_CLASS_ALERT_ONE, chainTitle(alerts[1]))
     else
       self.alertText:SetFormattedText(L.UI_CLASS_ALERT_MANY, #alerts)

@@ -69,6 +69,13 @@ local function chainState(chain, cq)
   return "upcoming"
 end
 
+-- IsLate(chain, state) : une chaîne est en retard quand elle est disponible (ni faite, ni ajoutée,
+-- ni ignorée) et que son niveau est inférieur à celui du joueur.
+function ClassQuests.IsLate(chain, state)
+  if state ~= "available" or type(chain) ~= "table" then return false end
+  return (tonumber(chain.level) or 1) < (tonumber(Q.Player and Q.Player.level) or 1)
+end
+
 ---------------------------------------------------------------------------
 -- Donneur le plus proche
 ---------------------------------------------------------------------------

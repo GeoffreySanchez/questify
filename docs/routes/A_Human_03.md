@@ -6,13 +6,14 @@ Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d30
 |---|---|
 | Level band | 11-16 |
 | Simulated level | 11.00 -> 16.06 |
-| Time | 134 min |
+| Time | 133 min |
 | XP gained | 49788 |
-| XP/h | 22365 |
-| Steps | 69 |
+| XP/h | 22380 |
+| Steps | 68 |
 | Quests turned in | 23 |
 | Hubs | 8 |
 | Median ratio (XP/s) | 5.45 |
+| Hearthstone | no new bind; 0 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
 
@@ -132,7 +133,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 4 | A | 92742 | Testing the Wells | 1436 | 52.5, 53.0 | 208 |  |
 | 5 | A | 92744 | Murloc Gills | 1436 | 52.5, 53.0 | 0 |  |
 | 6 | A | 79093 | Rumi of Gnomeregan: The Collected Works | 1436 | 52.7, 53.8 | 20 |  |
-| 7 | A | 9 | The Killing Fields | 1436 | 56.0, 31.2 | 536 |  |
+| 7 | A | 9 | The Killing Fields | 1436 | 56.0, 31.2 | 539 |  |
 | 8 | A | 22 | Goretusk Liver Pie | 1436 | 56.4, 30.5 | 21 |  |
 | 9 | A | 151 | Poor Old Blanchy | 1436 | 59.9, 19.4 | 286 |  |
 | 10 | A | 64 | The Forgotten Heirloom | 1436 | 60.0, 19.4 | 1 |  |
@@ -195,7 +196,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 67 | T | 6281 | Continue to Stormwind | 1453 | 77.2, 61.0 | 572 |  |
 | 68 | T | 92748 | Explosive Consultation | 1453 | 61.9, 30.6 | 441 |  |
 
-Walking between tasks: 15798 yd (~38 min at 7 yd/s).
+Walking between tasks: 15801 yd (~38 min at 7 yd/s).
 
 ## Qualité
 
@@ -215,7 +216,7 @@ Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint la
 
 ## Logistics
 
-- step 7: `sethearth 1436 52.86 53.71`
+None.
 
 ## Warnings
 

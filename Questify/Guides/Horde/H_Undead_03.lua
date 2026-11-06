@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 89 étapes, niveau final 16.25, ~22636 xp/h, 113 min.
+-- Simulation : 89 étapes, niveau final 16.25, ~23227 xp/h, 110 min.
 Q:RegisterGuide({
   id = "H_Undead_03",
   title = "Silverpine Forest",
@@ -10,12 +10,11 @@ Q:RegisterGuide({
   races = { "Undead" },
   minLevel = 12, maxLevel = 15,
   nextByRace = { Undead = "H_01" },
-  sim = { steps = 89, endLevel = 16.25, xpPerHour = 22636, minutes = 113 },
+  sim = { steps = 89, endLevel = 16.25, xpPerHour = 23227, minutes = 110 },
   steps = {
     { "accept", 447 }, -- A Recipe For Death (lvl 12, ~910 xp, sim lvl 13)
     { "accept", 91921 }, -- Return to Quinn (Again) (lvl 11, ~660 xp, sim lvl 13)
     { "accept", 6321 }, -- Supplying the Sepulcher (lvl 10, ~210 xp, sim lvl 13)
-    { "sethearth", 1421, 43.18, 41.28 }, -- lier la pierre de foyer
     { "accept", 437 }, -- The Dead Fields (lvl 14, ~980 xp, sim lvl 13)
     { "accept", 428 }, -- Lost Deathstalkers (lvl 12, ~225 xp, sim lvl 13)
     { "accept", 477 }, -- Border Crossings (lvl 14, ~980 xp, sim lvl 13)
@@ -99,6 +98,7 @@ Q:RegisterGuide({
     { "accept", 425 }, -- Ivar the Foul (lvl 12, ~680 xp, sim lvl 16)
     { "complete", 425, at = { 1421, 51.52, 13.9 } }, -- Ivar the Foul (lvl 12, ~680 xp, sim lvl 16)
     { "turnin", 425, xp = 680 }, -- Ivar the Foul (lvl 12, ~680 xp, sim lvl 16)
+    { "hearth", 1420 }, -- pierre de foyer
     { "turnin", 440, xp = 580 }, -- The Engraved Ring (lvl 16, ~580 xp, sim lvl 16)
     { "boat", 1420, 60.7, 58.9, note = "Take the zeppelin to Orgrimmar (Durotar)" }, -- bateau
   },

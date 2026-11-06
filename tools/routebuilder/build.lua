@@ -180,9 +180,17 @@ function build.simulateFaction(D, W, faction, ov, only)
     end
     return out
   end
+  -- point de départ du trajet vers le chapitre suivant du parcours (quai d'arrivée ou entrée)
+  local function nextEntry(plan, race)
+    local path = plansm.pathFor(faction, race)
+    for i, p in ipairs(path) do
+      local n = p.id == plan.id and path[i + 1]
+      if n then return (n.arrive and n.arrive.via) or n.entry end
+    end
+  end
   local function run(plan, state, race, exitTo)
     local steps, report = sim.chapter(D, W, plan, state, { overrides = ov, carryZones = carryZones(plan, race),
-      exitTo = exitTo })
+      exitTo = exitTo, nextEntry = exitTo or nextEntry(plan, race) })
     build.applyInserts(plan.id, steps, ov)
     report.simRace = race
     results[plan.id] = { plan = plan, steps = steps, report = report }
@@ -355,6 +363,7 @@ function build.reportText(D, plan, steps, report, meta)
   w(("| Median ratio (XP/s) | %.2f |"):format(report.medianRatio or 0))
   if report.grindMobs then w(("| Grinding (level steps) | ~%d mobs |"):format(report.grindMobs)) end
   if report.widened then w(("| Level band | %s |"):format(report.widened)) end
+  if report.hearthPlan then w(("| Hearthstone | %s |"):format(report.hearthPlan)) end
   w()
   w("## Kept quests (turn-in order)")
   w()

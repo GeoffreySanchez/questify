@@ -13,6 +13,7 @@ Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d30
 | Quests turned in | 45 |
 | Hubs | 7 |
 | Median ratio (XP/s) | 3.58 |
+| Hearthstone | bound to Innkeeper Renee after task 23; 2 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
 

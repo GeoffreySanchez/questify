@@ -18,6 +18,10 @@
 --   logCap = n|nil                   -- plafond du journal (défaut 20)
 --   strictLevel = true|nil           -- farm des tâches bloquées par le niveau compté dans l'ordonnancement
 --                                    -- (objectifs jamais avancés vers un niveau plus bas ; plus de marche)
+--   precede = { { "A3376", "O757" }, ... }|nil  -- ordre imposé : la première tâche avant la seconde
+--                                    -- (A/T/C<quête> ; O<quête> = tous les objectifs de la quête)
+--   safeLevel = { [questId] = n }|nil -- niveau dès lequel les objectifs de la quête sont faits (remplace le
+--                                    -- niveau « sûr » calculé : quête niveau - 1, monstres niveau - 1)
 --   next = id | nextByRace = { [raceKey] = id }
 --   choices = { { id = planId, races = {raceKey,...}|nil, label = "..."|nil, weight = n|nil,
 --                 travel = { kind = "walk"|"fly"|"boat"|"zeppelin"|"tram"|"portal"|"hearth",
@@ -57,6 +61,9 @@ plans.Alliance = {
     flightPaths = { "Ironforge, Dun Morogh" },
     dungeons = { "The Hall of Thanes", "Gnomeregan" },
     optional = { [96391] = "The Hall of Thanes", [96392] = "The Hall of Thanes", [96393] = "The Hall of Thanes" },
+    -- Réserve de MacGrann (312) : un coffre, pas de monstre à tuer ; faite dès la prise (38.51, 53.93) au lieu
+    -- d'attendre le niveau 11 (retour depuis Gol'Bolar). Mesuré : Nain/Gnome 1-30 -16 min.
+    safeLevel = { [312] = 7 },
   },
   {
     id = "A_DwarfGnome_03", title = "Loch Modan", faction = "Alliance", races = { "Dwarf", "Gnome" },
@@ -65,10 +72,10 @@ plans.Alliance = {
     flightPaths = { "Thelsamar, Loch Modan" },
     -- Fin à Stormwind : Marche de l'Ouest à pied (suite par défaut) ou Sombrivage par le bateau du port
     -- de Stormwind (A_01 commence par ce bateau). Minutes : travel.lua A_DwarfGnome_03 (guides du
-    -- 2026-11-06, QuestieDB v1.0.11) ; A_DwarfGnome_04 commence dans le quartier des Nains de Stormwind
-    -- (15 s de marche), Sombrivage 105 s de marche + 300 s de bateau + 44 s de marche.
+    -- 2026-11-06, QuestieDB v1.0.11, lot I) : fin au sud de Stormwind, Marche de l'Ouest 122 s de marche,
+    -- Sombrivage 80 s de marche + 300 s de bateau + 44 s de marche.
     choices = {
-      { id = "A_DwarfGnome_04", travel = { kind = "walk", minutes = 0 } },
+      { id = "A_DwarfGnome_04", travel = { kind = "walk", minutes = 2 } },
       { id = "A_01", travel = { kind = "boat", minutes = 7 } },
     },
   },
@@ -117,11 +124,16 @@ plans.Alliance = {
     zones = { TELDRASSIL, DARNASSUS }, endZones = { DARKSHORE },
     minLevel = 6, maxLevel = 11, entry = { TELDRASSIL, 55.9, 57.3 }, next = "A_NightElf_03",
     flightPaths = { "Rut'theran Village, Teldrassil" },
+    -- strictLevel (QuestieDB v1.0.11 : Escaping Ban'ethil 99053 passe niveau 10) : sans lui, 105 mobs de farm
+    -- au milieu du chapitre pour des objectifs avancés avant leur niveau ; avec lui (et sur A_NightElf_03),
+    -- Elfe 1-30 -23 min, farm 105 -> 11 mobs ici.
+    strictLevel = true,
   },
   {
     id = "A_NightElf_03", title = "Darkshore", faction = "Alliance", races = { "NightElf" },
     zones = { DARKSHORE }, minLevel = 11, maxLevel = 19, entry = { DARKSHORE, 37.0, 44.0 },
     flightPaths = { "Auberdine, Darkshore" },
+    strictLevel = true, -- avec A_NightElf_02 (voir là-bas) : sinon jusqu'à 159 mobs de farm pour une tête de chaîne
     dungeons = { "Blackfathom Deeps" },
     nextByRace = { NightElf = "A_02" },
   },
@@ -201,6 +213,11 @@ plans.Horde = {
     id = "H_Tauren_01", title = "Camp Narache", faction = "Horde", races = { "Tauren" },
     zones = { MULGORE }, bounds = { [MULGORE] = { 33, 62, 66, 92 } }, endZones = { MULGORE },
     minLevel = 1, maxLevel = 6, entry = { MULGORE, 43.9, 76.7 }, next = "H_Tauren_02",
+    -- Socle du camp (747, 750, 780, 745, 781) avec 752 et 3376, sinon écartés par le budget d'XP ; forcer le
+    -- socle seul faisait perdre 752 et Sharptusk (55 -> 64 min). 3376 prise avant le premier passage à
+    -- Brambleblade (objectif de 757 au même endroit). Mesuré (QuestieDB v1.0.11) : Tauren 1-30 -62 min.
+    force = { [747] = true, [750] = true, [780] = true, [745] = true, [781] = true, [752] = true, [3376] = true },
+    precede = { { "A3376", "O757" } },
   },
   {
     id = "H_Tauren_02", title = "Mulgore", faction = "Horde", races = { "Tauren" },
@@ -261,6 +278,8 @@ plans.Horde = {
   {
     id = "H_04", title = "Southern Barrens and Thousand Needles", faction = "Horde", zones = { BARRENS, NEEDLES },
     minLevel = 25, maxLevel = 28, levelSlack = 0, levelBelow = 6, far = 1600, entry = { BARRENS, 44.5, 59.1 }, next = "H_05",
+    -- Egg Hunt (868) faite dans le sud des Tarides avant Mille pointes, sans y revenir. Mesuré : Horde -11 min.
+    precede = { { "O868", "O1153" }, { "O868", "A1149" }, { "O868", "A5147" }, { "O868", "A4821" } },
     flightPaths = { "Freewind Post, Thousand Needles" },
   },
   {

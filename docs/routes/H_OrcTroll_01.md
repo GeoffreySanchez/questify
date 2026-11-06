@@ -13,6 +13,7 @@ Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d30
 | Quests turned in | 15 |
 | Hubs | 2 |
 | Median ratio (XP/s) | 2.79 |
+| Hearthstone | no new bind; 0 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
 

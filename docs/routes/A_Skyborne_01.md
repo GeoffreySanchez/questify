@@ -8,13 +8,14 @@ Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d30
 | Simulated level | 1.00 -> 17.85 |
 | Time | 244 min |
 | XP gained | 123771 |
-| XP/h | 30409 |
-| Steps | 209 |
+| XP/h | 30420 |
+| Steps | 208 |
 | Quests turned in | 73 |
 | Hubs | 17 |
 | Median ratio (XP/s) | 4.43 |
 | Grinding (level steps) | ~83 mobs |
 | Level band | grinding 83 mobs with quests up to level 18: band widened to level 21 |
+| Hearthstone | no new bind; 0 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
 
@@ -475,11 +476,10 @@ Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint la
 - step 1: `level 2` — About 8 mobs here (Roiling Winds, level 2)
 - step 3: `level 4` — About 46 mobs here (Roiling Winds, level 2)
 - step 9: `level 5` — About 28 mobs here (Prideclaw, level 5)
-- step 15: `sethearth 2521 43.01 43.23`
-- step 55: `level 8` — About 1 mobs here (Hippogryph Youth, level 6)
-- step 207: `boat 2521 65.1 81.4` — Take the skyboat to Dalaran (east dock of Valanaar)
-- step 208: `goto 1416 12 56.2` — Take the Skyborne portal to Stormwind
-- step 209: `fp 1453 71.29 72.23`
+- step 54: `level 8` — About 1 mobs here (Hippogryph Youth, level 6)
+- step 206: `boat 2521 65.1 81.4` — Take the skyboat to Dalaran (east dock of Valanaar)
+- step 207: `goto 1416 12 56.2` — Take the Skyborne portal to Stormwind
+- step 208: `fp 1453 71.29 72.23`
 
 ## Warnings
 

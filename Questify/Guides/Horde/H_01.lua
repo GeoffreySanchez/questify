@@ -2,20 +2,19 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 134 étapes, niveau final 17.85, ~23356 xp/h, 184 min.
+-- Simulation : 132 étapes, niveau final 17.85, ~23121 xp/h, 186 min.
 Q:RegisterGuide({
   id = "H_01",
   title = "The Barrens",
   faction = "Horde",
   minLevel = 12, maxLevel = 17,
   next = "H_02",
-  sim = { steps = 134, endLevel = 17.85, xpPerHour = 23356, minutes = 184 },
+  sim = { steps = 132, endLevel = 17.85, xpPerHour = 23121, minutes = 186 },
   steps = {
     { "accept", 842, race = { "Orc", "Troll" } }, -- Crossroads Conscription (lvl 12, ~910 xp, sim lvl 12)
     { "fp", 1413, 51.5, 30.34 }, -- point de vol
     { "accept", 6365, race = { "Orc", "Troll" } }, -- Meats to Orgrimmar (lvl 10, ~210 xp, sim lvl 12)
     { "accept", 869 }, -- Raptor Thieves (lvl 13, ~910 xp, sim lvl 12)
-    { "sethearth", 1413, 51.99, 29.89 }, -- lier la pierre de foyer
     { "accept", 5041 }, -- Supplies for the Crossroads (lvl 14, ~980 xp, sim lvl 12)
     { "accept", 871 }, -- Disrupt the Attacks (lvl 12, ~910 xp, sim lvl 12)
     { "accept", 867 }, -- Harpy Raiders (lvl 15, ~1050 xp, sim lvl 12)
@@ -99,7 +98,6 @@ Q:RegisterGuide({
     { "turnin", 858, xp = 1350 }, -- Ignition (lvl 18, ~1350 xp, sim lvl 16)
     { "accept", 863 }, -- The Escape (lvl 18, ~1700 xp, sim lvl 16)
     { "complete", 863, at = { 1413, 55.36, 7.68 } }, -- The Escape (lvl 18, ~1700 xp, sim lvl 16)
-    { "hearth", 1413 }, -- pierre de foyer
     { "turnin", 851, xp = 1000 }, -- Verog the Dervish (lvl 18, ~1000 xp, sim lvl 16)
     { "accept", 852 }, -- Hezrul Bloodmark (lvl 19, ~1100 xp, sim lvl 16)
     { "accept", 1486, optional = true, dungeon = "Wailing Caverns" }, -- Deviate Hides (lvl 17, ~0 xp, sim lvl 16)

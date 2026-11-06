@@ -14,6 +14,7 @@ Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d30
 | Hubs | 5 |
 | Median ratio (XP/s) | 4.30 |
 | Grinding (level steps) | ~10 mobs |
+| Hearthstone | no new bind; 0 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
 

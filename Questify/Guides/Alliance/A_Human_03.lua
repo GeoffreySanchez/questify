@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 69 étapes, niveau final 16.06, ~22365 xp/h, 134 min.
+-- Simulation : 68 étapes, niveau final 16.06, ~22380 xp/h, 133 min.
 Q:RegisterGuide({
   id = "A_Human_03",
   title = "Westfall",
@@ -10,7 +10,7 @@ Q:RegisterGuide({
   races = { "Human" },
   minLevel = 11, maxLevel = 16,
   next = "A_01",
-  sim = { steps = 69, endLevel = 16.06, xpPerHour = 22365, minutes = 134 },
+  sim = { steps = 68, endLevel = 16.06, xpPerHour = 22380, minutes = 133 },
   steps = {
     { "accept", 12 }, -- The People's Militia (lvl 12, ~910 xp, sim lvl 11)
     { "accept", 102 }, -- Patrolling Westfall (lvl 14, ~980 xp, sim lvl 11)
@@ -18,7 +18,6 @@ Q:RegisterGuide({
     { "accept", 92742 }, -- Testing the Wells (lvl 12, ~910 xp, sim lvl 11)
     { "accept", 92744 }, -- Murloc Gills (lvl 12, ~910 xp, sim lvl 11)
     { "accept", 79093 }, -- Rumi of Gnomeregan: The Collected Works (lvl 20, ~1550 xp, sim lvl 11)
-    { "sethearth", 1436, 52.86, 53.71 }, -- lier la pierre de foyer
     { "accept", 9 }, -- The Killing Fields (lvl 15, ~1050 xp, sim lvl 11)
     { "accept", 22 }, -- Goretusk Liver Pie (lvl 12, ~910 xp, sim lvl 11)
     { "accept", 151 }, -- Poor Old Blanchy (lvl 14, ~1250 xp, sim lvl 11)

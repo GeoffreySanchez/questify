@@ -17,27 +17,27 @@ its reason in the chapter report).
 | Chapter | Zone | Band | Sim level | XP/h | Steps | Time | Grind (mobs) | Quality items |
 |---|---|---|---|---|---|---|---|---|
 | A_DwarfGnome_01 | Coldridge Valley | 1-6 | 1.00 -> 6.01 | 12 650 | 40 | 36 min | 10 | 0 |
-| A_DwarfGnome_02 | Dun Morogh (+ Ironforge) | 6-11 | 6.00 -> 12.01 | 19 126 | 103 | 114 min | 0 | 0 |
-| A_DwarfGnome_03 | Loch Modan (+ Ironforge) | 11-14 | 12.00 -> 15.74 | 20 455 | 80 | 132 min | 109 | 0 |
-| A_DwarfGnome_04 | Westfall | 14-16 | 15.00 -> 17.20 | 17 608 | 45 | 79 min | 0 | 0 |
+| A_DwarfGnome_02 | Dun Morogh (+ Ironforge) | 6-11 | 6.00 -> 11.99 | 19 817 | 104 | 110 min | 0 | 0 |
+| A_DwarfGnome_03 | Loch Modan (+ Ironforge) | 11-14 | 11.00 -> 15.57 | 21 162 | 79 | 121 min | 73 | 0 |
+| A_DwarfGnome_04 | Westfall | 14-16 | 15.00 -> 17.07 | 18 059 | 44 | 78 min | 0 | 0 |
 | A_Human_01 | Northshire | 1-6 | 1.00 -> 6.27 | 11 675 | 52 | 44 min | 0 | 0 |
-| A_Human_02 | Elwynn Forest (+ Stormwind) | 6-11 | 6.00 -> 12.00 | 18 089 | 114 | 117 min | 0 | 0 |
-| A_Human_03 | Westfall | 11-16 | 11.00 -> 16.06 | 22 365 | 69 | 134 min | 0 | 0 |
+| A_Human_02 | Elwynn Forest (+ Stormwind) | 6-11 | 6.00 -> 12.00 | 18 105 | 113 | 117 min | 0 | 0 |
+| A_Human_03 | Westfall | 11-16 | 11.00 -> 16.06 | 22 380 | 68 | 133 min | 0 | 0 |
 | A_NightElf_01 | Shadowglen | 1-6 | 1.00 -> 6.53 | 10 037 | 44 | 57 min | 0 | 0 |
-| A_NightElf_02 | Teldrassil (+ Darnassus) | 6-11 | 6.00 -> 12.76 | 17 496 | 120 | 145 min | 105 | 0 |
-| A_NightElf_03 | Darkshore (whole zone) | 11-19 | 12.00 -> 19.25 | 24 659 | 153 | 242 min | 77 | 0 |
-| A_Skyborne_01 | Zephras Isle | 1-15 | 1.00 -> 17.85 | 30 409 | 209 | 244 min | 83 | 0 |
+| A_NightElf_02 | Teldrassil (+ Darnassus) | 6-11 | 6.00 -> 12.11 | 17 701 | 119 | 121 min | 11 | 0 |
+| A_NightElf_03 | Darkshore (whole zone) | 11-19 | 12.00 -> 19.27 | 26 043 | 161 | 246 min | 64 | 0 |
+| A_Skyborne_01 | Zephras Isle | 1-15 | 1.00 -> 17.85 | 30 420 | 208 | 244 min | 83 | 0 |
 | A_01 | Darkshore (trunk) | 16-19 | 16.00 -> 19.88 | 26 899 | 119 | 158 min | 0 | 0 |
-| A_02 | Ashenvale and Stonetalon Mountains | 20-22 | 19.00 -> 22.00 | 26 669 | 63 | 145 min | 73 | 0 |
-| A_03 | Redridge Mountains and Duskwood | 22-26 | 22.00 -> 26.76 | 31 832 | 156 | 283 min | 0 | 0 |
-| A_04 | Wetlands | 26-29 | 26.00 -> 29.15 | 33 897 | 89 | 169 min | 72 | 0 |
+| A_02 | Ashenvale and Stonetalon Mountains | 20-22 | 19.00 -> 22.00 | 26 612 | 62 | 144 min | 13 | 0 |
+| A_03 | Redridge Mountains and Duskwood | 22-26 | 22.00 -> 26.76 | 32 165 | 154 | 280 min | 0 | 0 |
+| A_04 | Wetlands | 26-29 | 26.00 -> 29.15 | 33 914 | 88 | 169 min | 72 | 0 |
 | A_05 | Hillsbrad Foothills | 29-30 | 29.00 -> 30.00 | 33 050 | 26 | 69 min | 11 | 0 |
 
 Race paths:
 
 - Dwarf / Gnome: Coldridge, Dun Morogh, Loch Modan, Westfall (through the Deeprun Tram), then the trunk
-  from A_01 (Stormwind Harbor boat to Auberdine). About 19 h 45 min of simulated play to level 30
-  (1 185 min), with about 275 mobs of grinding in all (QuestieDB v1.0.11).
+  from A_01 (Stormwind Harbor boat to Auberdine). About 19 h 25 min of simulated play to level 30
+  (1 165 min), with about 179 mobs of grinding in all (QuestieDB v1.0.11).
 - Human: Northshire, Elwynn, Westfall, then the trunk from A_01.
 - Night Elf: Shadowglen, Teldrassil, the whole of Darkshore, then the trunk from A_02 (Ashenvale).
 - Skyborne: Zephras Isle (1-17), skyboat to Dalaran and Skyborne portal to Stormwind, then A_01.
@@ -156,23 +156,52 @@ Quality items before / after the sweep (same data, `ROUTEBUILDER_NO_SWEEP=1` for
 - Side effect: A_01 goes from 153 to 158 min. The trunk starts from the lowest path (Human), and the
   Human fixes change that start state. With the same 42 quests, the ordering finds another route.
 
+## Changes of 2026-11-06, wave B (generator)
+
+Each change was measured on the simulator, then the guides were regenerated (`--faction all`).
+
+| Race path 1-30 | Before (QuestieDB v1.0.11, wave A) | After |
+|---|---|---|
+| Human | 1 119 min | 1 114 min |
+| Dwarf / Gnome | 1 185 min | 1 165 min |
+| Night Elf | 1 110 min | 1 086 min |
+| Orc / Troll | 1 174 min | 1 161 min |
+| Tauren | 1 258 min | 1 181 min |
+| Undead | 1 306 min | 1 290 min |
+| Skyborne (Alliance) | 1 068 min | 1 064 min |
+| Skyborne (Horde) | 1 220 min | 1 205 min |
+
+- Hearthstone: binds chosen on the real travel cost, up to two per chapter, with the travel to the next
+  chapter counted, and return bundles (see `tools/routebuilder/README.md`, "Hearthstone"). 0 to -5 min
+  per path. Teldrassil binds at Dolanaar earlier (step 39 instead of 55); Zephras Isle (Horde) binds at
+  Valanaar for its second hub. A bind that is never used is no longer written (Zephras Isle Alliance, Bloodhoof
+  in the Tauren start).
+- Prerequisites: a quest of the log turned in in this chapter now opens its follow-ups (The Tower of
+  Althalaxx 970 and 973 in A_02, after 967 done in Darkshore).
+- `strictLevel` on A_NightElf_02 and A_NightElf_03: Escaping Ban'ethil (99053) is level 10 in v1.0.11, and
+  the ordering did objectives before their safe level (105 mobs of grinding in Teldrassil). Night Elf -24 min.
+- Tauren start: the camp quests 747, 750, 780, 745 and 781 are forced with 752 and 3376, and Break
+  Sharptusk! is accepted before the first trip to Brambleblade Ravine. Tauren -77 min (Mulgore 232 -> 158 min).
+- Tundra MacGrann's Stolen Stash (312) is done right after it is accepted (`safeLevel`): Dwarf -16 min.
+- Egg Hunt (868) is done in the Southern Barrens before Thousand Needles: Horde -11 min.
+
 ## Horde
 
 | Chapter | Zone | Band | Sim level | XP/h | Steps | Time | Grind (mobs) | Quality items |
 |---|---|---|---|---|---|---|---|---|
 | H_OrcTroll_01 | Valley of Trials | 1-6 | 1.00 -> 6.08 | 12 347 | 40 | 38 min | 0 | 0 |
 | H_OrcTroll_02 | Durotar (+ Orgrimmar) | 6-12 | 6.00 -> 12.83 | 16 238 | 107 | 165 min | 0 | 0 |
-| H_Tauren_01 | Camp Narache | 1-6 | 1.00 -> 7.14 | 12 838 | 47 | 55 min | 15 | 0 |
-| H_Tauren_02 | Mulgore (+ Thunder Bluff) | 6-12 | 7.00 -> 13.73 | 13 118 | 86 | 232 min | 0 | 0 |
+| H_Tauren_01 | Camp Narache | 1-6 | 1.00 -> 7.34 | 11 775 | 38 | 65 min | 0 | 0 |
+| H_Tauren_02 | Mulgore (+ Thunder Bluff) | 6-12 | 7.00 -> 13.13 | 16 336 | 101 | 158 min | 27 | 0 |
 | H_Undead_01 | Deathknell | 1-6 | 1.00 -> 6.02 | 10 280 | 35 | 45 min | 1 | 0 |
 | H_Undead_02 | Tirisfal Glades (+ Undercity) | 6-12 | 6.00 -> 13.00 | 15 765 | 132 | 177 min | 0 | 0 |
-| H_Undead_03 | Silverpine Forest (+ Undercity) | 12-15 | 13.00 -> 16.25 | 22 636 | 89 | 113 min | 0 | 0 |
-| H_Skyborne_01 | Zephras Isle | 1-15 | 1.00 -> 17.98 | 30 425 | 209 | 249 min | 57 | 0 |
-| H_01 | The Barrens (trunk) | 12-17 | 12.00 -> 17.85 | 23 356 | 134 | 184 min | 2 | 2 |
-| H_02 | Stonetalon Mountains and The Barrens | 17-21 | 17.00 -> 21.14 | 24 527 | 99 | 171 min | 0 | 0 |
+| H_Undead_03 | Silverpine Forest (+ Undercity) | 12-15 | 13.00 -> 16.25 | 23 227 | 89 | 110 min | 0 | 0 |
+| H_Skyborne_01 | Zephras Isle | 1-15 | 1.00 -> 17.98 | 30 647 | 211 | 247 min | 57 | 0 |
+| H_01 | The Barrens (trunk) | 12-17 | 12.00 -> 17.85 | 23 121 | 132 | 186 min | 2 | 2 |
+| H_02 | Stonetalon Mountains and The Barrens | 17-21 | 17.00 -> 21.14 | 24 560 | 99 | 171 min | 0 | 0 |
 | H_03 | Ashenvale and Stonetalon Mountains | 21-25 | 21.00 -> 25.11 | 31 546 | 98 | 216 min | 55 | 6 |
-| H_04 | Southern Barrens and Thousand Needles | 25-28 | 25.00 -> 28.00 | 28 305 | 104 | 224 min | 85 | 2 |
-| H_05 | Hillsbrad Foothills | 28-30 | 28.00 -> 30.11 | 30 850 | 54 | 176 min | 0 | 3 |
+| H_04 | Southern Barrens and Thousand Needles | 25-28 | 25.00 -> 28.00 | 30 704 | 108 | 206 min | 72 | 1 |
+| H_05 | Hillsbrad Foothills | 28-30 | 28.00 -> 30.10 | 30 450 | 53 | 179 min | 0 | 3 |
 
 Race paths:
 

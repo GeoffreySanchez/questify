@@ -5,14 +5,15 @@ Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d30
 | Item | Value |
 |---|---|
 | Level band | 14-16 |
-| Simulated level | 15.00 -> 17.20 |
-| Time | 79 min |
-| XP gained | 23243 |
-| XP/h | 17608 |
-| Steps | 45 |
+| Simulated level | 15.00 -> 17.07 |
+| Time | 78 min |
+| XP gained | 23361 |
+| XP/h | 18059 |
+| Steps | 44 |
 | Quests turned in | 14 |
 | Hubs | 8 |
 | Median ratio (XP/s) | 6.12 |
+| Hearthstone | no new bind; 0 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
 
@@ -20,18 +21,18 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 
 | # | Quest | Name | Lvl | XP | Sim lvl |
 |---|---|---|---|---|---|
-| 1 | 92742 | Testing the Wells | 12 | 910 est. | 15 |
-| 2 | 92744 | Murloc Gills | 12 | 910 est. | 15 |
-| 3 | 136 | Captain Sander's Hidden Treasure | 16 | 580 | 16 |
-| 4 | 138 | Captain Sander's Hidden Treasure | 16 | 580 | 16 |
+| 1 | 92744 | Murloc Gills | 12 | 910 est. | 15 |
+| 2 | 92742 | Testing the Wells | 12 | 910 est. | 15 |
+| 3 | 136 | Captain Sander's Hidden Treasure | 16 | 580 | 15 |
+| 4 | 138 | Captain Sander's Hidden Treasure | 16 | 580 | 15 |
 | 5 | 139 | Captain Sander's Hidden Treasure | 16 | 580 | 16 |
 | 6 | 140 | Captain Sander's Hidden Treasure | 16 | 1150 | 16 |
 | 7 | 12 | The People's Militia | 12 | 910 | 16 |
 | 8 | 92745 | The State of the Mines | 14 | 980 est. | 16 |
 | 9 | 92747 | Moonbrook Espionage | 15 | 1050 est. | 16 |
 | 10 | 13 | The People's Militia | 14 | 980 | 16 |
-| 11 | 14 | The People's Militia | 17 | 1600 | 17 |
-| 12 | 151 | Poor Old Blanchy | 14 | 1250 | 17 |
+| 11 | 14 | The People's Militia | 17 | 1600 | 16 |
+| 12 | 151 | Poor Old Blanchy | 14 | 1250 | 16 |
 | 13 | 64 | The Forgotten Heirloom | 12 | 910 | 17 |
 | 14 | 92748 | Explosive Consultation | 16 | 580 est. | 17 |
 
@@ -130,52 +131,52 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 
 | # | Task | Quest | Name | Map | x, y | Leg yd | Return |
 |---|---|---|---|---|---|---|---|
-| 1 | A | 168 | Collecting Memories | 1453 | 70.3, 40.8 | 107 |  |
-| 2 | A | 167 | Oh Brother. . . | 1453 | 70.3, 40.8 | 0 |  |
-| 3 | A | 64 | The Forgotten Heirloom | 1436 | 60.0, 19.4 | 1444 |  |
-| 4 | A | 151 | Poor Old Blanchy | 1436 | 59.9, 19.4 | 1 |  |
-| 5 | A | 12 | The People's Militia | 1436 | 56.3, 47.5 | 667 |  |
-| 6 | A | 92744 | Murloc Gills | 1436 | 52.5, 53.0 | 185 |  |
-| 7 | A | 92742 | Testing the Wells | 1436 | 52.5, 53.0 | 21 |  |
-| 8 | O | 151 | Poor Old Blanchy | 1436 | 57.3, 18.3 | 825 | near #4 (went 825 yd away) |
-| 9 | O | 92742 | Testing the Wells | 1436 | 56.6, 18.7 | 24 | near #4 (went 812 yd away) |
-| 10 | O | 64 | The Forgotten Heirloom | 1436 | 49.3, 19.3 | 255 |  |
-| 11 | O | 92744 | Murloc Gills | 1436 | 34.5, 17.0 | 520 |  |
-| 12 | A | 136 | Captain Sander's Hidden Treasure | 1436 | 34.5, 17.0 | 0 |  |
-| 13 | O | 92742 | Testing the Wells | 1436 | 46.1, 38.1 | 637 |  |
-| 14 | T | 92742 | Testing the Wells | 1436 | 52.5, 53.0 | 412 | near #7 (went 1048 yd away) |
-| 15 | T | 92744 | Murloc Gills | 1436 | 52.5, 53.0 | 0 | near #7 (went 1048 yd away) |
-| 16 | A | 92745 | The State of the Mines | 1436 | 52.5, 53.0 | 0 |  |
-| 17 | T | 136 | Captain Sander's Hidden Treasure | 1436 | 25.9, 47.8 | 937 |  |
-| 18 | A | 138 | Captain Sander's Hidden Treasure | 1436 | 25.9, 47.8 | 0 |  |
-| 19 | O | 92745 | The State of the Mines | 1436 | 30.0, 47.3 | 143 |  |
-| 20 | T | 138 | Captain Sander's Hidden Treasure | 1436 | 40.5, 47.8 | 368 |  |
-| 21 | A | 139 | Captain Sander's Hidden Treasure | 1436 | 40.5, 47.8 | 0 |  |
-| 22 | O | 12 | The People's Militia | 1436 | 44.8, 26.0 | 531 |  |
-| 23 | O | 92745 | The State of the Mines | 1436 | 45.3, 20.0 | 138 | near #10 (went 937 yd away) |
-| 24 | T | 139 | Captain Sander's Hidden Treasure | 1436 | 40.6, 17.0 | 177 |  |
-| 25 | A | 140 | Captain Sander's Hidden Treasure | 1436 | 40.6, 17.0 | 0 |  |
-| 26 | T | 140 | Captain Sander's Hidden Treasure | 1436 | 26.0, 16.9 | 513 |  |
-| 27 | O | 12 | The People's Militia | 1436 | 31.6, 33.8 | 440 |  |
-| 28 | T | 12 | The People's Militia | 1436 | 56.3, 47.5 | 922 | near #5 (went 1280 yd away) |
-| 29 | A | 13 | The People's Militia | 1436 | 56.3, 47.5 | 0 | near #5 (went 1280 yd away) |
-| 30 | T | 92745 | The State of the Mines | 1436 | 52.5, 53.0 | 185 | near #16 (went 1252 yd away) |
-| 31 | A | 92747 | Moonbrook Espionage | 1436 | 52.5, 53.0 | 0 | near #16 (went 1252 yd away) |
-| 32 | O | 92747 | Moonbrook Espionage | 1436 | 43.1, 68.8 | 494 |  |
-| 33 | O | 13 | The People's Militia | 1436 | 43.7, 68.9 | 20 |  |
-| 34 | T | 92747 | Moonbrook Espionage | 1436 | 52.5, 53.0 | 482 |  |
-| 35 | A | 92748 | Explosive Consultation | 1436 | 52.5, 53.0 | 0 |  |
-| 36 | T | 13 | The People's Militia | 1436 | 56.3, 47.5 | 185 | near #29 (went 679 yd away) |
-| 37 | A | 14 | The People's Militia | 1436 | 56.3, 47.5 | 0 | near #29 (went 679 yd away) |
-| 38 | O | 14 | The People's Militia | 1436 | 52.1, 76.6 | 694 |  |
-| 39 | F |  | flight path | 1436 | 56.5, 52.6 | 580 |  |
-| 40 | T | 14 | The People's Militia | 1436 | 56.3, 47.5 | 119 | near #37 (went 694 yd away) |
-| 41 | T | 151 | Poor Old Blanchy | 1436 | 59.9, 19.4 | 667 | near #9 (went 1362 yd away) |
-| 42 | T | 64 | The Forgotten Heirloom | 1436 | 60.0, 19.4 | 1 | near #9 (went 1364 yd away) |
-| 43 | A | 2040 | Underground Assault | 1453 | 62.6, 34.1 | 1488 |  |
+| 1 | A | 64 | The Forgotten Heirloom | 1436 | 60.0, 19.4 | 854 |  |
+| 2 | A | 151 | Poor Old Blanchy | 1436 | 59.9, 19.4 | 1 |  |
+| 3 | A | 12 | The People's Militia | 1436 | 56.3, 47.5 | 667 |  |
+| 4 | A | 92744 | Murloc Gills | 1436 | 52.5, 53.0 | 185 |  |
+| 5 | A | 92742 | Testing the Wells | 1436 | 52.5, 53.0 | 0 |  |
+| 6 | O | 92742 | Testing the Wells | 1436 | 46.1, 38.1 | 412 |  |
+| 7 | O | 92744 | Murloc Gills | 1436 | 34.5, 17.0 | 637 |  |
+| 8 | A | 136 | Captain Sander's Hidden Treasure | 1436 | 34.5, 17.0 | 0 |  |
+| 9 | O | 64 | The Forgotten Heirloom | 1436 | 49.3, 19.3 | 520 |  |
+| 10 | O | 92742 | Testing the Wells | 1436 | 56.6, 18.7 | 255 | near #2 (went 812 yd away) |
+| 11 | O | 151 | Poor Old Blanchy | 1436 | 57.3, 18.3 | 24 | near #2 (went 825 yd away) |
+| 12 | T | 92744 | Murloc Gills | 1436 | 52.5, 53.0 | 825 | near #5 (went 1048 yd away) |
+| 13 | T | 92742 | Testing the Wells | 1436 | 52.5, 53.0 | 0 | near #5 (went 1048 yd away) |
+| 14 | A | 92745 | The State of the Mines | 1436 | 52.5, 53.0 | 0 |  |
+| 15 | T | 136 | Captain Sander's Hidden Treasure | 1436 | 25.9, 47.8 | 937 |  |
+| 16 | A | 138 | Captain Sander's Hidden Treasure | 1436 | 25.9, 47.8 | 0 |  |
+| 17 | O | 92745 | The State of the Mines | 1436 | 30.0, 47.3 | 143 |  |
+| 18 | T | 138 | Captain Sander's Hidden Treasure | 1436 | 40.5, 47.8 | 368 |  |
+| 19 | A | 139 | Captain Sander's Hidden Treasure | 1436 | 40.5, 47.8 | 0 |  |
+| 20 | O | 12 | The People's Militia | 1436 | 44.8, 26.0 | 531 |  |
+| 21 | O | 92745 | The State of the Mines | 1436 | 45.3, 20.0 | 138 | near #9 (went 937 yd away) |
+| 22 | T | 139 | Captain Sander's Hidden Treasure | 1436 | 40.6, 17.0 | 177 |  |
+| 23 | A | 140 | Captain Sander's Hidden Treasure | 1436 | 40.6, 17.0 | 0 |  |
+| 24 | T | 140 | Captain Sander's Hidden Treasure | 1436 | 26.0, 16.9 | 513 |  |
+| 25 | O | 12 | The People's Militia | 1436 | 31.6, 33.8 | 440 |  |
+| 26 | T | 12 | The People's Militia | 1436 | 56.3, 47.5 | 922 | near #3 (went 1280 yd away) |
+| 27 | A | 13 | The People's Militia | 1436 | 56.3, 47.5 | 0 | near #3 (went 1280 yd away) |
+| 28 | T | 92745 | The State of the Mines | 1436 | 52.5, 53.0 | 185 | near #14 (went 1252 yd away) |
+| 29 | A | 92747 | Moonbrook Espionage | 1436 | 52.5, 53.0 | 0 | near #14 (went 1252 yd away) |
+| 30 | O | 92747 | Moonbrook Espionage | 1436 | 43.1, 68.8 | 494 |  |
+| 31 | O | 13 | The People's Militia | 1436 | 43.7, 68.9 | 20 |  |
+| 32 | T | 92747 | Moonbrook Espionage | 1436 | 52.5, 53.0 | 482 |  |
+| 33 | A | 92748 | Explosive Consultation | 1436 | 52.5, 53.0 | 0 |  |
+| 34 | T | 13 | The People's Militia | 1436 | 56.3, 47.5 | 185 | near #27 (went 679 yd away) |
+| 35 | A | 14 | The People's Militia | 1436 | 56.3, 47.5 | 0 | near #27 (went 679 yd away) |
+| 36 | F |  | flight path | 1436 | 56.5, 52.6 | 119 |  |
+| 37 | O | 14 | The People's Militia | 1436 | 52.1, 76.6 | 580 |  |
+| 38 | T | 14 | The People's Militia | 1436 | 56.3, 47.5 | 694 | near #36 (went 694 yd away) |
+| 39 | T | 151 | Poor Old Blanchy | 1436 | 59.9, 19.4 | 667 | near #11 (went 1362 yd away) |
+| 40 | T | 64 | The Forgotten Heirloom | 1436 | 60.0, 19.4 | 1 | near #11 (went 1364 yd away) |
+| 41 | A | 168 | Collecting Memories | 1453 | 70.3, 40.8 | 1444 |  |
+| 42 | A | 167 | Oh Brother. . . | 1453 | 70.3, 40.8 | 0 |  |
+| 43 | A | 2040 | Underground Assault | 1453 | 62.6, 34.1 | 154 |  |
 | 44 | T | 92748 | Explosive Consultation | 1453 | 61.9, 30.6 | 43 |  |
 
-Walking between tasks: 14242 yd (~34 min at 7 yd/s).
+Walking between tasks: 13634 yd (~32 min at 7 yd/s).
 
 ## Qualité
 
@@ -195,8 +196,7 @@ Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint la
 
 ## Logistics
 
-- step 5: `fp 1436 56.55 52.64`
-- step 8: `sethearth 1436 52.86 53.71`
+- step 3: `fp 1436 56.55 52.64`
 
 ## Warnings
 

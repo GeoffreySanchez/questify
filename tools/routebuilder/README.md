@@ -99,6 +99,10 @@ other chapters from the XML.
   levelSlack = 1,                        -- levels of overshoot allowed above maxLevel (XP budget)
   logCap = 20,
   strictLevel = true,                    -- grinding before a level-gated task counts in the ordering
+  precede = { { "A3376", "O757" } },     -- first task before the second (A/T/C<quest>, O<quest> = all
+                                         -- objective sites of the quest); a missing task is a warning
+  safeLevel = { [312] = 7 },             -- level from which the objectives of a quest are done (replaces
+                                         -- the computed "safe" level: quest level - 1, mob level - 1)
   arrive = { via = { 1453, 24.1, 55.4 }, steps = { { "boat", 1453, 24.1, 55.4, note = "..." } }, time = 300 },
                                          -- steps inserted when the character comes from another
                                          -- continent or more than 1500 yd away; `via` (optional):
@@ -168,7 +172,9 @@ All thresholds are in `sim.CONST` (`sim.lua`).
    are discounted: value and time of a quest include 0.7 × those of the quests it unlocks.
 7. **Drops.** "far" when an objective is more than 900 yd from every hub; "low ratio" when both
    the isolated and the marginal ratio are below 0.35 × the median isolated ratio; then quests whose
-   prerequisite was dropped. **XP budget**: quests are ranked by marginal ratio (forced first) and
+   prerequisite was dropped. A prerequisite counts as available when it is done, kept in the chapter,
+   or in the quest log and turned in in this chapter (a quest done in the previous chapter whose
+   finisher is here: its follow-ups stay candidates). **XP budget**: quests are ranked by marginal ratio (forced first) and
    kept, with their prerequisites, until their XP reaches `maxLevel + levelSlack` (1 by default);
    the rest is dropped as "level band reached". Exclusive quests keep the better ratio.
 8. **Tasks and ordering.** A (accept), O (objective site), T (turn-in), C (timed quest done in
@@ -180,9 +186,7 @@ All thresholds are in `sim.CONST` (`sim.lua`).
    Nearest feasible neighbour by walking time (ties within 20 yd: T, then A, then O), then or-opt
    (moves of 1 to 3 consecutive tasks, at most 200 passes) while the total walking time drops.
 9. **Logistics.** `fp` when a walk passes within 150 yd of an unknown faction flight master;
-   `sethearth` at the inn (≤ 200 yd) of the busiest hub when the route returns there after
-   leaving it by more than 800 yd; `hearth` when the next task is within 120 yd of the
-   hearthstone, more than 1200 yd away and the 3600 s cooldown is over; `fly` when the flight
+   `sethearth` and `hearth`: see "Hearthstone" below; `fly` when the flight
    plus the walks to and from the flight masters takes under 0.7 × the walk (both nodes known;
    flight time = straight line × 1.2 / 32 yd/s + 20 s); `level` at the end when the level is below
    `maxLevel`, pointing to the densest group of hostile mobs of suitable level within 600 yd of
@@ -328,6 +332,8 @@ guide with an invalid step is refused in game with one `Invalid guide <id>: step
 | `dungeonLevelHigh` | Dungeon quests accepted up to quest level `maxLevel + n`. |
 | `strictLevel` | Ordering counts the grinding before a level-gated task (see below). |
 | `arrive.via` | Point reached by computed travel before the fixed `arrive` steps. |
+| `precede` | Pairs `{ first, second }` of task ids (`A`, `T`, `C` + quest id, `O` + quest id = all its objective sites): extra precedence. |
+| `safeLevel` | `{ [questId] = level }`: level from which the objectives of that quest are done (replaces the computed safe level). |
 
 ### Reports
 
@@ -358,12 +364,16 @@ moved earlier when the walk saved is worth the extra grinding. Moves of a segmen
 `needLevel` task are tried even when they lengthen the walk (they can save grinding). Without
 `strictLevel`, the ordering is unchanged.
 
-It is on for `A_DwarfGnome_03` and `H_05`. On the Dwarf path it removes most objectives done 3 to 4
+It is on for `A_DwarfGnome_03`, `A_NightElf_02`, `A_NightElf_03` and `H_05`. On the Dwarf path it removes most objectives done 3 to 4
 levels too low in Loch Modan for a few minutes of grinding. On every chapter, it would add about 1 h
 of simulated time over the Dwarf path (more walking in the trunk), and on `A_DwarfGnome_02` it adds
 15 min for no safety gain. On `H_05` (QuestieDB v1.0.11) it saves 12 min. Without it, the band is
 widened and the chapter ends with 44 mobs of grinding. An objective area of 567 "Dangerous!" is also
 split for no reason (a `free` quality item).
+On `A_NightElf_02` and `A_NightElf_03` (QuestieDB v1.0.11, 2026-11-06) it saves 23 min on the Night Elf
+path: Escaping Ban'ethil (99053) went from level 9 to 10, and the ordering then did objectives before their
+safe level, with 105 mobs of grinding in Teldrassil and up to 159 for a chain head in Darkshore. On every
+chapter at once it was measured again on v1.0.11: +37 to +99 min per race path (rejected).
 
 ### Hub sweep, one pass per area, turn-in in passing (`order.lua` step 5)
 
@@ -403,6 +413,49 @@ Every `fly` step has `node = <TaxiNodes.ID>` (the `nodeID` of `C_TaxiMap`) of th
 master, written before `note`. Hand-written `fly` steps of a plan's `arrive` get the node whose
 name matches their `note`. `tools/validate_guides.lua` fails on a `fly` step without `node`, with an
 unknown node, or with a node that is not on the step's destination map.
+
+## Hearthstone (2026-11-06)
+
+### Use (`sim.route`)
+
+During the walk, the router (Dijkstra) takes the hearthstone when it is bound, its 3600 s cooldown is
+over, and `HEARTH_CAST + HEARTH_PENALTY` (10 + 120 s) plus the walk from the inn beats walking (or
+flying) to the next task. The penalty keeps the stone for a return worth it: with straight-line
+walking, a return of about 910 yd or more. `HEARTH_FAR` (declared, never read) is gone.
+
+### Cost model (`order.hearthCost`)
+
+Real travel cost of an ordered sequence, in centiseconds: walks, returns by the stone with the same rule
+and its cooldown (the duration of the tasks counts for the cooldown), and bind detours. It also returns
+the final state (position, bound inn, ready time).
+
+### Binds (`sim.planHearth`)
+
+After the ordering, candidate inns are the faction innkeepers within `HEARTH_INN` (200 yd) of a hub of
+the chapter (one per place, not the inn already bound). A bind goes after the task of the first pass at
+the inn that is nearest to the innkeeper (until the route goes more than `SETHEARTH_LEAVE`, 800 yd,
+away). The plans compared are: no bind, one bind, or two (`HEARTH_BINDS`: the second at the first pass
+at another inn after the first, when the hub of the chapter changes). Each plan costs
+`order.hearthCost` plus the computed travel (`sim.route`) from the end of the chapter to the start of the
+next one (`opts.nextEntry`, from `build.lua`), with the stone bound and ready or not: a bind also serves
+the start of the next chapter. The cheapest plan wins (ties: fewer binds).
+
+### Return bundles (`order.hearthBundles`)
+
+Then, for each end of task, the later tasks within `HEARTH_BUNDLE` (250 yd) of the inn bound at that time
+are pulled right after it (in order, precedence kept) when the sequence stays feasible (log cap, levels,
+no extra grinding) and `order.hearthCost` drops: one return by the stone does them all. The bind plan is
+then chosen again. `ROUTEBUILDER_NO_BUNDLE=1` turns this pass off (comparison).
+
+The report summary has a "Hearthstone" line: binds (innkeeper, after which task), returns planned by the
+model, bundles applied.
+
+Measured on QuestieDB v1.0.11 (2026-11-06): 0 to -5 min per race path 1-30. The simulator gives little
+room: walking is 30-45 % of a chapter, and the long legs (over 910 yd) that end at an inn when the stone is
+ready are few (upper bound for all chapters together: about 106 min over 23 chapters if every long leg
+ended at an inn). A lower penalty (90 s: the same decision as walking 1.3 times longer than the straight
+line) was measured too and not kept: -1 min on the Horde paths, -13 min on the Alliance trunk paths but
+only through a different trunk (Redridge then grinds 116 mobs), +12 min in Darkshore for the Night Elf.
 
 ## Successor choices and simulated metrics (`choices`, `sim`)
 

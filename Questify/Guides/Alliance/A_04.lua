@@ -2,14 +2,14 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 87 étapes, niveau final 29.15, ~33897 xp/h, 169 min.
+-- Simulation : 86 étapes, niveau final 29.15, ~33914 xp/h, 169 min.
 Q:RegisterGuide({
   id = "A_04",
   title = "Wetlands",
   faction = "Alliance",
   minLevel = 26, maxLevel = 29,
   next = "A_05",
-  sim = { steps = 87, endLevel = 29.15, xpPerHour = 33897, minutes = 169 },
+  sim = { steps = 86, endLevel = 29.15, xpPerHour = 33914, minutes = 169 },
   steps = {
     { "note", "You pass through Stormwind: run The Stockade now for Crime and Punishment and What Comes Around..., or abandon them", optional = true, dungeon = "The Stockade" },
     { "goto", 1433, 25.5, 59.41, note = "Flight master" }, -- déplacement
@@ -29,7 +29,6 @@ Q:RegisterGuide({
     { "turnin", 98221, xp = 570 }, -- From the Ashes (lvl 28, ~570 xp, sim lvl 26)
     { "accept", 288 }, -- The Third Fleet (lvl 27, ~220 xp, sim lvl 26)
     { "complete", 288, at = { 1437, 10.7, 60.95 } }, -- The Third Fleet (lvl 27, ~220 xp, sim lvl 26)
-    { "sethearth", 1437, 10.7, 60.95 }, -- lier la pierre de foyer
     { "turnin", 288, xp = 220 }, -- The Third Fleet (lvl 27, ~220 xp, sim lvl 26)
     { "accept", 289 }, -- The Cursed Crew (lvl 29, ~1750 xp, sim lvl 26)
     { "accept", 95647, optional = true, dungeon = "Excavation Site: Wetlands" }, -- Lost in the Thicket Things (lvl 31, ~0 xp, sim lvl 26)

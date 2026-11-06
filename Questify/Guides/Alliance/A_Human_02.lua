@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 114 étapes, niveau final 12.00, ~18089 xp/h, 117 min.
+-- Simulation : 113 étapes, niveau final 12.00, ~18105 xp/h, 117 min.
 Q:RegisterGuide({
   id = "A_Human_02",
   title = "Elwynn Forest",
@@ -10,11 +10,10 @@ Q:RegisterGuide({
   races = { "Human" },
   minLevel = 6, maxLevel = 11,
   next = "A_Human_03",
-  sim = { steps = 114, endLevel = 12.00, xpPerHour = 18089, minutes = 117 },
+  sim = { steps = 113, endLevel = 12.00, xpPerHour = 18105, minutes = 117 },
   steps = {
     { "accept", 62 }, -- The Fargodeep Mine (lvl 7, ~475 xp, sim lvl 6)
     { "accept", 60 }, -- Kobold Candles (lvl 7, ~475 xp, sim lvl 6)
-    { "sethearth", 1429, 43.77, 65.8 }, -- lier la pierre de foyer
     { "accept", 95998 }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 6)
     { "complete", 95998, at = { 1429, 44.94, 63.2 } }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 6)
     { "turnin", 95998, xp = 540 }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 6)

@@ -6,13 +6,14 @@ Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d30
 |---|---|
 | Level band | 12-15 |
 | Simulated level | 13.00 -> 16.25 |
-| Time | 113 min |
+| Time | 110 min |
 | XP gained | 42683 |
-| XP/h | 22636 |
+| XP/h | 23227 |
 | Steps | 89 |
 | Quests turned in | 35 |
 | Hubs | 8 |
 | Median ratio (XP/s) | 5.20 |
+| Hearthstone | no new bind; 1 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
 
@@ -362,7 +363,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 1 | A | 447 | A Recipe For Death | 1421 | 42.8, 40.9 | 0 |  |
 | 2 | A | 91921 | Return to Quinn (Again) | 1421 | 42.8, 40.9 | 0 |  |
 | 3 | A | 6321 | Supplying the Sepulcher | 1421 | 43.4, 41.7 | 34 |  |
-| 4 | A | 437 | The Dead Fields | 1421 | 43.4, 40.9 | 15 |  |
+| 4 | A | 437 | The Dead Fields | 1421 | 43.4, 40.9 | 22 |  |
 | 5 | A | 428 | Lost Deathstalkers | 1421 | 43.4, 40.9 | 0 |  |
 | 6 | A | 477 | Border Crossings | 1421 | 44.0, 40.9 | 23 |  |
 | 7 | A | 421 | Prove Your Worth | 1421 | 44.2, 39.8 | 32 |  |
@@ -447,7 +448,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 86 | T | 425 | Ivar the Foul | 1421 | 53.5, 13.4 | 82 |  |
 | 87 | T | 440 | The Engraved Ring | 1420 | 61.3, 50.8 | 1383 |  |
 
-Walking between tasks: 16057 yd (~38 min at 7 yd/s).
+Walking between tasks: 16065 yd (~38 min at 7 yd/s).
 
 ## Qualité
 
@@ -467,7 +468,7 @@ Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint la
 
 ## Logistics
 
-- step 4: `sethearth 1421 43.18 41.28`
+- step 87: `hearth 1420`
 - step 89: `boat 1420 60.7 58.9` — Take the zeppelin to Orgrimmar (Durotar)
 
 ## Warnings

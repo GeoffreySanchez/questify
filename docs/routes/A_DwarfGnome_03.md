@@ -5,16 +5,17 @@ Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d30
 | Item | Value |
 |---|---|
 | Level band | 11-14 |
-| Simulated level | 12.00 -> 15.74 |
-| Time | 132 min |
-| XP gained | 44977 |
-| XP/h | 20455 |
-| Steps | 80 |
+| Simulated level | 11.00 -> 15.57 |
+| Time | 121 min |
+| XP gained | 42708 |
+| XP/h | 21162 |
+| Steps | 79 |
 | Quests turned in | 27 |
 | Hubs | 9 |
-| Median ratio (XP/s) | 4.77 |
-| Grinding (level steps) | ~109 mobs |
-| Level band | grinding 59 mobs with quests up to level 17: band widened to level 20 |
+| Median ratio (XP/s) | 4.94 |
+| Grinding (level steps) | ~73 mobs |
+| Level band | grinding 84 mobs with quests up to level 17: band widened to level 20 |
+| Hearthstone | bound to Innkeeper Hearthstove after task 1; 1 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
 
@@ -22,33 +23,33 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 
 | # | Quest | Name | Lvl | XP | Sim lvl |
 |---|---|---|---|---|---|
-| 1 | 257 | A Hunter's Boast | 16 | 880 | 12 |
-| 2 | 298 | Excavation Progress Report | 15 | 270 | 12 |
-| 3 | 6387 | Honor Students | 10 | 210 | 13 |
-| 4 | 224 | In Defense of the King's Lands | 12 | 910 | 13 |
-| 5 | 237 | In Defense of the King's Lands | 15 | 1050 | 13 |
-| 6 | 301 | Report to Ironforge | 15 | 540 | 13 |
-| 7 | 6391 | Ride to Ironforge | 10 | 420 | 13 |
-| 8 | 6388 | Gryth Thurden | 10 | 210 | 13 |
-| 9 | 1339 | Mountaineer Stormpike's Task | 15 | 540 | 13 |
-| 10 | 307 | Filthy Paws | 15 | 1350 | 14 |
-| 11 | 302 | Powder to Ironband | 15 | 270 | 14 |
-| 12 | 6392 | Return to Brock | 10 | 1050 | 14 |
-| 13 | 273 | Resupplying the Excavation | 15 | 270 | 14 |
-| 14 | 454 | After the Ambush | 15 | 105 | 14 |
-| 15 | 263 | In Defense of the King's Lands | 15 | 1050 | 14 |
-| 16 | 86585 | Banner of the Fallen | 17 | 1250 est. | 14 |
-| 17 | 436 | Ironband's Excavation | 18 | 340 | 14 |
-| 18 | 309 | Protecting the Shipment | 15 | 1050 | 14 |
-| 19 | 258 | A Hunter's Challenge | 17 | 950 | 14 |
-| 20 | 86758 | Twisting the Knife | 16 | 1150 est. | 15 |
-| 21 | 86613 | Excavation Tools | 18 | 1350 est. | 15 |
-| 22 | 297 | Gathering Idols | 18 | 1350 | 15 |
-| 23 | 2039 | Find Bingles | 15 | 270 | 15 |
-| 24 | 78148 | Runes of the Sorcerer-Kings | 20 | 1550 est. | 15 |
+| 1 | 224 | In Defense of the King's Lands | 12 | 910 | 12 |
+| 2 | 237 | In Defense of the King's Lands | 15 | 1050 | 12 |
+| 3 | 298 | Excavation Progress Report | 15 | 270 | 13 |
+| 4 | 6387 | Honor Students | 10 | 210 | 13 |
+| 5 | 301 | Report to Ironforge | 15 | 540 | 13 |
+| 6 | 6391 | Ride to Ironforge | 10 | 420 | 13 |
+| 7 | 6388 | Gryth Thurden | 10 | 210 | 13 |
+| 8 | 1339 | Mountaineer Stormpike's Task | 15 | 540 | 13 |
+| 9 | 307 | Filthy Paws | 15 | 1350 | 13 |
+| 10 | 302 | Powder to Ironband | 15 | 270 | 13 |
+| 11 | 6392 | Return to Brock | 10 | 1050 | 13 |
+| 12 | 273 | Resupplying the Excavation | 15 | 270 | 13 |
+| 13 | 454 | After the Ambush | 15 | 105 | 13 |
+| 14 | 309 | Protecting the Shipment | 15 | 1050 | 14 |
+| 15 | 436 | Ironband's Excavation | 18 | 340 | 14 |
+| 16 | 257 | A Hunter's Boast | 16 | 880 | 14 |
+| 17 | 258 | A Hunter's Challenge | 17 | 950 | 14 |
+| 18 | 2039 | Find Bingles | 15 | 270 | 14 |
+| 19 | 263 | In Defense of the King's Lands | 15 | 1050 | 14 |
+| 20 | 86585 | Banner of the Fallen | 17 | 1250 est. | 14 |
+| 21 | 297 | Gathering Idols | 18 | 1350 | 15 |
+| 22 | 86613 | Excavation Tools | 18 | 1350 est. | 15 |
+| 23 | 86758 | Twisting the Knife | 16 | 1150 est. | 15 |
+| 24 | 1338 | Stormpike's Order | 14 | 980 | 15 |
 | 25 | 79093 | Rumi of Gnomeregan: The Collected Works | 20 | 1550 est. | 15 |
-| 26 | 79091 | Archmage Antonidas: The Unabridged Autobiography | 20 | 1550 est. | 15 |
-| 27 | 1338 | Stormpike's Order | 14 | 980 | 15 |
+| 26 | 78148 | Runes of the Sorcerer-Kings | 20 | 1550 est. | 15 |
+| 27 | 79091 | Archmage Antonidas: The Unabridged Autobiography | 20 | 1550 est. | 15 |
 
 ## Dropped quests
 
@@ -387,36 +388,36 @@ below 0.35 × the median ratio, or when an objective is more than 900 yd from ev
 
 | Quest | Name | Lvl | Value | Bonus | Isolated s | Marginal s | Ratio | Marginal ratio | Sites | Dropped |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 224 | In Defense of the King's Lands | 12 | 2730 | 0 | 497 | 431 | 5.88 | 6.99 | 1 |  |
+| 224 | In Defense of the King's Lands | 12 | 2910 | 0 | 497 | 431 | 6.04 | 7.18 | 1 |  |
 | 237 | In Defense of the King's Lands | 15 | 3250 | 0 | 530 | 447 | 6.19 | 7.53 | 1 |  |
-| 257 | A Hunter's Boast | 16 | 1600 | 0 | 206 | 190 | 6.30 | 8.99 | 1 |  |
-| 258 | A Hunter's Challenge | 17 | 1580 | 0 | 319 | 157 | 4.94 | 10.01 | 1 |  |
+| 257 | A Hunter's Boast | 16 | 1600 | 0 | 206 | 190 | 6.29 | 8.98 | 1 |  |
+| 258 | A Hunter's Challenge | 17 | 1575 | 0 | 319 | 157 | 4.93 | 9.98 | 1 |  |
 | 263 | In Defense of the King's Lands | 15 | 3450 | 0 | 548 | 434 | 6.28 | 7.93 | 1 |  |
-| 267 | The Trogg Threat | 12 | 2912 | 0 | 529 | 457 | 5.50 | 6.37 | 1 | level band reached |
+| 267 | The Trogg Threat | 12 | 3110 | 0 | 529 | 457 | 5.88 | 6.80 | 1 | level band reached |
 | 273 | Resupplying the Excavation | 15 | 390 | 0 | 133 | 57 | 5.47 | 12.64 | 1 |  |
-| 297 | Gathering Idols | 18 | 3315 | 0 | 357 | 319 | 9.27 | 10.37 | 1 |  |
+| 297 | Gathering Idols | 18 | 3300 | 0 | 357 | 319 | 9.23 | 10.32 | 1 |  |
 | 298 | Excavation Progress Report | 15 | 270 | 0 | 141 | 25 | 2.07 | 13.88 | 0 |  |
 | 301 | Report to Ironforge | 15 | 540 | 0 | 283 | 23 | 2.12 | 15.38 | 0 |  |
 | 302 | Powder to Ironband | 15 | 270 | 0 | 283 | 23 | 2.34 | 12.23 | 0 |  |
 | 307 | Filthy Paws | 15 | 1350 | 0 | 146 | 55 | 9.23 | 24.29 | 1 |  |
 | 309 | Protecting the Shipment | 15 | 1050 | 0 | 77 | 26 | 13.53 | 40.31 | 1 |  |
-| 385 | Crocolisk Hunting | 15 | 3810 | 0 | 665 | 514 | 5.73 | 7.41 | 1 | level band reached |
-| 416 | Rat Catching | 11 | 3701 | 0 | 804 | 682 | 4.60 | 5.43 | 1 | level band reached |
-| 418 | Thelsamar Blood Sausages | 11 | 3953 | 0 | 953 | 673 | 4.15 | 5.87 | 3 | level band reached |
-| 436 | Ironband's Excavation | 18 | 893 | 553 | 138 | 27 | 8.25 | 12.78 | 0 |  |
+| 385 | Crocolisk Hunting | 15 | 3786 | 0 | 665 | 514 | 5.69 | 7.36 | 1 | level band reached |
+| 416 | Rat Catching | 11 | 3980 | 0 | 804 | 682 | 4.95 | 5.83 | 1 | level band reached |
+| 418 | Thelsamar Blood Sausages | 11 | 3936 | 0 | 953 | 673 | 4.13 | 5.85 | 3 | level band reached |
+| 436 | Ironband's Excavation | 18 | 924 | 584 | 138 | 27 | 8.31 | 12.86 | 0 |  |
 | 454 | After the Ambush | 15 | 105 | 0 | 10 | 10 | 12.94 | 29.13 | 0 |  |
-| 1338 | Stormpike's Order | 14 | 5121 | 4141 | 1000010 | 10 | 0.01 | 512.10 | 0 |  |
-| 1339 | Mountaineer Stormpike's Task | 15 | 944 | 404 | 111 | 36 | 0.01 | 105.17 | 0 |  |
+| 1338 | Stormpike's Order | 14 | 5356 | 4376 | 1000010 | 10 | 0.01 | 535.68 | 0 |  |
+| 1339 | Mountaineer Stormpike's Task | 15 | 967 | 427 | 111 | 36 | 0.01 | 109.54 | 0 |  |
 | 2038 | Bingles' Missing Supplies | 15 | 1050 | 0 | 248 | 248 | 4.22 | 4.22 | 3 | level band reached |
-| 2039 | Find Bingles | 15 | 1941 | 1671 | 387 | 37 | 4.77 | 12.62 | 0 |  |
+| 2039 | Find Bingles | 15 | 2036 | 1766 | 387 | 37 | 4.94 | 13.07 | 0 |  |
 | 6387 | Honor Students | 10 | 210 | 0 | 39 | 39 | 2.53 | 8.57 | 0 |  |
 | 6388 | Gryth Thurden | 10 | 210 | 0 | 45 | 45 | 3.73 | 14.30 | 0 |  |
 | 6391 | Ride to Ironforge | 10 | 420 | 0 | 312 | 58 | 2.21 | 10.31 | 0 |  |
 | 6392 | Return to Brock | 10 | 1050 | 0 | 296 | 29 | 3.54 | 36.20 | 0 |  |
-| 78148 | Runes of the Sorcerer-Kings | 20 | 5691 | 4141 | 1000120 | 300 | 0.01 | 18.97 | 1 |  |
-| 79091 | Archmage Antonidas: The Unabridged Autobiography | 20 | 5691 | 4141 | 1000017 | 20 | 0.01 | 272.27 | 1 |  |
-| 79093 | Rumi of Gnomeregan: The Collected Works | 20 | 5691 | 4141 | 1000017 | 21 | 0.01 | 269.69 | 1 |  |
-| 86585 | Banner of the Fallen | 17 | 2258 | 0 | 265 | 202 | 8.50 | 11.15 | 1 |  |
+| 78148 | Runes of the Sorcerer-Kings | 20 | 5926 | 4376 | 1000120 | 300 | 0.01 | 19.75 | 1 |  |
+| 79091 | Archmage Antonidas: The Unabridged Autobiography | 20 | 5926 | 4376 | 1000017 | 20 | 0.01 | 283.55 | 1 |  |
+| 79093 | Rumi of Gnomeregan: The Collected Works | 20 | 5926 | 4376 | 1000017 | 21 | 0.01 | 280.86 | 1 |  |
+| 86585 | Banner of the Fallen | 17 | 2250 | 0 | 265 | 202 | 8.47 | 11.11 | 1 |  |
 | 86613 | Excavation Tools | 18 | 1350 | 0 | 156 | 126 | 8.60 | 10.66 | 1 |  |
 | 86614 | Silver of the Waves | 20 | 390 | 0 | 124 | 124 | 3.14 | 3.14 | 0 | level band reached |
 | 86758 | Twisting the Knife | 16 | 2590 | 0 | 424 | 274 | 6.10 | 9.45 | 1 |  |
@@ -432,70 +433,70 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 1 | A | 1339 | Mountaineer Stormpike's Task | 1432 | 32.6, 49.7 | 0 |  |
 | 2 | A | 224 | In Defense of the King's Lands | 1432 | 22.1, 73.1 | 587 |  |
 | 3 | O | 224 | In Defense of the King's Lands | 1432 | 31.8, 73.6 | 268 |  |
-| 4 | A | 298 | Excavation Progress Report | 1432 | 65.9, 65.6 | 952 |  |
-| 5 | C | 257 | A Hunter's Boast | 1432 | 83.5, 65.5 | 483 |  |
-| 6 | A | 86758 | Twisting the Knife | 1432 | 81.8, 61.7 | 84 |  |
-| 7 | O | 86758 | Twisting the Knife | 1432 | 63.4, 47.8 | 567 |  |
-| 8 | T | 298 | Excavation Progress Report | 1432 | 37.2, 47.4 | 720 | near #1 (went 1317 yd away) |
-| 9 | A | 436 | Ironband's Excavation | 1432 | 37.2, 47.4 | 0 | near #1 (went 1317 yd away) |
-| 10 | A | 301 | Report to Ironforge | 1432 | 37.2, 47.4 | 0 |  |
-| 11 | A | 6387 | Honor Students | 1432 | 37.0, 47.8 | 9 |  |
-| 12 | T | 6387 | Honor Students | 1432 | 33.9, 51.0 | 102 |  |
-| 13 | A | 6391 | Ride to Ironforge | 1432 | 33.9, 51.0 | 0 |  |
-| 14 | T | 224 | In Defense of the King's Lands | 1432 | 22.1, 73.1 | 523 | near #2 (went 1699 yd away) |
-| 15 | A | 237 | In Defense of the King's Lands | 1432 | 23.5, 76.4 | 72 | near #2 (went 1665 yd away) |
-| 16 | O | 237 | In Defense of the King's Lands | 1432 | 35.7, 85.0 | 370 |  |
-| 17 | T | 237 | In Defense of the King's Lands | 1432 | 23.5, 76.4 | 370 |  |
-| 18 | A | 263 | In Defense of the King's Lands | 1432 | 23.5, 74.5 | 34 |  |
-| 19 | T | 301 | Report to Ironforge | 1455 | 74.6, 11.7 | 1814 |  |
-| 20 | A | 302 | Powder to Ironband | 1455 | 74.6, 11.7 | 0 |  |
-| 21 | A | 79091 | Archmage Antonidas: The Unabridged Autobiography | 1455 | 76.0, 10.4 | 12 |  |
-| 22 | T | 6391 | Ride to Ironforge | 1455 | 51.5, 26.3 | 210 |  |
-| 23 | A | 6388 | Gryth Thurden | 1455 | 51.5, 26.3 | 0 |  |
-| 24 | T | 6388 | Gryth Thurden | 1455 | 55.5, 47.7 | 117 |  |
-| 25 | A | 6392 | Return to Brock | 1455 | 55.5, 47.7 | 0 |  |
-| 26 | A | 2039 | Find Bingles | 1455 | 69.2, 50.5 | 109 |  |
-| 27 | A | 307 | Filthy Paws | 1432 | 24.8, 18.4 | 1416 |  |
-| 28 | T | 1339 | Mountaineer Stormpike's Task | 1432 | 24.8, 18.4 | 0 |  |
-| 29 | A | 1338 | Stormpike's Order | 1432 | 24.8, 18.4 | 0 |  |
-| 30 | O | 307 | Filthy Paws | 1432 | 35.5, 24.6 | 317 |  |
-| 31 | T | 307 | Filthy Paws | 1432 | 24.8, 18.4 | 317 |  |
-| 32 | T | 302 | Powder to Ironband | 1432 | 37.2, 47.4 | 634 | near #13 (went 2008 yd away) |
-| 33 | A | 273 | Resupplying the Excavation | 1432 | 37.2, 47.4 | 0 | near #13 (went 2008 yd away) |
-| 34 | T | 6392 | Return to Brock | 1432 | 37.0, 47.8 | 9 |  |
-| 35 | O | 273 | Resupplying the Excavation | 1432 | 52.2, 69.4 | 576 |  |
-| 36 | T | 273 | Resupplying the Excavation | 1432 | 52.2, 69.3 | 1 |  |
-| 37 | A | 454 | After the Ambush | 1432 | 52.2, 69.3 | 0 |  |
-| 38 | T | 454 | After the Ambush | 1432 | 52.2, 69.4 | 2 |  |
-| 39 | A | 309 | Protecting the Shipment | 1432 | 52.2, 69.4 | 0 |  |
-| 40 | O | 263 | In Defense of the King's Lands | 1432 | 36.0, 91.8 | 607 | near #16 (went 2374 yd away) |
-| 41 | A | 86585 | Banner of the Fallen | 1432 | 31.8, 86.3 | 155 | near #16 (went 2219 yd away) |
-| 42 | O | 86585 | Banner of the Fallen | 1432 | 31.3, 84.9 | 28 | near #16 (went 2194 yd away) |
-| 43 | T | 263 | In Defense of the King's Lands | 1432 | 23.5, 74.5 | 288 | near #18 (went 1906 yd away) |
-| 44 | T | 86585 | Banner of the Fallen | 1432 | 23.2, 73.7 | 16 | near #18 (went 1891 yd away) |
-| 45 | T | 436 | Ironband's Excavation | 1432 | 64.9, 66.7 | 1156 | near #4 (went 2846 yd away) |
-| 46 | A | 297 | Gathering Idols | 1432 | 64.9, 66.7 | 0 | near #4 (went 2846 yd away) |
-| 47 | O | 309 | Protecting the Shipment | 1432 | 65.1, 65.8 | 17 |  |
-| 48 | T | 309 | Protecting the Shipment | 1432 | 65.9, 65.6 | 22 |  |
-| 49 | C | 258 | A Hunter's Challenge | 1432 | 83.5, 65.5 | 483 | near #6 (went 3324 yd away) |
-| 50 | T | 86758 | Twisting the Knife | 1432 | 81.8, 61.7 | 84 | near #6 (went 3258 yd away) |
-| 51 | O | 297 | Gathering Idols | 1432 | 70.1, 64.4 | 325 |  |
-| 52 | A | 86613 | Excavation Tools | 1432 | 69.8, 65.0 | 13 |  |
+| 4 | T | 224 | In Defense of the King's Lands | 1432 | 22.1, 73.1 | 268 |  |
+| 5 | A | 237 | In Defense of the King's Lands | 1432 | 23.5, 76.4 | 72 |  |
+| 6 | O | 237 | In Defense of the King's Lands | 1432 | 35.7, 85.0 | 370 |  |
+| 7 | T | 237 | In Defense of the King's Lands | 1432 | 23.5, 76.4 | 370 |  |
+| 8 | A | 263 | In Defense of the King's Lands | 1432 | 23.5, 74.5 | 34 |  |
+| 9 | A | 86585 | Banner of the Fallen | 1432 | 31.8, 86.3 | 315 |  |
+| 10 | O | 263 | In Defense of the King's Lands | 1432 | 36.0, 91.8 | 155 |  |
+| 11 | A | 298 | Excavation Progress Report | 1432 | 65.9, 65.6 | 955 |  |
+| 12 | A | 436 | Ironband's Excavation | 1432 | 37.2, 47.4 | 859 | near #1 (went 859 yd away) |
+| 13 | T | 298 | Excavation Progress Report | 1432 | 37.2, 47.4 | 0 | near #1 (went 859 yd away) |
+| 14 | A | 301 | Report to Ironforge | 1432 | 37.2, 47.4 | 0 |  |
+| 15 | A | 6387 | Honor Students | 1432 | 37.0, 47.8 | 9 |  |
+| 16 | T | 6387 | Honor Students | 1432 | 33.9, 51.0 | 102 |  |
+| 17 | A | 6391 | Ride to Ironforge | 1432 | 33.9, 51.0 | 0 |  |
+| 18 | T | 301 | Report to Ironforge | 1455 | 74.6, 11.7 | 1809 |  |
+| 19 | A | 302 | Powder to Ironband | 1455 | 74.6, 11.7 | 0 |  |
+| 20 | A | 79091 | Archmage Antonidas: The Unabridged Autobiography | 1455 | 76.0, 10.4 | 12 |  |
+| 21 | T | 6391 | Ride to Ironforge | 1455 | 51.5, 26.3 | 210 |  |
+| 22 | A | 6388 | Gryth Thurden | 1455 | 51.5, 26.3 | 0 |  |
+| 23 | T | 6388 | Gryth Thurden | 1455 | 55.5, 47.7 | 117 |  |
+| 24 | A | 6392 | Return to Brock | 1455 | 55.5, 47.7 | 0 |  |
+| 25 | A | 2039 | Find Bingles | 1455 | 69.2, 50.5 | 109 |  |
+| 26 | T | 1339 | Mountaineer Stormpike's Task | 1432 | 24.8, 18.4 | 1416 |  |
+| 27 | A | 1338 | Stormpike's Order | 1432 | 24.8, 18.4 | 0 |  |
+| 28 | A | 307 | Filthy Paws | 1432 | 24.8, 18.4 | 0 |  |
+| 29 | O | 307 | Filthy Paws | 1432 | 35.5, 24.6 | 317 |  |
+| 30 | T | 307 | Filthy Paws | 1432 | 24.8, 18.4 | 317 |  |
+| 31 | T | 302 | Powder to Ironband | 1432 | 37.2, 47.4 | 634 | near #17 (went 2008 yd away) |
+| 32 | A | 273 | Resupplying the Excavation | 1432 | 37.2, 47.4 | 0 | near #17 (went 2008 yd away) |
+| 33 | T | 6392 | Return to Brock | 1432 | 37.0, 47.8 | 9 |  |
+| 34 | O | 273 | Resupplying the Excavation | 1432 | 52.2, 69.4 | 576 |  |
+| 35 | T | 273 | Resupplying the Excavation | 1432 | 52.2, 69.3 | 1 |  |
+| 36 | A | 454 | After the Ambush | 1432 | 52.2, 69.3 | 0 |  |
+| 37 | T | 454 | After the Ambush | 1432 | 52.2, 69.4 | 2 |  |
+| 38 | A | 309 | Protecting the Shipment | 1432 | 52.2, 69.4 | 0 |  |
+| 39 | O | 309 | Protecting the Shipment | 1432 | 65.1, 65.8 | 362 | near #11 (went 2846 yd away) |
+| 40 | T | 309 | Protecting the Shipment | 1432 | 65.9, 65.6 | 22 | near #11 (went 2866 yd away) |
+| 41 | T | 436 | Ironband's Excavation | 1432 | 64.9, 66.7 | 34 |  |
+| 42 | A | 297 | Gathering Idols | 1432 | 64.9, 66.7 | 0 |  |
+| 43 | C | 257 | A Hunter's Boast | 1432 | 83.5, 65.5 | 512 |  |
+| 44 | C | 258 | A Hunter's Challenge | 1432 | 83.5, 65.5 | 0 |  |
+| 45 | A | 86758 | Twisting the Knife | 1432 | 81.8, 61.7 | 84 |  |
+| 46 | T | 2039 | Find Bingles | 1432 | 63.6, 47.9 | 562 |  |
+| 47 | O | 86758 | Twisting the Knife | 1432 | 63.4, 47.8 | 5 |  |
+| 48 | O | 86585 | Banner of the Fallen | 1432 | 31.3, 84.9 | 1116 | near #9 (went 2194 yd away) |
+| 49 | T | 263 | In Defense of the King's Lands | 1432 | 23.5, 74.5 | 288 | near #8 (went 1906 yd away) |
+| 50 | T | 86585 | Banner of the Fallen | 1432 | 23.2, 73.7 | 16 | near #8 (went 1891 yd away) |
+| 51 | O | 297 | Gathering Idols | 1432 | 70.1, 64.4 | 1304 | near #42 (went 1304 yd away) |
+| 52 | A | 86613 | Excavation Tools | 1432 | 69.8, 65.0 | 13 | near #42 (went 1294 yd away) |
 | 53 | O | 86613 | Excavation Tools | 1432 | 69.8, 65.0 | 0 |  |
-| 54 | T | 86613 | Excavation Tools | 1432 | 65.9, 65.6 | 107 |  |
-| 55 | T | 297 | Gathering Idols | 1432 | 64.9, 66.7 | 34 |  |
-| 56 | T | 2039 | Find Bingles | 1432 | 63.6, 47.9 | 346 | near #7 (went 2707 yd away) |
-| 57 | A | 78148 | Runes of the Sorcerer-Kings | 1432 | 77.4, 14.0 | 731 |  |
+| 54 | T | 297 | Gathering Idols | 1432 | 64.9, 66.7 | 138 |  |
+| 55 | T | 86613 | Excavation Tools | 1432 | 65.9, 65.6 | 34 |  |
+| 56 | T | 86758 | Twisting the Knife | 1432 | 81.8, 61.7 | 442 | near #45 (went 1629 yd away) |
+| 57 | A | 78148 | Runes of the Sorcerer-Kings | 1432 | 77.4, 14.0 | 884 |  |
 | 58 | O | 78148 | Runes of the Sorcerer-Kings | 1432 | 77.4, 14.0 | 0 |  |
-| 59 | A | 79093 | Rumi of Gnomeregan: The Collected Works | 1432 | 35.6, 48.9 | 1319 | near #34 (went 1355 yd away) |
-| 60 | O | 79093 | Rumi of Gnomeregan: The Collected Works | 1432 | 35.6, 48.9 | 0 | near #34 (went 1355 yd away) |
-| 61 | O | 79091 | Archmage Antonidas: The Unabridged Autobiography | 1455 | 76.0, 10.4 | 1828 | near #21 (went 3167 yd away) |
-| 62 | T | 78148 | Runes of the Sorcerer-Kings | 1453 | 48.9, 86.5 |  |  |
-| 63 | T | 79093 | Rumi of Gnomeregan: The Collected Works | 1453 | 48.9, 86.5 | 0 |  |
-| 64 | T | 79091 | Archmage Antonidas: The Unabridged Autobiography | 1453 | 48.9, 86.5 | 0 |  |
-| 65 | T | 1338 | Stormpike's Order | 1453 | 64.6, 37.2 | 632 |  |
+| 59 | A | 79093 | Rumi of Gnomeregan: The Collected Works | 1432 | 35.6, 48.9 | 1319 | near #33 (went 1355 yd away) |
+| 60 | O | 79093 | Rumi of Gnomeregan: The Collected Works | 1432 | 35.6, 48.9 | 0 | near #33 (went 1355 yd away) |
+| 61 | O | 79091 | Archmage Antonidas: The Unabridged Autobiography | 1455 | 76.0, 10.4 | 1828 | near #20 (went 3167 yd away) |
+| 62 | T | 1338 | Stormpike's Order | 1453 | 64.6, 37.2 |  |  |
+| 63 | T | 79093 | Rumi of Gnomeregan: The Collected Works | 1453 | 48.9, 86.5 | 632 |  |
+| 64 | T | 78148 | Runes of the Sorcerer-Kings | 1453 | 48.9, 86.5 | 0 |  |
+| 65 | T | 79091 | Archmage Antonidas: The Unabridged Autobiography | 1453 | 48.9, 86.5 | 0 |  |
 
-Walking between tasks: 18892 yd (~45 min at 7 yd/s).
+Walking between tasks: 19512 yd (~46 min at 7 yd/s).
 
 ## Qualité
 
@@ -516,15 +517,14 @@ Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint la
 ## Logistics
 
 - step 2: `sethearth 1432 35.53 48.4`
-- step 12: `level 13` — About 54 mobs here (Stonesplinter Trogg, level 11)
-- step 23: `goto 1432 33.94 50.95` — Flight master
-- step 24: `fly 1455` — Ironforge, Dun Morogh
-- step 26: `note The Hall of Thanes is under Ironforge (levels 13-18): run it on this visit, or abandon Old Ironforge Incursion`
-- step 37: `level 14` — About 55 mobs here (Tunnel Rat Digger, level 12)
-- step 69: `hearth 1432`
-- step 72: `goto 1432 33.94 50.95` — Flight master
-- step 73: `fly 1455` — Ironforge, Dun Morogh
-- step 75: `boat 1455 78 51.4` — Take the Deeprun Tram to Stormwind
+- step 13: `level 13` — About 20 mobs here (Stonesplinter Trogg, level 11)
+- step 20: `fly 1455` — Ironforge, Dun Morogh
+- step 22: `note The Hall of Thanes is under Ironforge (levels 13-18): run it on this visit, or abandon Old Ironforge Incursion`
+- step 43: `level 14` — About 53 mobs here (Loch Crocolisk, level 14)
+- step 68: `hearth 1432`
+- step 71: `goto 1432 33.94 50.95` — Flight master
+- step 72: `fly 1455` — Ironforge, Dun Morogh
+- step 74: `boat 1455 78 51.4` — Take the Deeprun Tram to Stormwind
 - step 76: `fp 1453 71.29 72.23`
 
 ## Warnings

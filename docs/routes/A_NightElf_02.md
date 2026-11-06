@@ -5,16 +5,17 @@ Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d30
 | Item | Value |
 |---|---|
 | Level band | 6-11 |
-| Simulated level | 6.00 -> 12.76 |
-| Time | 145 min |
-| XP gained | 42227 |
-| XP/h | 17496 |
-| Steps | 120 |
+| Simulated level | 6.00 -> 12.11 |
+| Time | 121 min |
+| XP gained | 35567 |
+| XP/h | 17701 |
+| Steps | 119 |
 | Quests turned in | 44 |
 | Hubs | 12 |
 | Median ratio (XP/s) | 3.71 |
-| Grinding (level steps) | ~105 mobs |
-| Level band | grinding 249 mobs with quests up to level 14: band widened to level 17 |
+| Grinding (level steps) | ~11 mobs |
+| Level band | grinding 81 mobs with quests up to level 14: band widened to level 17 |
+| Hearthstone | bound to Innkeeper Keldamyr after task 24; 1 return(s) planned, 1 bundle(s) |
 
 ## Kept quests (turn-in order)
 
@@ -22,48 +23,48 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 
 | # | Quest | Name | Lvl | XP | Sim lvl |
 |---|---|---|---|---|---|
-| 1 | 96606 | The Great Outdoors | 6 | 540 est. | 6 |
-| 2 | 475 | A Troubling Breeze | 6 | 270 | 6 |
-| 3 | 997 | Denalan's Earth | 5 | 225 | 6 |
-| 4 | 918 | Timberling Seeds | 7 | 630 | 7 |
-| 5 | 96634 | Camping 101: Cooking | 6 | 540 est. | 7 |
-| 6 | 929 | Crown of the Earth | 5 | 335 | 7 |
-| 7 | 476 | Gnarlpine Corruption | 6 | 540 | 7 |
-| 8 | 932 | Twisted Hatred | 8 | 630 | 7 |
-| 9 | 2438 | The Emerald Dreamcatcher | 6 | 405 | 7 |
-| 10 | 483 | The Relics of Wakening | 9 | 780 | 8 |
+| 1 | 997 | Denalan's Earth | 5 | 225 | 6 |
+| 2 | 918 | Timberling Seeds | 7 | 630 | 7 |
+| 3 | 475 | A Troubling Breeze | 6 | 270 | 7 |
+| 4 | 96606 | The Great Outdoors | 6 | 540 est. | 7 |
+| 5 | 476 | Gnarlpine Corruption | 6 | 540 | 7 |
+| 6 | 2438 | The Emerald Dreamcatcher | 6 | 405 | 7 |
+| 7 | 929 | Crown of the Earth | 5 | 335 | 7 |
+| 8 | 922 | Rellian Greenspyre | 7 | 315 | 7 |
+| 9 | 99046 | The Lost Runner | 9 | 780 est. | 8 |
+| 10 | 923 | Tumors | 9 | 980 | 8 |
 | 11 | 933 | Crown of the Earth | 9 | 780 | 8 |
-| 12 | 99046 | The Lost Runner | 9 | 780 est. | 9 |
-| 13 | 937 | The Enchanted Glade | 11 | 440 | 9 |
-| 14 | 488 | Zenn's Bidding | 5 | 450 | 10 |
-| 15 | 7383 | Crown of the Earth | 11 | 660 | 10 |
-| 16 | 99053 | Escaping Ban'ethil | 10 | 840 est. | 10 |
-| 17 | 99047 | Not Dead Yet | 9 | 780 est. | 10 |
-| 18 | 98403 | Twisted Hatred | 12 | 910 est. | 10 |
-| 19 | 486 | Ursal the Mauler | 12 | 1150 | 10 |
-| 20 | 487 | The Road to Darnassus | 8 | 700 | 11 |
-| 21 | 98391 | The Sisterhood of Elune | 10 | 210 est. | 11 |
-| 22 | 2519 | The Temple of the Moon | 10 | 85 | 11 |
-| 23 | 922 | Rellian Greenspyre | 7 | 315 | 11 |
-| 24 | 98392 | Darkness in the Glade | 12 | 910 est. | 11 |
-| 25 | 938 | Mist | 12 | 910 | 11 |
-| 26 | 98398 | The Oracle Tree | 12 | 225 est. | 11 |
-| 27 | 935 | Crown of the Earth | 11 | 1100 | 11 |
-| 28 | 940 | Teldrassil | 11 | 220 | 11 |
-| 29 | 923 | Tumors | 9 | 980 | 11 |
-| 30 | 2518 | Tears of the Moon | 12 | 1150 | 11 |
-| 31 | 98046 | Crown of the Earth | 11 | 660 est. | 12 |
-| 32 | 98065 | Crown of the Earth | 11 | 660 est. | 12 |
-| 33 | 489 | Seek Redemption! | 7 | 630 | 12 |
-| 34 | 931 | The Shimmering Frond | 10 | 840 | 12 |
-| 35 | 2498 | Return to Denalan | 9 | 80 | 12 |
-| 36 | 927 | The Moss-twined Heart | 12 | 455 | 12 |
-| 37 | 941 | Planting the Heart | 12 | 910 | 12 |
-| 38 | 2399 | The Sprouted Fronds | 10 | 85 | 12 |
-| 39 | 930 | The Glowing Fruit | 10 | 840 | 12 |
-| 40 | 2499 | Oakenscowl | 9 | 980 | 12 |
-| 41 | 6344 | Nessa Shadowsong | 10 | 210 | 12 |
-| 42 | 6341 | The Bounty of Teldrassil | 10 | 210 | 12 |
+| 12 | 2498 | Return to Denalan | 9 | 80 | 8 |
+| 13 | 931 | The Shimmering Frond | 10 | 840 | 8 |
+| 14 | 930 | The Glowing Fruit | 10 | 840 | 8 |
+| 15 | 927 | The Moss-twined Heart | 12 | 455 | 9 |
+| 16 | 941 | Planting the Heart | 12 | 910 | 9 |
+| 17 | 2399 | The Sprouted Fronds | 10 | 85 | 9 |
+| 18 | 2499 | Oakenscowl | 9 | 980 | 9 |
+| 19 | 96634 | Camping 101: Cooking | 6 | 540 est. | 9 |
+| 20 | 488 | Zenn's Bidding | 5 | 450 | 9 |
+| 21 | 483 | The Relics of Wakening | 9 | 780 | 9 |
+| 22 | 932 | Twisted Hatred | 8 | 630 | 9 |
+| 23 | 99047 | Not Dead Yet | 9 | 780 est. | 9 |
+| 24 | 487 | The Road to Darnassus | 8 | 700 | 10 |
+| 25 | 937 | The Enchanted Glade | 11 | 440 | 10 |
+| 26 | 99053 | Escaping Ban'ethil | 10 | 840 est. | 10 |
+| 27 | 7383 | Crown of the Earth | 11 | 660 | 10 |
+| 28 | 489 | Seek Redemption! | 7 | 630 | 10 |
+| 29 | 935 | Crown of the Earth | 11 | 1100 | 10 |
+| 30 | 98391 | The Sisterhood of Elune | 10 | 210 est. | 10 |
+| 31 | 2519 | The Temple of the Moon | 10 | 85 | 10 |
+| 32 | 98046 | Crown of the Earth | 11 | 660 est. | 10 |
+| 33 | 98065 | Crown of the Earth | 11 | 660 est. | 10 |
+| 34 | 486 | Ursal the Mauler | 12 | 1150 | 11 |
+| 35 | 98403 | Twisted Hatred | 12 | 910 est. | 11 |
+| 36 | 98392 | Darkness in the Glade | 12 | 910 est. | 11 |
+| 37 | 938 | Mist | 12 | 910 | 11 |
+| 38 | 98398 | The Oracle Tree | 12 | 225 est. | 11 |
+| 39 | 940 | Teldrassil | 11 | 220 | 11 |
+| 40 | 2518 | Tears of the Moon | 12 | 1150 | 11 |
+| 41 | 6344 | Nessa Shadowsong | 10 | 210 | 11 |
+| 42 | 6341 | The Bounty of Teldrassil | 10 | 210 | 11 |
 | 43 | 952 | Grove of the Ancients | 17 | 880 | 12 |
 | 44 | 6342 | Flight to Auberdine | 10 | 420 | 12 |
 
@@ -297,120 +298,120 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | # | Task | Quest | Name | Map | x, y | Leg yd | Return |
 |---|---|---|---|---|---|---|---|
 | 1 | A | 929 | Crown of the Earth | 1438 | 56.1, 61.7 | 0 |  |
-| 2 | A | 997 | Denalan's Earth | 1438 | 56.1, 57.7 | 135 |  |
-| 3 | A | 475 | A Troubling Breeze | 1438 | 56.0, 57.3 | 16 |  |
-| 4 | A | 932 | Twisted Hatred | 1438 | 55.6, 57.0 | 22 |  |
-| 5 | A | 2438 | The Emerald Dreamcatcher | 1438 | 55.6, 57.0 | 0 |  |
-| 6 | A | 98391 | The Sisterhood of Elune | 1438 | 55.6, 56.8 | 6 |  |
-| 7 | A | 96606 | The Great Outdoors | 1438 | 57.6, 56.6 | 102 |  |
-| 8 | O | 96606 | The Great Outdoors | 1438 | 57.7, 56.7 | 5 |  |
-| 9 | T | 96606 | The Great Outdoors | 1438 | 57.6, 56.6 | 5 |  |
-| 10 | A | 96634 | Camping 101: Cooking | 1438 | 57.6, 56.6 | 0 |  |
-| 11 | A | 488 | Zenn's Bidding | 1438 | 60.4, 56.2 | 141 |  |
-| 12 | O | 929 | Crown of the Earth | 1438 | 63.4, 58.1 | 167 |  |
-| 13 | T | 475 | A Troubling Breeze | 1438 | 66.3, 58.5 | 147 |  |
+| 2 | A | 932 | Twisted Hatred | 1438 | 55.6, 57.0 | 164 |  |
+| 3 | A | 2438 | The Emerald Dreamcatcher | 1438 | 55.6, 57.0 | 0 |  |
+| 4 | A | 475 | A Troubling Breeze | 1438 | 56.0, 57.3 | 22 |  |
+| 5 | A | 997 | Denalan's Earth | 1438 | 56.1, 57.7 | 16 |  |
+| 6 | A | 98391 | The Sisterhood of Elune | 1438 | 55.6, 56.8 | 42 |  |
+| 7 | A | 918 | Timberling Seeds | 1438 | 60.9, 68.5 | 482 |  |
+| 8 | T | 997 | Denalan's Earth | 1438 | 60.9, 68.5 | 0 |  |
+| 9 | O | 918 | Timberling Seeds | 1438 | 60.8, 66.0 | 86 |  |
+| 10 | T | 918 | Timberling Seeds | 1438 | 60.9, 68.5 | 86 |  |
+| 11 | A | 922 | Rellian Greenspyre | 1438 | 60.9, 68.5 | 0 |  |
+| 12 | O | 2438 | The Emerald Dreamcatcher | 1438 | 68.0, 59.7 | 470 |  |
+| 13 | T | 475 | A Troubling Breeze | 1438 | 66.3, 58.5 | 97 |  |
 | 14 | A | 476 | Gnarlpine Corruption | 1438 | 66.3, 58.5 | 0 |  |
-| 15 | O | 2438 | The Emerald Dreamcatcher | 1438 | 68.0, 59.7 | 97 |  |
-| 16 | A | 918 | Timberling Seeds | 1438 | 60.9, 68.5 | 470 |  |
-| 17 | T | 997 | Denalan's Earth | 1438 | 60.9, 68.5 | 0 |  |
-| 18 | O | 918 | Timberling Seeds | 1438 | 60.8, 66.0 | 86 |  |
-| 19 | T | 918 | Timberling Seeds | 1438 | 60.9, 68.5 | 86 |  |
-| 20 | A | 922 | Rellian Greenspyre | 1438 | 60.9, 68.5 | 0 |  |
-| 21 | O | 96634 | Camping 101: Cooking | 1438 | 57.1, 61.3 | 310 |  |
-| 22 | T | 96634 | Camping 101: Cooking | 1438 | 57.1, 61.3 | 0 |  |
-| 23 | T | 929 | Crown of the Earth | 1438 | 56.1, 61.7 | 51 |  |
-| 24 | A | 933 | Crown of the Earth | 1438 | 56.1, 61.7 | 0 |  |
-| 25 | A | 487 | The Road to Darnassus | 1438 | 52.9, 57.2 | 224 | near #6 (went 773 yd away) |
-| 26 | O | 932 | Twisted Hatred | 1438 | 51.3, 50.5 | 242 |  |
-| 27 | T | 476 | Gnarlpine Corruption | 1438 | 56.0, 57.3 | 331 |  |
-| 28 | A | 483 | The Relics of Wakening | 1438 | 56.0, 57.3 | 0 |  |
-| 29 | T | 932 | Twisted Hatred | 1438 | 55.6, 57.0 | 22 |  |
-| 30 | A | 98403 | Twisted Hatred | 1438 | 55.6, 57.0 | 0 |  |
-| 31 | T | 2438 | The Emerald Dreamcatcher | 1438 | 55.6, 57.0 | 0 |  |
-| 32 | O | 488 | Zenn's Bidding | 1438 | 45.5, 40.0 | 771 |  |
-| 33 | O | 487 | The Road to Darnassus | 1438 | 46.6, 53.2 | 451 |  |
-| 34 | O | 483 | The Relics of Wakening | 1438 | 45.6, 57.4 | 151 |  |
-| 35 | A | 99053 | Escaping Ban'ethil | 1438 | 44.7, 58.9 | 70 |  |
-| 36 | O | 483 | The Relics of Wakening | 1438 | 43.7, 61.2 | 92 |  |
-| 37 | O | 933 | Crown of the Earth | 1438 | 42.4, 67.1 | 209 |  |
-| 38 | T | 483 | The Relics of Wakening | 1438 | 56.0, 57.3 | 765 | near #31 (went 793 yd away) |
-| 39 | A | 486 | Ursal the Mauler | 1438 | 56.0, 57.3 | 0 | near #31 (went 793 yd away) |
-| 40 | A | 99046 | The Lost Runner | 1438 | 56.0, 59.5 | 76 |  |
-| 41 | T | 933 | Crown of the Earth | 1438 | 56.1, 61.7 | 70 | near #24 (went 915 yd away) |
-| 42 | A | 7383 | Crown of the Earth | 1438 | 56.1, 61.7 | 0 |  |
-| 43 | A | 930 | The Glowing Fruit | 1438 | 42.6, 76.2 | 846 |  |
-| 44 | O | 486 | Ursal the Mauler | 1438 | 38.8, 79.8 | 228 |  |
-| 45 | O | 99053 | Escaping Ban'ethil | 1438 | 43.1, 51.6 | 979 |  |
-| 46 | T | 99046 | The Lost Runner | 1438 | 37.5, 36.8 | 577 |  |
-| 47 | A | 99047 | Not Dead Yet | 1438 | 37.5, 36.8 | 0 |  |
-| 48 | A | 937 | The Enchanted Glade | 1438 | 38.3, 34.4 | 92 |  |
-| 49 | O | 937 | The Enchanted Glade | 1438 | 35.2, 36.4 | 174 |  |
-| 50 | T | 937 | The Enchanted Glade | 1438 | 38.3, 34.4 | 174 |  |
-| 51 | A | 98392 | Darkness in the Glade | 1438 | 38.3, 34.4 | 0 |  |
-| 52 | O | 7383 | Crown of the Earth | 1438 | 38.4, 34.1 | 11 |  |
-| 53 | O | 488 | Zenn's Bidding | 1438 | 49.6, 40.4 | 610 |  |
-| 54 | O | 98403 | Twisted Hatred | 1438 | 50.6, 43.7 | 120 |  |
-| 55 | T | 488 | Zenn's Bidding | 1438 | 60.4, 56.2 | 652 | near #11 (went 1446 yd away) |
-| 56 | T | 7383 | Crown of the Earth | 1438 | 56.1, 61.7 | 285 | near #42 (went 1370 yd away) |
-| 57 | A | 935 | Crown of the Earth | 1438 | 56.1, 61.7 | 0 | near #42 (went 1370 yd away) |
-| 58 | T | 99053 | Escaping Ban'ethil | 1438 | 56.0, 59.5 | 74 |  |
-| 59 | A | 489 | Seek Redemption! | 1438 | 56.1, 57.7 | 61 |  |
-| 60 | T | 99047 | Not Dead Yet | 1438 | 55.3, 56.8 | 50 |  |
-| 61 | T | 98403 | Twisted Hatred | 1438 | 55.6, 57.0 | 14 |  |
-| 62 | T | 486 | Ursal the Mauler | 1438 | 56.0, 57.3 | 22 |  |
-| 63 | T | 487 | The Road to Darnassus | 1438 | 52.9, 57.2 | 155 |  |
-| 64 | A | 6344 | Nessa Shadowsong | 1457 | 70.7, 45.4 | 1070 |  |
-| 65 | T | 98391 | The Sisterhood of Elune | 1457 | 28.9, 45.8 | 441 |  |
-| 66 | A | 2519 | The Temple of the Moon | 1457 | 28.9, 45.8 | 0 |  |
-| 67 | T | 2519 | The Temple of the Moon | 1457 | 36.6, 85.9 | 294 |  |
-| 68 | A | 2518 | Tears of the Moon | 1457 | 36.6, 85.9 | 0 |  |
-| 69 | T | 922 | Rellian Greenspyre | 1457 | 38.2, 21.6 | 454 |  |
-| 70 | A | 923 | Tumors | 1457 | 38.2, 21.6 | 0 |  |
-| 71 | O | 98392 | Darkness in the Glade | 1438 | 35.0, 39.3 | 651 | near #49 (went 1409 yd away) |
-| 72 | A | 938 | Mist | 1438 | 31.5, 31.6 | 316 |  |
-| 73 | O | 98392 | Darkness in the Glade | 1438 | 34.2, 27.9 | 184 |  |
-| 74 | A | 931 | The Shimmering Frond | 1438 | 34.6, 28.8 | 34 |  |
-| 75 | O | 2518 | Tears of the Moon | 1438 | 40.1, 25.5 | 299 |  |
-| 76 | O | 923 | Tumors | 1438 | 43.8, 27.6 | 200 |  |
-| 77 | A | 927 | The Moss-twined Heart | 1438 | 43.3, 28.3 | 32 |  |
-| 78 | O | 938 | Mist | 1438 | 38.3, 34.4 | 327 | near #52 (went 1342 yd away) |
-| 79 | T | 98392 | Darkness in the Glade | 1438 | 38.3, 34.4 | 1 | near #52 (went 1343 yd away) |
-| 80 | A | 98398 | The Oracle Tree | 1438 | 38.3, 34.4 | 0 |  |
-| 81 | T | 938 | Mist | 1438 | 38.3, 34.4 | 0 |  |
-| 82 | T | 98398 | The Oracle Tree | 1438 | 37.0, 34.0 | 69 |  |
-| 83 | A | 940 | Teldrassil | 1438 | 37.0, 34.0 | 0 |  |
-| 84 | T | 935 | Crown of the Earth | 1457 | 34.8, 9.3 | 812 | near #70 (went 1220 yd away) |
-| 85 | A | 98046 | Crown of the Earth | 1457 | 34.8, 9.3 | 0 | near #70 (went 1220 yd away) |
-| 86 | T | 940 | Teldrassil | 1457 | 34.8, 9.3 | 0 |  |
-| 87 | A | 952 | Grove of the Ancients | 1457 | 34.8, 9.3 | 0 |  |
-| 88 | T | 923 | Tumors | 1457 | 38.2, 21.6 | 94 |  |
-| 89 | A | 2498 | Return to Denalan | 1457 | 38.2, 21.6 | 0 |  |
-| 90 | T | 2518 | Tears of the Moon | 1457 | 36.6, 85.9 | 454 | near #68 (went 1589 yd away) |
-| 91 | T | 98046 | Crown of the Earth | 1457 | 40.4, 88.7 | 43 | near #68 (went 1581 yd away) |
-| 92 | A | 98065 | Crown of the Earth | 1457 | 40.4, 88.7 | 0 |  |
-| 93 | T | 98065 | Crown of the Earth | 1457 | 39.1, 81.6 | 51 |  |
-| 94 | O | 489 | Seek Redemption! | 1438 | 50.9, 58.5 | 1314 | near #63 (went 1410 yd away) |
-| 95 | T | 489 | Seek Redemption! | 1438 | 60.4, 56.2 | 487 | near #55 (went 1890 yd away) |
-| 96 | T | 931 | The Shimmering Frond | 1438 | 60.9, 68.5 | 419 | near #20 (went 1972 yd away) |
-| 97 | T | 2498 | Return to Denalan | 1438 | 60.9, 68.5 | 0 | near #20 (went 1972 yd away) |
-| 98 | A | 2499 | Oakenscowl | 1438 | 60.9, 68.5 | 0 |  |
-| 99 | T | 927 | The Moss-twined Heart | 1438 | 60.9, 68.5 | 0 |  |
-| 100 | A | 941 | Planting the Heart | 1438 | 60.9, 68.5 | 0 |  |
-| 101 | T | 941 | Planting the Heart | 1438 | 60.8, 68.6 | 8 |  |
-| 102 | A | 2399 | The Sprouted Fronds | 1438 | 60.8, 68.6 | 2 |  |
-| 103 | T | 2399 | The Sprouted Fronds | 1438 | 60.8, 68.6 | 0 |  |
-| 104 | T | 930 | The Glowing Fruit | 1438 | 60.9, 68.5 | 7 |  |
-| 105 | O | 2499 | Oakenscowl | 1438 | 53.8, 75.1 | 427 |  |
-| 106 | T | 2499 | Oakenscowl | 1438 | 60.9, 68.5 | 427 |  |
+| 15 | O | 929 | Crown of the Earth | 1438 | 63.4, 58.1 | 147 |  |
+| 16 | A | 488 | Zenn's Bidding | 1438 | 60.4, 56.2 | 167 |  |
+| 17 | A | 96606 | The Great Outdoors | 1438 | 57.6, 56.6 | 141 |  |
+| 18 | O | 96606 | The Great Outdoors | 1438 | 57.7, 56.7 | 5 |  |
+| 19 | T | 96606 | The Great Outdoors | 1438 | 57.6, 56.6 | 5 |  |
+| 20 | A | 96634 | Camping 101: Cooking | 1438 | 57.6, 56.6 | 0 |  |
+| 21 | T | 476 | Gnarlpine Corruption | 1438 | 56.0, 57.3 | 85 |  |
+| 22 | A | 483 | The Relics of Wakening | 1438 | 56.0, 57.3 | 0 |  |
+| 23 | T | 2438 | The Emerald Dreamcatcher | 1438 | 55.6, 57.0 | 22 |  |
+| 24 | A | 99046 | The Lost Runner | 1438 | 56.0, 59.5 | 89 |  |
+| 25 | T | 929 | Crown of the Earth | 1438 | 56.1, 61.7 | 70 | near #5 (went 608 yd away) |
+| 26 | A | 933 | Crown of the Earth | 1438 | 56.1, 61.7 | 0 |  |
+| 27 | A | 487 | The Road to Darnassus | 1438 | 52.9, 57.2 | 224 |  |
+| 28 | O | 487 | The Road to Darnassus | 1438 | 46.6, 53.2 | 347 |  |
+| 29 | O | 488 | Zenn's Bidding | 1438 | 45.5, 40.0 | 451 |  |
+| 30 | T | 922 | Rellian Greenspyre | 1457 | 38.2, 21.6 | 1104 |  |
+| 31 | A | 923 | Tumors | 1457 | 38.2, 21.6 | 0 |  |
+| 32 | T | 99046 | The Lost Runner | 1438 | 37.5, 36.8 | 802 |  |
+| 33 | A | 99047 | Not Dead Yet | 1438 | 37.5, 36.8 | 0 |  |
+| 34 | A | 937 | The Enchanted Glade | 1438 | 38.3, 34.4 | 92 |  |
+| 35 | A | 927 | The Moss-twined Heart | 1438 | 43.3, 28.3 | 327 |  |
+| 36 | O | 923 | Tumors | 1438 | 43.8, 27.6 | 32 |  |
+| 37 | A | 931 | The Shimmering Frond | 1438 | 34.6, 28.8 | 467 |  |
+| 38 | A | 938 | Mist | 1438 | 31.5, 31.6 | 183 |  |
+| 39 | T | 923 | Tumors | 1457 | 38.2, 21.6 | 747 | near #31 (went 1246 yd away) |
+| 40 | A | 2498 | Return to Denalan | 1457 | 38.2, 21.6 | 0 | near #31 (went 1246 yd away) |
+| 41 | A | 930 | The Glowing Fruit | 1438 | 42.6, 76.2 | 1223 |  |
+| 42 | O | 933 | Crown of the Earth | 1438 | 42.4, 67.1 | 309 |  |
+| 43 | O | 483 | The Relics of Wakening | 1438 | 43.7, 61.2 | 209 |  |
+| 44 | A | 99053 | Escaping Ban'ethil | 1438 | 44.7, 58.9 | 92 |  |
+| 45 | O | 483 | The Relics of Wakening | 1438 | 45.6, 57.4 | 70 |  |
+| 46 | T | 933 | Crown of the Earth | 1438 | 56.1, 61.7 | 553 | near #26 (went 1616 yd away) |
+| 47 | A | 7383 | Crown of the Earth | 1438 | 56.1, 61.7 | 0 | near #26 (went 1616 yd away) |
+| 48 | T | 2498 | Return to Denalan | 1438 | 60.9, 68.5 | 334 | near #11 (went 1949 yd away) |
+| 49 | A | 2499 | Oakenscowl | 1438 | 60.9, 68.5 | 0 | near #11 (went 1949 yd away) |
+| 50 | T | 931 | The Shimmering Frond | 1438 | 60.9, 68.5 | 0 |  |
+| 51 | T | 930 | The Glowing Fruit | 1438 | 60.9, 68.5 | 0 |  |
+| 52 | T | 927 | The Moss-twined Heart | 1438 | 60.9, 68.5 | 0 |  |
+| 53 | A | 941 | Planting the Heart | 1438 | 60.9, 68.5 | 0 |  |
+| 54 | T | 941 | Planting the Heart | 1438 | 60.8, 68.6 | 8 |  |
+| 55 | A | 2399 | The Sprouted Fronds | 1438 | 60.8, 68.6 | 2 |  |
+| 56 | T | 2399 | The Sprouted Fronds | 1438 | 60.8, 68.6 | 0 |  |
+| 57 | O | 2499 | Oakenscowl | 1438 | 53.8, 75.1 | 419 |  |
+| 58 | T | 2499 | Oakenscowl | 1438 | 60.9, 68.5 | 427 |  |
+| 59 | O | 96634 | Camping 101: Cooking | 1438 | 57.1, 61.3 | 310 |  |
+| 60 | T | 96634 | Camping 101: Cooking | 1438 | 57.1, 61.3 | 0 |  |
+| 61 | O | 932 | Twisted Hatred | 1438 | 51.3, 50.5 | 472 |  |
+| 62 | O | 488 | Zenn's Bidding | 1438 | 49.6, 40.4 | 351 |  |
+| 63 | T | 488 | Zenn's Bidding | 1438 | 60.4, 56.2 | 762 | near #20 (went 1799 yd away) |
+| 64 | A | 489 | Seek Redemption! | 1438 | 56.1, 57.7 | 223 | near #60 (went 672 yd away) |
+| 65 | T | 483 | The Relics of Wakening | 1438 | 56.0, 57.3 | 16 | near #60 (went 655 yd away) |
+| 66 | A | 486 | Ursal the Mauler | 1438 | 56.0, 57.3 | 0 |  |
+| 67 | T | 932 | Twisted Hatred | 1438 | 55.6, 57.0 | 22 |  |
+| 68 | A | 98403 | Twisted Hatred | 1438 | 55.6, 57.0 | 0 |  |
+| 69 | T | 99047 | Not Dead Yet | 1438 | 55.3, 56.8 | 14 |  |
+| 70 | T | 487 | The Road to Darnassus | 1438 | 52.9, 57.2 | 121 |  |
+| 71 | O | 489 | Seek Redemption! | 1438 | 50.9, 58.5 | 110 | near #27 (went 1342 yd away) |
+| 72 | O | 99053 | Escaping Ban'ethil | 1438 | 43.1, 51.6 | 460 |  |
+| 73 | O | 937 | The Enchanted Glade | 1438 | 35.2, 36.4 | 655 | near #33 (went 1703 yd away) |
+| 74 | T | 937 | The Enchanted Glade | 1438 | 38.3, 34.4 | 174 | near #34 (went 1632 yd away) |
+| 75 | A | 98392 | Darkness in the Glade | 1438 | 38.3, 34.4 | 0 | near #34 (went 1632 yd away) |
+| 76 | O | 7383 | Crown of the Earth | 1438 | 38.4, 34.1 | 11 |  |
+| 77 | T | 99053 | Escaping Ban'ethil | 1438 | 56.0, 59.5 | 1243 | near #69 (went 1319 yd away) |
+| 78 | T | 7383 | Crown of the Earth | 1438 | 56.1, 61.7 | 74 | near #64 (went 1370 yd away) |
+| 79 | A | 935 | Crown of the Earth | 1438 | 56.1, 61.7 | 0 |  |
+| 80 | T | 489 | Seek Redemption! | 1438 | 60.4, 56.2 | 285 | near #63 (went 1446 yd away) |
+| 81 | A | 6344 | Nessa Shadowsong | 1457 | 70.7, 45.4 | 1448 |  |
+| 82 | T | 935 | Crown of the Earth | 1457 | 34.8, 9.3 | 457 | near #40 (went 1972 yd away) |
+| 83 | A | 98046 | Crown of the Earth | 1457 | 34.8, 9.3 | 0 | near #40 (went 1972 yd away) |
+| 84 | T | 98391 | The Sisterhood of Elune | 1457 | 28.9, 45.8 | 265 |  |
+| 85 | A | 2519 | The Temple of the Moon | 1457 | 28.9, 45.8 | 0 |  |
+| 86 | T | 2519 | The Temple of the Moon | 1457 | 36.6, 85.9 | 294 |  |
+| 87 | A | 2518 | Tears of the Moon | 1457 | 36.6, 85.9 | 0 |  |
+| 88 | T | 98046 | Crown of the Earth | 1457 | 40.4, 88.7 | 43 |  |
+| 89 | A | 98065 | Crown of the Earth | 1457 | 40.4, 88.7 | 0 |  |
+| 90 | T | 98065 | Crown of the Earth | 1457 | 39.1, 81.6 | 51 |  |
+| 91 | O | 486 | Ursal the Mauler | 1438 | 38.8, 79.8 | 873 |  |
+| 92 | O | 98403 | Twisted Hatred | 1438 | 50.6, 43.7 | 1365 | near #62 (went 1495 yd away) |
+| 93 | T | 486 | Ursal the Mauler | 1438 | 56.0, 57.3 | 536 | near #77 (went 1667 yd away) |
+| 94 | T | 98403 | Twisted Hatred | 1438 | 55.6, 57.0 | 22 | near #77 (went 1647 yd away) |
+| 95 | O | 98392 | Darkness in the Glade | 1438 | 35.0, 39.3 | 1204 | near #73 (went 1409 yd away) |
+| 96 | O | 98392 | Darkness in the Glade | 1438 | 34.2, 27.9 | 387 | near #37 (went 1933 yd away) |
+| 97 | O | 2518 | Tears of the Moon | 1438 | 40.1, 25.5 | 309 |  |
+| 98 | O | 938 | Mist | 1438 | 38.3, 34.4 | 315 | near #76 (went 1541 yd away) |
+| 99 | T | 98392 | Darkness in the Glade | 1438 | 38.3, 34.4 | 1 | near #76 (went 1542 yd away) |
+| 100 | A | 98398 | The Oracle Tree | 1438 | 38.3, 34.4 | 0 |  |
+| 101 | T | 938 | Mist | 1438 | 38.3, 34.4 | 0 |  |
+| 102 | T | 98398 | The Oracle Tree | 1438 | 37.0, 34.0 | 69 |  |
+| 103 | A | 940 | Teldrassil | 1438 | 37.0, 34.0 | 0 |  |
+| 104 | T | 940 | Teldrassil | 1457 | 34.8, 9.3 | 812 | near #83 (went 1629 yd away) |
+| 105 | A | 952 | Grove of the Ancients | 1457 | 34.8, 9.3 | 0 | near #83 (went 1629 yd away) |
+| 106 | T | 2518 | Tears of the Moon | 1457 | 36.6, 85.9 | 541 | near #90 (went 1605 yd away) |
 | 107 | T | 6344 | Nessa Shadowsong | 1438 | 56.3, 92.4 |  |  |
 | 108 | A | 6341 | The Bounty of Teldrassil | 1438 | 56.3, 92.4 | 0 |  |
-| 109 | F |  | flight path | 1438 | 58.4, 94.0 | 121 |  |
-| 110 | T | 6341 | The Bounty of Teldrassil | 1438 | 58.4, 94.0 | 0 |  |
-| 111 | A | 6342 | Flight to Auberdine | 1438 | 58.4, 94.0 | 0 |  |
+| 109 | T | 6341 | The Bounty of Teldrassil | 1438 | 58.4, 94.0 | 121 |  |
+| 110 | A | 6342 | Flight to Auberdine | 1438 | 58.4, 94.0 | 0 |  |
+| 111 | F |  | flight path | 1438 | 58.4, 94.0 | 0 |  |
 | 112 | T | 952 | Grove of the Ancients | 1439 | 43.5, 76.3 |  |  |
 | 113 | T | 6342 | Flight to Auberdine | 1439 | 36.8, 44.3 | 1466 |  |
 
-Walking between tasks: 20986 yd (~50 min at 7 yd/s).
+Walking between tasks: 26539 yd (~63 min at 7 yd/s).
 
 ## Qualité
 
@@ -430,14 +431,13 @@ Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint la
 
 ## Logistics
 
-- step 41: `sethearth 1438 55.62 59.79`
-- step 46: `level 9` — About 51 mobs here (Gnarlpine Defender, level 7)
-- step 54: `level 10` — About 54 mobs here (Bloodfeather Rogue, level 8)
-- step 97: `hearth 1438`
-- step 111: `goto 1457 29.1 41.2` — Take the portal down to Rut'theran Village
-- step 112: `fp 1438 58.4 94.02`
-- step 117: `boat 1438 54.9 96.8` — Take the boat to Auberdine
-- step 118: `fp 1439 36.34 45.58`
+- step 25: `sethearth 1438 55.62 59.79`
+- step 78: `hearth 1438`
+- step 93: `level 11` — About 11 mobs here (Gnarlpine Avenger, level 9)
+- step 110: `goto 1457 29.1 41.2` — Take the portal down to Rut'theran Village
+- step 111: `fp 1438 58.4 94.02`
+- step 116: `boat 1438 54.9 96.8` — Take the boat to Auberdine
+- step 117: `fp 1439 36.34 45.58`
 
 ## Warnings
 

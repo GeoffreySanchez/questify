@@ -2,18 +2,16 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 156 étapes, niveau final 26.76, ~31832 xp/h, 283 min.
+-- Simulation : 154 étapes, niveau final 26.76, ~32165 xp/h, 280 min.
 Q:RegisterGuide({
   id = "A_03",
   title = "Redridge Mountains and Duskwood",
   faction = "Alliance",
   minLevel = 22, maxLevel = 26,
   next = "A_04",
-  sim = { steps = 156, endLevel = 26.76, xpPerHour = 31832, minutes = 283 },
+  sim = { steps = 154, endLevel = 26.76, xpPerHour = 32165, minutes = 280 },
   steps = {
-    { "hearth", 1440 }, -- pierre de foyer
-    { "goto", 1440, 34.41, 47.99, note = "Flight master" }, -- déplacement
-    { "fly", 1439, node = 26, note = "Auberdine, Darkshore" }, -- vol
+    { "hearth", 1439 }, -- pierre de foyer
     { "boat", 1439, 32.7, 41.8, note = "Take the boat to Stormwind Harbor" }, -- bateau
     { "fp", 1453, 71.29, 72.23 }, -- point de vol
     { "fp", 1433, 25.5, 59.41 }, -- point de vol
@@ -98,9 +96,9 @@ Q:RegisterGuide({
     { "complete", 134, at = { 1431, 33.42, 76.35 } }, -- Ogre Thieves (lvl 30, ~1200 xp, sim lvl 24)
     { "complete", 181, at = { 1431, 38, 80 } }, -- Look To The Stars (lvl 30, ~2450 xp, sim lvl 24)
     { "turnin", 134, xp = 1200 }, -- Ogre Thieves (lvl 30, ~1200 xp, sim lvl 24)
-    { "accept", 160 }, -- Note to the Mayor (lvl 30, ~610 xp, sim lvl 24)
+    { "accept", 160 }, -- Note to the Mayor (lvl 30, ~610 xp, sim lvl 25)
     { "hearth", 1431 }, -- pierre de foyer
-    { "turnin", 160, xp = 610 }, -- Note to the Mayor (lvl 30, ~610 xp, sim lvl 24)
+    { "turnin", 160, xp = 610 }, -- Note to the Mayor (lvl 30, ~610 xp, sim lvl 25)
     { "accept", 251 }, -- Translate Abercrombie's Note (lvl 30, ~245 xp, sim lvl 25)
     { "turnin", 251, xp = 245 }, -- Translate Abercrombie's Note (lvl 30, ~245 xp, sim lvl 25)
     { "turnin", 96139, xp = 1750 }, -- The Valor Family (lvl 22, ~1750 xp, sim lvl 25)

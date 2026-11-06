@@ -8,13 +8,13 @@ Questify: 29 chapters from `Questify/Guides/Guides.xml` (QuestieDB commit `80866
 
 A side is **clearly ahead** on a chapter when, on the same slice of the route, the quests that only it does (that the other addon does nowhere for the faction) are worth at least 15 % of the chapter's quest XP more than the other side's, with at least 5 such quests. "APR-only": general quests (not class quests) that APR does in the slice and no Questify chapter of the faction does, except those of a level more than 2 above the chapter's band. "Questify-only": general quests of the chapter that no APR route of the faction does. Only quest XP is compared: travel time, kill time and grinding are not.
 
-- APR clearly ahead: A_NightElf_03 (APR-only 17 quests / 16 920 XP, Questify-only 5 / 5 345 XP, chapter 54 420 XP); A_Skyborne_01 (APR-only 25 quests / 12 315 XP, Questify-only 6 / 4 070 XP, chapter 46 335 XP); A_01 (APR-only 12 quests / 14 510 XP, Questify-only 4 / 3 795 XP, chapter 45 590 XP); A_02 (APR-only 15 quests / 18 720 XP, Questify-only 6 / 5 815 XP, chapter 33 070 XP); A_03 (APR-only 14 quests / 20 150 XP, Questify-only 3 / 6 000 XP, chapter 76 400 XP); A_04 (APR-only 28 quests / 45 375 XP, Questify-only 16 / 25 630 XP, chapter 51 575 XP); H_OrcTroll_01 (APR-only 5 quests / 2 610 XP, Questify-only 1 / 170 XP, chapter 5 165 XP); H_Tauren_01 (APR-only 8 quests / 3 020 XP, Questify-only 0 / 0 XP, chapter 8 435 XP); H_01 (APR-only 19 quests / 14 380 XP, Questify-only 1 / 1 950 XP, chapter 47 810 XP); H_04 (APR-only 12 quests / 20 650 XP, Questify-only 4 / 6 200 XP, chapter 61 160 XP)
+- APR clearly ahead: A_Skyborne_01 (APR-only 25 quests / 12 315 XP, Questify-only 6 / 4 070 XP, chapter 46 335 XP); A_01 (APR-only 11 quests / 12 860 XP, Questify-only 4 / 3 795 XP, chapter 45 590 XP); A_02 (APR-only 13 quests / 15 120 XP, Questify-only 6 / 5 815 XP, chapter 33 640 XP); A_03 (APR-only 14 quests / 20 150 XP, Questify-only 3 / 6 000 XP, chapter 76 400 XP); A_04 (APR-only 28 quests / 45 375 XP, Questify-only 16 / 25 630 XP, chapter 51 575 XP); H_OrcTroll_01 (APR-only 5 quests / 2 610 XP, Questify-only 1 / 170 XP, chapter 5 165 XP); H_Tauren_01 (APR-only 5 quests / 2 140 XP, Questify-only 0 / 0 XP, chapter 6 665 XP); H_01 (APR-only 19 quests / 14 380 XP, Questify-only 1 / 1 950 XP, chapter 47 810 XP); H_04 (APR-only 12 quests / 20 650 XP, Questify-only 4 / 6 200 XP, chapter 61 160 XP)
 - Questify clearly ahead: A_DwarfGnome_03 (APR-only 7 quests / 5 060 XP, Questify-only 11 / 12 125 XP, chapter 22 465 XP); A_DwarfGnome_04 (APR-only 5 quests / 4 780 XP, Questify-only 9 / 8 080 XP, chapter 15 195 XP); A_Human_03 (APR-only 10 quests / 7 650 XP, Questify-only 11 / 11 080 XP, chapter 21 740 XP); H_Undead_03 (APR-only 2 quests / 200 XP, Questify-only 10 / 8 170 XP, chapter 27 275 XP)
-- Close: A_DwarfGnome_01 (APR-only 1 quest / 630 XP, Questify-only 0 / 0 XP, chapter 4 255 XP); A_DwarfGnome_02 (APR-only 8 quests / 5 510 XP, Questify-only 6 / 3 805 XP, chapter 22 825 XP); A_Human_01 (APR-only 4 quests / 2 160 XP, Questify-only 0 / 0 XP, chapter 4 270 XP); A_Human_02 (APR-only 11 quests / 6 455 XP, Questify-only 6 / 4 115 XP, chapter 23 490 XP); A_NightElf_01 (APR-only 1 quest / 630 XP, Questify-only 0 / 0 XP, chapter 4 110 XP); A_NightElf_02 (APR-only 9 quests / 6 710 XP, Questify-only 10 / 6 355 XP, chapter 26 350 XP); A_05 (APR-only 2 quests / 5 700 XP, Questify-only 2 / 2 200 XP, chapter 11 560 XP); H_OrcTroll_02 (APR-only 6 quests / 3 065 XP, Questify-only 2 / 1 540 XP, chapter 25 275 XP); H_Tauren_02 (APR-only 7 quests / 3 675 XP, Questify-only 2 / 1 120 XP, chapter 20 125 XP); H_Undead_01 (APR-only 2 quests / 1 080 XP, Questify-only 0 / 0 XP, chapter 3 710 XP); H_Undead_02 (APR-only 6 quests / 3 590 XP, Questify-only 7 / 4 970 XP, chapter 26 760 XP); H_Skyborne_01 (APR-only 27 quests / 13 185 XP, Questify-only 18 / 12 950 XP, chapter 47 225 XP); H_02 (APR-only 12 quests / 11 670 XP, Questify-only 7 / 8 235 XP, chapter 47 625 XP); H_03 (APR-only 15 quests / 16 055 XP, Questify-only 7 / 12 250 XP, chapter 64 315 XP); H_05 (APR-only 6 quests / 15 000 XP, Questify-only 10 / 13 855 XP, chapter 33 805 XP)
+- Close: A_DwarfGnome_01 (APR-only 1 quest / 630 XP, Questify-only 0 / 0 XP, chapter 4 255 XP); A_DwarfGnome_02 (APR-only 8 quests / 5 510 XP, Questify-only 6 / 3 805 XP, chapter 22 825 XP); A_Human_01 (APR-only 4 quests / 2 160 XP, Questify-only 0 / 0 XP, chapter 4 270 XP); A_Human_02 (APR-only 11 quests / 6 455 XP, Questify-only 6 / 4 115 XP, chapter 23 490 XP); A_NightElf_01 (APR-only 1 quest / 630 XP, Questify-only 0 / 0 XP, chapter 4 110 XP); A_NightElf_02 (APR-only 9 quests / 6 710 XP, Questify-only 10 / 6 355 XP, chapter 26 350 XP); A_NightElf_03 (APR-only 16 quests / 15 270 XP, Questify-only 6 / 6 545 XP, chapter 58 570 XP); A_05 (APR-only 2 quests / 5 700 XP, Questify-only 2 / 2 200 XP, chapter 11 560 XP); H_OrcTroll_02 (APR-only 6 quests / 3 065 XP, Questify-only 2 / 1 540 XP, chapter 25 275 XP); H_Tauren_02 (APR-only 7 quests / 3 835 XP, Questify-only 2 / 1 120 XP, chapter 22 075 XP); H_Undead_01 (APR-only 2 quests / 1 080 XP, Questify-only 0 / 0 XP, chapter 3 710 XP); H_Undead_02 (APR-only 6 quests / 3 590 XP, Questify-only 7 / 4 970 XP, chapter 26 760 XP); H_Skyborne_01 (APR-only 27 quests / 13 185 XP, Questify-only 18 / 12 950 XP, chapter 47 225 XP); H_02 (APR-only 12 quests / 11 670 XP, Questify-only 7 / 8 235 XP, chapter 47 625 XP); H_03 (APR-only 15 quests / 16 055 XP, Questify-only 7 / 12 250 XP, chapter 64 315 XP); H_05 (APR-only 6 quests / 15 000 XP, Questify-only 10 / 13 855 XP, chapter 33 805 XP)
 
-Alliance: 127 distinct APR-only quests over all slices. Why our route builder left them out (its chapter report, `docs/routes/<chapter>.md`): not a candidate of the chapter 45; level band reached 21; requires a profession 15; prerequisite unavailable 14; finisher outside the chapter zones 9; objective item source not in zone 7; quest level below the band 6; manual drop (overrides.lua) 3; exclusive with another quest 2; event 1; exploration point not in zone 1; low ratio 1; objective object not in zone 1; repeatable 1.
+Alliance: 125 distinct APR-only quests over all slices. Why our route builder left them out (its chapter report, `docs/routes/<chapter>.md`): not a candidate of the chapter 44; level band reached 21; requires a profession 15; prerequisite unavailable 13; finisher outside the chapter zones 9; objective item source not in zone 7; quest level below the band 6; manual drop (overrides.lua) 3; exclusive with another quest 2; event 1; exploration point not in zone 1; low ratio 1; objective object not in zone 1; repeatable 1.
 
-Horde: 90 distinct APR-only quests over all slices. Why our route builder left them out (its chapter report, `docs/routes/<chapter>.md`): not a candidate of the chapter 32; level band reached 23; requires a profession 11; finisher outside the chapter zones 7; objective item source not in zone 5; prerequisite dropped 3; event 2; low ratio 2; prerequisite unavailable 2; exclusive with another quest 1; exploration point not in zone 1; far 1.
+Horde: 87 distinct APR-only quests over all slices. Why our route builder left them out (its chapter report, `docs/routes/<chapter>.md`): not a candidate of the chapter 33; level band reached 19; requires a profession 11; finisher outside the chapter zones 7; objective item source not in zone 5; prerequisite dropped 3; event 2; low ratio 2; prerequisite unavailable 2; exclusive with another quest 1; exploration point not in zone 1; far 1.
 
 ## Chapters
 
@@ -23,34 +23,34 @@ Matching: APR leveling routes of the same faction, open to a race of the chapter
 | Chapter | Band | APR routes | Quests | Q in matched APR | Q anywhere in APR | APR slice in chapter | APR-only | Q-only | Order: same pairs | Kendall tau | Class quests APR / Q | Hearth use APR / Q | Hearth bind APR / Q |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | A_DwarfGnome_01 | 1-6 | #6 | 15 | 15 (100 %) | 15 (100 %) | 15 / 19 (79 %) | 1 | 0 | 87 % | 0.75 | 0-4 / 0 | 1 / 0 | 0 / 0 |
-| A_DwarfGnome_02 | 6-11 | #6 | 38 | 32 (84 %) | 32 (84 %) | 32 / 46 (70 %) | 8 | 6 | 88 % | 0.77 | 0-5 / 0 | 1 / 0 | 2 / 1 |
-| A_DwarfGnome_03 | 11-14 | #6, #24 | 27 | 8 (30 %) | 16 (59 %) | 8 / 17 (47 %) | 7 | 11 | 67 % | 0.33 | 0-8 / 0 | 0 / 1 | 1-2 / 1 |
-| A_DwarfGnome_04 | 14-16 | #18, #31 | 17 | 5 (29 %) | 8 (47 %) | 5 / 16 (31 %) | 5 | 9 | 84 % | 0.68 | 0 / 0 | 0-1 / 0 | 1 / 1 |
+| A_DwarfGnome_02 | 6-11 | #6 | 38 | 32 (84 %) | 32 (84 %) | 32 / 46 (70 %) | 8 | 6 | 94 % | 0.87 | 0-5 / 0 | 1 / 1 | 2 / 1 |
+| A_DwarfGnome_03 | 11-14 | #6, #24 | 27 | 8 (30 %) | 16 (59 %) | 8 / 17 (47 %) | 7 | 11 | 66 % | 0.32 | 0-8 / 0 | 0 / 1 | 1-2 / 1 |
+| A_DwarfGnome_04 | 14-16 | #18, #31 | 17 | 5 (29 %) | 8 (47 %) | 5 / 16 (31 %) | 5 | 9 | 85 % | 0.70 | 0 / 0 | 0-1 / 0 | 1 / 0 |
 | A_Human_01 | 1-6 | #1 | 21 | 21 (100 %) | 21 (100 %) | 19 / 27 (70 %) | 4 | 0 | 91 % | 0.83 | 0-4 / 0 | 0 / 0 | 0 / 0 |
-| A_Human_02 | 6-11 | #1 | 43 | 36 (84 %) | 37 (86 %) | 33 / 52 (63 %) | 11 | 6 | 82 % | 0.64 | 0-6 / 0 | 1 / 0 | 1-2 / 1 |
-| A_Human_03 | 11-16 | #1, #31 | 23 | 11 (48 %) | 12 (52 %) | 11 / 36 (31 %) | 10 | 11 | 67 % | 0.33 | 0-8 / 0 | 0 / 0 | 1-2 / 1 |
+| A_Human_02 | 6-11 | #1 | 43 | 36 (84 %) | 37 (86 %) | 33 / 52 (63 %) | 11 | 6 | 82 % | 0.64 | 0-6 / 0 | 1 / 0 | 1-2 / 0 |
+| A_Human_03 | 11-16 | #1, #31 | 23 | 11 (48 %) | 12 (52 %) | 11 / 36 (31 %) | 10 | 11 | 67 % | 0.33 | 0-8 / 0 | 0 / 0 | 1-2 / 0 |
 | A_NightElf_01 | 1-6 | #2 | 17 | 17 (100 %) | 17 (100 %) | 17 / 25 (68 %) | 1 | 0 | 86 % | 0.72 | 0-4 / 0 | 0 / 0 | 0-1 / 0 |
-| A_NightElf_02 | 6-11 | #2 | 44 | 34 (77 %) | 34 (77 %) | 34 / 46 (74 %) | 9 | 10 | 85 % | 0.69 | 0-6 / 0 | 0-1 / 1 | 0-1 / 1 |
-| A_NightElf_03 | 11-19 | #32, #45, #49 | 57 | 52 (91 %) | 52 (91 %) | 51 / 91 (56 %) | 17 | 5 | 70 % | 0.40 | 0-7 / 0 | 1-5 / 0 | 2-4 / 1 |
-| A_Skyborne_01 | 1-15 | #4 | 73 | 67 (92 %) | 67 (92 %) | 67 / 92 (73 %) | 25 | 6 | 93 % | 0.85 | 0-5 / 0 | 1-3 / 0 | 2 / 1 |
-| A_01 | 16-19 | #32, #45, #49 | 46 | 42 (91 %) | 42 (91 %) | 41 / 76 (54 %) | 12 | 4 | 69 % | 0.38 | 0-6 / 0 | 2-5 / 1 | 1-3 / 1 |
-| A_02 | 20-22 | #32, #45, #49 | 25 | 17 (68 %) | 19 (76 %) | 17 / 67 (25 %) | 15 | 6 | 61 % | 0.23 | 0-7 / 0 | 2-5 / 0 | 1-3 / 1 |
+| A_NightElf_02 | 6-11 | #2 | 44 | 34 (77 %) | 34 (77 %) | 34 / 46 (74 %) | 9 | 10 | 82 % | 0.64 | 0-6 / 0 | 0-1 / 1 | 0-1 / 1 |
+| A_NightElf_03 | 11-19 | #32, #45, #49 | 60 | 54 (90 %) | 54 (90 %) | 53 / 91 (58 %) | 16 | 6 | 84 % | 0.68 | 0-7 / 0 | 1-5 / 1 | 2-4 / 1 |
+| A_Skyborne_01 | 1-15 | #4 | 73 | 67 (92 %) | 67 (92 %) | 67 / 92 (73 %) | 25 | 6 | 93 % | 0.85 | 0-5 / 0 | 1-3 / 0 | 2 / 0 |
+| A_01 | 16-19 | #32, #45, #49 | 46 | 42 (91 %) | 42 (91 %) | 41 / 76 (54 %) | 11 | 4 | 69 % | 0.38 | 0-6 / 0 | 2-5 / 1 | 1-3 / 1 |
+| A_02 | 20-22 | #32, #45, #49 | 25 | 19 (76 %) | 19 (76 %) | 19 / 67 (28 %) | 13 | 6 | 61 % | 0.22 | 0-7 / 0 | 2-5 / 0 | 1-3 / 0 |
 | A_03 | 22-26 | #57 | 56 | 42 (75 %) | 53 (95 %) | 42 / 57 (74 %) | 14 | 3 | 81 % | 0.63 | 0-3 / 0 | 2-3 / 3 | 1-2 / 1 |
-| A_04 | 26-29 | #52, #61 | 32 | 15 (47 %) | 16 (50 %) | 14 / 42 (33 %) | 28 | 16 | 72 % | 0.43 | 0-1 / 0 | 3 / 0 | 1 / 1 |
+| A_04 | 26-29 | #52, #61 | 32 | 15 (47 %) | 16 (50 %) | 14 / 42 (33 %) | 28 | 16 | 72 % | 0.43 | 0-1 / 0 | 3 / 0 | 1 / 0 |
 | A_05 | 29-30 | #68 | 8 | 6 (75 %) | 6 (75 %) | 6 / 8 (75 %) | 2 | 2 | 88 % | 0.75 | 0 / 0 | 0 / 0 | 1 / 0 |
 | H_OrcTroll_01 | 1-6 | #7 | 15 | 14 (93 %) | 14 (93 %) | 14 / 31 (45 %) | 5 | 1 | 85 % | 0.69 | 0-5 / 0 | 0 / 0 | 1 / 0 |
 | H_OrcTroll_02 | 6-12 | #7 | 38 | 36 (95 %) | 36 (95 %) | 33 / 43 (77 %) | 6 | 2 | 81 % | 0.62 | 0-11 / 0 | 0-1 / 2 | 1 / 1 |
-| H_Tauren_01 | 1-6 | #5 | 18 | 18 (100 %) | 18 (100 %) | 18 / 36 (50 %) | 8 | 0 | 78 % | 0.56 | 0-6 / 0 | 0-1 / 0 | 2 / 1 |
-| H_Tauren_02 | 6-12 | #5 | 30 | 28 (93 %) | 28 (93 %) | 27 / 46 (59 %) | 7 | 2 | 86 % | 0.71 | 0-7 / 0 | 0-1 / 0 | 2 / 0 |
+| H_Tauren_01 | 1-6 | #5 | 15 | 15 (100 %) | 15 (100 %) | 15 / 35 (43 %) | 5 | 0 | 86 % | 0.73 | 0-4 / 0 | 0 / 0 | 1 / 0 |
+| H_Tauren_02 | 6-12 | #5 | 35 | 33 (94 %) | 33 (94 %) | 32 / 46 (70 %) | 7 | 2 | 82 % | 0.64 | 0-7 / 0 | 0-1 / 0 | 2 / 0 |
 | H_Undead_01 | 1-6 | #3 | 13 | 13 (100 %) | 13 (100 %) | 13 / 23 (57 %) | 2 | 0 | 95 % | 0.91 | 0-4 / 0 | 0 / 0 | 1 / 0 |
 | H_Undead_02 | 6-12 | #3 | 45 | 38 (84 %) | 38 (84 %) | 37 / 46 (80 %) | 6 | 7 | 84 % | 0.67 | 0-10 / 0 | 1-2 / 2 | 1-2 / 1 |
-| H_Undead_03 | 12-15 | #25 | 38 | 24 (63 %) | 28 (74 %) | 24 / 27 (89 %) | 2 | 10 | 65 % | 0.31 | 0-3 / 0 | 0-1 / 0 | 0 / 1 |
-| H_Skyborne_01 | 1-15 | #4, #14 | 73 | 55 (75 %) | 55 (75 %) | 55 / 87 (63 %) | 27 | 18 | 94 % | 0.87 | 0-10 / 0 | 1-3 / 0 | 3 / 0 |
-| H_01 | 12-17 | #5, #27, #37 | 49 | 46 (94 %) | 48 (98 %) | 45 / 81 (56 %) | 19 | 1 | 74 % | 0.47 | 0-12 / 0 | 3-4 / 1 | 4-5 / 1 |
+| H_Undead_03 | 12-15 | #25 | 38 | 24 (63 %) | 28 (74 %) | 24 / 27 (89 %) | 2 | 10 | 65 % | 0.31 | 0-3 / 0 | 0-1 / 1 | 0 / 0 |
+| H_Skyborne_01 | 1-15 | #4, #14 | 73 | 55 (75 %) | 55 (75 %) | 55 / 87 (63 %) | 27 | 18 | 94 % | 0.87 | 0-10 / 0 | 1-3 / 1 | 3 / 1 |
+| H_01 | 12-17 | #5, #27, #37 | 49 | 46 (94 %) | 48 (98 %) | 45 / 81 (56 %) | 19 | 1 | 74 % | 0.47 | 0-12 / 0 | 3-4 / 0 | 4-5 / 0 |
 | H_02 | 17-21 | #27, #37 | 36 | 27 (75 %) | 29 (81 %) | 25 / 60 (42 %) | 12 | 7 | 60 % | 0.20 | 0-11 / 0 | 1-2 / 2 | 2-3 / 1 |
 | H_03 | 21-25 | #37, #58, #59 | 37 | 30 (81 %) | 30 (81 %) | 28 / 72 (39 %) | 15 | 7 | 69 % | 0.38 | 0-12 / 0 | 3 / 1 | 3 / 1 |
-| H_04 | 25-28 | #58, #62 | 32 | 27 (84 %) | 28 (88 %) | 27 / 55 (49 %) | 12 | 4 | 73 % | 0.46 | 0-3 / 0 | 2-3 / 0 | 4 / 1 |
-| H_05 | 28-30 | #65 | 20 | 6 (30 %) | 10 (50 %) | 6 / 12 (50 %) | 6 | 10 | 82 % | 0.64 | 0-2 / 0 | 0 / 2 | 0 / 1 |
+| H_04 | 25-28 | #58, #62 | 32 | 27 (84 %) | 28 (88 %) | 27 / 55 (49 %) | 12 | 4 | 88 % | 0.76 | 0-3 / 0 | 2-3 / 2 | 4 / 1 |
+| H_05 | 28-30 | #65 | 20 | 6 (30 %) | 10 (50 %) | 6 / 12 (50 %) | 6 | 10 | 82 % | 0.64 | 0-2 / 0 | 0 / 1 | 0 / 1 |
 
 Quests: general quests of the chapter. Class quests, hearth use and hearth bind are per class (`a-b` = lowest-highest over the 9 classes; one number when every class has the same). Hearth use at APR includes the "use it if it is ready" steps. Order: first `accept`, `complete` and `turnin` of each quest, steps open to at least 4 classes, compared on the events present on both sides (Kendall tau: 1 = same order, 0 = unrelated, -1 = reversed).
 
@@ -105,16 +105,16 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
     - level band reached: 384, 400, 412, 98321
     - not a candidate of the chapter: 267, 416, 418
     - repeatable: 308
-- Order: 80 shared events, 2795 of 3160 pairs in the same order (88 %), Kendall tau 0.77.
+- Order: 80 shared events, 2957 of 3160 pairs in the same order (94 %), Kendall tau 0.87.
   Most costly inversions (each event once; gap = distance in ranks among the shared events):
 
   | Questify does first | then | Questify gap | APR does them the other way, gap |
   |---|---|---|---|
-  | turnin 99158 | turnin 313 | 23 | 27 |
-  | accept 433 | turnin 312 | 20 | 20 |
-  | accept 96390 | complete 312 | 20 | 20 |
-  | accept 96391 | turnin 311 | 19 | 26 |
-  | accept 432 | accept 413 | 20 | 19 |
+  | turnin 312 | turnin 313 | 20 | 16 |
+  | accept 96391 | turnin 314 | 15 | 17 |
+  | complete 96390 | complete 314 | 13 | 17 |
+  | complete 312 | turnin 98323 | 14 | 12 |
+  | complete 319 | accept 287 | 7 | 7 |
 
 - Class quests:
 
@@ -124,7 +124,7 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
   | PRIEST | 2 | 0 | 0 | 2 | none |
   | SHAMAN | 1 | 0 | 0 | 1 | none |
 
-- Hearthstone: APR uses it 1 times (WARRIOR 1, PALADIN 1, HUNTER 1, ROGUE 1, PRIEST 1, SHAMAN 1, MAGE 1, WARLOCK 1, DRUID 1; 1 "if ready" steps open to all) and binds it 2 times (maps Dun Morogh (1426), Loch Modan (1432)); Questify uses it 0 times and binds it 1 times (maps Dun Morogh (1426)).
+- Hearthstone: APR uses it 1 times (WARRIOR 1, PALADIN 1, HUNTER 1, ROGUE 1, PRIEST 1, SHAMAN 1, MAGE 1, WARLOCK 1, DRUID 1; 1 "if ready" steps open to all) and binds it 2 times (maps Dun Morogh (1426), Loch Modan (1432)); Questify uses it 1 times and binds it 1 times (maps Dun Morogh (1426)).
 
 ### A_DwarfGnome_03 — Loch Modan (11-14)
 
@@ -138,14 +138,14 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
     - level band reached: 267, 416, 418
     - not a candidate of the chapter: 353, 6661, 6662
     - objective item source not in zone: 86667
-- Order: 18 shared events, 102 of 153 pairs in the same order (67 %), Kendall tau 0.33.
+- Order: 18 shared events, 101 of 153 pairs in the same order (66 %), Kendall tau 0.32.
   Most costly inversions (each event once; gap = distance in ranks among the shared events):
 
   | Questify does first | then | Questify gap | APR does them the other way, gap |
   |---|---|---|---|
-  | complete 224 | accept 1338 | 11 | 12 |
-  | turnin 224 | turnin 1339 | 6 | 14 |
-  | accept 6388 | accept 307 | 3 | 4 |
+  | complete 224 | accept 307 | 11 | 11 |
+  | turnin 224 | accept 1338 | 9 | 13 |
+  | accept 6391 | turnin 1339 | 5 | 4 |
   | complete 307 | turnin 1338 | 3 | 2 |
   | turnin 307 | turnin 6392 | 1 | 2 |
 
@@ -176,18 +176,18 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
     - not a candidate of the chapter: 399
     - prerequisite unavailable: 38
     - quest level below the band: 36
-- Order: 15 shared events, 88 of 105 pairs in the same order (84 %), Kendall tau 0.68.
+- Order: 15 shared events, 89 of 105 pairs in the same order (85 %), Kendall tau 0.70.
   Most costly inversions (each event once; gap = distance in ranks among the shared events):
 
   | Questify does first | then | Questify gap | APR does them the other way, gap |
   |---|---|---|---|
-  | turnin 92742 | turnin 64 | 5 | 4 |
-  | turnin 92744 | turnin 151 | 3 | 4 |
-  | complete 151 | complete 64 | 2 | 2 |
+  | turnin 92744 | turnin 64 | 5 | 5 |
+  | turnin 92742 | turnin 151 | 3 | 3 |
   | accept 92744 | accept 92742 | 1 | 1 |
+  | complete 92744 | complete 64 | 1 | 1 |
 
 - Class quests: none on either side.
-- Hearthstone: APR uses it 0-1 times (WARRIOR 1, PALADIN 1, HUNTER 0, ROGUE 1, PRIEST 1, SHAMAN 1, MAGE 1, WARLOCK 1, DRUID 0; 1 "if ready" steps open to all) and binds it 1 times (maps Stormwind City (1453)); Questify uses it 0 times and binds it 1 times (maps Westfall (1436)).
+- Hearthstone: APR uses it 0-1 times (WARRIOR 1, PALADIN 1, HUNTER 0, ROGUE 1, PRIEST 1, SHAMAN 1, MAGE 1, WARLOCK 1, DRUID 0; 1 "if ready" steps open to all) and binds it 1 times (maps Stormwind City (1453)); Questify uses it 0 times and binds it 0 times (maps none).
 
 ### A_Human_01 — Northshire (1-6)
 
@@ -258,7 +258,7 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
   | PRIEST | 3 | 0 | 0 | 3 | none |
   | WARLOCK | 6 | 0 | 3 | 2 | 59 |
 
-- Hearthstone: APR uses it 1 times (WARRIOR 1, PALADIN 1, HUNTER 1, ROGUE 1, PRIEST 1, SHAMAN 1, MAGE 1, WARLOCK 1, DRUID 1; 1 "if ready" steps open to all) and binds it 1-2 times (maps Elwynn Forest (1429), Stormwind City (1453)); Questify uses it 0 times and binds it 1 times (maps Elwynn Forest (1429)).
+- Hearthstone: APR uses it 1 times (WARRIOR 1, PALADIN 1, HUNTER 1, ROGUE 1, PRIEST 1, SHAMAN 1, MAGE 1, WARLOCK 1, DRUID 1; 1 "if ready" steps open to all) and binds it 1-2 times (maps Elwynn Forest (1429), Stormwind City (1453)); Questify uses it 0 times and binds it 0 times (maps none).
 
 ### A_Human_03 — Westfall (11-16)
 
@@ -291,7 +291,7 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
   | PRIEST | 3 | 0 | 0 | 3 | none |
   | WARLOCK | 8 | 0 | 0 | 3 | 59, 83, 123, 176, 244 |
 
-- Hearthstone: APR uses it 0 times (WARRIOR 0, PALADIN 0, HUNTER 0, ROGUE 0, PRIEST 0, SHAMAN 0, MAGE 0, WARLOCK 0, DRUID 0; 0 "if ready" steps open to all) and binds it 1-2 times (maps Stormwind City (1453)); Questify uses it 0 times and binds it 1 times (maps Westfall (1436)).
+- Hearthstone: APR uses it 0 times (WARRIOR 0, PALADIN 0, HUNTER 0, ROGUE 0, PRIEST 0, SHAMAN 0, MAGE 0, WARLOCK 0, DRUID 0; 0 "if ready" steps open to all) and binds it 1-2 times (maps Stormwind City (1453)); Questify uses it 0 times and binds it 0 times (maps none).
 
 ### A_NightElf_01 — Shadowglen (1-6)
 
@@ -341,16 +341,16 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
     - objective item source not in zone: 2459, 99050
     - prerequisite unavailable: 99073
     - requires a profession: 4161
-- Order: 49 shared events, 995 of 1176 pairs in the same order (85 %), Kendall tau 0.69.
+- Order: 49 shared events, 963 of 1176 pairs in the same order (82 %), Kendall tau 0.64.
   Most costly inversions (each event once; gap = distance in ranks among the shared events):
 
   | Questify does first | then | Questify gap | APR does them the other way, gap |
   |---|---|---|---|
-  | accept 487 | turnin 488 | 15 | 13 |
-  | complete 929 | accept 99046 | 19 | 11 |
-  | complete 932 | accept 489 | 15 | 11 |
-  | complete 487 | complete 489 | 16 | 10 |
-  | accept 99047 | turnin 489 | 10 | 11 |
+  | turnin 2438 | turnin 96634 | 15 | 14 |
+  | accept 487 | turnin 488 | 13 | 13 |
+  | complete 487 | accept 489 | 13 | 13 |
+  | accept 937 | turnin 489 | 12 | 12 |
+  | accept 99047 | complete 489 | 11 | 12 |
 
 - Class quests:
 
@@ -366,30 +366,30 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
 
 ### A_NightElf_03 — Darkshore (11-19)
 
-- Races: NightElf. APR routes: #32 (Darkshore (1439), 11-19): 52 shared of 107; #45 (Darkshore (1439), 20-21): 16 shared of 33; #49 (Stonetalon Mountains (1442), 21-23): 6 shared of 32. Slice: 936 of 1040 steps.
-- Questify -> APR: 52 of 57 general quests in the matched routes (91 %), 52 anywhere in APR (91 %).
-  - Absent from APR (Questify-only): 990, 5713, 87760, 98013, 98028 (5 345 XP)
+- Races: NightElf. APR routes: #32 (Darkshore (1439), 11-19): 54 shared of 107; #45 (Darkshore (1439), 20-21): 17 shared of 33; #49 (Stonetalon Mountains (1442), 21-23): 7 shared of 32. Slice: 936 of 1040 steps.
+- Questify -> APR: 54 of 60 general quests in the matched routes (90 %), 54 anywhere in APR (90 %).
+  - Absent from APR (Questify-only): 990, 1275, 5713, 87760, 98013, 98028 (6 545 XP)
   - In another APR route: none
-- APR -> Questify (slice): 51 of 91 general quests in this chapter (56 %).
-  - In another Questify chapter: 224, 257, 298, 301, 307, 314, 436, 952, 991, 1007, 1008, 1010, 1020, 1023, 1070, 1138, 1338, 1339, 2039, 4740, 4763, 6342, 86758
-  - In no Questify chapter (APR-only): 267, 385, 416, 418, 730, 968, 970, 995, 1056, 1134, 1141, 2178, 5321, 86614, 95065, 97914, 97926 (16 920 XP)
+- APR -> Questify (slice): 53 of 91 general quests in this chapter (58 %).
+  - In another Questify chapter: 224, 257, 298, 301, 307, 314, 436, 952, 970, 991, 1007, 1008, 1010, 1020, 1023, 1070, 1338, 1339, 2039, 4740, 6342, 86758
+  - In no Questify chapter (APR-only): 267, 385, 416, 418, 730, 968, 995, 1056, 1134, 1141, 2178, 5321, 86614, 95065, 97914, 97926 (15 270 XP)
   - Left out, quest level above 21 (band + 2): 973, 1009, 1025, 1033, 1034, 1054, 3765
     - exclusive with another quest: 995
     - exploration point not in zone: 5321
     - finisher outside the chapter zones: 968, 97914
-    - not a candidate of the chapter: 267, 385, 416, 418, 730, 970, 1056, 1134, 86614, 95065, 97926
+    - not a candidate of the chapter: 267, 385, 416, 418, 730, 1056, 1134, 86614, 95065, 97926
     - objective item source not in zone: 1141
     - requires a profession: 2178
-- Order: 131 shared events, 5972 of 8515 pairs in the same order (70 %), Kendall tau 0.40.
+- Order: 137 shared events, 7814 of 9316 pairs in the same order (84 %), Kendall tau 0.68.
   Most costly inversions (each event once; gap = distance in ranks among the shared events):
 
   | Questify does first | then | Questify gap | APR does them the other way, gap |
   |---|---|---|---|
-  | accept 4733 | accept 4813 | 80 | 80 |
-  | accept 4727 | turnin 4813 | 78 | 70 |
-  | accept 2098 | turnin 4812 | 63 | 67 |
-  | turnin 4727 | turnin 953 | 63 | 64 |
-  | accept 4728 | accept 963 | 62 | 82 |
+  | turnin 98025 | accept 1138 | 54 | 52 |
+  | accept 948 | complete 982 | 52 | 50 |
+  | complete 1002 | turnin 982 | 49 | 60 |
+  | turnin 4732 | turnin 1003 | 58 | 49 |
+  | accept 4732 | turnin 4725 | 42 | 50 |
 
 - Class quests:
 
@@ -400,7 +400,7 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
   | ROGUE | 2 | 0 | 0 | 0 | 97220, 97222 |
   | DRUID | 7 | 0 | 0 | 6 | 6343 |
 
-- Hearthstone: APR uses it 1-5 times (WARRIOR 5, PALADIN 1, HUNTER 5, ROGUE 5, PRIEST 5, SHAMAN 1, MAGE 1, WARLOCK 1, DRUID 5; 4 "if ready" steps open to all) and binds it 2-4 times (maps Darkshore (1439), Ashenvale (1440)); Questify uses it 0 times and binds it 1 times (maps Darkshore (1439)).
+- Hearthstone: APR uses it 1-5 times (WARRIOR 5, PALADIN 1, HUNTER 5, ROGUE 5, PRIEST 5, SHAMAN 1, MAGE 1, WARLOCK 1, DRUID 5; 4 "if ready" steps open to all) and binds it 2-4 times (maps Darkshore (1439), Ashenvale (1440)); Questify uses it 1 times and binds it 1 times (maps Darkshore (1439)).
 
 ### A_Skyborne_01 — Zephras Isle (1-15)
 
@@ -437,7 +437,7 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
   | MAGE | 3 | 0 | 0 | 2 | 93797 |
   | DRUID | 3 | 0 | 0 | 3 | none |
 
-- Hearthstone: APR uses it 1-3 times (WARRIOR 3, PALADIN 1, HUNTER 3, ROGUE 3, PRIEST 1, SHAMAN 1, MAGE 3, WARLOCK 1, DRUID 3; 3 "if ready" steps open to all) and binds it 2 times (maps Zephras Isle (2521)); Questify uses it 0 times and binds it 1 times (maps Zephras Isle (2521)).
+- Hearthstone: APR uses it 1-3 times (WARRIOR 3, PALADIN 1, HUNTER 3, ROGUE 3, PRIEST 1, SHAMAN 1, MAGE 3, WARLOCK 1, DRUID 3; 3 "if ready" steps open to all) and binds it 2 times (maps Zephras Isle (2521)); Questify uses it 0 times and binds it 0 times (maps none).
 
 ### A_01 — Darkshore (16-19)
 
@@ -446,13 +446,13 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
   - Absent from APR (Questify-only): 990, 5713, 87760, 98028 (3 795 XP)
   - In another APR route: none
 - APR -> Questify (slice): 41 of 76 general quests in this chapter (54 %).
-  - In another Questify chapter: 953, 954, 955, 956, 957, 958, 963, 982, 983, 991, 1001, 1002, 1003, 1007, 1008, 1010, 1020, 1023, 1070, 1071, 1085, 1093, 98025
-  - In no Questify chapter (APR-only): 741, 942, 968, 970, 995, 1056, 1072, 1075, 1134, 1141, 2178, 5321 (14 510 XP)
+  - In another Questify chapter: 953, 954, 955, 956, 957, 958, 963, 970, 982, 983, 991, 1001, 1002, 1003, 1007, 1008, 1010, 1020, 1023, 1070, 1071, 1085, 1093, 98025
+  - In no Questify chapter (APR-only): 741, 942, 968, 995, 1056, 1072, 1075, 1134, 1141, 2178, 5321 (12 860 XP)
   - Left out, quest level above 21 (band + 2): 973, 1009, 1025, 1033, 1034, 1054, 3765
     - exclusive with another quest: 995
     - exploration point not in zone: 5321
     - finisher outside the chapter zones: 741, 968
-    - not a candidate of the chapter: 942, 970, 1056, 1072, 1075, 1134
+    - not a candidate of the chapter: 942, 1056, 1072, 1075, 1134
     - objective item source not in zone: 1141
     - quest level below the band: 2178
 - Order: 102 shared events, 3548 of 5151 pairs in the same order (69 %), Kendall tau 0.38.
@@ -478,29 +478,28 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
 
 ### A_02 — Ashenvale and Stonetalon Mountains (20-22)
 
-- Races: Dwarf, Gnome, Human, NightElf, Skyborne. APR routes: #32 (Darkshore (1439), 11-19): 13 shared of 107; #45 (Darkshore (1439), 20-21): 9 shared of 33; #49 (Stonetalon Mountains (1442), 21-23): 14 shared of 36. Slice: 835 of 1202 steps.
-- Questify -> APR: 17 of 25 general quests in the matched routes (68 %), 19 anywhere in APR (76 %).
+- Races: Dwarf, Gnome, Human, NightElf, Skyborne. APR routes: #32 (Darkshore (1439), 11-19): 15 shared of 107; #45 (Darkshore (1439), 20-21): 11 shared of 33; #49 (Stonetalon Mountains (1442), 21-23): 15 shared of 36. Slice: 835 of 1202 steps.
+- Questify -> APR: 19 of 25 general quests in the matched routes (76 %), 19 anywhere in APR (76 %).
   - Absent from APR (Questify-only): 990, 5713, 78132, 78133, 78134, 78270 (5 815 XP)
-  - In another APR route: 1024, 1026
-- APR -> Questify (slice): 17 of 67 general quests in this chapter (25 %).
+  - In another APR route: none
+- APR -> Questify (slice): 19 of 67 general quests in this chapter (28 %).
   - In another Questify chapter: 729, 731, 944, 947, 948, 949, 950, 951, 952, 963, 965, 966, 982, 986, 993, 1002, 1003, 1138, 2078, 2098, 2138, 2139, 4723, 4725, 4727, 4728, 4730, 4731, 4732, 4733, 4740, 4762, 4763, 4813, 98042
-  - In no Questify chapter (APR-only): 730, 741, 942, 968, 970, 973, 995, 1016, 1056, 1072, 1075, 1134, 2178, 3765, 5321 (18 720 XP)
+  - In no Questify chapter (APR-only): 730, 741, 942, 968, 995, 1016, 1056, 1072, 1075, 1134, 2178, 3765, 5321 (15 120 XP)
     - far: 1134
     - finisher outside the chapter zones: 1072, 1075
     - manual drop (overrides.lua): 1056
     - not a candidate of the chapter: 730, 741, 942, 968, 995, 2178, 3765, 5321
     - objective item source not in zone: 1016
-    - prerequisite unavailable: 970, 973
-- Order: 43 shared events, 554 of 903 pairs in the same order (61 %), Kendall tau 0.23.
+- Order: 48 shared events, 686 of 1128 pairs in the same order (61 %), Kendall tau 0.22.
   Most costly inversions (each event once; gap = distance in ranks among the shared events):
 
   | Questify does first | then | Questify gap | APR does them the other way, gap |
   |---|---|---|---|
-  | accept 1071 | accept 1033 | 24 | 23 |
-  | accept 1093 | complete 1033 | 24 | 23 |
-  | turnin 1085 | turnin 1020 | 24 | 23 |
-  | turnin 1070 | accept 1020 | 21 | 26 |
-  | accept 1085 | turnin 1033 | 29 | 19 |
+  | turnin 1070 | accept 973 | 25 | 27 |
+  | accept 1071 | turnin 1020 | 25 | 25 |
+  | accept 1093 | accept 1033 | 25 | 25 |
+  | accept 1085 | turnin 970 | 23 | 29 |
+  | turnin 1085 | complete 1033 | 29 | 22 |
 
 - Class quests:
 
@@ -510,7 +509,7 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
   | WARLOCK | 4 | 0 | 0 | 3 | 1094 |
   | DRUID | 7 | 0 | 0 | 6 | 6343 |
 
-- Hearthstone: APR uses it 2-5 times (WARRIOR 4, PALADIN 2, HUNTER 5, ROGUE 4, PRIEST 4, SHAMAN 2, MAGE 2, WARLOCK 2, DRUID 5; 4 "if ready" steps open to all) and binds it 1-3 times (maps Darkshore (1439), Ashenvale (1440)); Questify uses it 0 times and binds it 1 times (maps Ashenvale (1440)).
+- Hearthstone: APR uses it 2-5 times (WARRIOR 4, PALADIN 2, HUNTER 5, ROGUE 4, PRIEST 4, SHAMAN 2, MAGE 2, WARLOCK 2, DRUID 5; 4 "if ready" steps open to all) and binds it 1-3 times (maps Darkshore (1439), Ashenvale (1440)); Questify uses it 0 times and binds it 0 times (maps none).
 
 ### A_03 — Redridge Mountains and Duskwood (22-26)
 
@@ -584,7 +583,7 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
   | MAGE | 1 | 0 | 1 | 0 | none |
   | WARLOCK | 1 | 0 | 1 | 0 | none |
 
-- Hearthstone: APR uses it 3 times (WARRIOR 3, PALADIN 3, HUNTER 3, ROGUE 3, PRIEST 3, SHAMAN 3, MAGE 3, WARLOCK 3, DRUID 3; 3 "if ready" steps open to all) and binds it 1 times (maps Wetlands (1437)); Questify uses it 0 times and binds it 1 times (maps Wetlands (1437)).
+- Hearthstone: APR uses it 3 times (WARRIOR 3, PALADIN 3, HUNTER 3, ROGUE 3, PRIEST 3, SHAMAN 3, MAGE 3, WARLOCK 3, DRUID 3; 3 "if ready" steps open to all) and binds it 1 times (maps Wetlands (1437)); Questify uses it 0 times and binds it 0 times (maps none).
 
 ### A_05 — Hillsbrad Foothills (29-30)
 
@@ -683,64 +682,63 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
 
 ### H_Tauren_01 — Camp Narache (1-6)
 
-- Races: Tauren. APR routes: #5 (Mulgore (1412), 1-12): 18 shared of 90. Slice: 336 of 457 steps.
-- Questify -> APR: 18 of 18 general quests in the matched routes (100 %), 18 anywhere in APR (100 %).
+- Races: Tauren. APR routes: #5 (Mulgore (1412), 1-12): 15 shared of 90. Slice: 194 of 457 steps.
+- Questify -> APR: 15 of 15 general quests in the matched routes (100 %), 15 anywhere in APR (100 %).
   - Absent from APR (Questify-only): none (0 XP)
   - In another APR route: none
-- APR -> Questify (slice): 18 of 36 general quests in this chapter (50 %).
-  - In another Questify chapter: 748, 751, 754, 756, 758, 766, 771, 772, 96661, 99411
-  - In no Questify chapter (APR-only): 745, 746, 747, 750, 780, 781, 1656, 96130 (3 020 XP)
-  - Left out, quest level above 8 (band + 2): 744, 759, 760, 764, 765, 770, 773, 775, 776, 833, 861, 76156, 76160, 98424, 99080, 99082
-    - level band reached: 745, 747, 750, 780, 781
+- APR -> Questify (slice): 15 of 35 general quests in this chapter (43 %).
+  - In another Questify chapter: 743, 748, 751, 754, 756, 761, 767, 771, 772, 96605, 96659, 96661, 98430, 99108, 99411
+  - In no Questify chapter (APR-only): 746, 766, 1656, 95805, 96130 (2 140 XP)
+    - level band reached: 95805
     - low ratio: 1656
-    - not a candidate of the chapter: 96130
+    - not a candidate of the chapter: 766, 96130
     - objective item source not in zone: 746
-- Order: 41 shared events, 639 of 820 pairs in the same order (78 %), Kendall tau 0.56.
+- Order: 33 shared events, 456 of 528 pairs in the same order (86 %), Kendall tau 0.73.
   Most costly inversions (each event once; gap = distance in ranks among the shared events):
 
   | Questify does first | then | Questify gap | APR does them the other way, gap |
   |---|---|---|---|
-  | turnin 99079 | turnin 3376 | 18 | 18 |
-  | accept 99101 | turnin 767 | 17 | 18 |
-  | accept 96605 | turnin 95805 | 15 | 15 |
-  | turnin 96659 | accept 95805 | 15 | 15 |
-  | turnin 99081 | turnin 99108 | 12 | 13 |
+  | complete 745 | turnin 781 | 8 | 10 |
+  | accept 99079 | turnin 780 | 7 | 7 |
+  | accept 99081 | accept 763 | 6 | 6 |
+  | accept 745 | complete 780 | 5 | 7 |
+  | accept 749 | turnin 3376 | 5 | 7 |
 
 - Class quests:
 
   | Class | APR (slice) | Questify class steps | APR's done by this chapter | APR's offered by `ClassQuestData.lua` | APR's in neither |
   |---|---|---|---|---|---|
-  | WARRIOR | 2 | 0 | 0 | 2 | none |
-  | HUNTER | 6 | 0 | 0 | 5 | 860 |
-  | SHAMAN | 5 | 0 | 0 | 5 | none |
-  | DRUID | 2 | 0 | 0 | 2 | none |
+  | WARRIOR | 1 | 0 | 0 | 1 | none |
+  | HUNTER | 1 | 0 | 0 | 1 | none |
+  | SHAMAN | 4 | 0 | 0 | 4 | none |
+  | DRUID | 1 | 0 | 0 | 1 | none |
 
-- Hearthstone: APR uses it 0-1 times (WARRIOR 1, PALADIN 0, HUNTER 1, ROGUE 0, PRIEST 0, SHAMAN 1, MAGE 0, WARLOCK 0, DRUID 0; 0 "if ready" steps open to all) and binds it 2 times (maps Mulgore (1412), Thunder Bluff (1456)); Questify uses it 0 times and binds it 1 times (maps Mulgore (1412)).
+- Hearthstone: APR uses it 0 times (WARRIOR 0, PALADIN 0, HUNTER 0, ROGUE 0, PRIEST 0, SHAMAN 0, MAGE 0, WARLOCK 0, DRUID 0; 0 "if ready" steps open to all) and binds it 1 times (maps Mulgore (1412)); Questify uses it 0 times and binds it 0 times (maps none).
 
 ### H_Tauren_02 — Mulgore (6-12)
 
-- Races: Tauren. APR routes: #5 (Mulgore (1412), 1-12): 28 shared of 90. Slice: 330 of 457 steps.
-- Questify -> APR: 28 of 30 general quests in the matched routes (93 %), 28 anywhere in APR (93 %).
+- Races: Tauren. APR routes: #5 (Mulgore (1412), 1-12): 33 shared of 90. Slice: 351 of 457 steps.
+- Questify -> APR: 33 of 35 general quests in the matched routes (94 %), 33 anywhere in APR (94 %).
   - Absent from APR (Questify-only): 98427, 98435 (1 120 XP)
   - In another APR route: none
-- APR -> Questify (slice): 27 of 46 general quests in this chapter (59 %).
-  - In another Questify chapter: 743, 749, 761, 763, 767, 870, 96605, 96659, 99079, 99081, 99101, 99108
-  - In no Questify chapter (APR-only): 745, 746, 768, 854, 1656, 76160, 96130 (3 675 XP)
-    - level band reached: 745, 746, 96130
+- APR -> Questify (slice): 32 of 46 general quests in this chapter (70 %).
+  - In another Questify chapter: 745, 749, 763, 870, 99079, 99081, 99101
+  - In no Questify chapter (APR-only): 746, 766, 768, 854, 1656, 76160, 96130 (3 835 XP)
+    - level band reached: 746, 766, 96130
     - low ratio: 1656
     - not a candidate of the chapter: 854
     - objective item source not in zone: 76160
     - requires a profession: 768
-- Order: 70 shared events, 2065 of 2415 pairs in the same order (86 %), Kendall tau 0.71.
+- Order: 85 shared events, 2934 of 3570 pairs in the same order (82 %), Kendall tau 0.64.
   Most costly inversions (each event once; gap = distance in ranks among the shared events):
 
   | Questify does first | then | Questify gap | APR does them the other way, gap |
   |---|---|---|---|
-  | complete 744 | turnin 99411 | 40 | 45 |
-  | accept 744 | accept 775 | 27 | 26 |
-  | accept 760 | turnin 833 | 21 | 22 |
-  | complete 766 | turnin 96661 | 24 | 20 |
-  | accept 751 | accept 99411 | 14 | 16 |
+  | accept 98424 | turnin 99411 | 30 | 32 |
+  | accept 751 | accept 99411 | 28 | 26 |
+  | complete 761 | turnin 96661 | 46 | 23 |
+  | accept 99080 | turnin 99108 | 21 | 23 |
+  | turnin 98424 | accept 775 | 20 | 21 |
 
 - Class quests:
 
@@ -748,7 +746,7 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
   |---|---|---|---|---|---|
   | WARRIOR | 1 | 0 | 0 | 1 | none |
   | HUNTER | 5 | 0 | 0 | 4 | 76240 |
-  | SHAMAN | 2 | 0 | 0 | 1 | 76240 |
+  | SHAMAN | 4 | 0 | 0 | 3 | 76240 |
   | DRUID | 7 | 0 | 1 | 5 | 76240 |
 
 - Hearthstone: APR uses it 0-1 times (WARRIOR 1, PALADIN 0, HUNTER 1, ROGUE 0, PRIEST 0, SHAMAN 1, MAGE 0, WARLOCK 0, DRUID 1; 0 "if ready" steps open to all) and binds it 2 times (maps Mulgore (1412), Thunder Bluff (1456)); Questify uses it 0 times and binds it 0 times (maps none).
@@ -854,7 +852,7 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
   | MAGE | 1 | 0 | 0 | 0 | 79096 |
   | WARLOCK | 1 | 0 | 0 | 0 | 79096 |
 
-- Hearthstone: APR uses it 0-1 times (WARRIOR 1, PALADIN 1, HUNTER 0, ROGUE 1, PRIEST 1, SHAMAN 0, MAGE 1, WARLOCK 1, DRUID 0; 1 "if ready" steps open to all) and binds it 0 times (maps none); Questify uses it 0 times and binds it 1 times (maps Silverpine Forest (1421)).
+- Hearthstone: APR uses it 0-1 times (WARRIOR 1, PALADIN 1, HUNTER 0, ROGUE 1, PRIEST 1, SHAMAN 0, MAGE 1, WARLOCK 1, DRUID 0; 1 "if ready" steps open to all) and binds it 0 times (maps none); Questify uses it 1 times and binds it 0 times (maps none).
 
 ### H_Skyborne_01 — Zephras Isle (1-15)
 
@@ -892,7 +890,7 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
   | SHAMAN | 10 | 0 | 0 | 8 | 840, 842 |
   | DRUID | 9 | 0 | 0 | 5 | 445, 96895, 96897, 96898 |
 
-- Hearthstone: APR uses it 1-3 times (WARRIOR 3, PALADIN 1, HUNTER 3, ROGUE 3, PRIEST 1, SHAMAN 3, MAGE 3, WARLOCK 1, DRUID 3; 3 "if ready" steps open to all) and binds it 3 times (maps Orgrimmar (1454), Zephras Isle (2521)); Questify uses it 0 times and binds it 0 times (maps none).
+- Hearthstone: APR uses it 1-3 times (WARRIOR 3, PALADIN 1, HUNTER 3, ROGUE 3, PRIEST 1, SHAMAN 3, MAGE 3, WARLOCK 1, DRUID 3; 3 "if ready" steps open to all) and binds it 3 times (maps Orgrimmar (1454), Zephras Isle (2521)); Questify uses it 1 times and binds it 1 times (maps Zephras Isle (2521)).
 
 ### H_01 — The Barrens (12-17)
 
@@ -933,7 +931,7 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
   | WARLOCK | 4 | 0 | 0 | 4 | none |
   | DRUID | 12 | 0 | 0 | 8 | 886, 98341, 98404, 98738 |
 
-- Hearthstone: APR uses it 3-4 times (WARRIOR 3, PALADIN 3, HUNTER 3, ROGUE 3, PRIEST 3, SHAMAN 4, MAGE 3, WARLOCK 3, DRUID 4; 3 "if ready" steps open to all) and binds it 4-5 times (maps The Barrens (1413), Thunder Bluff (1456)); Questify uses it 1 times and binds it 1 times (maps The Barrens (1413)).
+- Hearthstone: APR uses it 3-4 times (WARRIOR 3, PALADIN 3, HUNTER 3, ROGUE 3, PRIEST 3, SHAMAN 4, MAGE 3, WARLOCK 3, DRUID 4; 3 "if ready" steps open to all) and binds it 4-5 times (maps The Barrens (1413), Thunder Bluff (1456)); Questify uses it 0 times and binds it 0 times (maps none).
 
 ### H_02 — Stonetalon Mountains and The Barrens (17-21)
 
@@ -1025,16 +1023,16 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
     - finisher outside the chapter zones: 1095, 5062
     - not a candidate of the chapter: 235, 742, 1086, 1096, 1131, 1195, 1196, 5088
     - prerequisite unavailable: 1197
-- Order: 70 shared events, 1758 of 2415 pairs in the same order (73 %), Kendall tau 0.46.
+- Order: 70 shared events, 2127 of 2415 pairs in the same order (88 %), Kendall tau 0.76.
   Most costly inversions (each event once; gap = distance in ranks among the shared events):
 
   | Questify does first | then | Questify gap | APR does them the other way, gap |
   |---|---|---|---|
-  | complete 1153 | complete 868 | 41 | 39 |
-  | accept 4904 | complete 873 | 39 | 40 |
-  | complete 4904 | turnin 873 | 38 | 40 |
-  | complete 5147 | accept 873 | 37 | 40 |
-  | turnin 4904 | turnin 906 | 32 | 49 |
+  | turnin 4767 | complete 1153 | 24 | 17 |
+  | complete 4767 | accept 5147 | 19 | 17 |
+  | turnin 857 | turnin 849 | 15 | 15 |
+  | accept 4770 | complete 4841 | 13 | 12 |
+  | complete 5151 | turnin 4841 | 12 | 12 |
 
 - Class quests:
 
@@ -1043,7 +1041,7 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
   | WARRIOR | 3 | 0 | 0 | 3 | none |
   | SHAMAN | 3 | 0 | 0 | 3 | none |
 
-- Hearthstone: APR uses it 2-3 times (WARRIOR 3, PALADIN 3, HUNTER 3, ROGUE 3, PRIEST 3, SHAMAN 3, MAGE 3, WARLOCK 3, DRUID 2; 3 "if ready" steps open to all) and binds it 4 times (maps The Barrens (1413), Thousand Needles (1441), Thunder Bluff (1456)); Questify uses it 0 times and binds it 1 times (maps Thousand Needles (1441)).
+- Hearthstone: APR uses it 2-3 times (WARRIOR 3, PALADIN 3, HUNTER 3, ROGUE 3, PRIEST 3, SHAMAN 3, MAGE 3, WARLOCK 3, DRUID 2; 3 "if ready" steps open to all) and binds it 4 times (maps The Barrens (1413), Thousand Needles (1441), Thunder Bluff (1456)); Questify uses it 2 times and binds it 1 times (maps The Barrens (1413)).
 
 ### H_05 — Hillsbrad Foothills (28-30)
 
@@ -1075,7 +1073,7 @@ Quests: general quests of the chapter. Class quests, hearth use and hearth bind 
   |---|---|---|---|---|---|
   | WARRIOR | 2 | 0 | 0 | 1 | 1712 |
 
-- Hearthstone: APR uses it 0 times (WARRIOR 0, PALADIN 0, HUNTER 0, ROGUE 0, PRIEST 0, SHAMAN 0, MAGE 0, WARLOCK 0, DRUID 0; 0 "if ready" steps open to all) and binds it 0 times (maps none); Questify uses it 2 times and binds it 1 times (maps Hillsbrad Foothills (1424)).
+- Hearthstone: APR uses it 0 times (WARRIOR 0, PALADIN 0, HUNTER 0, ROGUE 0, PRIEST 0, SHAMAN 0, MAGE 0, WARLOCK 0, DRUID 0; 0 "if ready" steps open to all) and binds it 0 times (maps none); Questify uses it 1 times and binds it 1 times (maps Hillsbrad Foothills (1424)).
 
 ## Indoor notes per zone (APR) and Questify cave entrances
 
@@ -1136,7 +1134,7 @@ General leveling routes (open to at least 4 classes) that no chapter of the fact
 | #16 (Loch Modan (1432), 11-13) | 17 | 4 |
 | #43 (Redridge Mountains (1433), 19-20) | 49 | 9 |
 | #55 (Wetlands (1437), 23-24) | 12 | 2 |
-| #63 (Ashenvale (1440), 29-30) | 26 | 4 |
+| #63 (Ashenvale (1440), 29-30) | 26 | 3 |
 | #64 (Duskwood (1431), 29-32) | 66 | 15 |
 | #69 (Thousand Needles (1441), 33-34) | 41 | 0 |
 | #72 (Stranglethorn Vale (1434), 34-35) | 46 | 0 |

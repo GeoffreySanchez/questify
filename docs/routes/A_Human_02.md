@@ -8,11 +8,12 @@ Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d30
 | Simulated level | 6.00 -> 12.00 |
 | Time | 117 min |
 | XP gained | 35405 |
-| XP/h | 18089 |
-| Steps | 114 |
+| XP/h | 18105 |
+| Steps | 113 |
 | Quests turned in | 43 |
 | Hubs | 10 |
 | Median ratio (XP/s) | 4.06 |
+| Hearthstone | no new bind; 0 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
 
@@ -537,7 +538,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 |---|---|---|---|---|---|---|---|
 | 1 | A | 62 | The Fargodeep Mine | 1429 | 42.1, 65.9 | 0 |  |
 | 2 | A | 60 | Kobold Candles | 1429 | 43.3, 65.7 | 42 |  |
-| 3 | A | 95998 | The Great Outdoors | 1429 | 44.9, 63.4 | 68 |  |
+| 3 | A | 95998 | The Great Outdoors | 1429 | 44.9, 63.4 | 77 |  |
 | 4 | O | 95998 | The Great Outdoors | 1429 | 44.9, 63.2 | 3 |  |
 | 5 | T | 95998 | The Great Outdoors | 1429 | 44.9, 63.4 | 3 |  |
 | 6 | A | 96626 | Camping 101: Cooking | 1429 | 44.9, 63.4 | 0 |  |
@@ -648,7 +649,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 111 | T | 184 | Furlbrow's Deed | 1436 | 60.0, 19.4 | 293 |  |
 | 112 | T | 109 | Report to Gryan Stoutmantle | 1436 | 56.3, 47.5 | 669 |  |
 
-Walking between tasks: 17555 yd (~42 min at 7 yd/s).
+Walking between tasks: 17564 yd (~42 min at 7 yd/s).
 
 ## Qualité
 
@@ -668,9 +669,8 @@ Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint la
 
 ## Logistics
 
-- step 3: `sethearth 1429 43.77 65.8`
-- step 91: `fp 1453 71.29 72.23`
-- step 113: `fp 1436 56.55 52.64`
+- step 90: `fp 1453 71.29 72.23`
+- step 112: `fp 1436 56.55 52.64`
 
 ## Warnings
 

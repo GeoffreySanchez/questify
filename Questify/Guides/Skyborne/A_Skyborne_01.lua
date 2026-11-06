@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 209 étapes, niveau final 17.85, ~30409 xp/h, 244 min.
+-- Simulation : 208 étapes, niveau final 17.85, ~30420 xp/h, 244 min.
 Q:RegisterGuide({
   id = "A_Skyborne_01",
   title = "Zephras Isle",
@@ -10,7 +10,7 @@ Q:RegisterGuide({
   races = { "Skyborne" },
   minLevel = 1, maxLevel = 15,
   nextByRace = { Skyborne = "A_01" },
-  sim = { steps = 209, endLevel = 17.85, xpPerHour = 30409, minutes = 244 },
+  sim = { steps = 208, endLevel = 17.85, xpPerHour = 30420, minutes = 244 },
   steps = {
     { "level", 2, at = { 2521, 47.51, 19.96 }, note = "About 8 mobs here (Roiling Winds, level 2)" }, -- farm de niveau
     { "accept", 92464 }, -- Elemental Unrest (lvl 3, ~250 xp, sim lvl 2)
@@ -26,7 +26,6 @@ Q:RegisterGuide({
     { "accept", 94413 }, -- A Magical Affront (lvl 6, ~540 xp, sim lvl 5)
     { "complete", 93461, obj = 1, at = { 2521, 44.98, 46.36 } }, -- Welcome to Shen'dar Village (lvl 6, ~540 xp, sim lvl 5)
     { "complete", 93461, at = { 2521, 43.01, 43.23 } }, -- Welcome to Shen'dar Village (lvl 6, ~540 xp, sim lvl 5)
-    { "sethearth", 2521, 43.01, 43.23 }, -- lier la pierre de foyer
     { "turnin", 93461, xp = 540 }, -- Welcome to Shen'dar Village (lvl 6, ~540 xp, sim lvl 5)
     { "accept", 92517 }, -- The Criminal Element (lvl 7, ~630 xp, sim lvl 5)
     { "accept", 93318 }, -- WANTED: Vulgara the Insatiable (lvl 9, ~780 xp, sim lvl 5)

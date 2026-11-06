@@ -6,15 +6,16 @@ Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d30
 |---|---|
 | Level band | 1-15 |
 | Simulated level | 1.00 -> 17.98 |
-| Time | 249 min |
+| Time | 247 min |
 | XP gained | 126105 |
-| XP/h | 30425 |
-| Steps | 209 |
+| XP/h | 30647 |
+| Steps | 211 |
 | Quests turned in | 73 |
 | Hubs | 15 |
 | Median ratio (XP/s) | 4.36 |
 | Grinding (level steps) | ~57 mobs |
 | Level band | grinding 57 mobs with quests up to level 18: band widened to level 21 |
+| Hearthstone | bound to Donaal Downbreeze after task 69; 1 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
 
@@ -322,7 +323,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 67 | A | 98512 | Al'Aketh Assassins | 2521 | 56.8, 61.1 | 847 |  |
 | 68 | A | 93317 | Crab Season | 2521 | 60.6, 72.7 | 478 |  |
 | 69 | A | 92679 | Blood Tithe | 2521 | 62.1, 73.2 | 82 |  |
-| 70 | O | 92679 | Blood Tithe | 2521 | 62.1, 73.2 | 0 |  |
+| 70 | O | 92679 | Blood Tithe | 2521 | 62.1, 73.2 | 21 |  |
 | 71 | A | 94896 | Aid For The Refugees | 2521 | 66.0, 74.4 | 225 |  |
 | 72 | T | 93948 | Deliver the Signet | 2521 | 66.2, 76.5 | 78 |  |
 | 73 | A | 93949 | Bugged | 2521 | 66.1, 76.7 | 6 |  |
@@ -457,7 +458,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 202 | A | 93090 | What Comes Next | 2521 | 66.2, 76.5 | 0 |  |
 | 203 | T | 93090 | What Comes Next | 2521 | 59.1, 79.8 | 408 |  |
 
-Walking between tasks: 29705 yd (~71 min at 7 yd/s).
+Walking between tasks: 29726 yd (~71 min at 7 yd/s).
 
 ## Qualité
 
@@ -480,9 +481,11 @@ Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint la
 - step 1: `level 2` — About 8 mobs here (Roiling Winds, level 2)
 - step 3: `level 4` — About 46 mobs here (Roiling Winds, level 2)
 - step 49: `level 7` — About 2 mobs here (Hippogryph Youth, level 6)
-- step 135: `level 12` — About 1 mobs here (Al'Aketh Stormchaser, level 10)
-- step 208: `boat 2521 58.1 80.4` — Take the skyboat to Skywatcher Plateau (west dock of Valanaar)
-- step 209: `fp 1413 51.5 30.34`
+- step 73: `sethearth 2521 62.19 72.61`
+- step 136: `level 12` — About 1 mobs here (Al'Aketh Stormchaser, level 10)
+- step 202: `hearth 2521`
+- step 210: `boat 2521 58.1 80.4` — Take the skyboat to Skywatcher Plateau (west dock of Valanaar)
+- step 211: `fp 1413 51.5 30.34`
 
 ## Warnings
 

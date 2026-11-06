@@ -2,7 +2,7 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 209 étapes, niveau final 17.98, ~30425 xp/h, 249 min.
+-- Simulation : 211 étapes, niveau final 17.98, ~30647 xp/h, 247 min.
 Q:RegisterGuide({
   id = "H_Skyborne_01",
   title = "Zephras Isle",
@@ -10,7 +10,7 @@ Q:RegisterGuide({
   races = { "Skyborne" },
   minLevel = 1, maxLevel = 15,
   nextByRace = { Skyborne = "H_01" },
-  sim = { steps = 209, endLevel = 17.98, xpPerHour = 30425, minutes = 249 },
+  sim = { steps = 211, endLevel = 17.98, xpPerHour = 30647, minutes = 247 },
   steps = {
     { "level", 2, at = { 2521, 47.51, 19.96 }, note = "About 8 mobs here (Roiling Winds, level 2)" }, -- farm de niveau
     { "accept", 92464 }, -- Elemental Unrest (lvl 3, ~250 xp, sim lvl 2)
@@ -84,6 +84,7 @@ Q:RegisterGuide({
     { "accept", 98512 }, -- Al'Aketh Assassins (lvl 11, ~770 xp, sim lvl 8)
     { "accept", 93317 }, -- Crab Season (lvl 9, ~780 xp, sim lvl 8)
     { "accept", 92679 }, -- Blood Tithe (lvl 9, ~780 xp, sim lvl 8)
+    { "sethearth", 2521, 62.19, 72.61 }, -- lier la pierre de foyer
     { "complete", 92679, obj = 2, at = { 2521, 62.08, 73.17 } }, -- Blood Tithe (lvl 9, ~780 xp, sim lvl 8)
     { "accept", 94896 }, -- Aid For The Refugees (lvl 11, ~770 xp, sim lvl 8)
     { "turnin", 93948, xp = 780 }, -- Deliver the Signet (lvl 9, ~780 xp, sim lvl 8)
@@ -212,6 +213,7 @@ Q:RegisterGuide({
     { "accept", 92646 }, -- Confront Lorthuna (lvl 12, ~910 xp, sim lvl 17)
     { "turnin", 93165, xp = 680 }, -- Mercy Falls on Deaf Ears (lvl 13, ~680 xp, sim lvl 17)
     { "complete", 92646, at = { 2521, 74.87, 53.02 } }, -- Confront Lorthuna (lvl 12, ~910 xp, sim lvl 17)
+    { "hearth", 2521 }, -- pierre de foyer
     { "turnin", 92703, xp = 310 }, -- Deliver the News (lvl 9, ~310 xp, sim lvl 17)
     { "turnin", 92646, xp = 910 }, -- Confront Lorthuna (lvl 12, ~910 xp, sim lvl 17)
     { "accept", 93836 }, -- The Fate of Zephras (lvl 12, ~910 xp, sim lvl 17)

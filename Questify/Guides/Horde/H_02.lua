@@ -2,17 +2,18 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 99 étapes, niveau final 21.14, ~24527 xp/h, 171 min.
+-- Simulation : 99 étapes, niveau final 21.14, ~24560 xp/h, 171 min.
 Q:RegisterGuide({
   id = "H_02",
   title = "Stonetalon Mountains and The Barrens",
   faction = "Horde",
   minLevel = 17, maxLevel = 21,
   next = "H_03",
-  sim = { steps = 99, endLevel = 21.14, xpPerHour = 24527, minutes = 171 },
+  sim = { steps = 99, endLevel = 21.14, xpPerHour = 24560, minutes = 171 },
   steps = {
     { "accept", 6541 }, -- Report to Kadrak (lvl 19, ~145 xp, sim lvl 17)
     { "accept", 905 }, -- The Angry Scytheclaws (lvl 17, ~1250 xp, sim lvl 17)
+    { "sethearth", 1413, 51.99, 29.89 }, -- lier la pierre de foyer
     { "goto", 1413, 51.5, 30.34, note = "Flight master" }, -- déplacement
     { "fly", 1413, node = 80, note = "Ratchet, The Barrens" }, -- vol
     { "accept", 1483 }, -- Ziz Fizziks (lvl 21, ~415 xp, sim lvl 17)
@@ -81,7 +82,6 @@ Q:RegisterGuide({
     { "accept", 878 }, -- Tribes at War (lvl 21, ~1650 xp, sim lvl 19)
     { "accept", 97250 }, -- Wrongly Blamed, Justly Corrected (lvl 23, ~1850 xp, sim lvl 19)
     { "turnin", 3261, xp = 135 }, -- Jorn Skyseer (lvl 18, ~135 xp, sim lvl 19)
-    { "sethearth", 1413, 45.58, 59.04 }, -- lier la pierre de foyer
     { "accept", 882 }, -- Ishamuhale (lvl 19, ~1800 xp, sim lvl 19)
     { "turnin", 884, xp = 1450 }, -- Owatanka (lvl 24, ~1450 xp, sim lvl 19)
     { "turnin", 897, xp = 2400 }, -- The Harvester (lvl 24, ~2400 xp, sim lvl 19)

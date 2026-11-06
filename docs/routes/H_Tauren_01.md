@@ -1,15 +1,15 @@
 # H_Tauren_01 — Camp Narache
 
-Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: Tauren.
+Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d306458a95` by `tools/routebuilder/build.lua`. Simulated race: Tauren.
 
 | Item | Value |
 |---|---|
 | Level band | 1-6 |
 | Simulated level | 1.00 -> 7.14 |
-| Time | 54 min |
-| XP gained | 11823 |
-| XP/h | 13031 |
-| Steps | 48 |
+| Time | 55 min |
+| XP gained | 11816 |
+| XP/h | 12838 |
+| Steps | 47 |
 | Quests turned in | 17 |
 | Hubs | 5 |
 | Median ratio (XP/s) | 2.90 |
@@ -31,11 +31,11 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 8 | 99081 | Grim Tidings | 9 | 780 est. | 5 |
 | 9 | 99101 | Our Ancient Enemy | 9 | 780 est. | 5 |
 | 10 | 96605 | The Great Outdoors | 6 | 540 est. | 5 |
-| 11 | 3376 | Break Sharptusk! | 5 | 670 | 5 |
-| 12 | 95805 | Grace of An'she and Mu'sha | 4 | 180 est. | 5 |
-| 13 | 99108 | Sparring Match | 6 | 540 est. | 6 |
-| 14 | 761 | Swoop Hunting | 6 | 680 | 6 |
-| 15 | 743 | Dangers of the Windfury | 8 | 700 | 6 |
+| 11 | 95805 | Grace of An'she and Mu'sha | 4 | 180 est. | 5 |
+| 12 | 99108 | Sparring Match | 6 | 540 est. | 6 |
+| 13 | 761 | Swoop Hunting | 6 | 680 | 6 |
+| 14 | 743 | Dangers of the Windfury | 8 | 700 | 6 |
+| 15 | 3376 | Break Sharptusk! | 5 | 670 | 6 |
 | 16 | 767 | Rite of Vision | 6 | 55 | 7 |
 | 17 | 749 | The Ravaged Caravan | 8 | 530 | 7 |
 
@@ -79,8 +79,8 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 97937 | Camping 101: Tailoring | 6 | requires a profession |
 | 98427 | Ceasing Operations | 12 | quest level 12 above the band |
 | 98435 | Thunderhorn's Report | 10 | quest level 10 above the band |
-| 99080 | Drive Them Out | 9 | objective item source not in zone |
-| 99082 | The High Chieftain | 9 | prerequisite unavailable |
+| 99080 | Drive Them Out | 11 | quest level 11 above the band |
+| 99082 | The High Chieftain | 11 | quest level 11 above the band |
 | 1656 | A Task Unfinished | 5 | low ratio |
 | 754 | Winterhoof Cleansing | 6 | level band reached |
 | 756 | Thunderhorn Totem | 7 | level band reached |
@@ -121,7 +121,7 @@ below 0.35 × the median ratio, or when an objective is more than 900 yd from ev
 | 95805 | Grace of An'she and Mu'sha | 4 | 180 | 0 | 216 | 30 | 0.83 | 5.81 | 0 |  |
 | 96605 | The Great Outdoors | 6 | 540 | 0 | 63 | 63 | 8.56 | 8.56 | 1 |  |
 | 96659 | The Adventurer | 6 | 284 | 149 | 91 | 17 | 4.88 | 10.76 | 0 |  |
-| 98430 | The Longwalkers | 8 | 700 | 0 | 168 | 168 | 4.16 | 4.16 | 1 |  |
+| 98430 | The Longwalkers | 8 | 700 | 0 | 168 | 168 | 4.15 | 4.15 | 1 |  |
 | 99079 | Longwalker Malah | 9 | 780 | 0 | 109 | 16 | 8.69 | 44.42 | 0 |  |
 | 99081 | Grim Tidings | 9 | 780 | 0 | 109 | 16 | 10.67 | 42.36 | 0 |  |
 | 99101 | Our Ancient Enemy | 9 | 780 | 0 | 21 | 21 | 36.99 | 36.99 | 0 |  |
@@ -144,41 +144,41 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 7 | T | 755 | Rites of the Earthmother | 1412 | 42.5, 90.1 | 558 |  |
 | 8 | A | 757 | Rite of Strength | 1412 | 42.5, 90.1 | 0 |  |
 | 9 | O | 757 | Rite of Strength | 1412 | 60.9, 78.4 | 1227 |  |
-| 10 | A | 3376 | Break Sharptusk! | 1412 | 44.2, 77.0 | 1029 | near #6 (went 1029 yd away) |
-| 11 | T | 757 | Rite of Strength | 1412 | 43.9, 76.7 | 23 | near #6 (went 1048 yd away) |
-| 12 | A | 96659 | The Adventurer | 1412 | 43.9, 76.7 | 0 |  |
-| 13 | A | 763 | Rites of the Earthmother | 1412 | 43.9, 76.7 | 0 |  |
-| 14 | T | 96659 | The Adventurer | 1412 | 46.2, 67.3 | 408 |  |
+| 10 | T | 757 | Rite of Strength | 1412 | 43.9, 76.7 | 1048 | near #6 (went 1048 yd away) |
+| 11 | A | 96659 | The Adventurer | 1412 | 43.9, 76.7 | 0 | near #6 (went 1048 yd away) |
+| 12 | A | 763 | Rites of the Earthmother | 1412 | 43.9, 76.7 | 0 |  |
+| 13 | A | 3376 | Break Sharptusk! | 1412 | 44.2, 77.0 | 23 |  |
+| 14 | T | 96659 | The Adventurer | 1412 | 46.2, 67.3 | 417 |  |
 | 15 | A | 96605 | The Great Outdoors | 1412 | 46.2, 67.3 | 0 |  |
 | 16 | A | 99079 | Longwalker Malah | 1412 | 46.7, 63.8 | 145 |  |
 | 17 | T | 763 | Rites of the Earthmother | 1412 | 46.7, 63.4 | 55 |  |
 | 18 | A | 767 | Rite of Vision | 1412 | 46.7, 63.4 | 0 |  |
 | 19 | A | 761 | Swoop Hunting | 1412 | 47.7, 62.7 | 67 |  |
-| 20 | A | 99108 | Sparring Match | 1412 | 48.4, 63.7 | 60 |  |
-| 21 | T | 99079 | Longwalker Malah | 1412 | 57.6, 63.2 | 570 |  |
-| 22 | A | 99081 | Grim Tidings | 1412 | 57.6, 63.2 | 0 |  |
-| 23 | O | 3376 | Break Sharptusk! | 1412 | 61.0, 78.0 | 642 | near #9 (went 1067 yd away) |
-| 24 | T | 99081 | Grim Tidings | 1412 | 46.7, 63.8 | 1056 | near #20 (went 1056 yd away) |
-| 25 | A | 99101 | Our Ancient Enemy | 1412 | 46.7, 63.8 | 0 | near #20 (went 1056 yd away) |
-| 26 | T | 99101 | Our Ancient Enemy | 1412 | 46.7, 63.4 | 18 |  |
-| 27 | A | 743 | Dangers of the Windfury | 1412 | 46.5, 64.9 | 64 |  |
-| 28 | O | 96605 | The Great Outdoors | 1412 | 46.2, 67.3 | 99 |  |
-| 29 | T | 96605 | The Great Outdoors | 1412 | 46.2, 67.3 | 3 |  |
-| 30 | T | 3376 | Break Sharptusk! | 1412 | 44.2, 77.0 | 417 | near #13 (went 1037 yd away) |
-| 31 | C | 95805 | Grace of An'she and Mu'sha | 1412 | 42.5, 90.1 | 546 | near #8 (went 1443 yd away) |
-| 32 | O | 743 | Dangers of the Windfury | 1412 | 62.4, 71.6 | 788 |  |
-| 33 | A | 749 | The Ravaged Caravan | 1412 | 54.8, 64.3 | 558 |  |
-| 34 | O | 761 | Swoop Hunting | 1412 | 52.0, 62.1 | 191 |  |
-| 35 | O | 99108 | Sparring Match | 1412 | 48.7, 63.7 | 213 | near #27 (went 1148 yd away) |
-| 36 | T | 99108 | Sparring Match | 1412 | 48.4, 63.7 | 19 | near #27 (went 1140 yd away) |
-| 37 | T | 761 | Swoop Hunting | 1412 | 47.7, 62.7 | 60 |  |
-| 38 | T | 743 | Dangers of the Windfury | 1412 | 46.5, 64.9 | 115 |  |
-| 39 | A | 98430 | The Longwalkers | 1412 | 33.1, 65.9 | 826 |  |
-| 40 | O | 98430 | The Longwalkers | 1412 | 37.2, 64.6 | 255 |  |
-| 41 | T | 767 | Rite of Vision | 1412 | 46.9, 61.2 | 612 | near #37 (went 868 yd away) |
+| 20 | T | 99079 | Longwalker Malah | 1412 | 57.6, 63.2 | 612 |  |
+| 21 | A | 99081 | Grim Tidings | 1412 | 57.6, 63.2 | 0 |  |
+| 22 | A | 99108 | Sparring Match | 1412 | 48.4, 63.7 | 570 |  |
+| 23 | T | 99081 | Grim Tidings | 1412 | 46.7, 63.8 | 102 | near #19 (went 673 yd away) |
+| 24 | A | 99101 | Our Ancient Enemy | 1412 | 46.7, 63.8 | 0 |  |
+| 25 | T | 99101 | Our Ancient Enemy | 1412 | 46.7, 63.4 | 18 |  |
+| 26 | A | 743 | Dangers of the Windfury | 1412 | 46.5, 64.9 | 64 |  |
+| 27 | O | 96605 | The Great Outdoors | 1412 | 46.2, 67.3 | 99 |  |
+| 28 | T | 96605 | The Great Outdoors | 1412 | 46.2, 67.3 | 3 |  |
+| 29 | C | 95805 | Grace of An'she and Mu'sha | 1412 | 42.5, 90.1 | 962 | near #8 (went 1443 yd away) |
+| 30 | O | 3376 | Break Sharptusk! | 1412 | 61.0, 78.0 | 516 | near #9 (went 1241 yd away) |
+| 31 | O | 743 | Dangers of the Windfury | 1412 | 62.4, 71.6 | 277 |  |
+| 32 | A | 749 | The Ravaged Caravan | 1412 | 54.8, 64.3 | 558 |  |
+| 33 | O | 761 | Swoop Hunting | 1412 | 52.0, 62.1 | 191 |  |
+| 34 | O | 99108 | Sparring Match | 1412 | 48.7, 63.7 | 213 | near #26 (went 1148 yd away) |
+| 35 | T | 99108 | Sparring Match | 1412 | 48.4, 63.7 | 19 | near #26 (went 1140 yd away) |
+| 36 | T | 761 | Swoop Hunting | 1412 | 47.7, 62.7 | 60 |  |
+| 37 | T | 743 | Dangers of the Windfury | 1412 | 46.5, 64.9 | 115 |  |
+| 38 | T | 3376 | Break Sharptusk! | 1412 | 44.2, 77.0 | 516 | near #13 (went 1144 yd away) |
+| 39 | A | 98430 | The Longwalkers | 1412 | 33.1, 65.9 | 818 |  |
+| 40 | O | 98430 | The Longwalkers | 1412 | 37.2, 64.6 | 256 |  |
+| 41 | T | 767 | Rite of Vision | 1412 | 46.9, 61.2 | 612 | near #36 (went 868 yd away) |
 | 42 | T | 749 | The Ravaged Caravan | 1412 | 51.9, 53.4 | 444 |  |
 
-Walking between tasks: 11813 yd (~28 min at 7 yd/s).
+Walking between tasks: 11310 yd (~27 min at 7 yd/s).
 
 ## Qualité
 
@@ -201,8 +201,7 @@ Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint la
 - step 4: `level 2` — About 7 mobs
 - step 10: `level 3` — About 7 mobs here (Bristleback Quilboar, level 3)
 - step 19: `sethearth 1412 45.93 64.16`
-- step 27: `hearth 1412`
-- step 45: `level 7` — About 1 mobs here (Palemane Poacher, level 7)
+- step 44: `level 7` — About 1 mobs here (Palemane Poacher, level 7)
 
 ## Warnings
 

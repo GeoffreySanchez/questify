@@ -1,6 +1,6 @@
 # H_OrcTroll_01 — Valley of Trials
 
-Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: Orc.
+Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d306458a95` by `tools/routebuilder/build.lua`. Simulated race: Orc.
 
 | Item | Value |
 |---|---|
@@ -8,7 +8,7 @@ Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Simulated level | 1.00 -> 6.08 |
 | Time | 38 min |
 | XP gained | 7893 |
-| XP/h | 12346 |
+| XP/h | 12347 |
 | Steps | 40 |
 | Quests turned in | 15 |
 | Hubs | 2 |
@@ -77,16 +77,16 @@ below 0.35 × the median ratio, or when an objective is more than 900 yd from ev
 | 788 | Cutting Teeth | 2 | 670 | 0 | 283 | 253 | 2.34 | 2.70 | 1 |  |
 | 789 | Sting of the Scorpid | 3 | 1185 | 0 | 425 | 374 | 2.79 | 3.16 | 1 |  |
 | 790 | Sarkoth | 5 | 507 | 0 | 72 | 51 | 5.53 | 8.72 | 1 |  |
-| 792 | Vile Familiars | 4 | 1105 | 0 | 395 | 304 | 3.12 | 5.72 | 1 |  |
-| 794 | Burning Blade Medallion | 5 | 730 | 0 | 199 | 57 | 3.59 | 16.93 | 1 |  |
+| 792 | Vile Familiars | 4 | 1105 | 0 | 395 | 303 | 3.12 | 5.72 | 1 |  |
+| 794 | Burning Blade Medallion | 5 | 730 | 0 | 199 | 57 | 3.59 | 16.92 | 1 |  |
 | 804 | Sarkoth | 5 | 110 | 0 | 46 | 21 | 2.35 | 5.09 | 0 |  |
-| 805 | Report to Sen'jin Village | 5 | 467 | 242 | 116 | 16 | 4.03 | 28.47 | 0 |  |
+| 805 | Report to Sen'jin Village | 5 | 467 | 242 | 116 | 16 | 4.03 | 28.48 | 0 |  |
 | 4402 | Galgar's Cactus Apple Surprise | 3 | 380 | 0 | 247 | 198 | 1.54 | 1.91 | 1 |  |
 | 4641 | Your Place In The World | 1 | 62 | 22 | 28 | 28 | 2.33 | 2.67 | 0 |  |
 | 5441 | Lazy Peons | 4 | 445 | 0 | 155 | 90 | 2.60 | 5.42 | 1 |  |
 | 6394 | Thazz'ril's Pick | 4 | 445 | 0 | 193 | 70 | 2.30 | 6.29 | 1 |  |
-| 96652 | The Adventurer | 6 | 442 | 307 | 143 | 16 | 3.09 | 27.41 | 0 |  |
-| 96876 | Ukor's Lost Pack | 8 | 1017 | 152 | 260 | 178 | 3.90 | 5.68 | 0 |  |
+| 96652 | The Adventurer | 6 | 442 | 307 | 143 | 16 | 3.09 | 27.26 | 0 |  |
+| 96876 | Ukor's Lost Pack | 8 | 1020 | 155 | 263 | 181 | 3.87 | 5.64 | 0 |  |
 | 97279 | Wayward Weapons | 2 | 170 | 0 | 191 | 129 | 0.89 | 1.31 | 1 |  |
 | 99123 | Lost in the Shadows | 8 | 879 | 179 | 158 | 158 | 5.55 | 5.55 | 1 |  |
 
@@ -133,13 +133,13 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 33 | T | 6394 | Thazz'ril's Pick | 1411 | 44.6, 68.7 | 98 |  |
 | 34 | A | 99123 | Lost in the Shadows | 1411 | 46.3, 78.6 | 363 |  |
 | 35 | O | 99123 | Lost in the Shadows | 1411 | 51.4, 79.3 | 271 |  |
-| 36 | A | 96876 | Ukor's Lost Pack | 1411 | 51.0, 55.6 | 835 |  |
-| 37 | T | 96652 | The Adventurer | 1411 | 52.0, 47.3 | 297 |  |
+| 36 | A | 96876 | Ukor's Lost Pack | 1411 | 51.2, 55.3 | 847 |  |
+| 37 | T | 96652 | The Adventurer | 1411 | 52.0, 47.3 | 285 |  |
 | 38 | T | 96876 | Ukor's Lost Pack | 1411 | 52.1, 68.3 | 741 |  |
 | 39 | T | 99123 | Lost in the Shadows | 1411 | 55.9, 74.4 | 296 |  |
 | 40 | T | 805 | Report to Sen'jin Village | 1411 | 56.0, 74.7 | 11 |  |
 
-Walking between tasks: 6631 yd (~16 min at 7 yd/s).
+Walking between tasks: 6630 yd (~16 min at 7 yd/s).
 
 ## Qualité
 

@@ -306,10 +306,12 @@ moved earlier when the walk saved is worth the extra grinding. Moves of a segmen
 `needLevel` task are tried even when they lengthen the walk (they can save grinding). Without
 `strictLevel`, the ordering is unchanged.
 
-It is on for `A_DwarfGnome_03` only. On the Dwarf path it removes most objectives done 3 to 4
+It is on for `A_DwarfGnome_03` and `H_05`. On the Dwarf path it removes most objectives done 3 to 4
 levels too low in Loch Modan for a few minutes of grinding. On every chapter, it would add about 1 h
 of simulated time over the Dwarf path (more walking in the trunk), and on `A_DwarfGnome_02` it adds
-15 min for no safety gain.
+15 min for no safety gain. On `H_05` (QuestieDB v1.0.11) it saves 12 min. Without it, the band is
+widened and the chapter ends with 44 mobs of grinding. An objective area of 567 "Dangerous!" is also
+split for no reason (a `free` quality item).
 
 ### Hub sweep, one pass per area, turn-in in passing (`order.lua` step 5)
 

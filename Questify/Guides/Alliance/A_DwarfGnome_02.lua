@@ -1,8 +1,8 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-04.
--- Simulation : 103 étapes, niveau final 12.01, ~19079 xp/h, 115 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
+-- Simulation : 103 étapes, niveau final 12.01, ~19126 xp/h, 114 min.
 Q:RegisterGuide({
   id = "A_DwarfGnome_02",
   title = "Dun Morogh",
@@ -10,15 +10,15 @@ Q:RegisterGuide({
   races = { "Dwarf", "Gnome" },
   minLevel = 6, maxLevel = 11,
   next = "A_DwarfGnome_03",
-  sim = { steps = 103, endLevel = 12.01, xpPerHour = 19079, minutes = 115 },
+  sim = { steps = 103, endLevel = 12.01, xpPerHour = 19126, minutes = 114 },
   steps = {
     { "accept", 317 }, -- Stocking Jetsteam (lvl 6, ~680 xp, sim lvl 6)
     { "accept", 313 }, -- The Grizzled Den (lvl 7, ~630 xp, sim lvl 6)
     { "accept", 5541 }, -- Ammo for Rumbleshot (lvl 6, ~540 xp, sim lvl 6)
     { "accept", 99158 }, -- Dawn in the Mountains (lvl 8, ~530 xp, sim lvl 6)
     { "sethearth", 1426, 47.38, 52.52 }, -- lier la pierre de foyer
-    { "accept", 98322 }, -- Secure the Mountain (lvl 8, ~530 xp, sim lvl 6)
     { "accept", 96608 }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 6)
+    { "accept", 98322 }, -- Secure the Mountain (lvl 8, ~530 xp, sim lvl 6)
     { "complete", 96608, at = { 1426, 46.68, 53.84 } }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 6)
     { "turnin", 96608, xp = 540 }, -- The Great Outdoors (lvl 6, ~540 xp, sim lvl 6)
     { "accept", 96629 }, -- Camping 101: Cooking (lvl 6, ~540 xp, sim lvl 6)
@@ -37,22 +37,22 @@ Q:RegisterGuide({
     { "complete", 99159, at = { 1426, 57.04, 54.19 } }, -- Finding Warmth (lvl 8, ~700 xp, sim lvl 7)
     { "turnin", 99159, xp = 700 }, -- Finding Warmth (lvl 8, ~700 xp, sim lvl 7)
     { "accept", 99160 }, -- Rime's Wrath (lvl 8, ~700 xp, sim lvl 7)
-    { "complete", 99160, at = { 1426, 55.53, 45.4 } }, -- Rime's Wrath (lvl 8, ~700 xp, sim lvl 7)
+    { "complete", 99160, at = { 1426, 56.72, 45.44 } }, -- Rime's Wrath (lvl 8, ~700 xp, sim lvl 7)
     { "turnin", 99160, xp = 700 }, -- Rime's Wrath (lvl 8, ~700 xp, sim lvl 7)
     { "accept", 99161 }, -- Rime's Wrath (lvl 8, ~700 xp, sim lvl 7)
     { "complete", 99161, at = { 1426, 58.34, 42.06 } }, -- Rime's Wrath (lvl 8, ~700 xp, sim lvl 7)
     { "turnin", 99161, xp = 700 }, -- Rime's Wrath (lvl 8, ~700 xp, sim lvl 7)
     { "accept", 287 }, -- Frostmane Hold (lvl 9, ~590 xp, sim lvl 7)
     { "complete", 98319, at = { 1426, 43.03, 49.62 } }, -- Secure the Mountain (lvl 8, ~700 xp, sim lvl 7)
-    { "complete", 313, at = { 1426, 41, 47.61 } }, -- The Grizzled Den (lvl 7, ~630 xp, sim lvl 7)
+    { "complete", 313, at = { 1426, 40.97, 47.58 } }, -- The Grizzled Den (lvl 7, ~630 xp, sim lvl 7)
     { "turnin", 318, xp = 160 }, -- Evershine (lvl 7, ~160 xp, sim lvl 8)
-    { "accept", 315 }, -- The Perfect Stout (lvl 9, ~780 xp, sim lvl 8)
     { "accept", 319 }, -- A Favor for Evershine (lvl 8, ~530 xp, sim lvl 8)
+    { "accept", 315 }, -- The Perfect Stout (lvl 9, ~780 xp, sim lvl 8)
     { "accept", 310 }, -- Bitter Rivals (lvl 6, ~135 xp, sim lvl 8)
-    { "complete", 319, at = { 1426, 36.58, 35.82 } }, -- A Favor for Evershine (lvl 8, ~530 xp, sim lvl 8)
-    { "complete", 315, at = { 1426, 41.77, 35.35 } }, -- The Perfect Stout (lvl 9, ~780 xp, sim lvl 8)
-    { "complete", 319, at = { 1426, 38.08, 42.43 } }, -- A Favor for Evershine (lvl 8, ~530 xp, sim lvl 8)
     { "accept", 98326 }, -- Frosthowl (lvl 9, ~780 xp, sim lvl 8)
+    { "complete", 319, obj = 1, at = { 1426, 38.08, 42.43 } }, -- A Favor for Evershine (lvl 8, ~530 xp, sim lvl 8)
+    { "complete", 315, at = { 1426, 41.77, 35.35 } }, -- The Perfect Stout (lvl 9, ~780 xp, sim lvl 8)
+    { "complete", 319, at = { 1426, 36.58, 35.82 } }, -- A Favor for Evershine (lvl 8, ~530 xp, sim lvl 8)
     { "turnin", 319, xp = 530 }, -- A Favor for Evershine (lvl 8, ~530 xp, sim lvl 8)
     { "accept", 320 }, -- Return to Bellowfiz (lvl 8, ~880 xp, sim lvl 8)
     { "turnin", 315, xp = 780 }, -- The Perfect Stout (lvl 9, ~780 xp, sim lvl 8)
@@ -61,16 +61,16 @@ Q:RegisterGuide({
     { "complete", 98326, at = { 1426, 39.33, 48.79 } }, -- Frosthowl (lvl 9, ~780 xp, sim lvl 8)
     { "turnin", 98319, xp = 700 }, -- Secure the Mountain (lvl 8, ~700 xp, sim lvl 8)
     { "accept", 98323 }, -- Secure the Mountain (lvl 8, ~530 xp, sim lvl 9)
-    { "turnin", 98323, xp = 530 }, -- Secure the Mountain (lvl 8, ~530 xp, sim lvl 9)
     { "turnin", 287, xp = 590 }, -- Frostmane Hold (lvl 9, ~590 xp, sim lvl 9)
+    { "turnin", 98323, xp = 530 }, -- Secure the Mountain (lvl 8, ~530 xp, sim lvl 9)
     { "accept", 291 }, -- The Reports (lvl 10, ~420 xp, sim lvl 9)
     { "turnin", 310, xp = 135 }, -- Bitter Rivals (lvl 6, ~135 xp, sim lvl 9)
     { "accept", 311 }, -- Return to Marleth (lvl 7, ~630 xp, sim lvl 9)
     { "turnin", 320, xp = 880 }, -- Return to Bellowfiz (lvl 8, ~880 xp, sim lvl 9)
     { "turnin", 313, xp = 630 }, -- The Grizzled Den (lvl 7, ~630 xp, sim lvl 9)
     { "accept", 96408 }, -- A Visitor to Dun Morogh (lvl 13, ~455 xp, sim lvl 9)
-    { "accept", 95212 }, -- Never Saddle on Quality (lvl 10, ~840 xp, sim lvl 9)
     { "accept", 314 }, -- Protecting the Herd (lvl 12, ~910 xp, sim lvl 9)
+    { "accept", 95212 }, -- Never Saddle on Quality (lvl 10, ~840 xp, sim lvl 9)
     { "turnin", 96408, xp = 455 }, -- A Visitor to Dun Morogh (lvl 13, ~455 xp, sim lvl 9)
     { "accept", 96392, optional = true, dungeon = "The Hall of Thanes" }, -- Farsen's Watch (lvl 13, ~680 xp, sim lvl 9)
     { "complete", 96392, at = { 1426, 64.87, 58.47 }, optional = true, dungeon = "The Hall of Thanes" }, -- Farsen's Watch (lvl 13, ~680 xp, sim lvl 9)
@@ -81,7 +81,7 @@ Q:RegisterGuide({
     { "complete", 432, at = { 1426, 68.99, 58.91 } }, -- Those Blasted Troggs! (lvl 9, ~590 xp, sim lvl 9)
     { "accept", 96391, at = { 1426, 77.56, 61.26 }, optional = true, dungeon = "The Hall of Thanes", note = "Loot Dark Iron Map to start the quest" }, -- Underground Map (lvl 15, ~405 xp, sim lvl 9)
     { "complete", 96390, at = { 1426, 77.53, 61.18 } }, -- Nip 'Em in the Bud (lvl 13, ~680 xp, sim lvl 9)
-    { "complete", 95212, at = { 1426, 77.44, 58.07 } }, -- Never Saddle on Quality (lvl 10, ~840 xp, sim lvl 9)
+    { "complete", 95212, at = { 1426, 77.45, 58.21 } }, -- Never Saddle on Quality (lvl 10, ~840 xp, sim lvl 9)
     { "accept", 95213, at = { 1426, 71.48, 52.61 }, note = "Loot Empty Powder Keg to start the quest" }, -- Stolen Blasting Powder (lvl 10, ~840 xp, sim lvl 10)
     { "complete", 95213, at = { 1426, 71.48, 52.61 } }, -- Stolen Blasting Powder (lvl 10, ~840 xp, sim lvl 10)
     { "complete", 433, at = { 1426, 71.44, 52.45 } }, -- The Public Servant (lvl 11, ~660 xp, sim lvl 10)

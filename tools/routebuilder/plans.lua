@@ -65,9 +65,10 @@ plans.Alliance = {
     flightPaths = { "Thelsamar, Loch Modan" },
     -- Fin à Stormwind : Marche de l'Ouest à pied (suite par défaut) ou Sombrivage par le bateau du port
     -- de Stormwind (A_01 commence par ce bateau). Minutes : travel.lua A_DwarfGnome_03 (guides du
-    -- 2026-11-04) ; Westfall 122 s de marche, Sombrivage 80 s de marche + 300 s de bateau + 44 s de marche.
+    -- 2026-11-06, QuestieDB v1.0.11) ; A_DwarfGnome_04 commence dans le quartier des Nains de Stormwind
+    -- (15 s de marche), Sombrivage 105 s de marche + 300 s de bateau + 44 s de marche.
     choices = {
-      { id = "A_DwarfGnome_04", travel = { kind = "walk", minutes = 2 } },
+      { id = "A_DwarfGnome_04", travel = { kind = "walk", minutes = 0 } },
       { id = "A_01", travel = { kind = "boat", minutes = 7 } },
     },
   },
@@ -80,6 +81,8 @@ plans.Alliance = {
     entry = { WESTFALL, 56.3, 47.5 }, next = "A_01",
     flightPaths = { "Stormwind, Elwynn", "Sentinel Hill, Westfall" },
     dungeons = { "The Deadmines" },
+    -- Poor Old Blanchy (151) : écartée par le budget d'XP (« level band reached ») ; +1 085 XP pour +3 min
+    force = { [151] = true },
   },
   -- Humain : Northshire, Elwynn, Marche de l'Ouest
   {
@@ -99,6 +102,9 @@ plans.Alliance = {
     entry = { WESTFALL, 56.3, 47.5 }, next = "A_01",
     flightPaths = { "Sentinel Hill, Westfall" },
     dungeons = { "The Deadmines" },
+    -- Rumi of Gnomeregan (79093, niveau 20) : écartée « au-dessus de la tranche » ; rendue à Stormwind en fin
+    -- de chapitre. Forcée ici seulement : un forçage global la placerait plus tôt (Elwynn + Stormwind).
+    force = { [79093] = true },
   },
   -- Elfe de la nuit : Shadowglen, Teldrassil, Sombrivage (toute la zone), puis tronc commun aux Carmines
   {
@@ -207,6 +213,7 @@ plans.Horde = {
     id = "H_Undead_01", title = "Deathknell", faction = "Horde", races = { "Undead" },
     zones = { TIRISFAL }, bounds = { [TIRISFAL] = { 26, 56, 40, 74 } }, endZones = { TIRISFAL },
     minLevel = 1, maxLevel = 6, entry = { TIRISFAL, 30.8, 66.2 }, next = "H_Undead_02",
+    drop = { [590] = "Opened by the turn-in of 8 in Brill: 1,071 yd back to Calvin Montague, then back to Brill, for 110 XP" },
   },
   {
     id = "H_Undead_02", title = "Tirisfal Glades", faction = "Horde", races = { "Undead" },
@@ -259,6 +266,9 @@ plans.Horde = {
   {
     id = "H_05", title = "Hillsbrad Foothills", faction = "Horde", zones = { HILLSBRAD },
     minLevel = 28, maxLevel = 30, levelSlack = 0, levelBelow = 6, far = 1600, entry = { HILLSBRAD, 62.0, 20.0 }, endZones = { UNDERCITY },
+    -- strictLevel (QuestieDB v1.0.11) : sans lui, tranche élargie (147 mobs à farmer), 44 mobs de farm final,
+    -- 188 min et une zone d'objectifs coupée sans contrainte (567 Dangerous!) ; avec lui, 176 min, aucun farm.
+    strictLevel = true,
     flightPaths = { "Tarren Mill, Hillsbrad" },
     dungeons = { "City of Dalaran" },
   },

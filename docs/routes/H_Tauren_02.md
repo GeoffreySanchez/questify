@@ -1,14 +1,14 @@
 # H_Tauren_02 — Mulgore
 
-Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: Tauren.
+Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d306458a95` by `tools/routebuilder/build.lua`. Simulated race: Tauren.
 
 | Item | Value |
 |---|---|
 | Level band | 6-12 |
-| Simulated level | 7.00 -> 13.65 |
-| Time | 229 min |
-| XP gained | 49644 |
-| XP/h | 13002 |
+| Simulated level | 7.00 -> 13.73 |
+| Time | 232 min |
+| XP gained | 50652 |
+| XP/h | 13118 |
 | Steps | 86 |
 | Quests turned in | 30 |
 | Hubs | 8 |
@@ -20,34 +20,34 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 
 | # | Quest | Name | Lvl | XP | Sim lvl |
 |---|---|---|---|---|---|
-| 1 | 96661 | Camping 101: Cooking | 6 | 540 est. | 9 |
-| 2 | 748 | Poison Water | 5 | 450 | 9 |
-| 3 | 754 | Winterhoof Cleansing | 6 | 540 | 9 |
-| 4 | 756 | Thunderhorn Totem | 7 | 630 | 10 |
-| 5 | 771 | Rite of Vision | 7 | 630 | 10 |
-| 6 | 758 | Thunderhorn Cleansing | 8 | 700 | 10 |
-| 7 | 751 | The Ravaged Caravan | 8 | 530 | 10 |
-| 8 | 98424 | Fizsprocket's Notes | 10 | 840 est. | 11 |
-| 9 | 759 | Wildmane Totem | 10 | 840 | 11 |
-| 10 | 99080 | Drive Them Out | 9 | 780 est. | 11 |
-| 11 | 772 | Rite of Vision | 7 | 475 | 11 |
-| 12 | 773 | Rite of Wisdom | 10 | 840 | 12 |
-| 13 | 833 | A Sacred Burial | 10 | 630 | 12 |
-| 14 | 764 | The Venture Co. | 10 | 630 | 12 |
-| 15 | 765 | Supervisor Fizsprocket | 12 | 910 | 12 |
-| 16 | 98427 | Ceasing Operations | 12 | 910 est. | 12 |
-| 17 | 760 | Wildmane Cleansing | 10 | 1050 | 12 |
-| 18 | 770 | The Demon Scarred Cloak | 12 | 910 | 12 |
-| 19 | 766 | Mazzranache | 8 | 700 | 13 |
-| 20 | 99411 | Kyle's Gone Missing! | 7 | 500 est. | 13 |
-| 21 | 861 | The Hunter's Way | 10 | 840 | 13 |
-| 22 | 76156 | Stalk With The Earthmother | 10 | 840 est. | 13 |
-| 23 | 744 | Preparation for Ceremony | 11 | 880 | 13 |
-| 24 | 775 | Journey into Thunder Bluff | 10 | 420 | 13 |
-| 25 | 99082 | The High Chieftain | 9 | 780 est. | 13 |
-| 26 | 98430 | The Longwalkers | 8 | 700 est. | 13 |
+| 1 | 748 | Poison Water | 5 | 450 | 9 |
+| 2 | 754 | Winterhoof Cleansing | 6 | 540 | 9 |
+| 3 | 771 | Rite of Vision | 7 | 630 | 10 |
+| 4 | 766 | Mazzranache | 8 | 700 | 10 |
+| 5 | 756 | Thunderhorn Totem | 7 | 630 | 11 |
+| 6 | 770 | The Demon Scarred Cloak | 12 | 910 | 11 |
+| 7 | 772 | Rite of Vision | 7 | 475 | 11 |
+| 8 | 96661 | Camping 101: Cooking | 6 | 540 est. | 11 |
+| 9 | 758 | Thunderhorn Cleansing | 8 | 700 | 11 |
+| 10 | 751 | The Ravaged Caravan | 8 | 530 | 11 |
+| 11 | 764 | The Venture Co. | 10 | 630 | 12 |
+| 12 | 765 | Supervisor Fizsprocket | 12 | 910 | 12 |
+| 13 | 98424 | Fizsprocket's Notes | 10 | 840 est. | 12 |
+| 14 | 759 | Wildmane Totem | 10 | 840 | 12 |
+| 15 | 99080 | Drive Them Out | 11 | 770 est. | 12 |
+| 16 | 773 | Rite of Wisdom | 10 | 840 | 12 |
+| 17 | 98430 | The Longwalkers | 8 | 700 est. | 12 |
+| 18 | 775 | Journey into Thunder Bluff | 10 | 420 | 13 |
+| 19 | 99082 | The High Chieftain | 11 | 660 est. | 13 |
+| 20 | 76156 | Stalk With The Earthmother | 10 | 840 est. | 13 |
+| 21 | 744 | Preparation for Ceremony | 11 | 880 | 13 |
+| 22 | 776 | Rites of the Earthmother | 14 | 1250 | 13 |
+| 23 | 861 | The Hunter's Way | 10 | 840 | 13 |
+| 24 | 99411 | Kyle's Gone Missing! | 7 | 500 est. | 13 |
+| 25 | 760 | Wildmane Cleansing | 10 | 1050 | 13 |
+| 26 | 98427 | Ceasing Operations | 12 | 910 est. | 13 |
 | 27 | 98435 | Thunderhorn's Report | 10 | 210 est. | 13 |
-| 28 | 776 | Rites of the Earthmother | 14 | 1250 | 13 |
+| 28 | 833 | A Sacred Burial | 10 | 630 | 13 |
 | 29 | 886 | The Barrens Oases | 10 | 85 | 13 |
 | 30 | 860 | Sergra Darkthorn | 10 | 85 | 13 |
 
@@ -304,8 +304,8 @@ below 0.35 × the median ratio, or when an objective is more than 900 yd from ev
 | 98424 | Fizsprocket's Notes | 10 | 1340 | 0 | 407 | 134 | 3.38 | 10.95 | 2 |  |
 | 98427 | Ceasing Operations | 12 | 1010 | 0 | 284 | 75 | 3.55 | 13.41 | 1 |  |
 | 98435 | Thunderhorn's Report | 10 | 210 | 0 | 203 | 26 | 1.03 | 8.00 | 0 |  |
-| 99080 | Drive Them Out | 9 | 2788 | 0 | 757 | 526 | 4.62 | 7.55 | 2 |  |
-| 99082 | The High Chieftain | 9 | 1850 | 1070 | 181 | 21 | 10.22 | 86.97 | 0 |  |
+| 99080 | Drive Them Out | 11 | 2778 | 0 | 757 | 527 | 4.51 | 7.36 | 2 |  |
+| 99082 | The High Chieftain | 11 | 1730 | 1070 | 181 | 21 | 9.56 | 81.33 | 0 |  |
 | 99411 | Kyle's Gone Missing! | 7 | 730 | 0 | 145 | 145 | 5.02 | 5.02 | 1 |  |
 
 ## Itinerary
@@ -317,92 +317,92 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | # | Task | Quest | Name | Map | x, y | Leg yd | Return |
 |---|---|---|---|---|---|---|---|
 | 1 | A | 751 | The Ravaged Caravan | 1412 | 51.9, 53.4 | 0 |  |
-| 2 | A | 766 | Mazzranache | 1412 | 46.2, 60.8 | 461 |  |
-| 3 | A | 771 | Rite of Vision | 1412 | 46.9, 61.2 | 43 |  |
-| 4 | A | 748 | Poison Water | 1412 | 47.5, 63.6 | 105 |  |
-| 5 | A | 96661 | Camping 101: Cooking | 1412 | 46.2, 67.3 | 174 |  |
-| 6 | O | 748 | Poison Water | 1412 | 46.2, 76.1 | 359 |  |
-| 7 | O | 766 | Mazzranache | 1412 | 39.0, 66.1 | 600 |  |
-| 8 | O | 748 | Poison Water | 1412 | 39.5, 59.8 | 260 |  |
-| 9 | O | 96661 | Camping 101: Cooking | 1412 | 44.9, 61.7 | 340 |  |
-| 10 | T | 96661 | Camping 101: Cooking | 1412 | 44.9, 61.7 | 0 |  |
-| 11 | T | 748 | Poison Water | 1412 | 47.5, 63.6 | 178 |  |
-| 12 | A | 754 | Winterhoof Cleansing | 1412 | 47.5, 63.6 | 0 |  |
-| 13 | O | 771 | Rite of Vision | 1412 | 50.3, 65.1 | 179 |  |
-| 14 | O | 754 | Winterhoof Cleansing | 1412 | 51.8, 68.4 | 164 |  |
-| 15 | O | 771 | Rite of Vision | 1412 | 51.8, 68.6 | 6 |  |
-| 16 | T | 754 | Winterhoof Cleansing | 1412 | 47.5, 63.6 | 333 |  |
-| 17 | A | 756 | Thunderhorn Totem | 1412 | 47.5, 63.6 | 0 |  |
-| 18 | O | 756 | Thunderhorn Totem | 1412 | 49.8, 51.0 | 533 |  |
-| 19 | T | 756 | Thunderhorn Totem | 1412 | 47.5, 63.6 | 533 |  |
-| 20 | A | 758 | Thunderhorn Cleansing | 1412 | 47.5, 63.6 | 0 |  |
-| 21 | A | 99080 | Drive Them Out | 1412 | 46.7, 63.4 | 52 |  |
-| 22 | A | 861 | The Hunter's Way | 1412 | 46.0, 63.4 | 39 |  |
-| 23 | O | 758 | Thunderhorn Cleansing | 1412 | 44.2, 51.1 | 518 |  |
-| 24 | T | 771 | Rite of Vision | 1412 | 46.9, 61.2 | 445 |  |
-| 25 | A | 772 | Rite of Vision | 1412 | 46.9, 61.2 | 0 |  |
-| 26 | T | 758 | Thunderhorn Cleansing | 1412 | 47.5, 63.6 | 105 |  |
-| 27 | A | 759 | Wildmane Totem | 1412 | 47.5, 63.6 | 0 |  |
-| 28 | A | 98424 | Fizsprocket's Notes | 1412 | 61.2, 49.3 | 1024 |  |
-| 29 | O | 98424 | Fizsprocket's Notes | 1412 | 61.7, 47.3 | 87 |  |
-| 30 | O | 98424 | Fizsprocket's Notes | 1412 | 58.6, 47.3 | 187 |  |
-| 31 | O | 99080 | Drive Them Out | 1412 | 63.4, 61.2 | 642 |  |
-| 32 | O | 99080 | Drive Them Out | 1412 | 60.4, 60.8 | 188 |  |
-| 33 | O | 759 | Wildmane Totem | 1412 | 59.3, 62.9 | 108 |  |
-| 34 | T | 751 | The Ravaged Caravan | 1412 | 54.8, 64.3 | 287 |  |
-| 35 | A | 764 | The Venture Co. | 1412 | 54.8, 64.3 | 0 |  |
-| 36 | A | 765 | Supervisor Fizsprocket | 1412 | 54.8, 64.3 | 0 |  |
-| 37 | T | 98424 | Fizsprocket's Notes | 1412 | 54.8, 64.3 | 0 |  |
-| 38 | A | 98427 | Ceasing Operations | 1412 | 54.8, 64.3 | 0 |  |
-| 39 | T | 759 | Wildmane Totem | 1412 | 47.5, 63.6 | 446 | near #27 (went 1097 yd away) |
-| 40 | A | 760 | Wildmane Cleansing | 1412 | 47.5, 63.6 | 0 | near #27 (went 1097 yd away) |
-| 41 | T | 99080 | Drive Them Out | 1412 | 46.7, 63.4 | 52 |  |
-| 42 | A | 99082 | The High Chieftain | 1412 | 46.7, 63.4 | 0 |  |
-| 43 | A | 99411 | Kyle's Gone Missing! | 1412 | 47.3, 57.6 | 238 | near #25 (went 1005 yd away) |
-| 44 | O | 766 | Mazzranache | 1412 | 48.5, 48.2 | 395 | near #18 (went 1066 yd away) |
-| 45 | A | 770 | The Demon Scarred Cloak | 1412 | 47.1, 47.8 | 84 |  |
-| 46 | A | 76156 | Stalk With The Earthmother | 1456 | 39.4, 65.8 | 650 |  |
-| 47 | A | 744 | Preparation for Ceremony | 1456 | 37.8, 59.6 | 46 |  |
-| 48 | T | 772 | Rite of Vision | 1412 | 34.3, 43.3 | 346 |  |
-| 49 | A | 773 | Rite of Wisdom | 1412 | 34.3, 43.3 | 0 |  |
-| 50 | O | 744 | Preparation for Ceremony | 1412 | 32.6, 34.4 | 378 |  |
-| 51 | O | 760 | Wildmane Cleansing | 1412 | 42.7, 25.0 | 732 |  |
-| 52 | O | 861 | The Hunter's Way | 1412 | 52.6, 32.2 | 675 |  |
-| 53 | A | 833 | A Sacred Burial | 1412 | 57.0, 34.5 | 287 |  |
-| 54 | O | 833 | A Sacred Burial | 1412 | 58.1, 30.8 | 168 |  |
-| 55 | T | 773 | Rite of Wisdom | 1412 | 58.3, 30.7 | 11 |  |
-| 56 | A | 775 | Journey into Thunder Bluff | 1412 | 58.3, 30.7 | 0 |  |
-| 57 | T | 833 | A Sacred Burial | 1412 | 57.0, 34.5 | 177 |  |
-| 58 | O | 98427 | Ceasing Operations | 1412 | 56.8, 42.8 | 336 |  |
-| 59 | O | 76156 | Stalk With The Earthmother | 1412 | 58.4, 48.3 | 247 | near #30 (went 1686 yd away) |
-| 60 | O | 764 | The Venture Co. | 1412 | 60.2, 46.8 | 123 | near #30 (went 1770 yd away) |
-| 61 | O | 765 | Supervisor Fizsprocket | 1412 | 61.2, 49.3 | 120 | near #29 (went 1862 yd away) |
-| 62 | T | 764 | The Venture Co. | 1412 | 54.8, 64.3 | 729 | near #38 (went 1832 yd away) |
-| 63 | T | 765 | Supervisor Fizsprocket | 1412 | 54.8, 64.3 | 0 | near #38 (went 1832 yd away) |
-| 64 | T | 98427 | Ceasing Operations | 1412 | 54.8, 64.3 | 0 |  |
-| 65 | T | 760 | Wildmane Cleansing | 1412 | 47.5, 63.6 | 446 | near #42 (went 1610 yd away) |
-| 66 | A | 98435 | Thunderhorn's Report | 1412 | 47.5, 63.6 | 0 | near #42 (went 1610 yd away) |
-| 67 | T | 770 | The Demon Scarred Cloak | 1412 | 46.0, 63.4 | 91 |  |
-| 68 | O | 99411 | Kyle's Gone Missing! | 1412 | 46.3, 62.3 | 47 |  |
-| 69 | T | 766 | Mazzranache | 1412 | 46.2, 60.8 | 63 |  |
-| 70 | T | 99411 | Kyle's Gone Missing! | 1412 | 47.3, 57.6 | 145 | near #43 (went 1368 yd away) |
-| 71 | T | 861 | The Hunter's Way | 1456 | 61.5, 80.9 | 749 |  |
-| 72 | A | 860 | Sergra Darkthorn | 1456 | 61.5, 80.9 | 0 |  |
-| 73 | T | 76156 | Stalk With The Earthmother | 1456 | 39.4, 65.8 | 253 | near #47 (went 1462 yd away) |
-| 74 | T | 744 | Preparation for Ceremony | 1456 | 37.8, 59.6 | 46 | near #47 (went 1499 yd away) |
-| 75 | F |  | flight path | 1456 | 47.0, 49.8 | 117 |  |
-| 76 | T | 775 | Journey into Thunder Bluff | 1456 | 60.3, 51.7 | 139 |  |
-| 77 | T | 99082 | The High Chieftain | 1456 | 60.3, 51.7 | 0 |  |
-| 78 | A | 776 | Rites of the Earthmother | 1456 | 60.3, 51.7 | 0 |  |
-| 79 | T | 98430 | The Longwalkers | 1456 | 60.3, 51.7 | 0 |  |
-| 80 | O | 776 | Rites of the Earthmother | 1412 | 51.2, 24.8 | 725 |  |
-| 81 | A | 886 | The Barrens Oases | 1456 | 78.6, 28.6 | 475 |  |
-| 82 | T | 98435 | Thunderhorn's Report | 1456 | 78.6, 28.6 | 0 |  |
-| 83 | T | 776 | Rites of the Earthmother | 1456 | 60.3, 51.7 | 249 | near #79 (went 725 yd away) |
-| 84 | T | 886 | The Barrens Oases | 1413 | 52.3, 31.9 | 2644 |  |
+| 2 | A | 748 | Poison Water | 1412 | 47.5, 63.6 | 497 |  |
+| 3 | A | 771 | Rite of Vision | 1412 | 46.9, 61.2 | 105 |  |
+| 4 | A | 766 | Mazzranache | 1412 | 46.2, 60.8 | 43 |  |
+| 5 | O | 748 | Poison Water | 1412 | 39.5, 59.8 | 414 |  |
+| 6 | O | 766 | Mazzranache | 1412 | 39.0, 66.1 | 260 |  |
+| 7 | O | 748 | Poison Water | 1412 | 46.2, 76.1 | 600 |  |
+| 8 | A | 96661 | Camping 101: Cooking | 1412 | 46.2, 67.3 | 359 |  |
+| 9 | T | 748 | Poison Water | 1412 | 47.5, 63.6 | 174 |  |
+| 10 | A | 754 | Winterhoof Cleansing | 1412 | 47.5, 63.6 | 0 |  |
+| 11 | O | 771 | Rite of Vision | 1412 | 51.8, 68.6 | 333 |  |
+| 12 | O | 754 | Winterhoof Cleansing | 1412 | 51.8, 68.4 | 6 |  |
+| 13 | O | 771 | Rite of Vision | 1412 | 50.3, 65.1 | 164 |  |
+| 14 | T | 754 | Winterhoof Cleansing | 1412 | 47.5, 63.6 | 179 |  |
+| 15 | A | 756 | Thunderhorn Totem | 1412 | 47.5, 63.6 | 0 |  |
+| 16 | O | 756 | Thunderhorn Totem | 1412 | 49.8, 51.0 | 533 |  |
+| 17 | O | 766 | Mazzranache | 1412 | 48.5, 48.2 | 143 |  |
+| 18 | A | 770 | The Demon Scarred Cloak | 1412 | 47.1, 47.8 | 84 |  |
+| 19 | A | 99411 | Kyle's Gone Missing! | 1412 | 47.3, 57.6 | 405 | near #4 (went 758 yd away) |
+| 20 | T | 771 | Rite of Vision | 1412 | 46.9, 61.2 | 148 |  |
+| 21 | A | 772 | Rite of Vision | 1412 | 46.9, 61.2 | 0 |  |
+| 22 | T | 766 | Mazzranache | 1412 | 46.2, 60.8 | 43 |  |
+| 23 | T | 756 | Thunderhorn Totem | 1412 | 47.5, 63.6 | 138 |  |
+| 24 | A | 758 | Thunderhorn Cleansing | 1412 | 47.5, 63.6 | 0 |  |
+| 25 | A | 99080 | Drive Them Out | 1412 | 46.7, 63.4 | 52 |  |
+| 26 | T | 770 | The Demon Scarred Cloak | 1412 | 46.0, 63.4 | 39 |  |
+| 27 | A | 861 | The Hunter's Way | 1412 | 46.0, 63.4 | 0 |  |
+| 28 | O | 758 | Thunderhorn Cleansing | 1412 | 44.2, 51.1 | 518 |  |
+| 29 | A | 76156 | Stalk With The Earthmother | 1456 | 39.4, 65.8 | 625 |  |
+| 30 | A | 744 | Preparation for Ceremony | 1456 | 37.8, 59.6 | 46 |  |
+| 31 | O | 744 | Preparation for Ceremony | 1412 | 32.6, 34.4 | 369 |  |
+| 32 | T | 772 | Rite of Vision | 1412 | 34.3, 43.3 | 378 |  |
+| 33 | A | 773 | Rite of Wisdom | 1412 | 34.3, 43.3 | 0 |  |
+| 34 | O | 96661 | Camping 101: Cooking | 1412 | 44.9, 61.7 | 997 | near #27 (went 1350 yd away) |
+| 35 | T | 96661 | Camping 101: Cooking | 1412 | 44.9, 61.7 | 0 | near #27 (went 1350 yd away) |
+| 36 | O | 99411 | Kyle's Gone Missing! | 1412 | 46.3, 62.3 | 88 |  |
+| 37 | T | 758 | Thunderhorn Cleansing | 1412 | 47.5, 63.6 | 91 | near #27 (went 1507 yd away) |
+| 38 | A | 759 | Wildmane Totem | 1412 | 47.5, 63.6 | 0 |  |
+| 39 | T | 751 | The Ravaged Caravan | 1412 | 54.8, 64.3 | 446 |  |
+| 40 | A | 765 | Supervisor Fizsprocket | 1412 | 54.8, 64.3 | 0 |  |
+| 41 | A | 764 | The Venture Co. | 1412 | 54.8, 64.3 | 0 |  |
+| 42 | O | 759 | Wildmane Totem | 1412 | 59.3, 62.9 | 287 |  |
+| 43 | O | 99080 | Drive Them Out | 1412 | 60.4, 60.7 | 111 |  |
+| 44 | O | 99080 | Drive Them Out | 1412 | 63.4, 61.2 | 187 |  |
+| 45 | A | 98424 | Fizsprocket's Notes | 1412 | 61.2, 49.3 | 506 |  |
+| 46 | O | 98424 | Fizsprocket's Notes | 1412 | 61.7, 47.3 | 87 |  |
+| 47 | O | 765 | Supervisor Fizsprocket | 1412 | 61.2, 49.3 | 87 |  |
+| 48 | O | 98424 | Fizsprocket's Notes | 1412 | 58.6, 47.3 | 177 |  |
+| 49 | O | 764 | The Venture Co. | 1412 | 60.2, 46.8 | 96 |  |
+| 50 | O | 76156 | Stalk With The Earthmother | 1412 | 58.4, 48.3 | 123 |  |
+| 51 | T | 764 | The Venture Co. | 1412 | 54.8, 64.3 | 693 | near #41 (went 815 yd away) |
+| 52 | T | 765 | Supervisor Fizsprocket | 1412 | 54.8, 64.3 | 0 | near #41 (went 815 yd away) |
+| 53 | T | 98424 | Fizsprocket's Notes | 1412 | 54.8, 64.3 | 0 |  |
+| 54 | A | 98427 | Ceasing Operations | 1412 | 54.8, 64.3 | 0 |  |
+| 55 | T | 759 | Wildmane Totem | 1412 | 47.5, 63.6 | 446 | near #38 (went 1097 yd away) |
+| 56 | A | 760 | Wildmane Cleansing | 1412 | 47.5, 63.6 | 0 | near #38 (went 1097 yd away) |
+| 57 | T | 99080 | Drive Them Out | 1412 | 46.7, 63.4 | 52 |  |
+| 58 | A | 99082 | The High Chieftain | 1412 | 46.7, 63.4 | 0 |  |
+| 59 | O | 98427 | Ceasing Operations | 1412 | 56.8, 42.8 | 1049 |  |
+| 60 | A | 833 | A Sacred Burial | 1412 | 57.0, 34.5 | 336 |  |
+| 61 | T | 773 | Rite of Wisdom | 1412 | 58.3, 30.7 | 177 |  |
+| 62 | A | 775 | Journey into Thunder Bluff | 1412 | 58.3, 30.7 | 0 |  |
+| 63 | O | 833 | A Sacred Burial | 1412 | 58.1, 30.8 | 11 |  |
+| 64 | O | 861 | The Hunter's Way | 1412 | 52.6, 32.2 | 347 |  |
+| 65 | T | 98430 | The Longwalkers | 1456 | 60.3, 51.7 | 662 |  |
+| 66 | T | 775 | Journey into Thunder Bluff | 1456 | 60.3, 51.7 | 0 |  |
+| 67 | T | 99082 | The High Chieftain | 1456 | 60.3, 51.7 | 0 |  |
+| 68 | A | 776 | Rites of the Earthmother | 1456 | 60.3, 51.7 | 0 |  |
+| 69 | T | 76156 | Stalk With The Earthmother | 1456 | 39.4, 65.8 | 238 | near #30 (went 1793 yd away) |
+| 70 | T | 744 | Preparation for Ceremony | 1456 | 37.8, 59.6 | 46 | near #30 (went 1831 yd away) |
+| 71 | F |  | flight path | 1456 | 47.0, 49.8 | 117 |  |
+| 72 | O | 760 | Wildmane Cleansing | 1412 | 42.7, 25.0 | 472 |  |
+| 73 | O | 776 | Rites of the Earthmother | 1412 | 51.2, 24.8 | 526 |  |
+| 74 | A | 886 | The Barrens Oases | 1456 | 78.6, 28.6 | 475 |  |
+| 75 | T | 776 | Rites of the Earthmother | 1456 | 60.3, 51.7 | 249 | near #71 (went 725 yd away) |
+| 76 | T | 861 | The Hunter's Way | 1456 | 61.5, 80.9 | 203 |  |
+| 77 | A | 860 | Sergra Darkthorn | 1456 | 61.5, 80.9 | 0 |  |
+| 78 | T | 99411 | Kyle's Gone Missing! | 1412 | 47.3, 57.6 | 749 | near #22 (went 1368 yd away) |
+| 79 | T | 760 | Wildmane Cleansing | 1412 | 47.5, 63.6 | 244 | near #58 (went 1610 yd away) |
+| 80 | A | 98435 | Thunderhorn's Report | 1412 | 47.5, 63.6 | 0 | near #58 (went 1610 yd away) |
+| 81 | T | 98427 | Ceasing Operations | 1412 | 54.8, 64.3 | 446 | near #54 (went 1774 yd away) |
+| 82 | T | 98435 | Thunderhorn's Report | 1456 | 78.6, 28.6 | 1445 | near #74 (went 1445 yd away) |
+| 83 | T | 833 | A Sacred Burial | 1412 | 57.0, 34.5 | 730 | near #60 (went 1325 yd away) |
+| 84 | T | 886 | The Barrens Oases | 1413 | 52.3, 31.9 | 1753 |  |
 | 85 | T | 860 | Sergra Darkthorn | 1413 | 52.2, 31.0 | 62 |  |
 
-Walking between tasks: 20472 yd (~49 min at 7 yd/s).
+Walking between tasks: 21497 yd (~51 min at 7 yd/s).
 
 ## Qualité
 
@@ -422,7 +422,7 @@ Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint la
 
 ## Logistics
 
-- step 46: `fp 1456 47 49.83`
+- step 29: `fp 1456 47 49.83`
 - step 84: `fp 1413 51.5 30.34`
 
 ## Warnings

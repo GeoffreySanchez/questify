@@ -81,7 +81,8 @@ Q.CaveData = {
     name = "Night Web's Hollow (Tirisfal Glades)",
     mapId = 1420,
     entrance = { 27, 59 },
-    npcs = { 1504, 1505, 1688 },
+    -- Sans Young Night Web Spider (1504) : elle vit aussi dehors (vers [29, 58]) et élargit le contour.
+    npcs = { 1505, 1688 },
     objects = {},
     source = "https://warcraft.wiki.gg/wiki/Night_Web%27s_Hollow",
   },

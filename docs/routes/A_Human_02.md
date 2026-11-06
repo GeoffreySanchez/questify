@@ -1,18 +1,18 @@
 # A_Human_02 — Elwynn Forest
 
-Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: Human.
+Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d306458a95` by `tools/routebuilder/build.lua`. Simulated race: Human.
 
 | Item | Value |
 |---|---|
 | Level band | 6-11 |
-| Simulated level | 6.00 -> 11.82 |
-| Time | 115 min |
-| XP gained | 33882 |
-| XP/h | 17638 |
-| Steps | 110 |
-| Quests turned in | 42 |
+| Simulated level | 6.00 -> 12.00 |
+| Time | 117 min |
+| XP gained | 35405 |
+| XP/h | 18089 |
+| Steps | 114 |
+| Quests turned in | 43 |
 | Hubs | 10 |
-| Median ratio (XP/s) | 3.75 |
+| Median ratio (XP/s) | 4.06 |
 
 ## Kept quests (turn-in order)
 
@@ -20,48 +20,49 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 
 | # | Quest | Name | Lvl | XP | Sim lvl |
 |---|---|---|---|---|---|
-| 1 | 99127 | A Net Disaster | 7 | 630 est. | 6 |
-| 2 | 99128 | Slimy Menace | 7 | 630 est. | 6 |
-| 3 | 95998 | The Great Outdoors | 6 | 540 est. | 7 |
-| 4 | 96626 | Camping 101: Cooking | 6 | 540 est. | 7 |
-| 5 | 99129 | A Man About a Murloc | 7 | 475 est. | 7 |
-| 6 | 40 | A Fishy Peril | 10 | 85 | 7 |
-| 7 | 106 | Young Lovers | 6 | 135 | 7 |
-| 8 | 111 | Speak with Gramma | 6 | 135 | 7 |
-| 9 | 85 | Lost Necklace | 6 | 135 | 7 |
-| 10 | 99130 | An Enticing Offer | 7 | 630 est. | 8 |
-| 11 | 62 | The Fargodeep Mine | 7 | 475 | 8 |
-| 12 | 123 | The Collector | 10 | 210 | 8 |
-| 13 | 60 | Kobold Candles | 7 | 475 | 8 |
-| 14 | 107 | Note to William | 6 | 135 | 8 |
-| 15 | 35 | Further Concerns | 10 | 420 | 8 |
-| 16 | 37 | Find the Lost Guards | 10 | 210 | 8 |
-| 17 | 45 | Discover Rolf's Fate | 10 | 420 | 8 |
-| 18 | 83 | Red Linen Goods | 9 | 780 | 9 |
-| 19 | 91723 | Delicate Instruments | 10 | 840 est. | 9 |
-| 20 | 91732 | Good Steel | 10 | 840 est. | 9 |
-| 21 | 71 | Report to Thomas | 10 | 210 | 9 |
-| 22 | 91724 | Delicate Instruments | 10 | 840 est. | 9 |
-| 23 | 112 | Collecting Kelp | 7 | 315 | 9 |
-| 24 | 39 | Deliver Thomas' Report | 10 | 1050 | 9 |
-| 25 | 76 | The Jasperlode Mine | 10 | 840 | 10 |
-| 26 | 147 | Manhunt | 10 | 840 | 10 |
-| 27 | 61 | Shipment to Stormwind | 7 | 790 | 10 |
-| 28 | 239 | Westbrook Garrison Needs Help! | 10 | 210 | 10 |
-| 29 | 86 | Pie for Billy | 6 | 405 | 10 |
-| 30 | 88 | Princess Must Die! | 9 | 780 | 10 |
-| 31 | 176 | WANTED: "Hogger" | 11 | 880 | 10 |
-| 32 | 99131 | Baited for Success | 7 | 475 est. | 10 |
-| 33 | 99143 | Bottles and Baubles | 7 | 630 est. | 10 |
-| 34 | 91733 | Downstream | 10 | 840 est. | 11 |
-| 35 | 91740 | Croaky's Head | 10 | 210 est. | 11 |
-| 36 | 46 | Bounty on Murlocs | 10 | 840 | 11 |
-| 37 | 114 | The Escape | 7 | 790 | 11 |
-| 38 | 84 | Back to Billy | 6 | 135 | 11 |
-| 39 | 87 | Goldtooth | 8 | 880 | 11 |
-| 40 | 11 | Riverpaw Gnoll Bounty | 10 | 840 | 11 |
-| 41 | 184 | Furlbrow's Deed | 9 | 590 | 11 |
-| 42 | 109 | Report to Gryan Stoutmantle | 10 | 630 | 11 |
+| 1 | 95998 | The Great Outdoors | 6 | 540 est. | 6 |
+| 2 | 96626 | Camping 101: Cooking | 6 | 540 est. | 6 |
+| 3 | 106 | Young Lovers | 6 | 135 | 7 |
+| 4 | 111 | Speak with Gramma | 6 | 135 | 7 |
+| 5 | 85 | Lost Necklace | 6 | 135 | 7 |
+| 6 | 62 | The Fargodeep Mine | 7 | 475 | 7 |
+| 7 | 123 | The Collector | 10 | 210 | 7 |
+| 8 | 40 | A Fishy Peril | 10 | 85 | 7 |
+| 9 | 60 | Kobold Candles | 7 | 475 | 7 |
+| 10 | 107 | Note to William | 6 | 135 | 7 |
+| 11 | 99127 | A Net Disaster | 7 | 630 est. | 7 |
+| 12 | 35 | Further Concerns | 10 | 420 | 8 |
+| 13 | 37 | Find the Lost Guards | 10 | 210 | 8 |
+| 14 | 45 | Discover Rolf's Fate | 10 | 420 | 8 |
+| 15 | 83 | Red Linen Goods | 9 | 780 | 8 |
+| 16 | 71 | Report to Thomas | 10 | 210 | 8 |
+| 17 | 39 | Deliver Thomas' Report | 10 | 1050 | 9 |
+| 18 | 112 | Collecting Kelp | 7 | 315 | 9 |
+| 19 | 99128 | Slimy Menace | 7 | 630 est. | 9 |
+| 20 | 99143 | Bottles and Baubles | 7 | 630 est. | 9 |
+| 21 | 91723 | Delicate Instruments | 8 | 700 est. | 9 |
+| 22 | 91740 | Croaky's Head | 11 | 660 est. | 9 |
+| 23 | 91732 | Good Steel | 7 | 630 est. | 10 |
+| 24 | 91733 | Downstream | 10 | 840 est. | 10 |
+| 25 | 52 | Protect the Frontier | 10 | 630 | 10 |
+| 26 | 46 | Bounty on Murlocs | 10 | 840 | 10 |
+| 27 | 91724 | Delicate Instruments | 10 | 840 est. | 10 |
+| 28 | 99129 | A Man About a Murloc | 7 | 475 est. | 10 |
+| 29 | 76 | The Jasperlode Mine | 10 | 840 | 10 |
+| 30 | 147 | Manhunt | 10 | 840 | 10 |
+| 31 | 61 | Shipment to Stormwind | 7 | 790 | 11 |
+| 32 | 239 | Westbrook Garrison Needs Help! | 10 | 210 | 11 |
+| 33 | 86 | Pie for Billy | 6 | 405 | 11 |
+| 34 | 88 | Princess Must Die! | 9 | 780 | 11 |
+| 35 | 114 | The Escape | 7 | 790 | 11 |
+| 36 | 84 | Back to Billy | 6 | 135 | 11 |
+| 37 | 99130 | An Enticing Offer | 7 | 630 est. | 11 |
+| 38 | 176 | WANTED: "Hogger" | 11 | 880 | 11 |
+| 39 | 99131 | Baited for Success | 7 | 475 est. | 11 |
+| 40 | 87 | Goldtooth | 8 | 880 | 11 |
+| 41 | 11 | Riverpaw Gnoll Bounty | 10 | 840 | 11 |
+| 42 | 184 | Furlbrow's Deed | 9 | 590 | 11 |
+| 43 | 109 | Report to Gryan Stoutmantle | 10 | 630 | 11 |
 
 ## Dropped quests
 
@@ -367,6 +368,7 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 9386 | A Light in Dark Places | 60 | Questie blacklist |
 | 9388 | Flickering Flames in Kalimdor | 25 | Questie blacklist |
 | 9389 | Flickering Flames in the Eastern Kingdoms | 25 | Questie blacklist |
+| 60860 | ? | 0 | Questie blacklist |
 | 65603 | The Binding | 20 | class quest (ClassQuestData.lua) |
 | 78090 | A Second Opinion | 30 | class quest (ClassQuestData.lua) |
 | 78091 | Earning Your Salt | 30 | class quest (ClassQuestData.lua) |
@@ -416,7 +418,7 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 84402 | Necromancy 101 | 60 | quest level 60 above the band |
 | 91736 | Applejack Still | 1 | quest level 1 below the band |
 | 91738 | An Apple Treat | 10 | objective item source not in zone |
-| 91751 | Rough Wolf Pelts | 7 | requires a profession |
+| 91751 | Rough Wolf Pelts | 8 | requires a profession |
 | 91753 | An Enchanting Lesson | 7 | requires a profession |
 | 92456 | A Green Sample | 33 | quest level 33 above the band |
 | 92479 | A Scribbled Letter | 1 | class quest (ClassQuestData.lua) |
@@ -456,11 +458,10 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 98896 | Darkspear Islands Clash | 39 | quest level 39 above the band |
 | 6261 | Dungar Longdrink | 10 | prerequisite unavailable |
 | 6285 | Return to Lewis | 10 | prerequisite unavailable |
-| 52 | Protect the Frontier | 10 | level band reached |
 | 59 | Cloth and Leather Armor | 10 | level band reached |
 | 5545 | A Bundle of Trouble | 9 | level band reached |
 | 91725 | Stolen Enchanting Supplies | 10 | level band reached |
-| 91746 | Elmpaw's Head | 10 | level band reached |
+| 91746 | Elmpaw's Head | 12 | level band reached |
 | 91775 | Book Return | 6 | level band reached |
 | 47 | Gold Dust Exchange | 7 | level band reached |
 | 91777 | Rare Books | 7 | level band reached |
@@ -474,57 +475,57 @@ below 0.35 × the median ratio, or when an objective is more than 900 yd from ev
 
 | Quest | Name | Lvl | Value | Bonus | Isolated s | Marginal s | Ratio | Marginal ratio | Sites | Dropped |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 11 | Riverpaw Gnoll Bounty | 10 | 2726 | 0 | 955 | 542 | 2.85 | 5.03 | 1 |  |
-| 35 | Further Concerns | 10 | 420 | 0 | 179 | 30 | 3.63 | 11.60 | 0 |  |
-| 37 | Find the Lost Guards | 10 | 210 | 0 | 52 | 15 | 4.59 | 10.92 | 0 |  |
-| 39 | Deliver Thomas' Report | 10 | 1050 | 0 | 179 | 30 | 4.40 | 8.47 | 0 |  |
-| 40 | A Fishy Peril | 10 | 85 | 0 | 31 | 31 | 3.54 | 9.33 | 0 |  |
-| 45 | Discover Rolf's Fate | 10 | 420 | 0 | 48 | 10 | 4.69 | 10.58 | 0 |  |
-| 46 | Bounty on Murlocs | 10 | 2388 | 0 | 462 | 395 | 5.16 | 6.04 | 1 |  |
-| 47 | Gold Dust Exchange | 7 | 2610 | 0 | 780 | 720 | 3.34 | 3.62 | 1 | level band reached |
-| 52 | Protect the Frontier | 10 | 1728 | 0 | 443 | 353 | 3.89 | 4.89 | 2 | level band reached |
+| 11 | Riverpaw Gnoll Bounty | 10 | 2726 | 0 | 554 | 505 | 4.92 | 5.39 | 1 |  |
+| 35 | Further Concerns | 10 | 420 | 0 | 179 | 30 | 3.66 | 11.93 | 0 |  |
+| 37 | Find the Lost Guards | 10 | 210 | 0 | 52 | 15 | 4.65 | 11.32 | 0 |  |
+| 39 | Deliver Thomas' Report | 10 | 1050 | 0 | 179 | 30 | 4.49 | 8.85 | 0 |  |
+| 40 | A Fishy Peril | 10 | 85 | 0 | 31 | 31 | 3.56 | 9.52 | 0 |  |
+| 45 | Discover Rolf's Fate | 10 | 420 | 0 | 48 | 10 | 4.76 | 11.01 | 0 |  |
+| 46 | Bounty on Murlocs | 10 | 2370 | 0 | 439 | 372 | 5.39 | 6.36 | 1 |  |
+| 47 | Gold Dust Exchange | 7 | 2610 | 0 | 780 | 725 | 3.34 | 3.60 | 1 | level band reached |
+| 52 | Protect the Frontier | 10 | 1728 | 0 | 443 | 348 | 3.89 | 4.96 | 2 |  |
 | 59 | Cloth and Leather Armor | 10 | 210 | 0 | 213 | 45 | 0.99 | 4.65 | 0 | level band reached |
-| 60 | Kobold Candles | 7 | 2455 | 0 | 778 | 677 | 3.86 | 4.33 | 1 |  |
-| 61 | Shipment to Stormwind | 7 | 1744 | 954 | 248 | 245 | 7.02 | 7.12 | 0 |  |
-| 62 | The Fargodeep Mine | 7 | 475 | 0 | 144 | 50 | 3.06 | 6.51 | 1 |  |
-| 71 | Report to Thomas | 10 | 210 | 0 | 74 | 15 | 4.17 | 8.80 | 0 |  |
-| 76 | The Jasperlode Mine | 10 | 840 | 0 | 249 | 50 | 3.03 | 6.22 | 1 |  |
+| 60 | Kobold Candles | 7 | 2455 | 0 | 778 | 677 | 3.90 | 4.37 | 1 |  |
+| 61 | Shipment to Stormwind | 7 | 1792 | 1002 | 248 | 245 | 7.22 | 7.32 | 0 |  |
+| 62 | The Fargodeep Mine | 7 | 475 | 0 | 144 | 50 | 4.30 | 6.91 | 1 |  |
+| 71 | Report to Thomas | 10 | 210 | 0 | 74 | 15 | 4.25 | 9.17 | 0 |  |
+| 76 | The Jasperlode Mine | 10 | 840 | 0 | 249 | 50 | 4.51 | 6.64 | 1 |  |
 | 83 | Red Linen Goods | 9 | 2242 | 0 | 491 | 390 | 4.56 | 5.75 | 1 |  |
 | 84 | Back to Billy | 6 | 135 | 0 | 58 | 20 | 6.21 | 16.48 | 0 |  |
 | 85 | Lost Necklace | 6 | 135 | 0 | 58 | 20 | 3.02 | 6.16 | 0 |  |
 | 86 | Pie for Billy | 6 | 951 | 0 | 391 | 214 | 3.15 | 6.10 | 1 |  |
 | 87 | Goldtooth | 8 | 962 | 0 | 102 | 41 | 9.36 | 23.30 | 1 |  |
 | 88 | Princess Must Die! | 9 | 866 | 0 | 380 | 81 | 2.28 | 10.68 | 1 |  |
-| 106 | Young Lovers | 6 | 135 | 0 | 85 | 27 | 2.86 | 6.86 | 0 |  |
-| 107 | Note to William | 6 | 135 | 0 | 86 | 17 | 3.42 | 7.15 | 0 |  |
-| 109 | Report to Gryan Stoutmantle | 10 | 2231 | 1601 | 221 | 25 | 10.09 | 88.93 | 0 |  |
-| 111 | Speak with Gramma | 6 | 135 | 0 | 38 | 13 | 3.44 | 7.44 | 0 |  |
-| 112 | Collecting Kelp | 7 | 915 | 0 | 292 | 185 | 4.06 | 7.08 | 1 |  |
+| 106 | Young Lovers | 6 | 135 | 0 | 85 | 27 | 2.86 | 7.02 | 0 |  |
+| 107 | Note to William | 6 | 135 | 0 | 86 | 17 | 3.42 | 7.39 | 0 |  |
+| 109 | Report to Gryan Stoutmantle | 10 | 2313 | 1683 | 221 | 25 | 10.46 | 92.18 | 0 |  |
+| 111 | Speak with Gramma | 6 | 135 | 0 | 38 | 13 | 3.44 | 7.66 | 0 |  |
+| 112 | Collecting Kelp | 7 | 915 | 0 | 292 | 177 | 4.06 | 7.36 | 1 |  |
 | 114 | The Escape | 7 | 790 | 0 | 99 | 31 | 7.93 | 25.43 | 0 |  |
-| 123 | The Collector | 10 | 640 | 0 | 242 | 158 | 2.66 | 5.64 | 0 |  |
-| 147 | Manhunt | 10 | 930 | 0 | 348 | 100 | 2.67 | 9.26 | 1 |  |
-| 176 | WANTED: "Hogger" | 11 | 973 | 0 | 222 | 113 | 4.38 | 8.55 | 1 |  |
-| 184 | Furlbrow's Deed | 9 | 1489 | 489 | 293 | 168 | 5.08 | 8.82 | 0 |  |
-| 239 | Westbrook Garrison Needs Help! | 10 | 505 | 295 | 111 | 25 | 3.09 | 5.95 | 0 |  |
+| 123 | The Collector | 10 | 640 | 0 | 242 | 137 | 2.66 | 6.33 | 0 |  |
+| 147 | Manhunt | 10 | 930 | 0 | 348 | 95 | 2.67 | 9.74 | 1 |  |
+| 176 | WANTED: "Hogger" | 11 | 973 | 0 | 222 | 91 | 4.38 | 10.64 | 1 |  |
+| 184 | Furlbrow's Deed | 9 | 1513 | 513 | 293 | 168 | 5.16 | 8.97 | 0 |  |
+| 239 | Westbrook Garrison Needs Help! | 10 | 520 | 310 | 111 | 25 | 4.87 | 6.39 | 0 |  |
 | 5545 | A Bundle of Trouble | 9 | 780 | 0 | 170 | 170 | 4.58 | 4.58 | 1 | level band reached |
-| 91723 | Delicate Instruments | 10 | 1464 | 0 | 272 | 209 | 5.14 | 7.71 | 1 |  |
-| 91724 | Delicate Instruments | 10 | 1356 | 0 | 282 | 147 | 4.80 | 9.19 | 1 |  |
+| 91723 | Delicate Instruments | 8 | 1324 | 0 | 272 | 209 | 4.81 | 7.02 | 1 |  |
+| 91724 | Delicate Instruments | 10 | 1528 | 0 | 322 | 187 | 4.74 | 8.15 | 1 |  |
 | 91725 | Stolen Enchanting Supplies | 10 | 840 | 0 | 313 | 191 | 2.68 | 4.39 | 1 | level band reached |
-| 91732 | Good Steel | 10 | 840 | 0 | 296 | 54 | 2.83 | 15.35 | 1 |  |
+| 91732 | Good Steel | 7 | 630 | 0 | 296 | 54 | 2.12 | 11.52 | 1 |  |
 | 91733 | Downstream | 10 | 840 | 0 | 173 | 146 | 4.83 | 5.75 | 2 |  |
-| 91740 | Croaky's Head | 10 | 675 | 0 | 245 | 131 | 2.75 | 5.14 | 0 |  |
-| 91746 | Elmpaw's Head | 10 | 695 | 0 | 340 | 164 | 2.04 | 4.21 | 0 | level band reached |
+| 91740 | Croaky's Head | 11 | 1125 | 0 | 241 | 131 | 4.65 | 8.57 | 0 |  |
+| 91746 | Elmpaw's Head | 12 | 710 | 0 | 342 | 167 | 2.07 | 4.24 | 0 | level band reached |
 | 91775 | Book Return | 6 | 1710 | 0 | 481 | 404 | 3.19 | 4.03 | 1 | level band reached |
 | 91777 | Rare Books | 7 | 790 | 0 | 325 | 223 | 2.43 | 3.53 | 1 | level band reached |
-| 95065 | Fishin' Time | 12 | 1864 | 954 | 842 | 842 | 2.21 | 2.21 | 2 | level band reached |
+| 95065 | Fishin' Time | 12 | 1912 | 1002 | 842 | 842 | 2.27 | 2.27 | 2 | level band reached |
 | 95998 | The Great Outdoors | 6 | 540 | 0 | 41 | 41 | 12.87 | 13.25 | 1 |  |
 | 96626 | Camping 101: Cooking | 6 | 540 | 0 | 42 | 39 | 12.59 | 13.50 | 1 |  |
-| 99127 | A Net Disaster | 7 | 630 | 0 | 152 | 152 | 4.07 | 4.96 | 1 |  |
-| 99128 | Slimy Menace | 7 | 1830 | 0 | 429 | 349 | 4.05 | 5.27 | 1 |  |
-| 99129 | A Man About a Murloc | 7 | 475 | 0 | 72 | 29 | 3.75 | 5.32 | 0 |  |
-| 99130 | An Enticing Offer | 7 | 1350 | 0 | 474 | 381 | 3.20 | 4.19 | 1 |  |
+| 99127 | A Net Disaster | 7 | 630 | 0 | 152 | 152 | 3.60 | 4.37 | 1 |  |
+| 99128 | Slimy Menace | 7 | 1455 | 0 | 371 | 291 | 3.45 | 4.46 | 1 |  |
+| 99129 | A Man About a Murloc | 7 | 475 | 0 | 72 | 29 | 2.99 | 3.92 | 0 |  |
+| 99130 | An Enticing Offer | 7 | 1350 | 0 | 633 | 539 | 2.46 | 3.01 | 1 |  |
 | 99131 | Baited for Success | 7 | 475 | 0 | 72 | 29 | 6.52 | 16.15 | 0 |  |
-| 99143 | Bottles and Baubles | 7 | 630 | 0 | 215 | 98 | 2.93 | 6.41 | 1 |  |
+| 99143 | Bottles and Baubles | 7 | 630 | 0 | 215 | 80 | 2.93 | 7.82 | 1 |  |
 
 ## Itinerary
 
@@ -535,115 +536,119 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | # | Task | Quest | Name | Map | x, y | Leg yd | Return |
 |---|---|---|---|---|---|---|---|
 | 1 | A | 62 | The Fargodeep Mine | 1429 | 42.1, 65.9 | 0 |  |
-| 2 | A | 95998 | The Great Outdoors | 1429 | 44.9, 63.4 | 113 |  |
-| 3 | A | 99127 | A Net Disaster | 1429 | 47.5, 62.2 | 92 |  |
-| 4 | A | 99143 | Bottles and Baubles | 1429 | 47.6, 62.3 | 6 |  |
-| 5 | O | 99127 | A Net Disaster | 1429 | 48.4, 63.8 | 43 |  |
-| 6 | T | 99127 | A Net Disaster | 1429 | 47.5, 62.2 | 48 |  |
-| 7 | A | 99128 | Slimy Menace | 1429 | 47.5, 62.2 | 0 |  |
-| 8 | O | 99128 | Slimy Menace | 1429 | 52.2, 65.6 | 181 |  |
-| 9 | T | 99128 | Slimy Menace | 1429 | 47.5, 62.2 | 181 |  |
-| 10 | A | 99129 | A Man About a Murloc | 1429 | 47.5, 62.2 | 0 |  |
-| 11 | O | 95998 | The Great Outdoors | 1429 | 44.9, 63.2 | 90 |  |
-| 12 | T | 95998 | The Great Outdoors | 1429 | 44.9, 63.4 | 3 |  |
-| 13 | A | 96626 | Camping 101: Cooking | 1429 | 44.9, 63.4 | 0 |  |
-| 14 | O | 96626 | Camping 101: Cooking | 1429 | 44.4, 66.0 | 63 |  |
-| 15 | A | 60 | Kobold Candles | 1429 | 43.3, 65.7 | 37 |  |
-| 16 | T | 96626 | Camping 101: Cooking | 1429 | 44.4, 66.0 | 21 |  |
-| 17 | T | 99129 | A Man About a Murloc | 1429 | 42.1, 67.3 | 82 |  |
-| 18 | A | 40 | A Fishy Peril | 1429 | 42.1, 67.3 | 0 |  |
-| 19 | A | 99130 | An Enticing Offer | 1429 | 42.1, 67.3 | 0 |  |
-| 20 | T | 40 | A Fishy Peril | 1429 | 42.1, 65.9 | 30 |  |
-| 21 | A | 35 | Further Concerns | 1429 | 42.1, 65.9 | 0 |  |
-| 22 | O | 62 | The Fargodeep Mine | 1429 | 40.6, 82.3 | 381 |  |
-| 23 | O | 60 | Kobold Candles | 1429 | 40.0, 80.7 | 41 |  |
-| 24 | O | 99130 | An Enticing Offer | 1429 | 41.6, 86.6 | 147 |  |
-| 25 | A | 106 | Young Lovers | 1429 | 43.1, 89.6 | 88 |  |
-| 26 | A | 123 | The Collector | 1429 | 26.7, 88.5 | 572 |  |
-| 27 | T | 106 | Young Lovers | 1429 | 29.8, 86.0 | 123 |  |
-| 28 | A | 111 | Speak with Gramma | 1429 | 29.8, 86.0 | 0 |  |
-| 29 | A | 85 | Lost Necklace | 1429 | 34.5, 84.2 | 166 |  |
-| 30 | A | 88 | Princess Must Die! | 1429 | 34.7, 84.5 | 7 |  |
-| 31 | T | 111 | Speak with Gramma | 1429 | 34.9, 83.9 | 17 |  |
-| 32 | A | 107 | Note to William | 1429 | 34.9, 83.9 | 0 |  |
-| 33 | T | 85 | Lost Necklace | 1429 | 43.1, 85.7 | 287 |  |
-| 34 | A | 86 | Pie for Billy | 1429 | 43.1, 85.7 | 0 |  |
-| 35 | T | 99130 | An Enticing Offer | 1429 | 42.1, 67.3 | 428 | near #21 (went 727 yd away) |
-| 36 | A | 99131 | Baited for Success | 1429 | 42.1, 67.3 | 0 | near #21 (went 727 yd away) |
-| 37 | T | 62 | The Fargodeep Mine | 1429 | 42.1, 65.9 | 30 |  |
-| 38 | T | 123 | The Collector | 1429 | 42.1, 65.9 | 0 |  |
-| 39 | A | 76 | The Jasperlode Mine | 1429 | 42.1, 65.9 | 0 |  |
-| 40 | A | 147 | Manhunt | 1429 | 42.1, 65.9 | 0 |  |
-| 41 | T | 60 | Kobold Candles | 1429 | 43.3, 65.7 | 42 |  |
-| 42 | T | 107 | Note to William | 1429 | 43.3, 65.7 | 0 |  |
-| 43 | A | 61 | Shipment to Stormwind | 1429 | 43.3, 65.7 | 0 |  |
-| 44 | A | 112 | Collecting Kelp | 1429 | 43.3, 65.7 | 0 |  |
-| 45 | O | 86 | Pie for Billy | 1429 | 62.1, 78.2 | 714 |  |
-| 46 | T | 35 | Further Concerns | 1429 | 74.0, 72.2 | 433 |  |
-| 47 | A | 37 | Find the Lost Guards | 1429 | 74.0, 72.2 | 0 |  |
-| 48 | A | 83 | Red Linen Goods | 1429 | 79.5, 68.8 | 206 |  |
-| 49 | T | 37 | Find the Lost Guards | 1429 | 72.7, 60.3 | 306 |  |
-| 50 | A | 45 | Discover Rolf's Fate | 1429 | 72.7, 60.3 | 0 |  |
-| 51 | O | 83 | Red Linen Goods | 1429 | 74.3, 52.2 | 196 |  |
-| 52 | T | 45 | Discover Rolf's Fate | 1429 | 79.8, 55.5 | 206 |  |
-| 53 | A | 71 | Report to Thomas | 1429 | 79.8, 55.5 | 0 |  |
-| 54 | A | 91732 | Good Steel | 1429 | 82.5, 63.8 | 213 |  |
-| 55 | T | 83 | Red Linen Goods | 1429 | 79.5, 68.8 | 155 |  |
-| 56 | A | 91733 | Downstream | 1429 | 76.5, 71.9 | 124 |  |
-| 57 | O | 91733 | Downstream | 1429 | 74.3, 76.4 | 129 |  |
-| 58 | O | 91733 | Downstream | 1429 | 76.7, 82.5 | 162 |  |
-| 59 | A | 91740 | Croaky's Head | 1429 | 76.6, 85.2 | 63 |  |
-| 60 | O | 147 | Manhunt | 1429 | 71.1, 80.6 | 216 |  |
-| 61 | O | 88 | Princess Must Die! | 1429 | 69.7, 79.2 | 59 |  |
-| 62 | A | 91723 | Delicate Instruments | 1429 | 65.1, 69.8 | 269 |  |
-| 63 | O | 76 | The Jasperlode Mine | 1429 | 61.9, 53.2 | 401 |  |
-| 64 | O | 91732 | Good Steel | 1429 | 61.3, 51.7 | 38 |  |
-| 65 | O | 91723 | Delicate Instruments | 1429 | 63.1, 56.1 | 117 |  |
-| 66 | T | 91723 | Delicate Instruments | 1429 | 65.1, 69.8 | 326 |  |
-| 67 | A | 91724 | Delicate Instruments | 1429 | 65.1, 69.8 | 0 |  |
-| 68 | O | 91724 | Delicate Instruments | 1429 | 73.6, 52.2 | 503 | near #51 (went 770 yd away) |
-| 69 | T | 91732 | Good Steel | 1429 | 82.5, 63.8 | 410 | near #54 (went 785 yd away) |
-| 70 | T | 71 | Report to Thomas | 1429 | 74.0, 72.2 | 352 | near #57 (went 645 yd away) |
-| 71 | A | 39 | Deliver Thomas' Report | 1429 | 74.0, 72.2 | 0 | near #57 (went 645 yd away) |
-| 72 | T | 91724 | Delicate Instruments | 1429 | 65.1, 69.8 | 312 | near #67 (went 618 yd away) |
-| 73 | O | 99143 | Bottles and Baubles | 1429 | 56.2, 66.9 | 317 | near #8 (went 1139 yd away) |
-| 74 | O | 112 | Collecting Kelp | 1429 | 55.2, 66.1 | 36 | near #8 (went 1118 yd away) |
-| 75 | T | 112 | Collecting Kelp | 1429 | 43.3, 65.7 | 413 | near #44 (went 1359 yd away) |
-| 76 | A | 114 | The Escape | 1429 | 43.3, 65.7 | 0 | near #44 (went 1359 yd away) |
-| 77 | T | 39 | Deliver Thomas' Report | 1429 | 42.1, 65.9 | 42 |  |
-| 78 | T | 76 | The Jasperlode Mine | 1429 | 42.1, 65.9 | 0 |  |
-| 79 | T | 147 | Manhunt | 1429 | 42.1, 65.9 | 0 |  |
-| 80 | A | 109 | Report to Gryan Stoutmantle | 1429 | 42.1, 65.9 | 0 |  |
-| 81 | A | 239 | Westbrook Garrison Needs Help! | 1429 | 42.1, 65.9 | 0 |  |
-| 82 | F |  | flight path | 1453 | 71.3, 72.2 | 754 |  |
-| 83 | T | 61 | Shipment to Stormwind | 1453 | 63.2, 74.4 | 143 |  |
-| 84 | T | 239 | Westbrook Garrison Needs Help! | 1429 | 24.2, 74.5 | 807 |  |
-| 85 | A | 11 | Riverpaw Gnoll Bounty | 1429 | 24.2, 74.5 | 0 |  |
-| 86 | A | 176 | WANTED: "Hogger" | 1429 | 24.6, 74.7 | 12 |  |
-| 87 | O | 176 | WANTED: "Hogger" | 1429 | 25.0, 92.9 | 421 | near #26 (went 2104 yd away) |
-| 88 | T | 86 | Pie for Billy | 1429 | 34.5, 84.2 | 384 | near #32 (went 1731 yd away) |
-| 89 | A | 84 | Back to Billy | 1429 | 34.5, 84.2 | 0 | near #32 (went 1731 yd away) |
-| 90 | T | 88 | Princess Must Die! | 1429 | 34.7, 84.5 | 7 |  |
-| 91 | T | 176 | WANTED: "Hogger" | 1429 | 42.1, 65.9 | 501 | near #81 (went 861 yd away) |
-| 92 | T | 99131 | Baited for Success | 1429 | 47.5, 62.2 | 204 | near #16 (went 1215 yd away) |
-| 93 | T | 99143 | Bottles and Baubles | 1429 | 47.6, 62.3 | 6 | near #16 (went 1210 yd away) |
-| 94 | O | 11 | Riverpaw Gnoll Bounty | 1429 | 67.8, 41.2 | 854 |  |
-| 95 | A | 46 | Bounty on Murlocs | 1429 | 74.0, 72.2 | 748 | near #71 (went 1820 yd away) |
-| 96 | T | 91733 | Downstream | 1429 | 76.5, 71.9 | 89 | near #71 (went 1899 yd away) |
-| 97 | T | 91740 | Croaky's Head | 1429 | 84.8, 79.3 | 332 |  |
-| 98 | O | 46 | Bounty on Murlocs | 1429 | 76.7, 84.8 | 308 | near #59 (went 2039 yd away) |
-| 99 | T | 46 | Bounty on Murlocs | 1429 | 74.0, 72.2 | 306 |  |
-| 100 | A | 184 | Furlbrow's Deed | 1429 | 48.8, 84.2 | 918 |  |
-| 101 | T | 114 | The Escape | 1429 | 43.1, 89.6 | 231 | near #34 (went 1497 yd away) |
-| 102 | T | 84 | Back to Billy | 1429 | 43.1, 85.7 | 90 | near #34 (went 1456 yd away) |
+| 2 | A | 60 | Kobold Candles | 1429 | 43.3, 65.7 | 42 |  |
+| 3 | A | 95998 | The Great Outdoors | 1429 | 44.9, 63.4 | 68 |  |
+| 4 | O | 95998 | The Great Outdoors | 1429 | 44.9, 63.2 | 3 |  |
+| 5 | T | 95998 | The Great Outdoors | 1429 | 44.9, 63.4 | 3 |  |
+| 6 | A | 96626 | Camping 101: Cooking | 1429 | 44.9, 63.4 | 0 |  |
+| 7 | O | 96626 | Camping 101: Cooking | 1429 | 44.4, 66.0 | 63 |  |
+| 8 | T | 96626 | Camping 101: Cooking | 1429 | 44.4, 66.0 | 0 |  |
+| 9 | O | 62 | The Fargodeep Mine | 1429 | 40.6, 82.3 | 399 |  |
+| 10 | O | 60 | Kobold Candles | 1429 | 40.0, 80.7 | 41 |  |
+| 11 | A | 106 | Young Lovers | 1429 | 43.1, 89.6 | 233 |  |
+| 12 | A | 123 | The Collector | 1429 | 26.7, 88.5 | 572 |  |
+| 13 | T | 106 | Young Lovers | 1429 | 29.8, 86.0 | 123 |  |
+| 14 | A | 111 | Speak with Gramma | 1429 | 29.8, 86.0 | 0 |  |
+| 15 | A | 85 | Lost Necklace | 1429 | 34.5, 84.2 | 166 |  |
+| 16 | A | 88 | Princess Must Die! | 1429 | 34.7, 84.5 | 7 |  |
+| 17 | T | 111 | Speak with Gramma | 1429 | 34.9, 83.9 | 17 |  |
+| 18 | A | 107 | Note to William | 1429 | 34.9, 83.9 | 0 |  |
+| 19 | T | 85 | Lost Necklace | 1429 | 43.1, 85.7 | 287 |  |
+| 20 | A | 86 | Pie for Billy | 1429 | 43.1, 85.7 | 0 |  |
+| 21 | A | 40 | A Fishy Peril | 1429 | 42.1, 67.3 | 428 | near #8 (went 727 yd away) |
+| 22 | T | 62 | The Fargodeep Mine | 1429 | 42.1, 65.9 | 30 | near #8 (went 747 yd away) |
+| 23 | T | 123 | The Collector | 1429 | 42.1, 65.9 | 0 |  |
+| 24 | T | 40 | A Fishy Peril | 1429 | 42.1, 65.9 | 0 |  |
+| 25 | A | 35 | Further Concerns | 1429 | 42.1, 65.9 | 0 |  |
+| 26 | T | 60 | Kobold Candles | 1429 | 43.3, 65.7 | 42 |  |
+| 27 | T | 107 | Note to William | 1429 | 43.3, 65.7 | 0 |  |
+| 28 | A | 61 | Shipment to Stormwind | 1429 | 43.3, 65.7 | 0 |  |
+| 29 | A | 112 | Collecting Kelp | 1429 | 43.3, 65.7 | 0 |  |
+| 30 | A | 76 | The Jasperlode Mine | 1429 | 42.1, 65.9 | 42 |  |
+| 31 | A | 147 | Manhunt | 1429 | 42.1, 65.9 | 0 |  |
+| 32 | A | 99127 | A Net Disaster | 1429 | 47.5, 62.2 | 204 | near #8 (went 943 yd away) |
+| 33 | A | 99143 | Bottles and Baubles | 1429 | 47.6, 62.3 | 6 | near #8 (went 945 yd away) |
+| 34 | O | 99127 | A Net Disaster | 1429 | 48.4, 63.8 | 43 |  |
+| 35 | T | 99127 | A Net Disaster | 1429 | 47.5, 62.2 | 48 |  |
+| 36 | A | 99128 | Slimy Menace | 1429 | 47.5, 62.2 | 0 |  |
+| 37 | O | 99143 | Bottles and Baubles | 1429 | 56.2, 66.9 | 321 |  |
+| 38 | O | 112 | Collecting Kelp | 1429 | 55.2, 66.1 | 36 |  |
+| 39 | O | 99128 | Slimy Menace | 1429 | 55.4, 66.6 | 11 |  |
+| 40 | A | 91723 | Delicate Instruments | 1429 | 65.1, 69.8 | 346 |  |
+| 41 | T | 35 | Further Concerns | 1429 | 74.0, 72.2 | 312 |  |
+| 42 | A | 37 | Find the Lost Guards | 1429 | 74.0, 72.2 | 0 |  |
+| 43 | A | 52 | Protect the Frontier | 1429 | 74.0, 72.2 | 0 |  |
+| 44 | A | 83 | Red Linen Goods | 1429 | 79.5, 68.8 | 206 |  |
+| 45 | T | 37 | Find the Lost Guards | 1429 | 72.7, 60.3 | 306 |  |
+| 46 | A | 45 | Discover Rolf's Fate | 1429 | 72.7, 60.3 | 0 |  |
+| 47 | O | 83 | Red Linen Goods | 1429 | 74.3, 52.2 | 196 |  |
+| 48 | T | 45 | Discover Rolf's Fate | 1429 | 79.8, 55.5 | 206 |  |
+| 49 | A | 71 | Report to Thomas | 1429 | 79.8, 55.5 | 0 |  |
+| 50 | A | 91732 | Good Steel | 1429 | 82.5, 63.8 | 213 |  |
+| 51 | T | 83 | Red Linen Goods | 1429 | 79.5, 68.8 | 155 |  |
+| 52 | A | 91733 | Downstream | 1429 | 76.5, 71.9 | 124 |  |
+| 53 | T | 71 | Report to Thomas | 1429 | 74.0, 72.2 | 89 |  |
+| 54 | A | 39 | Deliver Thomas' Report | 1429 | 74.0, 72.2 | 0 |  |
+| 55 | O | 88 | Princess Must Die! | 1429 | 69.7, 79.2 | 221 |  |
+| 56 | O | 86 | Pie for Billy | 1429 | 62.1, 78.2 | 262 |  |
+| 57 | A | 184 | Furlbrow's Deed | 1429 | 48.8, 84.2 | 484 |  |
+| 58 | T | 39 | Deliver Thomas' Report | 1429 | 42.1, 65.9 | 482 | near #31 (went 1401 yd away) |
+| 59 | T | 112 | Collecting Kelp | 1429 | 43.3, 65.7 | 42 | near #31 (went 1359 yd away) |
+| 60 | A | 114 | The Escape | 1429 | 43.3, 65.7 | 0 |  |
+| 61 | A | 109 | Report to Gryan Stoutmantle | 1429 | 42.1, 65.9 | 42 |  |
+| 62 | T | 99128 | Slimy Menace | 1429 | 47.5, 62.2 | 204 | near #36 (went 1215 yd away) |
+| 63 | A | 99129 | A Man About a Murloc | 1429 | 47.5, 62.2 | 0 | near #36 (went 1215 yd away) |
+| 64 | T | 99143 | Bottles and Baubles | 1429 | 47.6, 62.3 | 6 |  |
+| 65 | O | 91732 | Good Steel | 1429 | 61.3, 51.7 | 535 |  |
+| 66 | O | 76 | The Jasperlode Mine | 1429 | 61.9, 53.2 | 38 |  |
+| 67 | O | 91723 | Delicate Instruments | 1429 | 63.1, 56.1 | 78 |  |
+| 68 | T | 91723 | Delicate Instruments | 1429 | 65.1, 69.8 | 326 | near #40 (went 803 yd away) |
+| 69 | A | 91724 | Delicate Instruments | 1429 | 65.1, 69.8 | 0 | near #40 (went 803 yd away) |
+| 70 | A | 46 | Bounty on Murlocs | 1429 | 74.0, 72.2 | 312 | near #54 (went 1115 yd away) |
+| 71 | O | 91733 | Downstream | 1429 | 74.3, 76.4 | 98 | near #54 (went 1143 yd away) |
+| 72 | O | 147 | Manhunt | 1429 | 71.1, 80.6 | 148 | near #55 (went 1061 yd away) |
+| 73 | O | 91733 | Downstream | 1429 | 76.7, 82.5 | 199 |  |
+| 74 | A | 91740 | Croaky's Head | 1429 | 76.4, 84.3 | 43 |  |
+| 75 | O | 46 | Bounty on Murlocs | 1429 | 76.6, 84.4 | 4 |  |
+| 76 | O | 52 | Protect the Frontier | 1429 | 80.4, 80.3 | 164 |  |
+| 77 | T | 91740 | Croaky's Head | 1429 | 84.8, 79.3 | 151 |  |
+| 78 | O | 52 | Protect the Frontier | 1429 | 87.4, 66.3 | 314 |  |
+| 79 | T | 91732 | Good Steel | 1429 | 82.5, 63.8 | 179 | near #50 (went 1401 yd away) |
+| 80 | O | 91724 | Delicate Instruments | 1429 | 73.6, 52.2 | 410 | near #47 (went 1137 yd away) |
+| 81 | T | 91733 | Downstream | 1429 | 76.5, 71.9 | 468 |  |
+| 82 | T | 52 | Protect the Frontier | 1429 | 74.0, 72.2 | 89 |  |
+| 83 | T | 46 | Bounty on Murlocs | 1429 | 74.0, 72.2 | 0 |  |
+| 84 | T | 91724 | Delicate Instruments | 1429 | 65.1, 69.8 | 312 | near #69 (went 776 yd away) |
+| 85 | T | 99129 | A Man About a Murloc | 1429 | 42.1, 67.3 | 799 | near #61 (went 1569 yd away) |
+| 86 | A | 99130 | An Enticing Offer | 1429 | 42.1, 67.3 | 0 | near #61 (went 1569 yd away) |
+| 87 | T | 76 | The Jasperlode Mine | 1429 | 42.1, 65.9 | 30 |  |
+| 88 | A | 239 | Westbrook Garrison Needs Help! | 1429 | 42.1, 65.9 | 0 |  |
+| 89 | T | 147 | Manhunt | 1429 | 42.1, 65.9 | 0 |  |
+| 90 | F |  | flight path | 1453 | 71.3, 72.2 | 754 |  |
+| 91 | T | 61 | Shipment to Stormwind | 1453 | 63.2, 74.4 | 143 |  |
+| 92 | T | 239 | Westbrook Garrison Needs Help! | 1429 | 24.2, 74.5 | 807 |  |
+| 93 | A | 11 | Riverpaw Gnoll Bounty | 1429 | 24.2, 74.5 | 0 |  |
+| 94 | A | 176 | WANTED: "Hogger" | 1429 | 24.6, 74.7 | 12 |  |
+| 95 | O | 11 | Riverpaw Gnoll Bounty | 1429 | 26.5, 86.7 | 284 | near #14 (went 2165 yd away) |
+| 96 | O | 176 | WANTED: "Hogger" | 1429 | 25.0, 92.9 | 153 | near #12 (went 2249 yd away) |
+| 97 | T | 86 | Pie for Billy | 1429 | 34.5, 84.2 | 384 | near #18 (went 1881 yd away) |
+| 98 | A | 84 | Back to Billy | 1429 | 34.5, 84.2 | 0 | near #18 (went 1881 yd away) |
+| 99 | T | 88 | Princess Must Die! | 1429 | 34.7, 84.5 | 7 |  |
+| 100 | O | 99130 | An Enticing Offer | 1429 | 39.7, 88.7 | 199 | near #20 (went 1734 yd away) |
+| 101 | T | 114 | The Escape | 1429 | 43.1, 89.6 | 122 | near #20 (went 1626 yd away) |
+| 102 | T | 84 | Back to Billy | 1429 | 43.1, 85.7 | 90 |  |
 | 103 | A | 87 | Goldtooth | 1429 | 43.1, 85.7 | 0 |  |
-| 104 | O | 87 | Goldtooth | 1429 | 41.7, 78.0 | 184 | near #23 (went 1494 yd away) |
-| 105 | T | 87 | Goldtooth | 1429 | 34.5, 84.2 | 289 | near #90 (went 1748 yd away) |
-| 106 | T | 11 | Riverpaw Gnoll Bounty | 1429 | 24.2, 74.5 | 422 | near #86 (went 2103 yd away) |
-| 107 | T | 184 | Furlbrow's Deed | 1436 | 60.0, 19.4 | 293 |  |
-| 108 | T | 109 | Report to Gryan Stoutmantle | 1436 | 56.3, 47.5 | 669 |  |
+| 104 | O | 87 | Goldtooth | 1429 | 41.7, 78.0 | 184 | near #10 (went 1607 yd away) |
+| 105 | T | 99130 | An Enticing Offer | 1429 | 42.1, 67.3 | 249 | near #89 (went 844 yd away) |
+| 106 | A | 99131 | Baited for Success | 1429 | 42.1, 67.3 | 0 | near #89 (went 844 yd away) |
+| 107 | T | 176 | WANTED: "Hogger" | 1429 | 42.1, 65.9 | 30 |  |
+| 108 | T | 99131 | Baited for Success | 1429 | 47.5, 62.2 | 204 | near #64 (went 1388 yd away) |
+| 109 | T | 87 | Goldtooth | 1429 | 34.5, 84.2 | 680 | near #99 (went 680 yd away) |
+| 110 | T | 11 | Riverpaw Gnoll Bounty | 1429 | 24.2, 74.5 | 422 | near #94 (went 854 yd away) |
+| 111 | T | 184 | Furlbrow's Deed | 1436 | 60.0, 19.4 | 293 |  |
+| 112 | T | 109 | Report to Gryan Stoutmantle | 1436 | 56.3, 47.5 | 669 |  |
 
-Walking between tasks: 19048 yd (~45 min at 7 yd/s).
+Walking between tasks: 17555 yd (~42 min at 7 yd/s).
 
 ## Qualité
 
@@ -663,9 +668,9 @@ Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint la
 
 ## Logistics
 
-- step 16: `sethearth 1429 43.77 65.8`
-- step 83: `fp 1453 71.29 72.23`
-- step 109: `fp 1436 56.55 52.64`
+- step 3: `sethearth 1429 43.77 65.8`
+- step 91: `fp 1453 71.29 72.23`
+- step 113: `fp 1436 56.55 52.64`
 
 ## Warnings
 

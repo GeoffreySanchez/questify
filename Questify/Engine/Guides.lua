@@ -6,6 +6,7 @@ Q.Guides = Guides
 
 local registry = {}
 local sorted
+local serial = 0   -- augmente à chaque chapitre enregistré (caches qui dépendent du registre)
 
 local VALID = {
   accept = "quest", complete = "quest", turnin = "quest",
@@ -32,9 +33,35 @@ local function stringList(v)
   return out
 end
 
+-- Étapes propres à une classe : classes = { "WARLOCK", "MAGE" } (classFile du jeu, ceux de
+-- Q.CLASS_BITS ; un nom seul est accepté). Absent : toutes les classes. Une étape dont `classes` ne
+-- contient pas la classe du joueur n'existe pas pour lui (Engine/Progress.lua : ni entrée, ni étape
+-- courante, ni progression, ni journal). À ne pas confondre avec `class` (quêtes générales réservées à
+-- certaines classes, par exemple « toutes sauf Démoniste ») : l'étape reste dans la liste, passée
+-- (raison « class ») pour les autres classes.
+-- -> liste copiée, nil (absent) ou false, raison.
+local function classList(v)
+  if v == nil then return nil end
+  local list = stringList(v)
+  if list == false then return false, "classes must be a list of class names" end
+  if #list == 0 then return false, "classes must name at least one class" end
+  local known = Q.CLASS_BITS or {}
+  for _, c in ipairs(list) do
+    if not known[c] then return false, "unknown class '" .. c .. "' in classes" end
+  end
+  return list
+end
+
+-- StepForClass(step, classFile) -> vrai si l'étape existe pour cette classe (champ `classes` absent ou
+-- qui la contient). Classe inconnue : seules les étapes sans `classes`.
+function Guides.StepForClass(step, classFile)
+  if type(step) ~= "table" or step.classes == nil then return true end
+  return classFile ~= nil and Q.Util.Contains(step.classes, classFile)
+end
+
 -- Normalize(rawStep) -> step | nil, erreur
 -- Forme brute : { "accept", 179 }, { "goto", 1426, 22.6, 71.4 }, { "level", 6 }, { "note", "txt" },
--- { "hearth", 1426 }, { "fly", 1453 }, plus les champs facultatifs (obj, note, race, class,
+-- { "hearth", 1426 }, { "fly", 1453 }, plus les champs facultatifs (obj, note, race, class, classes,
 -- optional, dungeon, at = {mapId, x, y}, xp, node). Une étape déjà normalisée est recopiée.
 function Guides:Normalize(raw)
   if type(raw) ~= "table" then return nil, "step is not a table" end
@@ -92,6 +119,9 @@ function Guides:Normalize(raw)
   local class = stringList(raw.class)
   if class == false then return nil, action .. ": class must be a list of strings" end
   step.class = class
+  local classes, classesErr = classList(raw.classes)
+  if classes == false then return nil, action .. ": " .. classesErr end
+  step.classes = classes
   if raw.optional then step.optional = true end
   if raw.dungeon ~= nil then
     if type(raw.dungeon) ~= "string" then return nil, action .. ": dungeon must be a string" end
@@ -215,7 +245,13 @@ function Q:RegisterGuide(def)
   if registry[id] then Q:Debug("guide replaced", id) end
   registry[id] = guide
   sorted = nil
+  serial = serial + 1
   return true
+end
+
+-- Serial() -> nombre qui change à chaque chapitre enregistré ou remplacé.
+function Guides:Serial()
+  return serial
 end
 
 function Guides:Get(id)

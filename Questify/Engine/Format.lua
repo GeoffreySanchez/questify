@@ -157,9 +157,28 @@ local function mainText(entry, step)
   return tostring(a)
 end
 
+-- Icône de la classe du joueur (cercles des classes du jeu, CLASS_ICON_TCOORDS) devant le texte d'une
+-- étape réservée à certaines classes (champ classes) qui le concerne ; nil sans la table du jeu.
+local CLASS_CIRCLES = "Interface\\TargetingFrame\\UI-Classes-Circles"
+
+local function classIcon(step)
+  if type(step.classes) ~= "table" then return nil end
+  local cf = Q.Player and Q.Player.classFile
+  if not (cf and Q.Util.Contains(step.classes, cf)) then return nil end
+  local tc = type(CLASS_ICON_TCOORDS) == "table" and CLASS_ICON_TCOORDS[cf]
+  if type(tc) ~= "table" then return nil end
+  local px = {}
+  for i = 1, 4 do
+    local v = tonumber(tc[i])
+    if not v then return nil end
+    px[i] = math.floor(v * 256 + 0.5)
+  end
+  return fmt("|T%s:0:0:0:0:256:256:%d:%d:%d:%d|t ", CLASS_CIRCLES, px[1], px[2], px[3], px[4])
+end
+
 -- Q.Format:StepParts(entry) -> { head = texte, objectives = { { text, index } }, tail = { lignes } }
 -- Les lignes d'objectifs sont sans retrait ; le suivi les met en page et place sous chacune les
--- monstres à tuer.
+-- monstres à tuer. Étape de classe : l'icône de la classe précède le texte (pas le titre court).
 function Format:StepParts(entry)
   local parts = { head = "", objectives = {}, tail = {} }
   local step = stepOf(entry)
@@ -170,7 +189,8 @@ function Format:StepParts(entry)
     Q:ReportError(head)
     head, objectives = tostring(step.action), nil
   end
-  parts.head = head
+  local icon = classIcon(step)
+  parts.head = icon and (icon .. tostring(head)) or head
   parts.objectives = type(objectives) == "table" and objectives or {}
   if step.dungeon then
     parts.tail[#parts.tail + 1] = NOTE_COLOR .. fmt(Q.L.DUNGEON_TAG, step.dungeon) .. "|r"

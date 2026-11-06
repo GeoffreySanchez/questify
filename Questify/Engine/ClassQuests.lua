@@ -48,12 +48,30 @@ end
 
 local function isTurnedIn(id) return Q.Progress:IsTurnedIn(id) end
 
+-- Chaîne « dans la route » : toutes ses quêtes pas encore rendues sont rendues par une étape de la
+-- route du joueur (chapitre courant ou suivants, pour sa classe : Q.Progress:RouteTurnins). Le
+-- générateur tisse les quêtes de classe dans les chapitres (étapes `classes`) : pas d'alerte, pas
+-- d'ajout à la route (les étapes insérées « cq: » feraient doublon).
+local function inRoute(chain, routeTurnins)
+  if not routeTurnins then return false end
+  local remaining = 0
+  for _, id in ipairs(chain.quests) do
+    if not Q.Progress:IsTurnedIn(id) then
+      if not routeTurnins[id] then return false end
+      remaining = remaining + 1
+    end
+  end
+  return remaining > 0
+end
+
 -- État d'une chaîne, dans cet ordre de priorité :
--- done, inprogress, added, ignored, available, upcoming.
-local function chainState(chain, cq)
+-- done, inroute, inprogress, added, ignored, available, upcoming.
+-- routeTurnins : Q.Progress:RouteTurnins(), calculé une fois par liste (nil : pas d'état inroute).
+local function chainState(chain, cq, routeTurnins)
   local quests = chain.quests
   local last = quests[#quests]
   if last and Q.Progress:IsTurnedIn(last) then return "done" end
+  if inRoute(chain, routeTurnins) then return "inroute" end
   for _, id in ipairs(quests) do
     if Q.Progress:InLog(id) then return "inprogress" end
   end
@@ -67,6 +85,13 @@ local function chainState(chain, cq)
     return "available"
   end
   return "upcoming"
+end
+
+local function routeTurnins()
+  local ok, set = pcall(Q.Progress.RouteTurnins, Q.Progress)
+  if ok then return set end
+  Q:ReportError(set)
+  return nil
 end
 
 -- IsLate(chain, state) : une chaîne est en retard quand elle est disponible (ni faite, ni ajoutée,
@@ -123,9 +148,9 @@ end
 
 -- Chaînes qui s'excluent (champ exclusive des données : la même étape chez plusieurs maîtres, ou
 -- les branches du Guerrier 10 à Hurlevent, Forgefer et Darnassus) : une seule reste. D'abord celle
--- que le joueur a déjà prise (en cours, ajoutée, faite, ignorée), puis la disponible avant celle à
--- venir, puis celle dont le donneur est le plus proche, enfin l'ordre des données.
-local STATE_RANK = { inprogress = 1, added = 2, done = 3, ignored = 4, available = 5, upcoming = 6 }
+-- que le joueur a déjà prise (en cours, dans sa route, ajoutée, faite, ignorée), puis la disponible
+-- avant celle à venir, puis celle dont le donneur est le plus proche, enfin l'ordre des données.
+local STATE_RANK = { inprogress = 1, inroute = 2, added = 3, done = 4, ignored = 5, available = 6, upcoming = 7 }
 
 local function onePerExclusiveGroup(rows)
   local cand = {}
@@ -171,13 +196,14 @@ end
 -- API
 ---------------------------------------------------------------------------
 -- List() -> { { chain, state }, ... } dans l'ordre des données, une seule chaîne par groupe de
--- chaînes exclusives.
+-- chaînes exclusives. state : done, inroute, inprogress, added, ignored, available ou upcoming.
 function ClassQuests:List()
   local out = {}
   local cq = Q.Progress:IsEnabled() and saved()
   if not cq then return out end
+  local turnins = routeTurnins()
   for _, chain in ipairs(chainsForPlayer()) do
-    out[#out + 1] = { chain = chain, state = chainState(chain, cq) }
+    out[#out + 1] = { chain = chain, state = chainState(chain, cq, turnins) }
   end
   return onePerExclusiveGroup(out)
 end
@@ -198,12 +224,14 @@ function ClassQuests:MarkSeen(key)
   if cq and type(key) == "string" then cq.seen[key] = true end
 end
 
--- Add(key) : insère « prendre, faire, rendre » pour chaque quête restante, avant la route.
+-- Add(key) : insère « prendre, faire, rendre » pour chaque quête restante, avant la route. Refusé
+-- (faux) pour une chaîne déjà dans la route : ses étapes y sont déjà.
 function ClassQuests:Add(key)
   local cq = saved()
   if not cq or not Q.Progress:IsEnabled() then return false end
   local chain = findChain(key)
   if not chain then return false end
+  if inRoute(chain, routeTurnins()) then return false end
   local steps = {}
   for _, id in ipairs(chain.quests) do
     if not Q.Progress:IsTurnedIn(id) then
@@ -284,12 +312,30 @@ local function finishedTags()
   return out
 end
 
+-- Chaînes ajoutées à la main (étapes insérées « cq: ») qui sont aussi dans la route : les étapes du
+-- chapitre suffisent, la copie insérée est retirée (pas de double insertion), cq.added effacé.
+local function addedInRoute(cq)
+  local out = {}
+  if not next(cq.added) then return out end
+  local turnins = routeTurnins()
+  for _, chain in ipairs(chainsForPlayer()) do
+    if cq.added[chain.key] and inRoute(chain, turnins) then out[#out + 1] = TAG_PREFIX .. chain.key end
+  end
+  return out
+end
+
 Q:On("PROGRESS_UPDATED", function()
   if not Q.Progress:IsEnabled() then return end
   local cq = saved()
-  for _, tag in ipairs(finishedTags()) do
-    Q.Progress:RemoveInserted(tag)
-    cq.added[tag:sub(#TAG_PREFIX + 1)] = nil
-    Q:Fire("CLASSQUESTS_CHANGED")
+  local tags = finishedTags()
+  for _, tag in ipairs(addedInRoute(cq)) do tags[#tags + 1] = tag end
+  local removed = {}
+  for _, tag in ipairs(tags) do
+    if not removed[tag] then
+      removed[tag] = true
+      Q.Progress:RemoveInserted(tag)
+      cq.added[tag:sub(#TAG_PREFIX + 1)] = nil
+      Q:Fire("CLASSQUESTS_CHANGED")
+    end
   end
 end)

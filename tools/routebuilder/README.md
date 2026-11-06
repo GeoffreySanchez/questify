@@ -199,6 +199,58 @@ their simulated XP, dropped quests with the reason, a candidate table (value, bo
 marginal time and ratio), the logistic steps and the data warnings (new Forever quests without a
 finisher spawn, objectives without a position, missing flight masters).
 
+## Guide format
+
+One `Q:RegisterGuide({ ... })` call per file. Chapter fields: `id`, `title`, `faction`, `races`,
+`minLevel`, `maxLevel`, `next`, `nextByRace`, `choices`, `sim` (see below), `steps`. One step per line:
+
+| Steps | Form |
+|---|---|
+| `accept`, `complete`, `turnin` | `{ "accept", questId }` |
+| `goto`, `fp`, `sethearth`, `boat` | `{ "goto", uiMapId, x, y }` (x, y in 0-100) |
+| `hearth`, `fly` | `{ "hearth", uiMapId }`, `{ "fly", uiMapId, node = TaxiNodes.ID }` |
+| `level` | `{ "level", n }` |
+| `note` | `{ "note", "text" }` |
+
+Optional step fields: `obj` (objective index), `note`, `at = { uiMapId, x, y }`, `xp`, `node`,
+`optional`, `dungeon`, `race = { raceKey, ... }`, `class = { classFile, ... }`,
+`classes = { classFile, ... }`. `Questify/Engine/Guides.lua` (`Guides:Normalize`) is the reference: a
+guide with an invalid step is refused in game with one `Invalid guide <id>: step <n>: ...` line.
+
+### Class steps (`classes`)
+
+```lua
+    { "accept", 1599, classes = { "WARLOCK" } }, -- Beginnings
+    { "complete", 1599, at = { 1426, 28.6, 66.1 }, classes = { "WARLOCK" } },
+    { "turnin", 1599, xp = 355, classes = { "WARLOCK" } },
+```
+
+- `classes` lists game `classFile` names: `WARRIOR`, `PALADIN`, `HUNTER`, `ROGUE`, `PRIEST`, `SHAMAN`,
+  `MAGE`, `WARLOCK`, `DRUID` (upper case). Absent: every class. The list must not be empty; an unknown
+  name refuses the guide in game (`step 3: accept: unknown class 'WARLOK' in classes`) and fails
+  `validate_guides.lua`.
+- For a character of another class the step does not exist: not listed, never current, not counted
+  in the tracker progress or the chapter end, not in the journal, not counted on the route choice
+  cards, not a route quest for the automatic accept and turn-in. Step keys keep the index in the file
+  (`g:<guideId>:<index>`): saved step states, telemetry and its export name the same step for every
+  class.
+- `class` is different: the step stays listed and is skipped (reason "class") for the other classes.
+  It is meant for general quests restricted to some classes ("all but Warlock"). Use `classes` for
+  the class quests woven into the route.
+- Weave a whole chain: `accept`, `complete` and `turnin` steps of every quest, all with the same
+  `classes`. In a chapter shared by several races, add `race` when the quest is not open to all of
+  them.
+- A chain of `ClassQuestData.lua` whose remaining quests (not turned in yet) all have a `turnin` step
+  for the character, in the current chapter (not skipped or ticked by the player) or in a following
+  chapter of the route (successor chosen by the player, else the default one), is "In the route": no
+  alert, no "Add to route" button, and an older manual add (`cq:` inserted steps) is removed. Only
+  `turnin` steps count: a chain whose turn-in lies outside the route is still offered.
+- `validate_guides.lua` checks the field (same rule as in game) and, on quest steps, that each class
+  is allowed by the quest's class mask (`quest 1598 not available to class MAGE`). Each race path is
+  replayed once without the class steps, then once per class named on the path with its own steps
+  (the 20-quest log is counted per class); an issue seen only with the steps of some classes ends
+  with `(race path: Gnome, class: WARLOCK)`.
+
 ## Review checklist (Tasks 14-16)
 
 1. Run `build.lua` for the faction, then `validate_guides.lua` (must exit 0).

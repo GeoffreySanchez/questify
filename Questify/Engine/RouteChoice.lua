@@ -38,11 +38,13 @@ function RouteChoice:PlayerLevel()
   return level
 end
 
--- Quêtes rendues dans le chapitre (étapes turnin) et leur XP (champ xp des étapes, simulé).
+-- Quêtes rendues dans le chapitre (étapes turnin) et leur XP (champ xp des étapes, simulé). Les étapes
+-- réservées à d'autres classes (champ classes) ne comptent pas.
 local function questsAndXP(guide)
   local quests, xp = 0, 0
+  local classFile = Q.Player and Q.Player.classFile
   for _, s in ipairs(guide.steps or {}) do
-    if s.action == "turnin" then
+    if s.action == "turnin" and Q.Guides.StepForClass(s, classFile) then
       quests = quests + 1
       xp = xp + (num(s.xp) or 0)
     end
@@ -224,9 +226,9 @@ local function startsIn(questId, maps)
   return any(q.starters.npcs, Q.QDB.Npc) or any(q.starters.objects, Q.QDB.Object)
 end
 
--- Quête de classe (Q.ClassQuests:List) pas faite, pas commencée, pas ignorée, de la tranche du
--- chapitre, dont la quête à prendre commence dans la zone.
-local USEFUL_STATE = { available = true, upcoming = true }
+-- Quête de classe (Q.ClassQuests:List) pas faite, pas commencée, pas ignorée (disponible, à venir ou
+-- déjà tissée dans la route), de la tranche du chapitre, dont la quête à prendre commence dans la zone.
+local USEFUL_STATE = { available = true, upcoming = true, inroute = true }
 
 local function classQuestOf(g, maps, lo, hi)
   local CQ = Q.ClassQuests
@@ -250,7 +252,7 @@ local function fpOf(g)
   local n = 0
   for _, s in ipairs(g.steps or {}) do
     if s.action == "fp" and (not s.race or listed(s.race, P.raceKey))
-      and (not s.class or listed(s.class, P.classFile)) then
+      and (not s.class or listed(s.class, P.classFile)) and Q.Guides.StepForClass(s, P.classFile) then
       n = n + 1
     end
   end

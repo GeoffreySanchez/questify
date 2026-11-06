@@ -125,6 +125,7 @@ Q:RegisterStrings({
     UI_CQ_IGNORED = "Ignored",
     UI_CQ_INPROGRESS = "In progress",
     UI_CQ_DONE = "Done",
+    UI_CQ_INROUTE = "In the route",
 
     -- Options
     UI_OPT_AUTOMATION = "Automation",
@@ -386,6 +387,7 @@ Q:RegisterStrings({
     UI_CQ_IGNORED = "Ignorée",
     UI_CQ_INPROGRESS = "En cours",
     UI_CQ_DONE = "Faite",
+    UI_CQ_INROUTE = "Dans la route",
 
     -- Options
     UI_OPT_AUTOMATION = "Automatisation",

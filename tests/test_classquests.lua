@@ -12,17 +12,26 @@ local DATA = {
     { key = "WARLOCK_HUMAN", title = "Human only", faction = "Alliance", races = 1, level = 1, quests = { 9002 },
       rewards = {} },
     { key = "WARLOCK_LATE", title = "Late chain", faction = "Alliance", level = 10, quests = { 9003 }, rewards = {} },
-    -- 3365 demande 3364 (préquête) : disponible seulement quand 3364 est rendue
-    { key = "WARLOCK_PREREQ", title = "Needs 3364", level = 1, quests = { 3365 }, rewards = {} },
+    -- 9700 demande 3364 (préquête) : disponible seulement quand 3364 est rendue. Pas 3365 (même
+    -- préquête) : le guide de test la rend, la chaîne serait « dans la route ».
+    { key = "WARLOCK_PREREQ", title = "Needs 3364", level = 1, quests = { 9700 }, rewards = {} },
   },
   MAGE = {
     { key = "MAGE_1", title = "Mage chain", level = 1, quests = { 9100 }, rewards = {} },
   },
 }
 
+-- Quête de la chaîne WARLOCK_PREREQ : préquête 3364, absente des guides de test.
+local PREREQ_QDB = { quests = { [9700] = {
+  name = "Needs Mornbrew", startedBy = { { 836 } }, finishedBy = { { 836 } },
+  requiredLevel = 1, questLevel = 4, requiredRaces = ALLIANCE, objectivesText = { "Talk to Durnan." },
+  preQuestSingle = { 3364 },
+} } }
+
 local function load(opts)
   opts = opts or {}
   opts.extraFiles = opts.extraFiles or { GUIDES }
+  opts.qdb = opts.qdb or PREREQ_QDB
   opts.beforeLogin = function(Q) Q.ClassQuestData = DATA end
   return Mock.loadAddon(TOC, opts)
 end

@@ -35,11 +35,12 @@ local ICONS = Journal.STATE_ICONS
 local CQ_STATE_TEXT = {
   available = "UI_CQ_AVAILABLE", upcoming = "UI_CQ_UPCOMING", added = "UI_CQ_ADDED",
   ignored = "UI_CQ_IGNORED", inprogress = "UI_CQ_INPROGRESS", done = "UI_CQ_DONE",
+  inroute = "UI_CQ_INROUTE",   -- quêtes déjà étapes de la route (Engine/ClassQuests.lua) : aucun bouton
 }
 local CQ_LATE_COLOR = "|cffff5050"   -- couleur d'alerte : chaîne en retard
 local CQ_STATE_COLOR = {
   available = "|cff40ff40", upcoming = "|cffaaaaaa", added = "|cffffd100",
-  ignored = "|cff808080", inprogress = "|cff66bbff", done = "|cff808080",
+  ignored = "|cff808080", inprogress = "|cff66bbff", done = "|cff808080", inroute = "|cffffd100",
 }
 
 local function playSound(kit)
@@ -498,15 +499,16 @@ local function isLate(chain, state)
   return cq and cq.IsLate and cq.IsLate(chain, state) or false
 end
 
--- Ordre d'affichage : en retard, disponibles, ajoutées, en cours, à venir, faites, ignorées.
-local CQ_RANK = { available = 2, added = 3, inprogress = 4, upcoming = 5, done = 6, ignored = 7 }
+-- Ordre d'affichage : en retard, disponibles, ajoutées, en cours, dans la route, à venir, faites,
+-- ignorées.
+local CQ_RANK = { available = 2, added = 3, inprogress = 4, inroute = 5, upcoming = 6, done = 7, ignored = 8 }
 
 -- Tri stable : à rang égal l'ordre du moteur est conservé.
 local function sortedClassRows(list)
   local rows = {}
   for _, item in ipairs(list or {}) do
     if type(item) == "table" and type(item.chain) == "table" then
-      rows[#rows + 1] = { item = item, rank = isLate(item.chain, item.state) and 1 or CQ_RANK[item.state] or 8,
+      rows[#rows + 1] = { item = item, rank = isLate(item.chain, item.state) and 1 or CQ_RANK[item.state] or 9,
         index = #rows + 1 }
     end
   end

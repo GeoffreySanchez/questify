@@ -253,6 +253,9 @@ add({ id = "dungeonSuggest", section = "class", category = "dungeons", type = "t
 add({ id = "dungeonQuests", section = "class", category = "dungeons", type = "toggle", path = "dungeonQuests",
   label = "UI_OPT_DUNGEON", tip = "OPT_TIP_DUNGEON_QUESTS",
   keywords = "donjon donjons quetes instance dungeon quests route" })
+add({ id = "classQuestOffer", section = "class", category = "dungeons", type = "toggle", path = "classQuestOffer",
+  label = "UI_OPT_CLASSQUEST_OFFER", tip = "OPT_TIP_CLASSQUEST_OFFER",
+  keywords = "quetes de classe proposer donneur etape passage class quests offer giver step" })
 add({ id = "openClassQuests", section = "class", category = "dungeons", type = "action",
   label = "OPT_OPEN_CLASS", tip = "OPT_TIP_OPEN_CLASS",
   keywords = "quetes de classe donjons journal class quests dungeons",

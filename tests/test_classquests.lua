@@ -131,6 +131,9 @@ return {
     -- dernière quête rendue : faite
     turnIn(1598); turnIn(1599)
     t.eq(stateOf(Q, "WARLOCK_1598"), "done")
+    -- le joueur est près des donneurs : les chaînes proposées par une étape (ClassQuestOffer) ne sont pas
+    -- comptées deux fois ; option coupée, l'alerte les compte toutes
+    Q.Settings:Set("classQuestOffer", false)
     t.eq(#Q.ClassQuests:Alerts(), 2, "late and prereq chains are available, 1598 is done")
   end,
 

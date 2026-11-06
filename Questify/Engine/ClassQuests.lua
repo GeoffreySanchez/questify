@@ -64,6 +64,9 @@ local function inRoute(chain, routeTurnins)
   return remaining > 0
 end
 
+-- FindChain(key) -> chaîne du joueur portant cette clé, ou nil.
+function ClassQuests:FindChain(key) return findChain(key) end
+
 -- État d'une chaîne, dans cet ordre de priorité :
 -- done, inroute, inprogress, added, ignored, available, upcoming.
 -- routeTurnins : Q.Progress:RouteTurnins(), calculé une fois par liste (nil : pas d'état inroute).
@@ -214,7 +217,9 @@ function ClassQuests:Alerts()
   local cq = saved()
   if not cq then return out end
   for _, row in ipairs(self:List()) do
-    if row.state == "available" and not cq.seen[row.chain.key] then out[#out + 1] = row end
+    -- une chaîne déjà proposée par une étape du suivi (Engine/ClassQuestOffer.lua) n'est pas comptée deux fois
+    local offered = Q.ClassQuestOffer and Q.ClassQuestOffer:Has(row.chain.key)
+    if row.state == "available" and not cq.seen[row.chain.key] and not offered then out[#out + 1] = row end
   end
   return out
 end
@@ -242,6 +247,7 @@ function ClassQuests:Add(key)
   end
   if #steps == 0 then return false end
   -- l'état est enregistré avant l'insertion : celle-ci déclenche déjà des mises à jour
+  if Q.ClassQuestOffer then Q.ClassQuestOffer:Remove(key) end
   cq.added[key] = true
   cq.ignored[key] = nil
   Q.Progress:InsertSteps(TAG_PREFIX .. key, steps)
@@ -271,6 +277,7 @@ function ClassQuests:Ignore(key)
   if not cq or not findChain(key) then return false end
   cq.ignored[key] = true
   cq.added[key] = nil
+  if Q.ClassQuestOffer then Q.ClassQuestOffer:Remove(key) end
   Q.Progress:RemoveInserted(TAG_PREFIX .. key)
   Q:Fire("CLASSQUESTS_CHANGED")
   return true

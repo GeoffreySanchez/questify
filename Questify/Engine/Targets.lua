@@ -196,6 +196,14 @@ local function compute(entry)
     local cands = {}
     for _, id in ipairs(ids) do cands[#cands + 1] = { kind = "npc", id = id } end
     mapId, x, y, kind, id = nearest(cands)
+  elseif a == "classquest" then
+    -- donneur le plus proche de la première quête restante de la chaîne
+    local CQ = Q.ClassQuests
+    local chain = CQ and CQ:FindChain(step.key)
+    local s = chain and CQ:Starter(CQ:FirstQuest(chain))
+    if s and s.mapId and (s.kind == "npc" or s.kind == "object") then
+      mapId, x, y, kind, id = s.mapId, s.x, s.y, s.kind, s.id
+    end
   elseif POINT_ACTIONS[a] then
     mapId, x, y, kind = step.mapId, step.x, step.y, "point"
   elseif step.at then

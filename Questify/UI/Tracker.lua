@@ -176,6 +176,11 @@ local function onCurrentClick(button)
     elseif cur then
       Q.Progress:Skip(cur.key)
     end
+  elseif button == "LeftButton" and cur and cur.step.action == "classquest" then
+    -- offre de quête de classe : la fenêtre propose d'ajouter la chaîne à la route ou de l'ignorer
+    local P = Q.UI and Q.UI.ClassQuestPopup
+    local chain = Q.ClassQuests and Q.ClassQuests:FindChain(cur.step.key)
+    if P and chain then P:Show(chain) end
   elseif button == "LeftButton" and cur and MANUAL_DONE[cur.step.action] then
     Q.Progress:MarkDone(cur.key)
   end
@@ -187,6 +192,7 @@ local function currentTooltip(owner)
   if cur then
     lines[#lines + 1] = Q.Format:StepTitle(cur)
     if MANUAL_DONE[cur.step.action] then lines[#lines + 1] = L.UI_TRACKER_HINT_DONE end
+    if cur.step.action == "classquest" then lines[#lines + 1] = L.STEP_CLASSQUEST_HINT end
   end
   lines[#lines + 1] = L.UI_TRACKER_HINT_SKIP
   lines[#lines + 1] = L.UI_TRACKER_HINT_BACK

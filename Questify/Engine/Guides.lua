@@ -16,6 +16,7 @@ local VALID = {
   note = "text",
   train = "none",   -- maître de classe le plus proche (étape insérée par Engine/Trainer.lua)
   trainprof = "prof", -- maître de métier le plus proche (étape insérée par Engine/Professions.lua)
+  classquest = "chain", -- offre de quête de classe près du donneur (étape insérée par Engine/ClassQuestOffer.lua)
 }
 Guides.VALID_ACTIONS = VALID
 
@@ -103,6 +104,10 @@ function Guides:Normalize(raw)
       if not isNum(raw.rank) then return nil, "trainprof: rank must be a number" end
       step.rank = raw.rank
     end
+  elseif kind == "chain" then
+    local key = raw.key or a2
+    if type(key) ~= "string" or key == "" then return nil, "classquest: needs a chain key" end
+    step.key = key
   elseif kind == "text" then
     local txt = raw.text or a2
     if type(txt) ~= "string" then return nil, "note: needs a text" end

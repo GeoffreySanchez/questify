@@ -516,6 +516,19 @@ end
 ------------------------------------------------------------------------------
 -- Analyse d'une quête candidate
 ------------------------------------------------------------------------------
+-- Escorte (texte d'objectif) : « Escort ... », « Protect ... », « Defend ... », « ... safely », « keep ...
+-- safe », « show ... the way », « Lead ... ». Seules les quêtes « event » sans point d'exploration sont
+-- concernées (une escorte avec point d'arrivée, triggerEnd, reste une candidate comme avant).
+local ESCORT_WORDS = { "escort", "protect", "defend", "safely", "accompany" }
+function sim.isEscort(q)
+  local text = table.concat(q.objectivesText or {}, " "):lower()
+  for _, w in ipairs(ESCORT_WORDS) do
+    if text:find(w, 1, true) then return true end
+  end
+  return text:find("keep [%w%s'%-]- safe") ~= nil or text:find("show [%w%s'%-]- the way") ~= nil
+    or text:find("^lead ") ~= nil or text:find("[%.!] lead ") ~= nil
+end
+
 local function isDungeonQuest(ctx, q)
   local z = q.zoneOrSort or 0
   return z > 0 and ctx.D.dungeonAreas[z] or nil
@@ -600,7 +613,12 @@ local function analyse(ctx, q)
   if q.requiredSpell or q.requiredSpecialization then return nil, "requires a spell or specialization" end
   local sf = q.specialFlags or 0
   if qdb.hasBit(sf, 1) and not forced then return nil, "repeatable" end
-  if qdb.hasBit(sf, 2) and not q.triggerEnd and not forced then return nil, "event" end
+  -- Quête « event » (specialFlags 2) sans point d'exploration (récit, rituel, combat scripté) : candidate
+  -- ordinaire quand QuestieDB place chacun de ses objectifs dans la région (sinon écartée plus bas avec la
+  -- raison de l'objectif) ; sans objectif, rendue au donneur, c'est un récit (objectif « parler » chez lui,
+  -- plus bas). Les escortes restent écartées (aucun point d'arrivée ni durée connus).
+  local event = qdb.hasBit(sf, 2) and not q.triggerEnd
+  if event and not forced and sim.isEscort(q) then return nil, "event (escort)" end
   if q.requiredMinRep and not forced then return nil, "requires reputation" end
   if q.requiredMaxLevel and q.requiredMaxLevel < state.level then return nil, "maximum level exceeded" end
   if ctx.drop[q.id] then return nil, ctx.drop[q.id] end
@@ -616,6 +634,8 @@ local function analyse(ctx, q)
 
   -- quête de donjon : on ne fait que la prendre au passage (optional), l'objectif est dans l'instance
   if dungeon then
+    -- quête « event » de donjon : aucun site d'objectif calculé (dans l'instance), écartée comme avant
+    if event and not forced then return nil, "event" end
     info.dungeonOnly = ctx.optional[q.id] or dungeon
     info.optional = nil
     return info
@@ -657,6 +677,16 @@ local function analyse(ctx, q)
     else
       site.count = counts[i]
       sites[#sites + 1] = site
+    end
+  end
+  -- récit d'une quête « event » sans objectif (« Speak with J.D. Collie in a moment »), rendue au donneur
+  -- (à moins de MERGE_SITES) : l'attente chez lui compte comme un objectif « parler »
+  if event and #q.objectives.list == 0 and info.A then
+    for _, p in ipairs(finishers) do
+      if yards(p, info.A) <= C.MERGE_SITES then
+        sites[1] = { pos = info.A, dur = C.TALK_TIME, kills = {}, objs = {}, talk = true }
+        break
+      end
     end
   end
   if ctx.pin[q.id] then
@@ -904,18 +934,23 @@ function sim.chapter(D, W, plan, state, opts)
   end
   -- quêtes du journal (chapitre précédent) rendues dans ce chapitre : leur rendu débloque leurs suites
   -- (ex. 967 The Tower of Althalaxx, faite à Sombrivage et rendue en Orneval, ouvre 970)
+  -- (une quête "foreign", d'un autre parcours de race rendue dans le tronc, ne débloque rien pour la race
+  -- simulée)
   local turnedInHere = {}
   for _, id in ipairs(qdb.sortedKeys(state.log)) do
     local q = D.quests[id]
-    if q and state.log[id] ~= "dungeon" then
+    if q and state.log[id] == true then
       local found = false
       for _, n in ipairs(q.finishers.npcs) do if #spawnsIn(ctx, "npc", n, true) > 0 then found = true end end
       for _, n in ipairs(q.finishers.objects) do if #spawnsIn(ctx, "object", n, true) > 0 then found = true end end
       turnedInHere[id] = found or nil
     end
   end
+  -- Une quête de donjon prise au passage (dungeonOnly) n'est jamais rendue sur la route : ce n'est pas un
+  -- pré-requis disponible, sa suite n'est pas proposée hors du donjon (le rejeu des parcours la refuserait).
   local function have(p)
-    return state.done[p] or turnedInHere[p] or (byId[p] and not byId[p].dropped and not byId[p].carry)
+    local b = byId[p]
+    return state.done[p] or turnedInHere[p] or (b and not b.dropped and not b.carry and not b.dungeonOnly)
   end
   local function prereqOk(info)
     local q = info.q
@@ -1127,9 +1162,9 @@ function sim.chapter(D, W, plan, state, opts)
       for id in pairs(kept) do alive[id] = true end
       -- pré-requis hors budget (déjà dans le journal, ou candidat non soumis au budget) : acquis
       local function have(p)
-        if state.done[p] or state.log[p] then return true end
+        if state.done[p] or state.log[p] == true then return true end
         local b = byId[p]
-        if not b or b.carry then return false end
+        if not b or b.carry or b.dungeonOnly then return false end
         if not inOrder[p] then return not b.dropped end
         return alive[p] == true
       end
@@ -1244,7 +1279,8 @@ function sim.chapter(D, W, plan, state, opts)
       end
     end
   end
-  -- quêtes déjà dans le journal (chapitre précédent) qu'on peut rendre ici
+  -- quêtes déjà dans le journal (chapitre précédent) qu'on peut rendre ici ; "foreign" : quête d'un autre
+  -- parcours de race (build.mergeStates), rendue ici pour lui, sans XP pour la race simulée
   for _, id in ipairs(qdb.sortedKeys(state.log)) do
     local q = D.quests[id]
     if q and state.log[id] ~= "dungeon" then
@@ -1253,7 +1289,8 @@ function sim.chapter(D, W, plan, state, opts)
       for _, n in ipairs(q.finishers.objects) do for _, p in ipairs(spawnsIn(ctx, "object", n, true)) do finishers[#finishers + 1] = p end end
       local tpos = nearest(finishers, cur)
       if tpos then
-        local info = { q = q, races = eligibleRaces(ctx, q), carried = true, T = tpos, exit = tpos.exit, kills = {} }
+        local info = { q = q, races = eligibleRaces(ctx, q), carried = true, T = tpos, exit = tpos.exit, kills = {},
+                       foreign = state.log[id] == "foreign" or nil }
         addTask({ id = "T" .. id, kind = "T", q = id, pos = tpos, dur = C.QUEST_ACTION, info = info, after = {}, final = tpos.exit or nil })
       end
     end
@@ -1343,7 +1380,7 @@ function sim.chapter(D, W, plan, state, opts)
     local info = t.info
     if info then
       local q = info.q
-      local counted = simulatedEligible(ctx, q)
+      local counted = simulatedEligible(ctx, q) and not info.foreign
       if (t.kind == "A" or t.kind == "C") and (q.reqLevel or 0) > 1 then t.reqLevel = q.reqLevel end
       -- Difficulté : les objectifs attendent un niveau « sûr » (quête jaune facile, monstres pas plus
       -- hauts que le personnage) ; l'ordonnancement fait d'abord le plus facile.
@@ -1489,7 +1526,7 @@ function sim.chapter(D, W, plan, state, opts)
       end
     else
       local info, q = t.info, t.info.q
-      local counted = simulatedEligible(ctx, q)
+      local counted = simulatedEligible(ctx, q) and not info.foreign
       local function decorate(step)
         if #info.races < #ctx.races then step.race = info.races end
         if info.classes then step.class = info.classes end
@@ -1567,7 +1604,8 @@ function sim.chapter(D, W, plan, state, opts)
           estimated = not (D.xp and D.xp[q.id]) }
         end
         state.log[q.id] = nil
-        state.done[q.id] = true
+        -- quête d'un autre parcours : rendue pour lui, jamais faite par la race simulée
+        if not info.foreign then state.done[q.id] = true end
       end
     end
     local inn = hearthBinds[t.id] or carryBind
@@ -1659,7 +1697,9 @@ end
 -- À partir d'un chapitre de niveau minimal DUNGEON_RELEASE_FROM, les quêtes du journal prises au passage
 -- dans un donjon (state.log[id] == "dungeon") dont le niveau est <= minLevel - DUNGEON_RELEASE_GAP sont
 -- retirées du journal (state.abandoned) ; une étape note optionnelle par donjon le dit au joueur. La
--- place tenue par les autres parcours de race (logPad : quêtes de donjon de départ) est rendue aussi.
+-- place tenue par les autres parcours de race (logPad) est rendue pour les quêtes de donjon de
+-- state.logPadQuests (build.mergeStates) qui suivent la même règle ; sans cette liste, logPad est remis
+-- à 0 au premier chapitre concerné.
 function sim.releaseDungeonQuests(D, plan, state, steps)
   if (plan.minLevel or 0) < C.DUNGEON_RELEASE_FROM then return end
   local byDungeon, names = {}, {}
@@ -1674,7 +1714,24 @@ function sim.releaseDungeonQuests(D, plan, state, steps)
       state.abandoned[id] = true
     end
   end
-  if not state.dungeonsReleased then
+  if state.logPadQuests then
+    -- par parcours : ses quêtes de donjon encore gardées, moins les quêtes du parcours simulé qu'il n'a pas
+    -- et qui sont encore au journal ; listes recréées (l'état peut être copié puis restauré : sim.chapter
+    -- refait un chapitre)
+    local lists, pad = {}, 0
+    for _, e in ipairs(state.logPadQuests) do
+      local keep, only = {}, {}
+      for _, id in ipairs(e.pad) do
+        local q = D.quests[id]
+        if not (q and (q.level or 0) <= plan.minLevel - C.DUNGEON_RELEASE_GAP) then keep[#keep + 1] = id end
+      end
+      for _, id in ipairs(e.base) do if state.log[id] then only[#only + 1] = id end end
+      lists[#lists + 1] = { pad = keep, base = only }
+      pad = math.max(pad, #keep - #only)
+    end
+    state.logPadQuests, state.logPad = lists, pad
+    state.dungeonsReleased = true
+  elseif not state.dungeonsReleased then
     state.dungeonsReleased = true
     state.logPad = 0
   end

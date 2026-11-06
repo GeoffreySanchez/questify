@@ -293,11 +293,8 @@ plans.Alliance = {
     -- Ironforge, Loch Modan (Murdaloc 739), Stormwind, et la Strangleronce du chapitre suivant : A_16 -15 min,
     -- +8 quêtes, -82 mobs
     endZones = { IRONFORGE, LOCH_MODAN, STORMWIND, STV },
-    -- Suites de quêtes d'Uldaman prises seulement au passage (721 A Sign of Hope, 709 Solution to Doom) : la simulation
-    -- les comptait, le rejeu des parcours retirait leurs étapes (« valid for no race »). Écartées pour que le temps
-    -- simulé corresponde au guide.
-    drop = { [722] = "Follow-up of an Uldaman quest the route only picks up (721): the guide cannot accept it",
-             [727] = "Follow-up of an Uldaman quest the route only picks up (709): the guide cannot accept it" },
+    -- Suites des quêtes d'Uldaman prises seulement au passage (722 après 721, 727 après 709) : écartées par la
+    -- simulation (« prerequisite unavailable », sim.lua) depuis le lot L ; l'écart manuel est retiré (mesuré identique).
   },
   {
     id = "A_17", title = "Stranglethorn Vale", faction = "Alliance", zones = { STV, SWAMP },
@@ -324,8 +321,9 @@ plans.Alliance = {
     id = "A_20", title = "Tanaris", faction = "Alliance", zones = { TANARIS },
     minLevel = 46, maxLevel = 48, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { TANARIS, 51.01, 29.34 }, next = "A_21",
     dungeons = { "Zul'Farrak" },
-    -- plan « meta paths » : 5 quêtes seulement sans elles (~1 500 mobs de farm)
-    force = { [3161] = true, [3362] = true, [2605] = true },
+    -- Gahz'ridian 3161, Thistleshrub Valley 3362, The Thirsty Goblin 2605 : forcées par le plan « meta paths » (5 quêtes
+    -- seulement sans elles, ~1 500 mobs de farm) ; forçage retiré au lot L (mesuré après les corrections du simulateur :
+    -- Alliance 1-60 -16 min, -3 quêtes, +28 mobs)
   },
   {
     id = "A_21", title = "Stranglethorn Vale", faction = "Alliance", zones = { STV, SWAMP },
@@ -338,10 +336,10 @@ plans.Alliance = {
     flightPaths = { "Thorium Point, Searing Gorge", "Nethergarde Keep, Blasted Lands" },
     dungeons = { "Blackrock Depths" },
     -- Ironforge (Suntara Stones 3368, Rise, Obsidion! 3566), Loch Modan (The Horn of the Beast 3181), Stormwind ;
-    -- 3441 Divine Retribution et 3453 The Torch of Retribution (QuestieDB : « event », sites d'objectif connus)
-    -- forcées : elles ouvrent la chaîne de Thorium Point 3442 -> 3481. A_22 -23 min, +14 quêtes, -259 mobs.
+    -- 3441 Divine Retribution et 3453 The Torch of Retribution (QuestieDB : « event », récits de Kalaran Windblade)
+    -- ouvrent la chaîne de Thorium Point 3442 -> 3481. A_22 -23 min, +14 quêtes, -259 mobs. Forcées jusqu'au lot L :
+    -- les quêtes « event » sont maintenant des candidates ordinaires (sim.lua), forçage retiré (mesuré identique).
     endZones = { IRONFORGE, STORMWIND, LOCH_MODAN },
-    force = { [3441] = true, [3453] = true },
   },
   {
     id = "A_28", title = "Burning Steppes", faction = "Alliance", zones = { BURNING },
@@ -360,10 +358,9 @@ plans.Alliance = {
     id = "A_26", title = "Un'Goro Crater", faction = "Alliance", zones = { UNGORO },
     minLevel = 54, maxLevel = 56, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { UNGORO, 45.23, 5.83 }, next = "A_27",
     flightPaths = { "Marshal's Refuge, Un'Goro Crater" },
-    -- pylônes 4285, 4287, 4288 et 4321 (QuestieDB : « event », sites d'objectif connus) forcés : -8 min, +4 quêtes,
-    -- -41 mobs ; rendus au Gangrebois (Linken's Memory 3942) et au Berceau-de-l'Hiver du chapitre suivant : -4 min,
-    -- +5 quêtes, -83 mobs
-    force = { [4285] = true, [4287] = true, [4288] = true, [4321] = true },
+    -- pylônes 4285, 4287, 4288 et 4321 (QuestieDB : « event ») : -8 min, +4 quêtes, -41 mobs ; forcés jusqu'au lot L,
+    -- candidates ordinaires depuis (forçage retiré, mesuré identique) ; rendus au Gangrebois (Linken's Memory 3942)
+    -- et au Berceau-de-l'Hiver du chapitre suivant : -4 min, +5 quêtes, -83 mobs
     endZones = { FELWOOD, WINTERSPRING },
   },
   {
@@ -386,14 +383,12 @@ plans.Alliance = {
     minLevel = 58, maxLevel = 59, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { EPL, 71.81, 49.60 }, next = "A_30",
     flightPaths = { "Light's Hope Chapel, Eastern Plaguelands" },
     dungeons = { "Stratholme" },
-    -- 5742 Redemption (QuestieDB : « event », histoire de Tirion Fordring) forcée, tête de Of Forgotten Memories 5781 :
-    -- -3 min, +3 quêtes, -53 mobs. Maleterres de l'Ouest en zone de quêtes : -6 min mesurées, mais seulement grâce aux
-    -- suites de 5848 écartées ci-dessous ; sans elles +12 min (non retenu).
-    force = { [5742] = true },
-    -- Suites de quêtes de Stratholme prises seulement au passage (5212, 5848) : retirées par le rejeu des parcours,
-    -- écartées pour que le temps simulé corresponde au guide.
-    drop = { [5213] = "Follow-up of a Stratholme quest the route only picks up (5212): the guide cannot accept it",
-             [5861] = "Follow-up of a Stratholme quest the route only picks up (5848): the guide cannot accept it" },
+    -- 5742 Redemption (QuestieDB : « event », histoire de Tirion Fordring), tête de Of Forgotten Memories 5781 :
+    -- -3 min, +3 quêtes, -53 mobs ; forcée jusqu'au lot L, candidate ordinaire depuis (forçage retiré, mesuré
+    -- identique). Maleterres de l'Ouest en zone de quêtes : -6 min mesurées, mais seulement grâce aux suites de 5848
+    -- écartées ci-dessous ; sans elles +12 min (non retenu).
+    -- Suites des quêtes de Stratholme prises seulement au passage (5213 après 5212, 5861 après 5848) : écartées par
+    -- la simulation depuis le lot L ; l'écart manuel est retiré (mesuré identique).
   },
   {
     id = "A_30", title = "Silithus", faction = "Alliance", zones = { WINTERSPRING, SILITHUS },
@@ -541,7 +536,7 @@ plans.Horde = {
     flightPaths = { "Hammerfall, Arathi" },
     dungeons = { "City of Dalaran", "Scarlet Monastery" },
     -- plan « meta paths » : accroches de Tarren Mill (Prison Break In, Stone Tokens, Infiltration,
-    -- Dalaran Patrols, The Hammer May Fall)
+    -- Dalaran Patrols, The Hammer May Fall) ; lot L : +53 min sans ce forçage (gardé)
     force = { [544] = true, [556] = true, [533] = true, [545] = true, [676] = true },
   },
   {
@@ -549,9 +544,9 @@ plans.Horde = {
     bounds = { [BARRENS] = { 44, 26, 53, 32 } }, -- Carrefour et Bastion : The Swarm Grows, The Kolkar of Desolace
     -- Orgrimmar (zeppelin depuis Fossoyeuse) : The Swarm Grows (1146) et Alliance Relations (1432), têtes des
     -- chaînes des Mille pointes et de Désolace. Mesuré : -19 min, -154 mobs (H_07 et H_08 sans farm).
+    -- (1145 The Swarm Grows et 1362 The Kolkar of Desolace, forcées jusqu'au lot L : forçage retiré, mesuré identique)
     endZones = { ORGRIMMAR, DESOLACE },
     minLevel = 32, maxLevel = 33, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { NEEDLES, 45.14, 49.11 }, next = "H_08",
-    force = { [1145] = true, [1362] = true },
   },
   {
     id = "H_08", title = "Desolace", faction = "Horde", zones = { DESOLACE }, endZones = { ORGRIMMAR, THUNDERBLUFF },
@@ -607,14 +602,15 @@ plans.Horde = {
     minLevel = 44, maxLevel = 45, levelSlack = 0, levelBelow = 8, far = 1600, entry = { TANARIS, 51.60, 25.44 }, next = "H_17",
     flightPaths = { "Gadgetzan, Tanaris" },
     dungeons = { "Zul'Farrak" },
-    -- Gahz'ridian (3161, rendement bas) et The Thirsty Goblin (2605, loin de Gadgetzan). Mesuré : -8 min, -96 mobs.
-    force = { [3161] = true, [2605] = true },
+    -- Gahz'ridian (3161, rendement bas) et The Thirsty Goblin (2605, loin de Gadgetzan) : forcées au lot Horde (-8 min,
+    -- -96 mobs), forçage retiré au lot L (mesuré après les corrections du simulateur : Horde 1-60 -10 min, -1 quête,
+    -- +43 mobs).
   },
   {
     id = "H_17", title = "Feralas", faction = "Horde", zones = { FERALAS }, endZones = { ORGRIMMAR, THUNDERBLUFF },
     minLevel = 45, maxLevel = 47, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { FERALAS, 75.45, 44.36 }, next = "H_18",
     flightPaths = { "Camp Mojache, Feralas" },
-    force = { [3062] = true }, -- Dark Heart, à plus de 1 600 yd de Camp Mojache. Mesuré : -4 min, -24 mobs.
+    force = { [3062] = true }, -- Dark Heart, à plus de 1 600 yd de Camp Mojache. Mesuré : -4 min, -24 mobs (lot L : +10 min sans).
   },
   {
     id = "H_18", title = "Stranglethorn Vale", faction = "Horde", zones = { STV },
@@ -628,7 +624,8 @@ plans.Horde = {
     endZones = { HILLSBRAD, UNDERCITY },
     minLevel = 49, maxLevel = 51, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { HINTERLANDS, 81.70, 81.76 }, next = "H_23",
     flightPaths = { "Revantusk Village, The Hinterlands" },
-    force = { [7843] = true }, -- The Final Message to the Wildhammer (écartée « far »)
+    -- The Final Message to the Wildhammer (7843, écartée « far » : puits d'Aerie Peak) forcée jusqu'au lot L ;
+    -- forçage retiré (mesuré après les corrections du simulateur : Horde 1-60 -4 min, -1 quête, +22 mobs)
   },
   {
     id = "H_23", title = "Blasted Lands", faction = "Horde", zones = { BLASTED },
@@ -641,8 +638,9 @@ plans.Horde = {
     flightPaths = { "Thorium Point, Searing Gorge", "Flame Crest, Burning Steppes" },
     dungeons = { "Blackrock Depths" },
     -- 3441 et 3453 : récits de Kalaran Windblade (drapeau « event » dans QuestieDB), têtes de la chaîne
-    -- The Flawless Flame -> Trinkets... (3442-3481). Mesuré : -11 min, -177 mobs.
-    force = { [4023] = true, [4296] = true, [4726] = true, [3441] = true, [3453] = true },
+    -- The Flawless Flame -> Trinkets... (3442-3481). Mesuré : -11 min, -177 mobs. Forcées jusqu'au lot L, candidates
+    -- ordinaires depuis (forçage retiré, mesuré identique). A Taste of Flame 4023, Tablet of the Seven 4296 et Broodling
+    -- Essence 4726, forcées par le plan « meta paths » : forçage retiré au lot L (mesuré identique).
   },
   {
     -- Orgrimmar (zeppelin depuis Grom'gol) : Betrayed (3504) ; livraisons rendues à Orgrimmar et aux
@@ -672,9 +670,8 @@ plans.Horde = {
     -- A Plague Upon Thee) et Fossoyeuse (A Call to Arms 5094, livres d'Oran Snakewrithe), au débarquement du
     -- zeppelin. Mesuré : -97 min, -512 mobs ; levelBelow = 10 (une quête basse du Rempart en plus) : -6 min.
     bounds = { [TIRISFAL] = { 78, 60, 90, 80 } },
-    -- 5342 : le simulateur compte sa suite comme ouverte par 5341, prise au passage pour Scholomance (jamais
-    -- rendue) ; la relecture des parcours retire ses étapes. Écartée pour que les minutes restent justes (+15 min).
-    drop = { [5342] = "The Last Barov needs Barov Family Fortune (5341, Scholomance items), a dungeon quest only picked up here" },
+    -- 5342 The Last Barov (suite de 5341, prise au passage pour Scholomance, jamais rendue) : écartée par la
+    -- simulation depuis le lot L ; l'écart manuel est retiré (mesuré identique).
     minLevel = 57, maxLevel = 59, levelSlack = 0, levelBelow = 10, far = 1600, widen = false, entry = { WPL, 38.40, 54.05 }, next = "H_30",
     flightPaths = { "Light's Hope Chapel, Eastern Plaguelands" },
     dungeons = { "Scholomance", "Stratholme" },

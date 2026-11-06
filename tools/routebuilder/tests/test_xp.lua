@@ -54,6 +54,25 @@ return {
     t.eq(xp.questXP(D, D.quests[12], 1), 80)
   end,
 
+  -- livre de Forever (objet « Book », niveau requis 1, un objet à rapporter) : un quart de l'estimation
+  estimate_forever_book_quarter = function(t)
+    local D = fakeD()
+    D.objects = { [500] = { name = "Book" }, [501] = { name = "Mrs. Dalson's Diary" } }
+    local function book(id, obj, req, objectives)
+      return { id = id, level = 10, reqLevel = req, zoneOrSort = 1497, starters = { objects = { obj } },
+               objectives = { list = objectives or { { kind = "item" } } } }
+    end
+    local q = book(20, 500, 1)
+    t.ok(xp.isBook(D, q), "book")
+    t.eq(xp.questXP(D, q, 10), 225) -- 900 × 0.25
+    t.ok(not xp.isBook(D, book(21, 501, 1)), "other object name")
+    t.ok(not xp.isBook(D, book(22, 500, 8)), "required level above 1")
+    t.ok(not xp.isBook(D, book(23, 500, 1, { { kind = "item" }, { kind = "kill" } })), "two objectives")
+    -- valeur connue (QuestXP) : jamais réduite
+    D.xp[24] = { 10, 1000 }
+    t.eq(xp.questXP(D, book(24, 500, 1), 10), 1000)
+  end,
+
   addxp_levels_up = function(t)
     local s = { level = 1, xp = 0 }
     xp.addXP(s, 1000)

@@ -1,8 +1,8 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 211 étapes, niveau final 17.98, ~30647 xp/h, 247 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-07.
+-- Simulation : 210 étapes, niveau final 17.98, ~30387 xp/h, 249 min.
 Q:RegisterGuide({
   id = "H_Skyborne_01",
   title = "Zephras Isle",
@@ -10,7 +10,7 @@ Q:RegisterGuide({
   races = { "Skyborne" },
   minLevel = 1, maxLevel = 15,
   nextByRace = { Skyborne = "H_01" },
-  sim = { steps = 211, endLevel = 17.98, xpPerHour = 30647, minutes = 247 },
+  sim = { steps = 210, endLevel = 17.98, xpPerHour = 30387, minutes = 249 },
   steps = {
     { "level", 2, at = { 2521, 47.51, 19.96 }, note = "About 8 mobs here (Roiling Winds, level 2)" }, -- farm de niveau
     { "accept", 92464 }, -- Elemental Unrest (lvl 3, ~250 xp, sim lvl 2)
@@ -222,6 +222,5 @@ Q:RegisterGuide({
     { "accept", 93090 }, -- What Comes Next (lvl 13, ~455 xp, sim lvl 17)
     { "turnin", 93090, xp = 455 }, -- What Comes Next (lvl 13, ~455 xp, sim lvl 17)
     { "boat", 2521, 58.1, 80.4, note = "Take the skyboat to Skywatcher Plateau (west dock of Valanaar)" }, -- bateau
-    { "fp", 1413, 51.5, 30.34 }, -- point de vol
   },
 })

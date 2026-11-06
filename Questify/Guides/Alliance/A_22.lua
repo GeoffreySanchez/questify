@@ -1,23 +1,23 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 106 étapes, niveau final 52.00, ~62277 xp/h, 290 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-07.
+-- Simulation : 106 étapes, niveau final 52.00, ~60526 xp/h, 299 min.
 Q:RegisterGuide({
   id = "A_22",
   title = "Searing Gorge and Blasted Lands",
   faction = "Alliance",
   minLevel = 50, maxLevel = 52,
   next = "A_28",
-  sim = { steps = 106, endLevel = 52.00, xpPerHour = 62277, minutes = 290 },
+  sim = { steps = 106, endLevel = 52.00, xpPerHour = 60526, minutes = 299 },
   steps = {
     { "note", "Not running Zul'Farrak? Abandon Scarab Shells, Troll Temper", optional = true, dungeon = "Zul'Farrak" },
     { "goto", 1434, 27.53, 77.79, note = "Flight master" }, -- déplacement
     { "fly", 1419, node = 45, note = "Nethergarde Keep, Blasted Lands" }, -- vol
     { "accept", 3501 }, -- Everything Counts In Large Amounts (lvl 55, ~5650 xp, sim lvl 50)
     { "accept", 2521 }, -- To Serve Kum'isha (lvl 55, ~8450 xp, sim lvl 50)
-    { "accept", 81956 }, -- Conjurer's Codex (lvl 45, ~3120 xp, sim lvl 50)
-    { "complete", 81956, at = { 1419, 55.43, 32.3 } }, -- Conjurer's Codex (lvl 45, ~3120 xp, sim lvl 50)
+    { "accept", 81956 }, -- Conjurer's Codex (lvl 45, ~780 xp, sim lvl 50)
+    { "complete", 81956, at = { 1419, 55.43, 32.3 } }, -- Conjurer's Codex (lvl 45, ~780 xp, sim lvl 50)
     { "accept", 2601 }, -- The Basilisk's Bite (lvl 50, ~4700 xp, sim lvl 50)
     { "accept", 2603 }, -- Vulture's Vigor (lvl 50, ~4700 xp, sim lvl 50)
     { "accept", 2585 }, -- The Decisive Striker (lvl 50, ~4700 xp, sim lvl 50)
@@ -80,8 +80,8 @@ Q:RegisterGuide({
     { "turnin", 3462, xp = 470 }, -- Squire Maltrake (lvl 50, ~470 xp, sim lvl 51)
     { "accept", 3463 }, -- Set Them Ablaze! (lvl 52, ~7600 xp, sim lvl 51)
     { "complete", 7728, obj = 1, at = { 1427, 39.88, 50.1 } }, -- STOLEN: Smithing Tuyere and Lookout's Spyglass (lvl 48, ~4400 xp, sim lvl 51)
-    { "accept", 81955 }, -- A Mind of Metal (lvl 45, ~3120 xp, sim lvl 51)
-    { "complete", 81955, at = { 1427, 37.85, 49.45 } }, -- A Mind of Metal (lvl 45, ~3120 xp, sim lvl 51)
+    { "accept", 81955 }, -- A Mind of Metal (lvl 45, ~780 xp, sim lvl 51)
+    { "complete", 81955, at = { 1427, 37.85, 49.45 } }, -- A Mind of Metal (lvl 45, ~780 xp, sim lvl 51)
     { "complete", 3463, at = { 1427, 35.67, 60.68 } }, -- Set Them Ablaze! (lvl 52, ~7600 xp, sim lvl 51)
     { "complete", 7728, at = { 1427, 33.01, 53.96 } }, -- STOLEN: Smithing Tuyere and Lookout's Spyglass (lvl 48, ~4400 xp, sim lvl 51)
     { "complete", 7724, at = { 1427, 28.59, 72.01 } }, -- Fiery Menace! (lvl 49, ~4550 xp, sim lvl 51)
@@ -107,15 +107,15 @@ Q:RegisterGuide({
     { "turnin", 3481, xp = 470 }, -- Trinkets... (lvl 50, ~470 xp, sim lvl 51)
     { "goto", 1427, 37.94, 30.86, note = "Flight master" }, -- déplacement
     { "fly", 1453, node = 2, note = "Stormwind, Elwynn" }, -- vol
-    { "turnin", 81955, xp = 3120 }, -- A Mind of Metal (lvl 45, ~3120 xp, sim lvl 51)
-    { "turnin", 81956, xp = 3120 }, -- Conjurer's Codex (lvl 45, ~3120 xp, sim lvl 51)
-    { "turnin", 81949, xp = 3120 }, -- Legends of the Tidesages (lvl 45, ~3120 xp, sim lvl 51)
+    { "turnin", 81955, xp = 780 }, -- A Mind of Metal (lvl 45, ~780 xp, sim lvl 51)
+    { "turnin", 81956, xp = 780 }, -- Conjurer's Codex (lvl 45, ~780 xp, sim lvl 51)
+    { "turnin", 81949, xp = 780 }, -- Legends of the Tidesages (lvl 45, ~780 xp, sim lvl 51)
     { "goto", 1453, 71.29, 72.23, note = "Flight master" }, -- déplacement
     { "fly", 1432, node = 8, note = "Thelsamar, Loch Modan" }, -- vol
     { "turnin", 3181, xp = 5450 }, -- The Horn of the Beast (lvl 48, ~5450 xp, sim lvl 51)
     { "goto", 1432, 33.94, 50.95, note = "Flight master" }, -- déplacement
     { "fly", 1455, node = 6, note = "Ironforge, Dun Morogh" }, -- vol
     { "turnin", 3368, xp = 4400 }, -- Suntara Stones (lvl 48, ~4400 xp, sim lvl 51)
-    { "level", 52, at = { 1427, 48.4, 24.03 }, note = "About 137 more mobs near the last objective" }, -- farm de niveau
+    { "level", 52, at = { 1427, 48.4, 24.03 }, note = "About 162 more mobs near the last objective" }, -- farm de niveau
   },
 })

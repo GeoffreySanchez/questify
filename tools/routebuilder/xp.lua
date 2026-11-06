@@ -14,6 +14,13 @@ xp.MAX_LEVEL = 60
 
 xp.DUNGEON_FACTOR = 0.5  -- Forever : XP des quêtes de donjon −50 %
 xp.LEVEL1_DEFAULT = 80
+-- Livres de Forever (« Collect 'Stonewrought Design' and bring it to Owen Thadd in Undercity » ; 79953,
+-- 81947-81956, 84395-84402, rendus aux bibliothécaires de Stormwind et de Fossoyeuse : nouvelles quêtes sans
+-- valeur QuestXP, niveau requis 1, un seul objet ramassé sur un objet du monde nommé « Book ») : valeur
+-- prudente, un quart de l'estimation de leur niveau. C'est le palier Classic d'une simple livraison (QuestXP
+-- connues : livraisons de niveau 45, premier quartile 970 pour une valeur standard de 3 900). Sans elle, les
+-- sept livres d'Oran Snakewrithe comptaient ~46 000 XP estimées en H_29.
+xp.BOOK_FACTOR = 0.25
 
 -- Coefficient selon l'écart niveau du joueur − niveau de la quête au moment du rendu.
 function xp.modifier(d)
@@ -99,6 +106,19 @@ function xp.estimateBase(D, questLevel, flags)
   return floor5(v)
 end
 
+-- Livre de Forever (voir BOOK_FACTOR) : niveau requis 1 au plus, un seul objectif (objet), départ par un
+-- objet du monde nommé « Book » dans QuestieDB.
+function xp.isBook(D, quest)
+  if (quest.reqLevel or 0) > 1 then return false end
+  local list = quest.objectives and quest.objectives.list or {}
+  if #list ~= 1 or list[1].kind ~= "item" then return false end
+  for _, id in ipairs(quest.starters and quest.starters.objects or {}) do
+    local o = D.objects and D.objects[id]
+    if o and o.name == "Book" then return true end
+  end
+  return false
+end
+
 -- XP de base (avant modificateur de niveau) d'une quête.
 function xp.baseXP(D, quest)
   local known = D.xp and D.xp[quest.id]
@@ -108,7 +128,9 @@ function xp.baseXP(D, quest)
     if dungeon then v = v * xp.DUNGEON_FACTOR end
     return floor5(v), true
   end
-  return xp.estimateBase(D, quest.level or 1, { dungeon = dungeon, kind = isDelivery(quest) and "delivery" or "normal" }), false
+  local v = xp.estimateBase(D, quest.level or 1, { dungeon = dungeon, kind = isDelivery(quest) and "delivery" or "normal" })
+  if xp.isBook(D, quest) then v = floor5(v * xp.BOOK_FACTOR) end
+  return v, false
 end
 
 -- XP reçue en rendant la quête au niveau playerLevel.

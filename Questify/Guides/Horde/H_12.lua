@@ -1,15 +1,15 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 25 étapes, niveau final 40.34, ~41718 xp/h, 133 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-07.
+-- Simulation : 25 étapes, niveau final 40.34, ~41725 xp/h, 133 min.
 Q:RegisterGuide({
   id = "H_12",
   title = "Badlands",
   faction = "Horde",
   minLevel = 39, maxLevel = 40,
   next = "H_13",
-  sim = { steps = 25, endLevel = 40.34, xpPerHour = 41718, minutes = 133 },
+  sim = { steps = 25, endLevel = 40.34, xpPerHour = 41725, minutes = 133 },
   steps = {
     { "fp", 1418, 3.99, 44.78 }, -- point de vol
     { "accept", 2258 }, -- Badlands Reagent Run (lvl 39, ~3000 xp, sim lvl 39)

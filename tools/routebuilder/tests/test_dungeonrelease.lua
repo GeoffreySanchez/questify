@@ -2,6 +2,7 @@
 -- Même règle dans sim.releaseDungeonQuests (simulation) et paths.replay (validateur) ; données fictives.
 local sim = require("sim")
 local paths = require("paths")
+local H = require("helpers")
 
 local function D()
   local function q(id, level, zone)
@@ -66,5 +67,32 @@ return {
     t.ok(issues[1]:find("quest log full", 1, true), issues[1])
     -- 30 : les quêtes de donjon 1 et 4 (niveau <= 26) quittent le journal ; 3 reste (zone ordinaire)
     t.eq(#run(30), 0, table.concat(issues, " | "))
+  end,
+  -- Lot L : à la jonction du tronc, une quête ordinaire d'un autre parcours (rendu reporté) entre dans le journal
+  -- du tronc ("foreign") ; une quête de donjon de ce parcours garde sa place (logPad) jusqu'à son abandon.
+  merge_foreign_quests_and_dungeon_padding = function(t)
+    local build = assert(loadfile(H.ROOT .. "/build.lua"))("--as-module")
+    local base = { level = 12, xp = 0, log = { [3] = true }, knownTaxi = {}, hearthReadyAt = 0 }
+    local other = { level = 13, xp = 0, log = { [3] = true, [50] = true, [1] = "dungeon", [2] = "dungeon" },
+                    knownTaxi = {}, hearthReadyAt = 0 }
+    local m = build.mergeStates(base, { other })
+    t.eq(m.log[50], "foreign", "carried quest of the other path turned in by the trunk")
+    t.eq(m.log[1], nil); t.eq(m.log[2], nil)
+    t.eq(m.logPad, 2, "two dungeon quests of the other path")
+    t.eq(base.log[50], nil, "base state untouched")
+    local d = D()
+    local steps = {}
+    sim.releaseDungeonQuests(d, { minLevel = 30 }, m, steps)
+    t.eq(m.logPad, 1, "level 20 quest released, level 28 quest still held")
+    sim.releaseDungeonQuests(d, { minLevel = 32 }, m, steps)
+    t.eq(m.logPad, 0)
+    t.eq(m.log[50], "foreign", "ordinary quest never released")
+    -- le parcours principal a plus de quêtes que l'autre n'en a en propre : aucune place réservée
+    local base2 = { level = 12, xp = 0, log = { [3] = true, [60] = "dungeon", [61] = true }, knownTaxi = {}, hearthReadyAt = 0 }
+    local m2 = build.mergeStates(base2, { other })
+    t.eq(m2.logPad, 0, "2 dungeon quests of the other path, 2 base quests it does not have")
+    -- abandon à 30 : la quête de donjon 60 (inconnue ici) reste, 61 reste ; l'autre parcours garde la 2
+    sim.releaseDungeonQuests(d, { minLevel = 30 }, m2, {})
+    t.eq(m2.logPad, 0)
   end,
 }

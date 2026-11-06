@@ -1,31 +1,31 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 52 étapes, niveau final 59.00, ~58821 xp/h, 206 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-07.
+-- Simulation : 52 étapes, niveau final 59.00, ~58827 xp/h, 206 min.
 Q:RegisterGuide({
   id = "A_29",
   title = "Eastern Plaguelands",
   faction = "Alliance",
   minLevel = 58, maxLevel = 59,
   next = "A_30",
-  sim = { steps = 52, endLevel = 59.00, xpPerHour = 58821, minutes = 206 },
+  sim = { steps = 52, endLevel = 59.00, xpPerHour = 58827, minutes = 206 },
   steps = {
     { "goto", 1453, 71.29, 72.23, note = "Flight master" }, -- déplacement
     { "fly", 1417, node = 16, note = "Refuge Pointe, Arathi" }, -- vol
     { "fp", 1423, 71.81, 49.6 }, -- point de vol
     { "accept", 9664 }, -- Establishing New Outposts (lvl 60, ~6600 xp, sim lvl 58)
+    { "accept", 5212, optional = true, dungeon = "Stratholme" }, -- The Flesh Does Not Lie (lvl 60, ~0 xp, sim lvl 58)
     { "accept", 5211 }, -- Defenders of Darrowshire (lvl 55, ~5650 xp, sim lvl 58)
     { "turnin", 6030, xp = 2040 }, -- Duke Nicholas Zverenhoff (lvl 52, ~2040 xp, sim lvl 58)
     { "accept", 5251, optional = true, dungeon = "Stratholme" }, -- The Archivist (lvl 60, ~0 xp, sim lvl 58)
-    { "accept", 5212, optional = true, dungeon = "Stratholme" }, -- The Flesh Does Not Lie (lvl 60, ~0 xp, sim lvl 58)
     { "accept", 6021 }, -- Zaeldarr the Outcast (lvl 55, ~4200 xp, sim lvl 58)
     { "accept", 5281 }, -- The Restless Souls (lvl 60, ~6600 xp, sim lvl 58)
     { "turnin", 5601, xp = 560 }, -- Sister Pamela (lvl 55, ~560 xp, sim lvl 58)
     { "accept", 6024 }, -- Hameya's Plea (lvl 60, ~6600 xp, sim lvl 58)
+    { "accept", 5544 }, -- Carrion Grubbage (lvl 56, ~5800 xp, sim lvl 58)
     { "accept", 5543 }, -- Blood Tinged Skies (lvl 56, ~5800 xp, sim lvl 58)
     { "accept", 5542 }, -- Demon Dogs (lvl 56, ~5800 xp, sim lvl 58)
-    { "accept", 5544 }, -- Carrion Grubbage (lvl 56, ~5800 xp, sim lvl 58)
     { "accept", 6164 }, -- Augustus' Receipt Book (lvl 55, ~1400 xp, sim lvl 58)
     { "turnin", 5281, xp = 6600 }, -- The Restless Souls (lvl 60, ~6600 xp, sim lvl 58)
     { "accept", 5282, optional = true, dungeon = "Stratholme" }, -- The Restless Souls (lvl 60, ~0 xp, sim lvl 58)
@@ -47,9 +47,9 @@ Q:RegisterGuide({
     { "complete", 5742, at = { 1423, 5.16, 35.57 } }, -- Redemption (lvl 56, ~580 xp, sim lvl 58)
     { "turnin", 5742, xp = 580 }, -- Redemption (lvl 56, ~580 xp, sim lvl 58)
     { "accept", 5781 }, -- Of Forgotten Memories (lvl 57, ~6000 xp, sim lvl 58)
+    { "complete", 6021, at = { 1423, 23.07, 72.63 } }, -- Zaeldarr the Outcast (lvl 55, ~4200 xp, sim lvl 58)
     { "complete", 5781, at = { 1423, 23.85, 74.22 } }, -- Of Forgotten Memories (lvl 57, ~6000 xp, sim lvl 58)
     { "turnin", 6024, xp = 6600 }, -- Hameya's Plea (lvl 60, ~6600 xp, sim lvl 58)
-    { "complete", 6021, at = { 1423, 23.07, 72.63 } }, -- Zaeldarr the Outcast (lvl 55, ~4200 xp, sim lvl 58)
     { "turnin", 5781, xp = 6000 }, -- Of Forgotten Memories (lvl 57, ~6000 xp, sim lvl 58)
     { "accept", 5845 }, -- Of Lost Honor (lvl 58, ~6200 xp, sim lvl 58)
     { "turnin", 6164, xp = 1400 }, -- Augustus' Receipt Book (lvl 55, ~1400 xp, sim lvl 58)

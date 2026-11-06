@@ -1,6 +1,6 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder/classquests.lua (via build.lua). Ne pas modifier à la main.
--- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-07.
 -- Chaînes de quêtes de classe jusqu'au niveau 60 : IDs de quêtes, ordre, niveaux, IDs des objets de récompense.
 Q.ClassQuestData = {
   DRUID = {

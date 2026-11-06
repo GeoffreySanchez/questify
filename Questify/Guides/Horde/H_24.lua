@@ -1,20 +1,20 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 72 étapes, niveau final 53.00, ~57696 xp/h, 167 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-07.
+-- Simulation : 72 étapes, niveau final 53.00, ~55772 xp/h, 172 min.
 Q:RegisterGuide({
   id = "H_24",
   title = "Searing Gorge and Burning Steppes",
   faction = "Horde",
   minLevel = 52, maxLevel = 53,
   next = "H_25",
-  sim = { steps = 72, endLevel = 53.00, xpPerHour = 57696, minutes = 167 },
+  sim = { steps = 72, endLevel = 53.00, xpPerHour = 55772, minutes = 172 },
   steps = {
-    { "accept", 81953 }, -- Stonewrought Design (lvl 45, ~2340 xp, sim lvl 52)
-    { "complete", 81953, at = { 1428, 28.96, 28.93 } }, -- Stonewrought Design (lvl 45, ~2340 xp, sim lvl 52)
-    { "accept", 81955 }, -- A Mind of Metal (lvl 45, ~2340 xp, sim lvl 52)
-    { "complete", 81955, at = { 1427, 37.85, 49.45 } }, -- A Mind of Metal (lvl 45, ~2340 xp, sim lvl 52)
+    { "accept", 81953 }, -- Stonewrought Design (lvl 45, ~585 xp, sim lvl 52)
+    { "complete", 81953, at = { 1428, 28.96, 28.93 } }, -- Stonewrought Design (lvl 45, ~585 xp, sim lvl 52)
+    { "accept", 81955 }, -- A Mind of Metal (lvl 45, ~585 xp, sim lvl 52)
+    { "complete", 81955, at = { 1427, 37.85, 49.45 } }, -- A Mind of Metal (lvl 45, ~585 xp, sim lvl 52)
     { "fp", 1427, 34.84, 30.87 }, -- point de vol
     { "accept", 3441 }, -- Divine Retribution (lvl 48, ~440 xp, sim lvl 52)
     { "complete", 3441, at = { 1427, 39.06, 38.99 } }, -- Divine Retribution (lvl 48, ~440 xp, sim lvl 52)
@@ -79,9 +79,9 @@ Q:RegisterGuide({
     { "turnin", 4296, xp = 2350 }, -- Tablet of the Seven (lvl 50, ~2350 xp, sim lvl 52)
     { "turnin", 4726, xp = 5100 }, -- Broodling Essence (lvl 52, ~5100 xp, sim lvl 52)
     { "fly", 1458, node = 11, note = "Undercity, Tirisfal" }, -- vol
-    { "turnin", 81953, xp = 2340 }, -- Stonewrought Design (lvl 45, ~2340 xp, sim lvl 52)
-    { "turnin", 81955, xp = 2340 }, -- A Mind of Metal (lvl 45, ~2340 xp, sim lvl 52)
-    { "turnin", 81956, xp = 2340 }, -- Conjurer's Codex (lvl 45, ~2340 xp, sim lvl 52)
-    { "level", 53, at = { 1458, 47.96, 78.93 }, note = "About 63 more mobs here (Anya Rince, level 52)" }, -- farm de niveau
+    { "turnin", 81953, xp = 585 }, -- Stonewrought Design (lvl 45, ~585 xp, sim lvl 52)
+    { "turnin", 81955, xp = 585 }, -- A Mind of Metal (lvl 45, ~585 xp, sim lvl 52)
+    { "turnin", 81956, xp = 585 }, -- Conjurer's Codex (lvl 45, ~585 xp, sim lvl 52)
+    { "level", 53, at = { 1458, 47.96, 78.93 }, note = "About 80 more mobs here (Anya Rince, level 52)" }, -- farm de niveau
   },
 })

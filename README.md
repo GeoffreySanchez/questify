@@ -50,27 +50,11 @@ Captures et vidéos à venir : liste des prises de vue dans [docs/media/README.m
 - Un assistant de premier démarrage : addons installés ou manquants (avec leur lien CurseForge),
   itinéraire, repère, automatisations.
 
-### Builds de talents
-- 45 builds niveau par niveau pour les 9 classes (Icy Veins, Wowhead et la théorie de Questify,
-  `tools/talentbuilds/research/`), nommés « <Spé> — Leveling / Donjon / PvP / Raid ». Chaque personnage
-  suit automatiquement le build proposé pour sa spécialisation : un build actif par spécialisation
-  (principale ou secondaire).
-- Un point de talent est disponible : une fenêtre s'ouvre au centre de l'écran. « Apprendre » achète
-  les points dus en une seule validation. Jamais en combat, une seule fois par point.
-- Dans la fenêtre des talents du jeu : onglets « Build » et « Sorts à apprendre » en bas, halo doré sur
-  le prochain talent avec une ligne Questify dans son infobulle, bandeau « Build suivi ». Quand l'arbre
-  s'écarte du build, le bandeau propose « Créer un build à partir de mon arbre ». Rien n'est affiché en
-  inspectant un autre joueur ni sur la spécialisation inactive.
-- Onglet Build (éditeur) : les trois arbres et l'ordre niveau par niveau ; Enregistrer, Dupliquer,
-  Utiliser ; les builds obsolètes sont grisés et une copie garde la partie valide. Import et export
-  en texte `QFYB1:`, export de tous les builds, import d'un lien du calculateur Icy Veins. Le menu
-  à roue dentée contient l'option de la fenêtre (elle n'est plus dans les options).
-- Onglet Sorts à apprendre : sorts groupés par niveau, avec leur état, leur coût chez le maître et des
-  filtres ; « Route vers le maître le plus proche » ; les sorts liés à une quête (totems du chaman)
-  proposent « Suivre la quête » ou « Récupérer la quête ».
-- `/qf build` (ou « Build du personnage » dans le menu de la minicarte) ouvre cette fenêtre seule.
-  `/qf bug` indique pourquoi l'apprentissage en un clic est indisponible, le cas échéant.
-- L'ancien sélecteur de préréglages est retiré.
+### Builds de talents (retirés pour le moment)
+- Les builds de talents, la fenêtre « Apprendre », les onglets Build et Sorts à apprendre, `/qf build` et
+  `/qf talents` sont retirés de l'addon pour le moment. Les builds déjà enregistrés restent dans les
+  données du personnage, simplement plus lus. Les générateurs (`tools/talentbuilds/`, `tools/spells/`)
+  restent dans le dépôt ; la version 0.3.0 contient l'ancienne fonction.
 
 ### Installation
 Un seul zip, pour WoW: Forever, dans la dernière version publiée du dépôt GitHub :
@@ -176,8 +160,6 @@ addons périmés ».
 - `/qf check` : autodiagnostic (fonctions du jeu, QuestieDB, repère, navigation, route, erreurs).
 - `/qf bug` (ou `/qf report`) : rapport de bug prêt à copier (bouton « Rapport de bug » dans les
   options) ; `/qf bug clear` vide les erreurs enregistrées.
-- `/qf build` : fenêtre du build de talents et des sorts à apprendre.
-- `/qf talents` : relevé des arbres de talents du client (pour écrire les builds).
 - `/qf debug` : mode débogage ; `/qf reset` : réinitialiser la progression du personnage.
 
 Profils (section Profils des options) : par compte (profil partagé « Par défaut ») ou par personnage.
@@ -218,27 +200,11 @@ Bibliothèques incluses dans `Questify/Libs/`, copiées sans modification :
 - A first-launch wizard: installed or missing addons (with their CurseForge link), routing, marker,
   automations.
 
-### Talent builds
-- 45 level-by-level builds for the 9 classes (Icy Veins, Wowhead and Questify's own theorycraft,
-  `tools/talentbuilds/research/`), named "<Spec> — Leveling / Dungeon / PvP / Raid". Each character
-  follows the build provided for its specialization automatically: one active build per
-  specialization (primary or secondary).
-- When a talent point is available, a popup opens in the middle of the screen. "Learn" buys the due
-  points with a single confirmation. Never in combat, once per point.
-- In the game's talent window: "Build" and "Spells to learn" tabs at the bottom, a gold halo on the
-  next talent with a Questify line in its tooltip, and a "Followed build" band. When the tree drifts
-  from the build, the band offers "Create a build from my tree". Nothing is shown while inspecting
-  another player or on the inactive specialization.
-- Build tab (editor): the three trees and the level-by-level order; Save, Duplicate, Use; obsolete
-  builds are greyed out and a copy keeps the valid part. Import and export as `QFYB1:` text, export
-  of all builds, import of an Icy Veins calculator link. The gear menu holds the popup toggle (the
-  option left the Options window).
-- Spells to learn tab: spells grouped by level, with their state, trainer cost and filters; "Route to
-  the nearest trainer"; quest-gated spells (Shaman totems) offer "Track the quest" or "Pick up the
-  quest".
-- `/qf build` (or "Character build" in the minimap menu) opens this window on its own. `/qf bug`
-  reports why one-click learning is unavailable, if it is.
-- The old preset picker is removed.
+### Talent builds (removed for now)
+- Talent builds, the "Learn" popup, the Build and Spells to learn tabs, `/qf build` and `/qf talents`
+  are removed from the addon for now. Builds already saved stay in the character data, just no longer
+  read. The generators (`tools/talentbuilds/`, `tools/spells/`) stay in the repository; version 0.3.0
+  still has the old feature.
 
 ### Installation
 A single zip, for WoW: Forever, in the GitHub repository's latest release:
@@ -337,8 +303,6 @@ date AddOns".
 - `/qf check`: self-check (game functions, QuestieDB, map pin, navigation, route, errors).
 - `/qf bug` (or `/qf report`): bug report ready to copy ("Bug report" button in the options);
   `/qf bug clear` empties the saved errors.
-- `/qf build`: talent build and spells-to-learn window.
-- `/qf talents`: records the client's talent trees (to write builds).
 - `/qf debug`: debug mode; `/qf reset`: reset this character's progress.
 
 Profiles (Profiles section of the options): per account (shared "Default" profile) or per character.

@@ -423,36 +423,7 @@ function Tracker:Create()
   tr:Hide()
   self.trainerAlert, self.trainerText, self.trainerPulse = tr, trText, trPulse
 
-  -- Alerte des talents (point à dépenser, talent conseillé) : clic = la popup des talents (spec 7.6),
-  -- sinon (elle ne peut pas s'afficher) la fenêtre des talents
-  local ta = CreateFrame("Button", nil, f)
-  ta:SetHeight(20)
-  ta:RegisterForClicks("LeftButtonUp")
-  local taGlow = ta:CreateTexture(nil, "BACKGROUND")
-  taGlow:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
-  taGlow:SetBlendMode("ADD")
-  taGlow:SetVertexColor(0.3, 1, 0.4)
-  taGlow:SetAllPoints(ta)
-  local taPulse = taGlow:CreateAnimationGroup()
-  taPulse:SetLooping("BOUNCE")
-  local taFade = taPulse:CreateAnimation("Alpha")
-  taFade:SetFromAlpha(0.15)
-  taFade:SetToAlpha(0.9)
-  taFade:SetDuration(0.8)
-  local taIcon = ta:CreateTexture(nil, "ARTWORK")
-  taIcon:SetSize(16, 16)
-  taIcon:SetPoint("LEFT", ta, "LEFT", 2, 0)
-  local taText = ta:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  taText:SetPoint("LEFT", taIcon, "RIGHT", 4, 0)
-  taText:SetPoint("RIGHT", ta, "RIGHT", -2, 0)
-  taText:SetJustifyH("LEFT")
-  taText:SetWordWrap(false)
-  ta:SetScript("OnClick", function() Q.SafeCall(Tracker.OnTalentClick, Tracker) end)
-  ta:SetScript("OnEnter", function(btn) Q.SafeCall(Tracker.TalentTooltip, Tracker, btn) end)
-  ta:SetScript("OnLeave", hideTooltip)
-  ta:Hide()
-  self.talentAlert, self.talentText, self.talentIcon, self.talentPulse = ta, taText, taIcon, taPulse
-  self.glows = { glow, dgGlow, trGlow, taGlow }
+  self.glows = { glow, dgGlow, trGlow }
 
   -- Étape courante
   local cur = CreateFrame("Button", nil, f)
@@ -520,7 +491,7 @@ end
 local TEXT_ROLES = {
   message = "body", title = "title", levels = "levels", barText = "bar", xpLine = "xp",
   alertText = "classAlert", dungeonText = "dungeonAlert", trainerText = "trainerAlert",
-  talentText = "talentAlert", distance = "distance",
+  distance = "distance",
 }
 
 -- Thème du suivi : fond et bordure (opacité), couleurs du texte, de la barre et des lueurs.
@@ -767,75 +738,6 @@ function Tracker:TrainerTooltip(owner)
   showTooltip(owner, lines)
 end
 
-local TALENT_ICON = "Interface\\Icons\\Ability_Marksmanship"
-
--- Premier talent à prendre : -> nom, icône (du jeu, d'après le spellID) ou nil.
-local function nextTalent(alert)
-  local entry = alert.due and alert.due[1]
-  if not entry then return nil end
-  local name = C_Spell and C_Spell.GetSpellName and C_Spell.GetSpellName(entry.spellID)
-  local icon = C_Spell and C_Spell.GetSpellTexture and C_Spell.GetSpellTexture(entry.spellID)
-  if Q.Util.IsSecret(name) or type(name) ~= "string" then name = nil end
-  if Q.Util.IsSecret(icon) or not icon then icon = nil end
-  return name, icon
-end
-
--- Clic sur la ligne talents : la popup (I6) ; si elle ne peut pas s'afficher maintenant (arbre pas prêt…),
--- la fenêtre des talents. En combat la popup se remet à la fin du combat, rien d'autre ne s'ouvre.
-function Tracker:OnTalentClick()
-  local P = Q.UI.TalentPopup
-  if P and P:Show() then return end
-  if InCombatLockdown and InCombatLockdown() then return end
-  Q.Talents:OpenFrame()
-end
-
-local function obsoleteText(reason)
-  return string.format(L.TALENT_BAND_OBSOLETE, L["BUILD_OBSOLETE_" .. tostring(reason)] or tostring(reason))
-end
-
-function Tracker:TalentTooltip(owner)
-  local alert = Q.Talents and Q.Talents:Alert()
-  if not alert then return end
-  local lines = { string.format(L.UI_TALENT_ALERT, alert.unspent) }
-  local advice = alert.due[1] and Q.Talents:Advice(alert.due[1], alert.tree)
-  if alert.obsolete then
-    lines[#lines + 1] = obsoleteText(alert.obsolete)
-  elseif advice then
-    lines[#lines + 1] = string.format(L.UI_TALENT_NEXT, advice)
-  elseif not alert.build then
-    lines[#lines + 1] = L.UI_TALENT_NO_BUILD
-  end
-  lines[#lines + 1] = L.UI_TALENT_HINT
-  showTooltip(owner, lines)
-end
-
-function Tracker:LayoutTalentAlert(y)
-  local alert = Q.Talents and Q.Talents:Alert()
-  if not alert then
-    self.talentAlert:Hide()
-    self.talentPulse:Stop()
-    return y
-  end
-  local name, icon = nextTalent(alert)
-  if alert.obsolete then
-    self.talentText:SetText(L.UI_TALENT_ALERT_OBSOLETE)
-    self.talentIcon:SetTexture(TALENT_ICON)
-  elseif name then
-    self.talentText:SetFormattedText(L.UI_TALENT_ALERT_NEXT, name)
-    self.talentIcon:SetTexture(icon or TALENT_ICON)
-  else
-    self.talentText:SetFormattedText(L.UI_TALENT_ALERT, alert.unspent)
-    self.talentIcon:SetTexture(TALENT_ICON)
-  end
-  local f = self.frame
-  self.talentAlert:ClearAllPoints()
-  self.talentAlert:SetPoint("TOPLEFT", f, "TOPLEFT", PAD, -y)
-  self.talentAlert:SetPoint("TOPRIGHT", f, "TOPRIGHT", -PAD, -y)
-  self.talentAlert:Show()
-  if not self.talentPulse:IsPlaying() then self.talentPulse:Play() end
-  return y + 20 + 4
-end
-
 -- Place l'alerte à la hauteur y si elle doit s'afficher ; -> nouvelle hauteur.
 function Tracker:LayoutTrainerAlert(y)
   local alert = Q.Trainer and Q.Trainer:Alert()
@@ -869,9 +771,8 @@ end
 function Tracker:ShowMessage(text)
   local f = self.frame
   self.entry, self.target = nil, nil
-  for _, r in ipairs({ self.title, self.levels, self.bar, self.alert, self.trainerAlert, self.talentAlert, self.current }) do r:Hide() end
+  for _, r in ipairs({ self.title, self.levels, self.bar, self.alert, self.trainerAlert, self.current }) do r:Hide() end
   self.trainerPulse:Stop()
-  self.talentPulse:Stop()
   if self.dungeonAlert then
     self.dungeonAlert:Hide()
     self.dungeonPulse:Stop()
@@ -1284,7 +1185,6 @@ function Tracker:Refresh()
   end
   y = self:LayoutDungeonAlert(y)
   y = self:LayoutTrainerAlert(y)
-  y = self:LayoutTalentAlert(y)
 
   -- Étape courante
   local entries = Q.Progress:Entries()
@@ -1375,7 +1275,6 @@ Q:On("GUIDE_CHANGED", refresh)
 Q:On("CLASSQUESTS_CHANGED", refresh)
 Q:On("DUNGEONS_CHANGED", refresh)
 Q:On("TRAINER_CHANGED", refresh)
-Q:On("TALENTS_CHANGED", refresh)
 -- Mode zone : entrée ou sortie, objectif en tête changé : nouvelle cible, nouvelle liste.
 Q:On("ZONEMODE_CHANGED", function()
   if not Tracker.frame then return end

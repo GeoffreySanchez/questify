@@ -143,7 +143,6 @@ Q:RegisterStrings({
     UI_OPT_UPGRADE = "Announce gear upgrades in the middle of the screen",
     UI_OPT_SELLJUNK = "Sell grey items and useless white gear (hold Shift to pause)",
     UI_OPT_PROFESSIONS = "Choose professions",
-    UI_OPT_TALENTS = "Talent reminders (from level 10) and advice from your build",
     UI_PROF_TITLE = "Professions",
     UI_PROF_INTRO = "Which professions do you want to learn? The route will stop at the right trainer when you pass by.",
     UI_PROF_PRIMARY = "Primary (2 max)",
@@ -194,7 +193,7 @@ Q:RegisterStrings({
     UI_NAV_NATIVE_DESC = "The game's own map pin and 3D marker, always available.",
 
     -- Commandes
-    UI_SLASH_HELP = "/qf: journal. /qf skip, /qf back, /qf route, /qf options, /qf build, /qf wizard, /qf export, /qf check, /qf bug, /qf talents, /qf theme <name>, /qf opacity <0-100>, /qf debug, /qf reset.",
+    UI_SLASH_HELP = "/qf: journal. /qf skip, /qf back, /qf route, /qf options, /qf wizard, /qf export, /qf check, /qf bug, /qf theme <name>, /qf opacity <0-100>, /qf debug, /qf reset.",
     UI_SLASH_NO_STEP = "There is no current step.",
     UI_SLASH_THEME_SET = "Tracker theme: %s.",
     UI_SLASH_THEME_LIST = "Tracker themes: %s. Current theme: %s. Type /qf theme <name>.",
@@ -208,7 +207,6 @@ Q:RegisterStrings({
     UI_THEME_TRANSPARENT = "Transparent",
     UI_THEME_GRADIENT = "Grey fade",
     UI_SLASH_NO_BACK = "There is no earlier step to reopen.",
-    UI_SLASH_TALENTS_DUMPED = "%d talents recorded. Type /reload to save them.",
     UI_OPT_QUESTITEM = "Button for the quest item to use (key in the game's Key Bindings)",
     UI_QUESTITEM_HINT = "Click: use the item",
     UI_QUESTITEM_BINDING = "Use the quest item of the current step",
@@ -358,7 +356,6 @@ Q:RegisterStrings({
     UI_OPT_UPGRADE = "Annoncer les améliorations d'équipement au milieu de l'écran",
     UI_OPT_SELLJUNK = "Vendre le gris et l'équipement blanc inutile (Maj pour suspendre)",
     UI_OPT_PROFESSIONS = "Choisir les métiers",
-    UI_OPT_TALENTS = "Rappels de talents (dès le niveau 10) et conseils de ton build",
     UI_PROF_TITLE = "Métiers",
     UI_PROF_INTRO = "Quels métiers veux-tu apprendre ? La route s'arrêtera chez le bon maître quand tu passeras à côté.",
     UI_PROF_PRIMARY = "Principaux (2 au plus)",
@@ -409,7 +406,7 @@ Q:RegisterStrings({
     UI_NAV_NATIVE_DESC = "Le repère de carte et le marqueur 3D du jeu, toujours disponibles.",
 
     -- Commandes
-    UI_SLASH_HELP = "/qf : journal. /qf skip, /qf back, /qf route, /qf options, /qf build, /qf wizard, /qf export, /qf check, /qf bug, /qf talents, /qf theme <nom>, /qf opacity <0-100>, /qf debug, /qf reset.",
+    UI_SLASH_HELP = "/qf : journal. /qf skip, /qf back, /qf route, /qf options, /qf wizard, /qf export, /qf check, /qf bug, /qf theme <nom>, /qf opacity <0-100>, /qf debug, /qf reset.",
     UI_SLASH_NO_STEP = "Aucune étape en cours.",
     UI_SLASH_THEME_SET = "Thème du suivi : %s.",
     UI_SLASH_THEME_LIST = "Thèmes du suivi : %s. Thème actuel : %s. Tape /qf theme <nom>.",
@@ -423,7 +420,6 @@ Q:RegisterStrings({
     UI_THEME_TRANSPARENT = "Transparent",
     UI_THEME_GRADIENT = "Fondu de gris",
     UI_SLASH_NO_BACK = "Aucune étape précédente à rouvrir.",
-    UI_SLASH_TALENTS_DUMPED = "%d talents relevés. Tape /reload pour les enregistrer.",
     UI_OPT_QUESTITEM = "Bouton de l'objet de quête à utiliser (touche dans les Raccourcis du jeu)",
     UI_QUESTITEM_HINT = "Clic : utiliser l'objet",
     UI_QUESTITEM_BINDING = "Utiliser l'objet de quête de l'étape courante",

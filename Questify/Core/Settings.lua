@@ -18,7 +18,6 @@ Settings.defaults = {
   trainerAlert = true,
   upgradePopup = true,
   sellJunk = true,
-  talentAlert = true,
   questItemButton = true,
   telemetry = true,
   -- Confort de jeu

@@ -9,7 +9,7 @@ l'envoi automatique des versions.
 |---|---|
 | **Project name** | `Questify` |
 | **Logo** | [`docs/curseforge/logo-400.png`](curseforge/logo-400.png) (400 × 400). Grande version : [`logo-1024.png`](curseforge/logo-1024.png), source : [`logo.svg`](curseforge/logo.svg). Dessin original : un « Q » en boussole dont la queue mène à un repère ; ni logo du jeu, ni élément de Blizzard. |
-| **Summary** (anglais, une ligne) | `Free, open-source leveling guide: optimized step-by-step routes, navigation, talent builds and quest automation.` |
+| **Summary** (anglais, une ligne) | `Free, open-source leveling guide: optimized step-by-step routes, navigation and quest automation.` |
 | **Class** | Addons |
 | **Main category** | Quests & Leveling |
 | **Additional categories** | Map & Minimap ; Class (si la catégorie est proposée) |
@@ -62,10 +62,6 @@ toutes les races et les deux factions.
 - Navigation : repère 3D natif, ou ShortestPath Forever, WaypointUI, TomTom.
 - Mode zone : objectifs de plusieurs quêtes regroupés (objets, nommés, puis monstres).
 - Monstres à tuer sous l'objectif : un clic cible et pose le crâne.
-- **Builds de talents niveau par niveau** pour les 9 classes, suivis tout seuls selon ta spécialisation :
-  à chaque point, une fenêtre « Apprendre » ; halo sur le bon talent dans la fenêtre des talents ;
-  éditeur pour créer, partager (texte `QFYB1:`) ou importer un lien du calculateur Icy Veins.
-- **Sorts à apprendre** : prix chez le maître, route vers le maître le plus proche, quêtes de totems.
 - Quêtes de classe et donjons conseillés selon ton niveau et ta faction, ajoutables à la route.
 - Acceptation, rendu et choix de récompense automatiques (désactivables).
 - Épingles numérotées sur la carte du monde.
@@ -81,13 +77,8 @@ every race and both factions.
   back-and-forth; progress follows your quest log.
 - Navigation: native marker, ShortestPath Forever, WaypointUI or TomTom; zone mode; mob targeting with
   a skull marker; numbered map pins.
-- **Level-by-level talent builds** for all 9 classes, followed automatically for your specialization:
-  a "Learn" popup at each point, a halo on the right talent in the talent window, and an editor to create,
-  share (`QFYB1:` text) or import an Icy Veins calculator link.
-- **Spells to learn**: trainer cost, route to the nearest trainer, totem quests.
 - Class quests and suggested dungeons; optional auto accept / turn-in / reward choice.
 
 **Required:** QuestieDB. **Optional:** ShortestPath Forever, WaypointUI, TomTom.
 
-Talent builds credit their sources (Icy Veins, Wowhead) or come from Questify's own analysis.
 Code, issues, wiki and installation guide: <https://github.com/questify-addon/questify>

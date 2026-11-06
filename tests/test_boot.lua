@@ -121,11 +121,16 @@ return {
       end
     end
     t.ok(count > 50, "TOC lists its files")
-    for _, name in ipairs({ "Engine\\TalentTree.lua", "Engine\\Builds.lua", "Engine\\TalentLearn.lua",
-      "Engine\\BuildEditor.lua", "Engine\\BuildCodec.lua", "Engine\\SpellList.lua", "UI\\TalentPopup.lua",
-      "UI\\TalentFrameHook.lua", "UI\\BuildWindow.lua", "UI\\BuildPane.lua", "UI\\SpellsPane.lua",
-      "Data\\TalentBuilds.lua", "Data\\ClassSpells.lua", "Data\\SpellQuests.lua" }) do
-      t.ok(a:find(name, 1, true), "TOC lists " .. name)
+    -- builds et arbres de talents retirés pour le moment : absents du TOC
+    -- (Trainer et ClassSpells restent : l'alerte du maître de classe s'en sert)
+    for _, name in ipairs({ "Engine\\Talents.lua", "Engine\\TalentTree.lua", "Engine\\Builds.lua",
+      "Engine\\TalentLearn.lua", "Engine\\BuildEditor.lua", "Engine\\BuildCodec.lua", "Engine\\SpellList.lua",
+      "UI\\TalentPopup.lua", "UI\\TalentFrameHook.lua", "UI\\BuildWindow.lua", "UI\\BuildPane.lua",
+      "UI\\SpellsPane.lua", "Data\\TalentBuilds.lua", "Data\\SpellQuests.lua", "Locales\\StringsTalents.lua" }) do
+      t.ok(not a:find(name, 1, true), "TOC no longer lists " .. name)
+    end
+    for _, name in ipairs({ "Engine\\Trainer.lua", "Data\\ClassTrainers.lua", "Data\\ClassSpells.lua" }) do
+      t.ok(a:find(name, 1, true), "TOC still lists " .. name)
     end
     t.ok(not a:find("TalentPicker", 1, true), "old picker not listed")
   end,

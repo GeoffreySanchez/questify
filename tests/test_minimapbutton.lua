@@ -85,7 +85,7 @@ return {
     t.eq(radios[2].text, Q.L.REWARD_SPEC_SHAMAN_CASTER)
     for _, r in ipairs(radios) do t.eq(r.isSelected(r.data), r.data == "melee", "checked: " .. r.data) end
     t.eq(keys(Ext.menuElements("checkbox")), { "autoQuest", "autoReward", "zoneMode", "mapPins" })
-    t.eq(keys(Ext.menuElements("button")), { "options", "journal", "build", "wizard", "bug" })
+    t.eq(keys(Ext.menuElements("button")), { "options", "journal", "wizard", "bug" })
     t.eq(Ext.menuElements("button", "options")[1].text, Q.L.MINIMAP_MENU_OPTIONS)
     t.ok(#Ext.menuElements("divider") >= 1)
     noErrors(t)

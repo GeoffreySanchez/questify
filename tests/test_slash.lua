@@ -117,6 +117,17 @@ return {
     t.eq(Mock.countPrinted(Q.L.UI_SLASH_HELP), 2)
   end,
 
+  -- builds et talents retirés pour le moment : /qf build et /qf talents tombent sur l'aide
+  slash_build_and_talents_are_unknown_commands = function(t)
+    local Q = load()
+    qf("build")
+    t.eq(Mock.countPrinted(Q.L.UI_SLASH_HELP), 1, "/qf build shows the help")
+    qf("talents")
+    t.eq(Mock.countPrinted(Q.L.UI_SLASH_HELP), 2, "/qf talents shows the help")
+    t.ok(not Q.UI.BuildWindow and not QuestifyBuildWindow, "no build window")
+    t.eq(#Mock.errors, 0)
+  end,
+
   slash_errors_are_contained = function(t)
     local Q = load()
     Q.Progress.Back = function() error("boom") end

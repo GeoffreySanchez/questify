@@ -253,7 +253,6 @@ Q.charDefaults = {
   classQuests = { added = {}, ignored = {}, seen = {} },
   telemetry = {},
   wizardDone = nil,
-  talentPopup = { seen = 0, level = 0 }, -- UI/TalentPopup.lua : dernier nombre de points annoncé et niveau
   -- rewardRole (Automation/Rewards.lua) : profil de butin propre au personnage, hors profils
   -- d'options ; absent = "auto" (pas de valeur par défaut : la migration des profils lit nil)
   specRoleAnswered = {}, -- Automation/SpecRole.lua : spécialisations pour lesquelles « Non » a été répondu

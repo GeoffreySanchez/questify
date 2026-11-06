@@ -1,5 +1,5 @@
--- Vérification des sorts de classe (Data/ClassSpells.lua et Data/SpellQuests.lua, générés par
--- tools/spells/build_spells.lua) : volume, niveaux, rangs, liens vers les chaînes de quêtes de classe.
+-- Vérification des sorts de classe (Data/ClassSpells.lua, généré par tools/spells/build_spells.lua) :
+-- volume, niveaux, rangs.
 local TOC = "Questify/Questify.toc"
 
 local function load()
@@ -54,54 +54,6 @@ return {
       end
     end
     t.ok(count > 0, "some spells have ranks")
-  end,
-
-  -- chainKey = « ce sort EXIGE cette chaîne de quêtes » (totems du Chaman), pas « appris par la quête ».
-  spell_quest_links_use_existing_chain_keys = function(t)
-    local Q = load()
-    local keys = {}
-    for _, list in pairs(Q.ClassQuestData) do
-      for _, chain in ipairs(list) do keys[chain.key] = true end
-    end
-    t.ok(next(keys) ~= nil, "ClassQuestData loaded")
-    t.ok(type(Q.SpellQuestData) == "table", "SpellQuestData")
-    local n = 0
-    for spellID, key in pairs(Q.SpellQuestData) do
-      n = n + 1
-      t.ok(keys[key], tostring(spellID) .. " chain " .. tostring(key))
-    end
-    for spellID, list in pairs(Q.SpellQuestChains) do
-      t.ok(Q.SpellQuestData[spellID] == list[1], tostring(spellID) .. " primary chain is first")
-      for _, key in ipairs(list) do t.ok(keys[key], tostring(spellID) .. " chain " .. tostring(key)) end
-    end
-    t.ok(n > 0, "some spells need a quest chain")
-    t.ok(Q.SpellQuestChains[3599] == Q.SpellQuestChains[6363], "one shared table per chain")
-  end,
-
-  searing_totem_needs_call_of_fire = function(t)
-    local Q = load()
-    t.eq(Q.SpellQuestData[3599], "SHAMAN_94449", "Searing Totem needs Call of Fire")
-  end,
-
-  -- M3 : Sentry Totem est un totem d'air : il demande Call of Air, pas Call of Earth.
-  sentry_totem_needs_call_of_air = function(t)
-    local Q = load()
-    t.eq(Q.SpellQuestData[6495], "SHAMAN_94789", "Sentry Totem needs Call of Air")
-    t.eq(Q.SpellQuestData[8071], "SHAMAN_94373", "Stoneskin Totem still needs Call of Earth")
-  end,
-
-  no_talent_spell_in_the_spell_list = function(t)
-    local Q = load()
-    for class, list in pairs(Q.ClassSpellData) do
-      local talents = Q.TalentShapeData[class] -- clés : spellID du rang 1 de chaque talent
-      t.ok(type(talents) == "table", class .. " shape")
-      local n = 0
-      for _, s in ipairs(list) do
-        n = n + 1
-        t.ok(not talents[s.spellID], class .. " talent " .. s.spellID .. " in spell list")
-      end
-      t.ok(n > 0, class .. " non-empty")
-    end
   end,
 
   mage_level_1_is_fireball_and_no_talent = function(t)

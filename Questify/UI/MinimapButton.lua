@@ -197,11 +197,6 @@ function Button:OpenJournal(tab)
   if J then J:ShowTab(tab or "route") end
 end
 
-function Button:OpenBuild()
-  local W = Q.UI.BuildWindow
-  if W then W:Open("build") end
-end
-
 function Button:ToggleJournal()
   local J = Q.UI.Journal
   if J then J:Toggle() end
@@ -248,8 +243,6 @@ function Button:MenuEntries()
     run = function() Button:OpenOptions() end }
   out[#out + 1] = { kind = "button", key = "journal", text = L.MINIMAP_MENU_JOURNAL,
     run = function() Button:OpenJournal("route") end }
-  out[#out + 1] = { kind = "button", key = "build", text = L.MINIMAP_MENU_BUILD,
-    run = function() Button:OpenBuild() end }
   out[#out + 1] = { kind = "button", key = "wizard", text = L.MINIMAP_MENU_WIZARD,
     run = function() Button:OpenWizard() end }
   out[#out + 1] = { kind = "button", key = "bug", text = L.MINIMAP_MENU_BUG,

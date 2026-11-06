@@ -3,6 +3,9 @@
 ## Non publié
 
 ### Français
+- Builds de talents, popup de talent, onglets Build / Sorts à apprendre : retirés pour le moment
+  (`/qf build` et `/qf talents` aussi). Les builds déjà enregistrés restent dans les données du
+  personnage, simplement plus lus.
 - Itinéraire ShortestPath avec WaypointUI : le repère ne part plus dans le coin nord-ouest de la
   carte (« Trajet vers … 2129 yds » pour un PNJ à 65 yards). ShortestPath confie ses virages à
   WaypointUI en coordonnées 0-1, que WaypointUI lit en 0-100 ; Questify convertit ces coordonnées au
@@ -11,12 +14,6 @@
 - Itinéraire ShortestPath avec WaypointUI : plus de « ding » à chaque virage (les virages passent en
   silence), un virage identique n'est pas reposé, et le repère ne saute plus sur la cible puis sur le
   virage à chaque nouvelle cible (toutes les 3 s pendant un objectif).
-- Talents : les builds fournis ne sont plus tous marqués « obsolète » en jeu. Dans Forever, un talent
-  appartient à la fois à son arbre (Élémentaire, Amélioration, Restauration…) et à des groupes de
-  palier, dans un ordre quelconque ; Questify prenait le premier groupe pour l'arbre et ne lisait que
-  7 talents sur 50 (relevé du chaman). Il prend maintenant celui qui est un arbre.
-- `/qf talents` : le relevé se fait aussi sans l'API des points restants, et enregistre l'arbre tel que
-  Questify le lit et la validation de chaque build de la classe (raison, point et talent en cause).
 - Journal : un chapitre fini (par exemple après un clic droit de trop sur sa dernière étape, qui fait
   passer au chapitre suivant) peut être rechoisi dans l'onglet Route et reste affiché ; on y rouvre
   l'étape passée avec `/qf back` ou en cliquant dessus. Avant, le journal renvoyait aussitôt au chapitre
@@ -34,6 +31,8 @@
   directement, par le bateau de Stormwind.
 
 ### English
+- Talent builds, talent popup, Build / Spells to learn tabs: removed for now (`/qf build` and
+  `/qf talents` too). Builds already saved stay in the character data, just no longer read.
 - ShortestPath routing with WaypointUI: the waypoint no longer lands in the north-west corner of the
   map ("Journey to … 2129 yds" for an NPC 65 yards away). ShortestPath hands its turns to WaypointUI in
   0-1 coordinates, which WaypointUI reads as 0-100; Questify converts them on the way, when both addons
@@ -41,12 +40,6 @@
 - ShortestPath routing with WaypointUI: no more "ding" on every turn (turns are silent), an identical
   turn is not placed again, and the waypoint no longer jumps to the target and back to the turn on
   every new target (every 3 s during an objective).
-- Talents: the shipped builds are no longer all marked "obsolete" in game. In Forever, a talent belongs
-  both to its tree (Elemental, Enhancement, Restoration…) and to tier groups, in any order; Questify
-  took the first group as the tree and read only 7 talents out of 50 (shaman dump). It now takes the
-  one that is a tree.
-- `/qf talents`: the dump also works without the unspent-points API, and records the tree as Questify
-  reads it and the validation of each build of the class (reason, point and talent at fault).
 - Journal: a finished chapter (for example after one right-click too many on its last step, which moves
   on to the next chapter) can be chosen again in the Route tab and stays shown; reopen the skipped step
   with `/qf back` or by clicking it. Before, the journal sent you straight back to the next chapter and

@@ -1,8 +1,8 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 37 étapes, niveau final 14.02, ~20047 xp/h, 35 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-07.
+-- Simulation : 38 étapes, niveau final 14.02, ~20887 xp/h, 33 min.
 Q:RegisterGuide({
   id = "H_Undead_03",
   title = "Silverpine Forest",
@@ -10,7 +10,7 @@ Q:RegisterGuide({
   races = { "Undead" },
   minLevel = 12, maxLevel = 14,
   nextByRace = { Undead = "H_01" },
-  sim = { steps = 37, endLevel = 14.02, xpPerHour = 20047, minutes = 35 },
+  sim = { steps = 38, endLevel = 14.02, xpPerHour = 20887, minutes = 33 },
   steps = {
     { "accept", 437 }, -- The Dead Fields (lvl 14, ~980 xp, sim lvl 13)
     { "accept", 79096 }, -- Ataeric: On Arcane Curiosities (lvl 20, ~1550 xp, sim lvl 13)
@@ -49,5 +49,6 @@ Q:RegisterGuide({
     { "turnin", 491, xp = 1700 }, -- Wand to Bethor (lvl 18, ~1700 xp, sim lvl 13)
     { "turnin", 440, xp = 580 }, -- The Engraved Ring (lvl 16, ~580 xp, sim lvl 13)
     { "boat", 1420, 60.7, 58.9, note = "Take the zeppelin to Orgrimmar (Durotar)" }, -- bateau
+    { "fp", 1454, 45.12, 63.89 }, -- point de vol
   },
 })

@@ -1,7 +1,7 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-07.
 -- Simulation : 44 étapes, niveau final 17.07, ~18059 xp/h, 78 min.
 Q:RegisterGuide({
   id = "A_DwarfGnome_04",

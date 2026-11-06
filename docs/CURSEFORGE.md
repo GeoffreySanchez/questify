@@ -9,7 +9,7 @@ l'envoi automatique des versions.
 |---|---|
 | **Project name** | `Questify` |
 | **Logo** | [`docs/curseforge/logo-400.png`](curseforge/logo-400.png) (400 × 400). Grande version : [`logo-1024.png`](curseforge/logo-1024.png), source : [`logo.svg`](curseforge/logo.svg). Dessin original : un « Q » en boussole dont la queue mène à un repère ; ni logo du jeu, ni élément de Blizzard. |
-| **Summary** (anglais, une ligne) | `Free, open-source leveling guide: optimized step-by-step routes, navigation and quest automation.` |
+| **Summary** (anglais, une ligne, 256 caractères au plus) | `Free, open-source 1-60 leveling guide for WoW: Forever — optimised routes, automatic quest tracking, navigation, class quests and dungeons.` |
 | **Class** | Addons |
 | **Main category** | Quests & Leveling |
 | **Additional categories** | Map & Minimap ; Class (si la catégorie est proposée) |
@@ -50,39 +50,68 @@ Type de fichier : « release » pour un tag `vX.Y.Z`, « beta » pour `vX.Y.Z-be
 
 ## 3. Description (à coller)
 
+Anglais d'abord, français ensuite. À coller dans l'onglet « Description » du projet. L'éditeur du projet
+est en mode WYSIWYG : y coller le texte mis en forme (rendu HTML de cette section), pas le Markdown brut.
+Chaque onglet de l'espace auteur s'enregistre à part : enregistrer « General » avant de passer à « Description ».
+
 ---
 
-## Questify — free leveling guide for WoW: Forever
+# Questify — free 1-60 leveling guide for WoW: Forever
 
-**Français** — Guide de leveling **gratuit et open source** pour World of Warcraft: Forever, niveaux 1 à 30,
-toutes les races et les deux factions.
+A **free and open-source** leveling guide for World of Warcraft: Forever, **levels 1 to 60**, every race and both
+factions. Questify plans your whole route, follows your quest log on its own and points you to the next thing to do.
 
-- Route optimisée étape par étape : toutes les quêtes d'un avant-poste prises d'un coup, un seul passage
-  par zone d'objectifs, pas d'aller-retour inutile.
-- Étapes cochées automatiquement selon ton journal ; étapes impossibles pour ton personnage sautées.
-- Navigation : repère 3D natif, ou ShortestPath Forever, WaypointUI, TomTom.
-- Mode zone : objectifs de plusieurs quêtes regroupés (objets, nommés, puis monstres).
-- Monstres à tuer sous l'objectif : un clic cible et pose le crâne.
-- Quêtes de classe et donjons conseillés selon ton niveau et ta faction, ajoutables à la route.
-- Acceptation, rendu et choix de récompense automatiques (désactivables).
-- Épingles numérotées sur la carte du monde.
+## Why Questify
+- **Optimised 1-60 routes.** Every chapter is built from QuestieDB and measured with a route simulator: whole hub
+  pickups, one pass per objective area, grouped turn-ins, smart hearthstone use, minimal grinding, no continent
+  ping-pong. About 85-88 hours of simulated play from 1 to 60, depending on your race.
+- **Follows your quest log.** Steps tick themselves; steps your character cannot do are skipped.
+- **Choose your next zone.** At the end of some chapters, large cards compare the next zones (levels, quests, XP per
+  hour, travel) and Questify recommends one.
+- **Navigation your way.** Native 3D waypoint, or ShortestPath Forever, WaypointUI or TomTom; caves are entered by
+  their entrance; numbered pins on the world map.
+- **Zone mode and mob targeting.** Objectives of several quests in one place are grouped; the monsters to kill are
+  listed under the objective, one click targets them and puts a skull on them.
+- **Class quests and dungeons.** Class quests are offered when your route passes their giver, overdue ones come
+  first in the journal; dungeons from Ragefire Chasm to Stratholme are suggested for your level with their quests.
+- **Comfort.** Optional auto accept / turn-in / best reward, gear upgrades announced (and equipped in one click),
+  junk sold, outpost alert when your bags are nearly full or you lack food or drink, profession training reminders.
+- **Your style.** Four tracker themes, adjustable transparency, option profiles you can share, English and French.
 
-**Requis :** [QuestieDB](https://www.curseforge.com/wow/addons/questiedb).
-**Optionnels :** [ShortestPath Forever](https://www.curseforge.com/wow/addons/shortest-path-forever),
+**Required:** [QuestieDB](https://www.curseforge.com/wow/addons/questiedb).
+**Optional:** [ShortestPath Forever](https://www.curseforge.com/wow/addons/shortest-path-forever),
 [WaypointUI](https://www.curseforge.com/wow/addons/waypointui), [TomTom](https://www.curseforge.com/wow/addons/tomtom).
 
-**English** — A **free and open-source** leveling guide for World of Warcraft: Forever, levels 1 to 30,
-every race and both factions.
+Commands: `/qf` (journal), `/qf route`, `/qf class`, `/qf options`, `/qf help`.
+Code, issues, wiki and install guide: <https://github.com/questify-addon/questify> — feedback welcome.
 
-- Optimized step-by-step routes: whole hub pickups, one pass per objective area, no pointless
-  back-and-forth; progress follows your quest log.
-- Navigation: native marker, ShortestPath Forever, WaypointUI or TomTom; zone mode; mob targeting with
-  a skull marker; numbered map pins.
-- Class quests and suggested dungeons; optional auto accept / turn-in / reward choice.
+---
 
-**Required:** QuestieDB. **Optional:** ShortestPath Forever, WaypointUI, TomTom.
+# Questify — guide de leveling 1-60 gratuit pour WoW: Forever
 
-Code, issues, wiki and installation guide: <https://github.com/questify-addon/questify>
+Guide de leveling **gratuit et open source** pour World of Warcraft: Forever, **niveaux 1 à 60**, toutes les races et
+les deux factions. Questify prévoit toute ta route, suit ton journal de quêtes tout seul et t'indique quoi faire
+ensuite.
+
+- **Routes 1-60 optimisées** : chaque chapitre est construit à partir de QuestieDB et mesuré au simulateur ; toutes les
+  quêtes d'un avant-poste prises d'un coup, un seul passage par zone d'objectifs, rendus groupés, pierre de foyer bien
+  utilisée, farm minimal, pas d'allers-retours entre continents. Environ 85 à 88 h de jeu simulé de 1 à 60 selon la race.
+- **Suit ton journal** : les étapes se cochent seules ; celles que ton personnage ne peut pas faire sont sautées.
+- **Choix de la zone suivante** : en fin de certains chapitres, de grandes cartes comparent les zones possibles et
+  Questify en conseille une.
+- **Navigation au choix** : repère 3D du jeu, ShortestPath Forever, WaypointUI ou TomTom ; entrée des grottes ;
+  épingles numérotées sur la carte du monde.
+- **Mode zone et ciblage** : objectifs regroupés, monstres à tuer listés sous l'objectif, un clic les cible et pose le
+  crâne.
+- **Quêtes de classe et donjons** : quêtes de classe proposées quand la route passe chez le donneur, celles en retard en
+  tête du journal ; donjons du Gouffre de Ragefeu à Stratholme conseillés selon ton niveau.
+- **Confort** : acceptation, rendu et meilleure récompense automatiques (désactivables), améliorations d'équipement
+  annoncées et équipées en un clic, camelote vendue, alerte d'avant-poste (sacs pleins, nourriture, boisson),
+  rappels de métiers.
+- **À ton goût** : quatre thèmes du suivi, transparence réglable, profils d'options partageables, anglais et français.
+
+**Requis :** QuestieDB. **Optionnels :** ShortestPath Forever, WaypointUI, TomTom.
+Commandes : `/qf` (journal), `/qf route`, `/qf classe`, `/qf options`, `/qf help`.
 
 ---
 
@@ -107,5 +136,5 @@ champ « Description » de chaque image (le titre peut reprendre sa première pa
 | 10 | [`en/08b-journal-options.png`](media/apercus/en/08b-journal-options.png) | The options window: eleven sections, search, an "i" help on every setting, and profiles you can share. |
 | 11 | [`en/bonus-themes.png`](media/apercus/en/bonus-themes.png) | Four tracker themes: Parchment (default), Black, Transparent and Grey fade. |
 
-La maquette du choix de suite (popup refaite en v2) et celle de l'alerte d'avant-poste viendront plus
-tard.
+La maquette du choix de suite v2 et celle de l'alerte d'avant-poste viendront avec les captures en jeu
+(`/qf demo`, voir docs/media/CAPTURES-EN-JEU.md).

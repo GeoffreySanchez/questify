@@ -1,15 +1,15 @@
 # H_Skyborne_01 — Zephras Isle
 
-Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d306458a95` by `tools/routebuilder/build.lua`. Simulated race: Skyborne.
+Generated on 2026-11-07 from QuestieDB commit `80866960788084ae1592abf66a08f0d306458a95` by `tools/routebuilder/build.lua`. Simulated race: Skyborne.
 
 | Item | Value |
 |---|---|
 | Level band | 1-15 |
 | Simulated level | 1.00 -> 17.98 |
-| Time | 247 min |
+| Time | 249 min |
 | XP gained | 126105 |
-| XP/h | 30647 |
-| Steps | 211 |
+| XP/h | 30387 |
+| Steps | 210 |
 | Quests turned in | 73 |
 | Hubs | 15 |
 | Median ratio (XP/s) | 4.36 |
@@ -485,7 +485,6 @@ Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint la
 - step 136: `level 12` — About 1 mobs here (Al'Aketh Stormchaser, level 10)
 - step 202: `hearth 2521`
 - step 210: `boat 2521 58.1 80.4` — Take the skyboat to Skywatcher Plateau (west dock of Valanaar)
-- step 211: `fp 1413 51.5 30.34`
 
 ## Warnings
 

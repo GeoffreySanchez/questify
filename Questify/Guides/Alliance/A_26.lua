@@ -1,15 +1,15 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 78 étapes, niveau final 56.00, ~59245 xp/h, 359 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-07.
+-- Simulation : 79 étapes, niveau final 56.00, ~59218 xp/h, 359 min.
 Q:RegisterGuide({
   id = "A_26",
   title = "Un'Goro Crater",
   faction = "Alliance",
   minLevel = 54, maxLevel = 56,
   next = "A_27",
-  sim = { steps = 78, endLevel = 56.00, xpPerHour = 59245, minutes = 359 },
+  sim = { steps = 79, endLevel = 56.00, xpPerHour = 59218, minutes = 359 },
   steps = {
     { "hearth", 1446 }, -- pierre de foyer
     { "goto", 1446, 51.01, 29.34, note = "Flight master" }, -- déplacement
@@ -79,6 +79,7 @@ Q:RegisterGuide({
     { "turnin", 4288, xp = 3950 }, -- The Western Pylon (lvl 53, ~3950 xp, sim lvl 54)
     { "turnin", 4287, xp = 3950 }, -- The Eastern Pylon (lvl 53, ~3950 xp, sim lvl 54)
     { "accept", 4321 }, -- Making Sense of It (lvl 53, ~530 xp, sim lvl 54)
+    { "complete", 4321, at = { 1449, 41.92, 2.7 } }, -- Making Sense of It (lvl 53, ~530 xp, sim lvl 54)
     { "turnin", 4321, xp = 530 }, -- Making Sense of It (lvl 53, ~530 xp, sim lvl 54)
     { "goto", 1449, 45.23, 5.83, note = "Flight master" }, -- déplacement
     { "fly", 1448, node = 65, note = "Talonbranch Glade, Felwood" }, -- vol

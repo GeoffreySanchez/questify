@@ -1,97 +1,112 @@
 # Changelog
 
-## Non publié
-
-### Français
-- Alerte d'avant-poste : en ville, à l'auberge ou juste après un marchand, Questify prévient une fois
-  par passage, avant de repartir, s'il reste moins de 6 places libres dans les sacs (ou moins de 20 %),
-  s'il n'y a plus de nourriture, ou plus de boisson pour les classes à mana, et si l'équipement est à
-  réparer. Ligne dans le suivi, message au milieu de l'écran et dans la discussion, regroupés.
-- Quêtes de classe en retard : entrée « Quêtes de classe » dans le menu de la minicarte et `/qf classe`
-  ouvrent l'onglet du journal ; les quêtes en retard y sont en tête (« En retard (niv. N) ») avec
-  « Ajouter à la route » en un clic, même ignorées ; le suivi dit « Quête de classe en retard ».
-- Builds de talents, popup de talent, onglets Build / Sorts à apprendre : retirés pour le moment
-  (`/qf build` et `/qf talents` aussi). Les builds déjà enregistrés restent dans les données du
-  personnage, simplement plus lus.
-- Itinéraire ShortestPath avec WaypointUI : le repère ne part plus dans le coin nord-ouest de la
-  carte (« Trajet vers … 2129 yds » pour un PNJ à 65 yards). ShortestPath confie ses virages à
-  WaypointUI en coordonnées 0-1, que WaypointUI lit en 0-100 ; Questify convertit ces coordonnées au
-  passage, quand les deux addons sont chargés. Les trajets lancés soi-même avec ShortestPath en
-  profitent aussi.
-- Itinéraire ShortestPath avec WaypointUI : plus de « ding » à chaque virage (les virages passent en
-  silence), un virage identique n'est pas reposé, et le repère ne saute plus sur la cible puis sur le
-  virage à chaque nouvelle cible (toutes les 3 s pendant un objectif).
-- Journal : un chapitre fini (par exemple après un clic droit de trop sur sa dernière étape, qui fait
-  passer au chapitre suivant) peut être rechoisi dans l'onglet Route et reste affiché ; on y rouvre
-  l'étape passée avec `/qf back` ou en cliquant dessus. Avant, le journal renvoyait aussitôt au chapitre
-  suivant et il n'y avait aucun moyen de revenir.
-- Choix de suite : en fin de chapitre, quand plusieurs zones peuvent suivre, des cartes au milieu de
-  l'écran les présentent (niveaux, quêtes et XP des remises, durée et XP/h simulées, trajet), avec celle
-  que Questify conseille, un liseré doré, le badge « Conseillé » et sa raison (meilleure XP par heure,
-  mieux adapté à ton niveau, trajet le plus court). « Y aller », « Garder la route prévue » ou
-  « Plus tard » : le suivi rappelle alors le choix, et un clic dessus ou `/qf route` le rouvre. On peut
-  aussi choisir d'avance pendant le chapitre, ou revenir sur son choix plus tard (`/qf route`, bouton
-  « Changer de route » du journal). Une seule suite : on y passe comme avant, avec un message
-  « Chapitre suivant : … ». Option « Choisir la suite en fin de chapitre » (section Route) : désactivée,
-  la route par défaut est suivie sans demander. Jamais en combat : le choix s'ouvre à la fin du combat.
-- Premier choix : après Loch Modan (Nain, Gnome), la Marche de l'Ouest (route prévue) ou Sombrivage
-  directement, par le bateau de Stormwind.
-- Choix de suite, nouvelle fenêtre : grande fenêtre au milieu de l'écran sur un voile sombre, grandes
-  cartes avec la carte du monde de la zone en fond (ou une image de la zone quand elle est fournie), nom
-  de la zone en gros, niveaux en badge, chiffres avec icônes, points forts tirés des données (donjon de
-  la tranche, quête de classe de la zone, points de vol) ; la carte conseillée a un halo doré qui pulse
-  doucement. Clic sur une carte pour y aller ; au clavier, flèches pour changer de carte puis Entrée
-  pour choisir (Entrée seule ne choisit rien : elle reste à la discussion), Échap pour « Plus tard ». La fenêtre se ferme d'elle-même quand un combat commence et revient
-  à la fin tant que le choix n'est pas fait ; fermée par le joueur, elle ne revient plus d'elle-même
-  (même après /reload) jusqu'à la prochaine connexion : le suivi et `/qf route` la rouvrent.
-- Noms de chapitres traduits partout (suivi, journal, choix de suite, message « Chapitre suivant ») :
-  les zones prennent le nom des cartes du jeu (« Marche de l'Ouest », « Orneval et Les
-  Serres-Rocheuses ») et les zones de départ ont leur nom français (« Vallée de Froidecrête »,
-  « Comté-du-Nord », « Le Glas »…). Avant, un client français affichait « Westfall ».
+## 0.4.0 (2026-11-07)
 
 ### English
-- Outpost alert: in a town, at an inn or right after a merchant, Questify warns once per visit, before
-  you leave, when fewer than 6 bag slots (or under 20%) are free, when you have no food, or no drink for
-  mana classes, and when your gear needs repairs. Tracker line, centre-screen and chat message, grouped.
-- Overdue class quests: a "Class quests" entry in the minimap menu and `/qf class` open the journal tab;
-  overdue quests come first ("Overdue (lvl N)") with a one-click "Add to route", even when ignored; the
-  tracker says "Class quest overdue".
-- Talent builds, talent popup, Build / Spells to learn tabs: removed for now (`/qf build` and
-  `/qf talents` too). Builds already saved stay in the character data, just no longer read.
-- ShortestPath routing with WaypointUI: the waypoint no longer lands in the north-west corner of the
-  map ("Journey to … 2129 yds" for an NPC 65 yards away). ShortestPath hands its turns to WaypointUI in
-  0-1 coordinates, which WaypointUI reads as 0-100; Questify converts them on the way, when both addons
-  are loaded. Journeys you start yourself with ShortestPath benefit too.
-- ShortestPath routing with WaypointUI: no more "ding" on every turn (turns are silent), an identical
-  turn is not placed again, and the waypoint no longer jumps to the target and back to the turn on
-  every new target (every 3 s during an objective).
-- Journal: a finished chapter (for example after one right-click too many on its last step, which moves
-  on to the next chapter) can be chosen again in the Route tab and stays shown; reopen the skipped step
-  with `/qf back` or by clicking it. Before, the journal sent you straight back to the next chapter and
-  there was no way back.
-- Route choice: at the end of a chapter that can be followed by several zones, cards in the middle of
-  the screen show them (levels, quests and turn-in XP, simulated time and XP/h, travel), with the one
-  Questify recommends: gold border, "Recommended" badge and its reason (best XP per hour, best fit for
-  your level, shortest trip). "Go there", "Keep the planned route" or "Later": the tracker then reminds
-  you, and clicking it or `/qf route` opens the choice again. You can also choose ahead during the
-  chapter, or change your mind later (`/qf route`, "Change route" button of the journal). A single next
-  chapter: you move on as before, with a "Next chapter: …" message. Option "Choose what comes next at
-  the end of a chapter" (Route section): off, the default route is followed without asking. Never in
-  combat: the choice opens when combat ends.
-- First choice: after Loch Modan (Dwarf, Gnome), Westfall (the planned route) or Darkshore right away,
-  by the Stormwind boat.
-- Route choice, new window: a large window in the middle of the screen over a dark veil, tall cards
-  with the zone's world map as background (or a picture of the zone when one is provided), the zone name
-  in large type, levels as a badge, figures with icons, highlights taken from the data (dungeon of the
-  level range, class quest of the zone, flight points); the recommended card has a softly pulsing gold
-  glow. Click a card to go there; with the keyboard, arrows to switch card then Enter to choose (Enter
-  alone chooses nothing: it stays with the chat), Esc for "Later". The
-  window closes by itself when combat starts and comes back afterwards while the choice is not made;
-  closed by the player, it does not come back by itself (even after /reload) until the next login: the
-  tracker and `/qf route` open it again.
-- Chapter names translated everywhere (tracker, journal, route choice, "Next chapter" message): zones
-  take the game's map names and starting areas have their localized name in French clients. Before, a
-  French client showed "Westfall".
+
+**Routes now go from 1 to 60**
+- New chapters from level 30 to 60 for both factions (22 Alliance, 22 Horde), joined to the existing 1-30
+  starts and trunks: Ashenvale, Duskwood, Thousand Needles, Stranglethorn, Desolace, Arathi, Badlands, Tanaris,
+  Feralas, Hinterlands, Searing Gorge, the Plaguelands, Felwood, Un'Goro, Winterspring, Silithus and more.
+  One Kalimdor block then one Eastern Kingdoms block where possible, no continent ping-pong.
+- Every route rebuilt on QuestieDB v1.0.11 (the 0.3.0 guides were invalid on it: Undead "A Light in the
+  Darkness" now needs "The Damned"), then optimised step by step against the route simulator, keeping only
+  what wins. Simulated 1-60: Human 5 204 min, Dwarf/Gnome 5 255, Night Elf 5 220, Skyborne Alliance 5 154,
+  Orc/Troll 5 113, Tauren 5 133, Undead 5 165, Skyborne Horde 5 159 (about 85-88 h), with far less grinding.
+- Smarter hearthstone: up to two binds per chapter chosen on the real travel cost, grouped turn-ins.
+- Full Tauren start (Camp Narache chain), faster Night Elf and Undead starts, many missing quests added
+  (Wetlands, Redridge, Duskwood, Un'Goro pylons, The Bulwark, Kalaran's stories…).
+- Dungeons up to Stratholme: Uldaman, Zul'Farrak, Maraudon, Sunken Temple, Blackrock Depths, Dire Maul,
+  Scholomance and Stratholme join the catalogue, with their quests offered on the way.
+- New transports: Orgrimmar/Undercity ↔ Grom'gol zeppelins, Booty Bay ↔ Ratchet boat.
+
+**Route choice**
+- At the end of a chapter that can be followed by several zones, a large window shows tall cards with the
+  zone's map as background, the zone name, levels, quests and turn-in XP, simulated time and XP/h, travel and
+  highlights (dungeon, class quest, flight point). The recommended card glows, with its reason. First choice:
+  after Loch Modan (Dwarf, Gnome), Westfall or Darkshore. `/qf route` and the journal's "Change route" open it
+  again; it never opens in combat, closes when combat starts and comes back afterwards until you choose.
+- Chapter names in your client's language everywhere (tracker, journal, cards, messages).
+
+**Class quests**
+- Offered in town: when the route passes near the giver of an available class quest, a "Class quest: …"
+  step appears with the arrow to the giver; one click to add it to the route or ignore it.
+- Overdue class quests come first in the journal tab ("Overdue (lvl N)"), with a one-click "Add to route";
+  "Class quests" entry in the minimap menu and `/qf class`.
+- Class quest data now goes up to level 60.
+
+**Comfort**
+- Outpost alert: in a town, at an inn or right after a merchant, once per visit, when fewer than 6 bag slots
+  (or under 20%) are free, when you have no food (or no drink for mana classes) and when your gear needs
+  repairs.
+
+**Navigation**
+- ShortestPath + WaypointUI: the waypoint no longer lands in the north-west corner of the map, turns are
+  silent and no longer flicker.
+
+**Removed for now**
+- Talent builds, the talent popup and the Build / Spells to learn tabs (`/qf build`, `/qf talents`). Saved
+  builds stay in your character data.
+
+**Fixes**
+- Journal: a finished chapter can be chosen again and stays shown.
+- Dungeon quests picked up on the way are dropped when they become too low, so they no longer fill your
+  quest log.
+
+### Français
+
+**Les routes vont maintenant de 1 à 60**
+- Nouveaux chapitres du niveau 30 au niveau 60 pour les deux factions (22 Alliance, 22 Horde), à la suite des
+  départs et des troncs 1-30 : Orneval, Bois de la Pénombre, Mille pointes, Strangleronce, Désolace, Arathi,
+  Terres ingrates, Tanaris, Féralas, Hinterlands, Gorge des Vents brûlants, Maleterres, Gangrebois, Un'Goro,
+  Berceau-de-l'Hiver, Silithus et d'autres. Un bloc Kalimdor puis un bloc Royaumes de l'Est quand c'est possible,
+  pas d'allers-retours entre continents.
+- Toutes les routes refaites sur QuestieDB v1.0.11 (les guides 0.3.0 y étaient invalides : la quête mort-vivant
+  « A Light in the Darkness » exige maintenant « The Damned »), puis optimisées pas à pas au simulateur, en ne
+  gardant que ce qui gagne. 1-60 simulé : Humain 5 204 min, Nain/Gnome 5 255, Elfe de la nuit 5 220, Skyborne
+  Alliance 5 154, Orc/Troll 5 113, Tauren 5 133, Mort-vivant 5 165, Skyborne Horde 5 159 (environ 85-88 h), avec
+  beaucoup moins de farm.
+- Pierre de foyer plus utile : jusqu'à deux liaisons par chapitre choisies sur le vrai coût du trajet, rendus
+  groupés.
+- Départ Tauren complet (chaîne du camp Narache), départs Elfe et Mort-vivant plus rapides, nombreuses quêtes
+  ajoutées (Paluns, Carmines, Bois de la Pénombre, pylônes d'Un'Goro, Le Rempart, récits de Kalaran…).
+- Donjons jusqu'à Stratholme : Uldaman, Zul'Farrak, Maraudon, Temple englouti, Profondeurs de Rochenoire, Hache-
+  Tripes, Scholomance et Stratholme rejoignent le catalogue, leurs quêtes proposées en chemin.
+- Nouveaux transports : zeppelins Orgrimmar/Fossoyeuse ↔ Grom'gol, bateau Baie-du-Butin ↔ Cabestan.
+
+**Choix de suite**
+- En fin de chapitre, quand plusieurs zones peuvent suivre, une grande fenêtre montre des cartes hautes avec la
+  carte de la zone en fond, son nom, les niveaux, les quêtes et l'XP des rendus, la durée et l'XP/h simulées, le
+  trajet et les points forts (donjon, quête de classe, point de vol). La carte conseillée brille, avec sa raison.
+  Premier choix : après Loch Modan (Nain, Gnome), la Marche de l'Ouest ou Sombrivage. `/qf route` et le bouton
+  « Changer de route » du journal la rouvrent ; jamais en combat, elle se ferme au début d'un combat et revient
+  ensuite tant que le choix n'est pas fait.
+- Noms de chapitres dans la langue du client partout (suivi, journal, cartes, messages).
+
+**Quêtes de classe**
+- Proposées en ville : quand la route passe près du donneur d'une quête de classe disponible, une étape
+  « Quête de classe : … » apparaît avec la flèche vers lui ; un clic pour l'ajouter à la route ou l'ignorer.
+- Les quêtes de classe en retard passent en tête de l'onglet du journal (« En retard (niv. N) ») avec
+  « Ajouter à la route » en un clic ; entrée « Quêtes de classe » dans le menu de la minicarte et `/qf classe`.
+- Les données de quêtes de classe vont jusqu'au niveau 60.
+
+**Confort**
+- Alerte d'avant-poste : en ville, à l'auberge ou juste après un marchand, une fois par passage, s'il reste
+  moins de 6 places libres dans les sacs (ou moins de 20 %), s'il n'y a plus de nourriture (ou de boisson pour
+  les classes à mana) et si l'équipement est à réparer.
+
+**Navigation**
+- ShortestPath + WaypointUI : le repère ne part plus dans le coin nord-ouest de la carte, les virages sont
+  silencieux et ne clignotent plus.
+
+**Retiré pour le moment**
+- Builds de talents, popup de talent et onglets Build / Sorts à apprendre (`/qf build`, `/qf talents`). Les
+  builds enregistrés restent dans les données du personnage.
+
+**Correctifs**
+- Journal : un chapitre fini peut être rechoisi et reste affiché.
+- Les quêtes de donjon prises en chemin sont abandonnées quand elles deviennent trop basses : elles ne
+  remplissent plus le journal.
 
 ## 0.3.0 (2026-11-05)
 

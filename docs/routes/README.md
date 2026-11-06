@@ -407,3 +407,48 @@ drops are dropped in the plan too (722/727, 5213/5861, 5342) so the simulator ma
 measurement (kept out): Hinterlands in the Alliance chain, "carry" over 4 chapters, continent blocks 30-44, and every
 re-ordering tried to remove the remaining continent crossings (+10 to +111 min). APR-COMPARE: APR clearly ahead on 37
 chapters (41 before), Questify on 3, close on 32. Still heavy: A_20 / A_21 (~700 mobs), A_26 (633), H_18 (525).
+
+### Simulator corrections (lot L, 2026-11-07)
+
+Code changes in `tools/routebuilder` recommended by the two optimisation lots (details: `tools/routebuilder/README.md`,
+"Simulator corrections"), then a full regeneration (`--jit --faction all --date 2026-11-07`). Totals per race path,
+simulated (minutes / quests / grind mobs), after the optimisation above → after lot L:
+
+| Path 1-60 | After optimisation | After lot L |
+|---|---|---|
+| Human | 5 173 / 657 / 4 203 | 5 204 / 647 / 4 538 |
+| Dwarf / Gnome | 5 224 / 663 / 4 286 | 5 255 / 653 / 4 621 |
+| Night Elf | 5 191 / 650 / 4 402 | 5 220 / 634 / 4 733 |
+| Skyborne (Alliance) | 5 123 / 643 / 4 286 | 5 154 / 633 / 4 621 |
+| Orc / Troll | 5 140 / 616 / 2 699 | 5 113 / 611 / 2 904 |
+| Tauren | 5 160 / 613 / 2 726 | 5 133 / 608 / 2 931 |
+| Undead | 5 194 / 637 / 2 700 | 5 165 / 632 / 2 905 |
+| Skyborne (Horde) | 5 184 / 636 / 2 756 | 5 159 / 631 / 2 961 |
+
+Trunk 30-60: Alliance 4 112 / 418 / 4 136 → 4 134 / 409 / 4 328; Horde 3 987 / 410 / 2 526 → 3 989 / 416 / 2 601.
+
+- Dungeon quests picked up in passing no longer open their follow-ups (the simulator now matches the guides):
+  Alliance -3 min, Horde +11 min (H_03 loses accepts that the guide never had; H_04, H_05 and H_07 follow). The
+  manual drops 722 / 727, 5213 / 5861 and 5342 are gone (identical guides).
+- Event quests (`specialFlags` 2) with objective sites, stories turned in to their giver included, are candidates
+  (escorts excluded): Alliance -6 to -8 min, Horde -6 min, +9 quests, -63 mobs. Forcings of 3441 / 3453, 4285 /
+  4287 / 4288 / 4321 and 5742 removed (identical). New in the routes: the Un'Goro pylons and Redemption chain for
+  the Horde, Gerenzo's Orders, Sathrah's Sacrifice, Druid of the Claw, Hidden Enemies, Cache of Mau'ari.
+- Quests of another race path carried into the trunk are turned in by the trunk (Sample for Helbrim 1358 for the
+  Undead, in H_01), and the log padding follows the dungeon abandon rule: the Undead log is no longer full in
+  H_17 (Stinglasher 7731 and Zukk'ash Report 7732 were cut from that path). Horde -24 min, -12 quests, +170 mobs
+  (H_02 to H_05 change); Alliance identical.
+- Forever book quests (79953, 81947-81956, 84395-84402) count a quarter of the estimate of their level (975 XP at
+  45, 1 650 at 60) instead of the full median (up to 6 600): measured on the final state, Alliance +48 min, -6
+  quests, +178 mobs; Horde +32 min, +1 quest, +64 mobs. It removes ~46 000 estimated XP from H_29 alone; the true
+  value is not known (to check in game).
+- Forcings measured again: removed 3161 / 3362 / 2605 (A_20, Alliance -16 min, -3 quests, +28 mobs), 3161 / 2605
+  (H_16, Horde -10 min, -1 quest, +43 mobs), 7843 (H_21, -4 min, -1 quest, +22 mobs), 4023 / 4296 / 4726 (H_24) and
+  1145 / 1362 (H_07) (identical); kept 3062 (H_17, +10 min without) and the Tarren Mill hooks of H_06 (+53 min).
+- Rejected: `strictLevel` on every 30-60 chapter (+82 / +88 min), the trunk simulated from the Undead path (+11 to
+  +34 min per Horde path; Human for the Alliance: same routes).
+
+APR-COMPARE: APR clearly ahead on 42 chapters, Questify on 3, close on 27 (same guides as before with the new book
+XP: 38 / 3 / 31). The quest XP compared there is lower in A_20, H_21 (forcings removed), H_02 and H_03 (route
+reshuffled) and A_NightElf_03; H_29 is no longer behind. Still heavy: A_20 (727 mobs), A_21 (708), A_26 (633),
+H_18 (525), H_21 (417).

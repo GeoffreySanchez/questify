@@ -1,15 +1,15 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 45 étapes, niveau final 45.00, ~45476 xp/h, 147 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-07.
+-- Simulation : 45 étapes, niveau final 45.00, ~45302 xp/h, 148 min.
 Q:RegisterGuide({
   id = "A_18",
   title = "Tanaris",
   faction = "Alliance",
   minLevel = 44, maxLevel = 45,
   next = "A_19",
-  sim = { steps = 45, endLevel = 45.00, xpPerHour = 45476, minutes = 147 },
+  sim = { steps = 45, endLevel = 45.00, xpPerHour = 45302, minutes = 148 },
   steps = {
     { "note", "Not running Uldaman? Abandon Solution to Doom", optional = true, dungeon = "Uldaman" },
     { "boat", 1434, 26.08, 73.35, note = "Take the boat to Ratchet (The Barrens)" }, -- bateau
@@ -55,6 +55,6 @@ Q:RegisterGuide({
     { "turnin", 2781, xp = 5050 }, -- WANTED: Caliph Scorpidsting (lvl 46, ~5050 xp, sim lvl 44)
     { "turnin", 1691, xp = 3750 }, -- More Wastewander Justice (lvl 44, ~3750 xp, sim lvl 44)
     { "turnin", 82, xp = 3150 }, -- Noxious Lair Investigation (lvl 47, ~3150 xp, sim lvl 44)
-    { "level", 45, at = { 1446, 50.53, 36.22 }, note = "About 114 more mobs here (Scorpid Tail Lasher, level 43)" }, -- farm de niveau
+    { "level", 45, at = { 1446, 50.53, 36.22 }, note = "About 115 more mobs here (Scorpid Tail Lasher, level 43)" }, -- farm de niveau
   },
 })

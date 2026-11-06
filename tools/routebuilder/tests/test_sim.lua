@@ -137,4 +137,88 @@ return {
     t.ok(pos.A1 < pos.O1 and pos.O1 < pos.T1 and pos.T1 < pos.A2, "precedence kept")
     t.eq(#seq, 6)
   end,
+
+  -- Lot L : une quête de donjon prise au passage (jamais rendue) n'ouvre pas sa suite hors du donjon.
+  dungeon_pickup_is_not_a_prerequisite = function(t)
+    local D, W = F.D(), F.W()
+    D.dungeonAreas[9100] = "Fixture Deeps"
+    local deep = D.quests[103]
+    D.quests[110] = { }
+    for k, v in pairs(deep) do D.quests[110][k] = v end
+    D.quests[110].id, D.quests[110].name, D.quests[110].zoneOrSort = 110, "Into the Deeps", 9100
+    D.quests[111] = { }
+    for k, v in pairs(D.quests[101]) do D.quests[111][k] = v end
+    D.quests[111].id, D.quests[111].name, D.quests[111].preSingle = 111, "Back from the Deeps", { 110 }
+    D.xp[111] = { 4, 900 }
+    D.unlocks[110] = { 111 }
+    local plan = F.plan()
+    plan.dungeons = { "Fixture Deeps" }
+    local steps, report = sim.chapter(D, W, plan, F.state())
+    local i = indexOf(steps, "accept", 110)
+    t.ok(i, "dungeon quest picked up: " .. stepsText(steps))
+    t.eq(steps[i].optional, true); t.eq(steps[i].dungeon, "Fixture Deeps")
+    t.eq(indexOf(steps, "turnin", 110), nil, "never turned in")
+    t.eq(indexOf(steps, "accept", 111), nil, "follow-up not offered")
+    t.eq(dropped(report, 111), "prerequisite unavailable")
+  end,
+
+  -- Lot L : quêtes « event » (specialFlags 2) sans point d'exploration : récit chez le donneur ou objectif
+  -- placé par QuestieDB gardés ; escortes écartées.
+  event_quests_kept_unless_escort = function(t)
+    local D, W = F.D(), F.W()
+    local function copy(id, newId, fields)
+      local q = {}
+      for k, v in pairs(D.quests[id]) do q[k] = v end
+      q.id = newId
+      for k, v in pairs(fields) do q[k] = v end
+      D.quests[newId] = q
+      D.xp[newId] = { 3, 400 }
+    end
+    -- récit : objectif « tuer » le donneur lui-même (PNJ amical) -> objectif « parler »
+    copy(101, 112, { name = "Listen to Giver One", specialFlags = 2, objectivesText = { "Listen as Giver One tells his story." },
+      objectives = { creatures = { 1001 }, killCredit = {}, objects = {}, items = {}, list = { { kind = "kill", id = 1001, index = 1 } } } })
+    -- récit sans objectif, rendu au donneur
+    copy(101, 113, { name = "In a Moment", specialFlags = 2, objectivesText = { "Speak with Giver One in a moment." },
+      objectives = { creatures = {}, killCredit = {}, objects = {}, items = {}, list = {} } })
+    -- escorte sans point d'arrivée
+    copy(101, 114, { name = "Wolf Escort", specialFlags = 2, objectivesText = { "Escort the old wolf back to Giver One." } })
+    local steps, report = sim.chapter(D, W, F.plan(), F.state())
+    for _, q in ipairs({ 112, 113 }) do
+      t.ok(indexOf(steps, "accept", q) and indexOf(steps, "turnin", q), "event quest " .. q .. " kept: " .. stepsText(steps))
+    end
+    local c = steps[indexOf(steps, "complete", 113)]
+    t.ok(c and c.at and math.abs(c.at[2] - 20) < 0.01 and math.abs(c.at[3] - 20) < 0.01, "113 waits at the giver")
+    t.eq(dropped(report, 114), "event (escort)")
+    t.eq(indexOf(steps, "accept", 114), nil)
+  end,
+
+  escort_text = function(t)
+    local function q(text) return { objectivesText = { text } } end
+    t.ok(sim.isEscort(q("Escort Kinelory safely to Quae.")))
+    t.ok(sim.isEscort(q("Protect Kanati Greycloud from the centaur attack.")))
+    t.ok(sim.isEscort(q("Defend Gor'shak.")))
+    t.ok(sim.isEscort(q("Show Tooga the way back to his wife, Torta.")))
+    t.ok(sim.isEscort(q("Lead Ringo to Spraggle Frock.")))
+    t.ok(not sim.isEscort(q("Listen as Kalaran Windblade tells his story.")))
+    t.ok(not sim.isEscort(q("Defeat Dashel Stonefist in Stormwind.")))
+    t.ok(not sim.isEscort(q("Discover the location of the Northern Crystal Pylon in Un'Goro Crater.")))
+  end,
+  -- Lot L : quête d'un autre parcours de race ("foreign", build.mergeStates) rendue dans le chapitre, sans XP
+  -- pour la race simulée ni « faite » pour elle.
+  foreign_quest_turned_in_without_xp = function(t)
+    local D, W = F.D(), F.W()
+    local q = {}
+    for k, v in pairs(D.quests[105]) do q[k] = v end
+    q.id, q.name, q.breadcrumbFor = 120, "Letter from Elsewhere", nil
+    q.finishers = { npcs = { 1001 }, objects = {} }
+    D.quests[120] = q
+    D.xp[120] = { 3, 400 }
+    local state = F.state()
+    state.log[120] = "foreign"
+    local steps, report = sim.chapter(D, W, F.plan(), state)
+    t.ok(indexOf(steps, "turnin", 120), "turned in: " .. stepsText(steps))
+    for _, r in ipairs(report.quests) do t.ok(r.id ~= 120, "no XP for the simulated race") end
+    t.eq(state.log[120], nil, "left the log")
+    t.eq(state.done[120], nil, "not done for the simulated race")
+  end,
 }

@@ -1,21 +1,20 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 27 étapes, niveau final 30.00, ~33424 xp/h, 79 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-07.
+-- Simulation : 24 étapes, niveau final 30.00, ~33028 xp/h, 66 min.
 Q:RegisterGuide({
   id = "A_05",
   title = "Hillsbrad Foothills",
   faction = "Alliance",
   minLevel = 29, maxLevel = 30,
   next = "A_08",
-  sim = { steps = 27, endLevel = 30.00, xpPerHour = 33424, minutes = 79 },
+  sim = { steps = 24, endLevel = 30.00, xpPerHour = 33028, minutes = 66 },
   steps = {
     { "boat", 1437, 4.9, 57.3, note = "Take the boat to Southshore" }, -- bateau
     { "fp", 1424, 49.34, 52.27 }, -- point de vol
     { "accept", 536 }, -- Down the Coast (lvl 30, ~1850 xp, sim lvl 29)
     { "accept", 555 }, -- Soothing Turtle Bisque (lvl 31, ~2500 xp, sim lvl 29)
-    { "accept", 98071 }, -- Brewer's Trade (lvl 27, ~1100 xp, sim lvl 29)
     { "complete", 536, at = { 1424, 43.8, 67.72 } }, -- Down the Coast (lvl 30, ~1850 xp, sim lvl 29)
     { "turnin", 536, xp = 1850 }, -- Down the Coast (lvl 30, ~1850 xp, sim lvl 29)
     { "accept", 559 }, -- Farren's Proof (lvl 32, ~2550 xp, sim lvl 29)
@@ -30,13 +29,11 @@ Q:RegisterGuide({
     { "accept", 561 }, -- Farren's Proof (lvl 32, ~255 xp, sim lvl 29)
     { "turnin", 561, xp = 255 }, -- Farren's Proof (lvl 32, ~255 xp, sim lvl 29)
     { "accept", 562 }, -- Stormwind Ho! (lvl 32, ~1950 xp, sim lvl 29)
-    { "complete", 562, at = { 1424, 58.14, 71.42 } }, -- Stormwind Ho! (lvl 32, ~1950 xp, sim lvl 29)
-    { "complete", 98071, at = { 1424, 70, 79 } }, -- Brewer's Trade (lvl 27, ~1100 xp, sim lvl 29)
     { "complete", 555, at = { 1424, 56.08, 53.87 } }, -- Soothing Turtle Bisque (lvl 31, ~2500 xp, sim lvl 29)
-    { "turnin", 98071, xp = 1100 }, -- Brewer's Trade (lvl 27, ~1100 xp, sim lvl 29)
+    { "complete", 562, at = { 1424, 58.14, 71.42 } }, -- Stormwind Ho! (lvl 32, ~1950 xp, sim lvl 29)
     { "turnin", 555, xp = 2500 }, -- Soothing Turtle Bisque (lvl 31, ~2500 xp, sim lvl 29)
     { "turnin", 562, xp = 1950 }, -- Stormwind Ho! (lvl 32, ~1950 xp, sim lvl 29)
     { "accept", 563 }, -- Reassignment (lvl 32, ~0 xp, sim lvl 29)
-    { "level", 30, at = { 1424, 59.96, 74.99 }, note = "About 42 more mobs here (Daggerspine Shorehunter, level 30)" }, -- farm de niveau
+    { "level", 30, at = { 1424, 59.96, 74.99 }, note = "About 8 more mobs here (Daggerspine Shorehunter, level 30)" }, -- farm de niveau
   },
 })

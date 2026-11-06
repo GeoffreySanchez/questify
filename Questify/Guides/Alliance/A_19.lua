@@ -1,15 +1,15 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 72 étapes, niveau final 46.00, ~54519 xp/h, 129 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-07.
+-- Simulation : 72 étapes, niveau final 46.00, ~54544 xp/h, 129 min.
 Q:RegisterGuide({
   id = "A_19",
   title = "Feralas",
   faction = "Alliance",
   minLevel = 45, maxLevel = 46,
   next = "A_20",
-  sim = { steps = 72, endLevel = 46.00, xpPerHour = 54519, minutes = 129 },
+  sim = { steps = 72, endLevel = 46.00, xpPerHour = 54544, minutes = 129 },
   steps = {
     { "note", "Not running Uldaman? Abandon The Shattered Necklace", optional = true, dungeon = "Uldaman" },
     { "fp", 1449, 45.23, 5.83 }, -- point de vol
@@ -82,6 +82,6 @@ Q:RegisterGuide({
     { "turnin", 4266, xp = 6050 }, -- A Hero's Welcome (lvl 46, ~6050 xp, sim lvl 45)
     { "turnin", 2871, xp = 3900 }, -- Delivering the Relic (lvl 45, ~3900 xp, sim lvl 45)
     { "turnin", 7733, xp = 4400 }, -- Improved Quality (lvl 48, ~4400 xp, sim lvl 45)
-    { "level", 46, at = { 1444, 36.59, 49.3 }, note = "About 5 more mobs here (Coast Crawl Snapclaw, level 44)" }, -- farm de niveau
+    { "level", 46, at = { 1444, 36.59, 49.3 }, note = "About 4 more mobs here (Coast Crawl Snapclaw, level 44)" }, -- farm de niveau
   },
 })

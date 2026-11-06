@@ -126,18 +126,49 @@ end
 
 -- État du tronc commun au chapitre où arrivent plusieurs parcours de race : celui du parcours
 -- principal (quêtes faites, journal, position), avec le niveau le plus bas, les seuls points de vol
--- connus de tous les parcours, la pierre de foyer seulement si elle est liée au même endroit partout,
--- et la place prise dans le journal par le parcours le plus chargé (logPad).
+-- connus de tous les parcours, la pierre de foyer seulement si elle est liée au même endroit partout.
+-- Quêtes du journal d'un autre parcours absentes du parcours principal :
+--   * quête ordinaire (rendu reporté dans le tronc, ex. 1358 Sample for Helbrim, prise par le Mort-vivant
+--     à Fossoyeuse et rendue aux Tarides) : ajoutée au journal du tronc avec la valeur "foreign", pour que
+--     le tronc la rende (le rejeu des parcours filtre l'étape sur ce parcours ; XP non comptée pour la race
+--     simulée). Sans cela, elle restait dans le journal de ce parcours jusqu'au niveau 60 ;
+--   * quête de donjon prise au passage : place réservée dans le journal (logPad) quand ce parcours en a plus
+--     que le parcours principal n'a de quêtes absentes du sien (le parcours le plus chargé compte). Les deux
+--     listes sont gardées par parcours dans logPadQuests ({ pad = ids, base = ids }) pour recalculer la
+--     place à l'abandon des quêtes de donjon (sim.releaseDungeonQuests, même règle que paths.replay).
+local function sortedIds(t)
+  local ids = {}
+  for id in pairs(t) do ids[#ids + 1] = id end
+  table.sort(ids)
+  return ids
+end
+
 function build.mergeStates(base, others)
   local m = copyState(base)
+  local pads = {}
+  for _, e in ipairs(base.logPadQuests or {}) do pads[#pads + 1] = e end
   for _, st in ipairs(others) do
     if st.level < m.level or (st.level == m.level and st.xp < m.xp) then m.level, m.xp = st.level, st.xp end
     for node in pairs(base.knownTaxi) do if not st.knownTaxi[node] then m.knownTaxi[node] = nil end end
     local a, b = m.hearth, st.hearth
     if not (a and b and a[1] == b[1] and math.abs(a[2] - b[2]) < 0.5 and math.abs(a[3] - b[3]) < 0.5) then m.hearth = nil end
     m.hearthReadyAt = math.max(m.hearthReadyAt or 0, st.hearthReadyAt or 0)
-    m.logPad = math.max(m.logPad or 0, count(st.log) - count(base.log))
+    local pad, only = {}, {}
+    for _, id in ipairs(sortedIds(st.log)) do
+      if not base.log[id] then
+        if st.log[id] == "dungeon" then pad[#pad + 1] = id
+        elseif not m.log[id] then m.log[id] = "foreign" end
+      end
+    end
+    for _, id in ipairs(sortedIds(base.log)) do
+      if not st.log[id] then only[#only + 1] = id end
+    end
+    pads[#pads + 1] = { pad = pad, base = only }
   end
+  m.logPadQuests = pads
+  local n = 0
+  for _, e in ipairs(pads) do n = math.max(n, #e.pad - #e.base) end
+  m.logPad = n
   return m
 end
 

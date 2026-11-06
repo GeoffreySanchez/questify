@@ -150,8 +150,8 @@ All thresholds are in `sim.CONST` (`sim.lua`).
    finisher in the region or in `endZones`. Excluded: class quests (class mask of 1 or 2
    classes: they go to `ClassQuestData.lua`; wider masks such as "all but Warlock" stay in the
    route with a `class` filter), profession, spell or reputation requirements, repeatable quests
-   (`specialFlags` 1), event quests (`specialFlags` 2 without an exploration point), blacklisted
-   quests, quests already done. Dungeon quests are only accepted in passing (`optional`,
+   (`specialFlags` 1), escorts among the event quests (`specialFlags` 2 without an exploration
+   point; see "Lot L" below), blacklisted quests, quests already done. Dungeon quests are only accepted in passing (`optional`,
    `dungeon = name`).
 2. **Objective sites.** Spawns of each objective target in the region are grouped on a 60 yd
    grid; the 3 × 3 cell window with the most spawns (drop-rate weighted for items) wins, ties go
@@ -176,7 +176,8 @@ All thresholds are in `sim.CONST` (`sim.lua`).
    the isolated and the marginal ratio are below 0.35 × the median isolated ratio; then quests whose
    prerequisite was dropped. A prerequisite counts as available when it is done, kept in the chapter,
    or in the quest log and turned in in this chapter (a quest done in the previous chapter whose
-   finisher is here: its follow-ups stay candidates). **XP budget**: quests are ranked by marginal ratio (forced first) and
+   finisher is here: its follow-ups stay candidates). A dungeon quest only picked up in passing is
+   never turned in on the route: it is not an available prerequisite ("prerequisite unavailable"). **XP budget**: quests are ranked by marginal ratio (forced first) and
    kept, with their prerequisites, until their XP reaches `maxLevel + levelSlack` (1 by default);
    the rest is dropped as "level band reached". Exclusive quests keep the better ratio.
 8. **Tasks and ordering.** A (accept), O (objective site), T (turn-in), C (timed quest done in
@@ -317,7 +318,8 @@ guide with an invalid step is refused in game with one `Invalid guide <id>: step
 
 - Race-specific chapters are simulated on their lead race.
 - The trunk is simulated once, from a merged state at each chapter where paths join: lowest level,
-  common flight paths, common hearth, log padding for the most loaded path.
+  common flight paths, common hearth, log padding for the most loaded path. A quest of another path's
+  log that the lead path does not have is turned in by the trunk for it (`"foreign"`, see "Lot L").
 - A path that joins from another region is brought to the join point at the end of its own last
   chapter (`exitTo`).
 - Every race path is then replayed (`paths.replay`). A step that is invalid for a race gets a
@@ -565,7 +567,7 @@ simulated log for good: at level 30, 10 of the 20 slots of the Alliance path wer
 `minLevel` is at least `DUNGEON_RELEASE_FROM` (30), each such quest whose level is at most
 `minLevel - DUNGEON_RELEASE_GAP` (4) leaves the log at the start of the chapter (`sim.releaseDungeonQuests`),
 with one optional `note` step per dungeon ("Not running X? Abandon ..."). The log padding of the other race
-paths (`logPad`) is released at the same time. `paths.replay` (build and `tools/validate_guides.lua`)
+paths (`logPad`) is recomputed at the same time with the same rule (lot L: `logPadQuests`, see below). `paths.replay` (build and `tools/validate_guides.lua`)
 applies the same rule to quests accepted through an `optional` step with a `dungeon` name in a dungeon area
 of QuestieDB (`chapters[i].minLevel` is passed for that). Chapters below level 30 are unchanged.
 
@@ -590,6 +592,84 @@ Blackrock Depths 52-60, Dire Maul 55-60 (one key `DIREMAUL`, area 2557: east, we
 QuestieDB name), Scholomance 55-60, Stratholme 58-60. Entrances from QuestieDB. Raids and Blackrock Spire
 (one area for the lower and the upper spire) stay out.
 
+## Simulator corrections (2026-11-07, lot L)
+
+Recommended by the two 1-60 optimisation lots. Each change was measured on the totals of the eight race paths
+(QuestieDB v1.0.11, `--jit`); the numbers are in `docs/routes/README.md` ("Optimisation 1-60").
+
+### Dungeon quests picked up in passing are not prerequisites (`sim.lua`)
+
+A dungeon quest the route only picks up (`dungeonOnly`: `optional` step with a `dungeon` name, objectives in
+the instance) is never turned in on the route. It no longer counts as an available prerequisite: its
+follow-up outside the dungeon is dropped as "prerequisite unavailable" (before, the simulation counted it and
+the race-path replay removed its steps, "valid for no race"). The same holds in the XP budget (a log entry
+`"dungeon"` is not an acquired prerequisite). The manual drops of `plans.lua` that worked around it (722 and
+727 in `A_16`, 5213 and 5861 in `A_29`, 5342 in `H_29`) are gone: identical guides.
+
+### Event quests (`specialFlags` 2) (`sim.lua`)
+
+Event quests without an exploration point used to be excluded ("event"); several had to be forced by hand
+(Kalaran's stories 3441 / 3453, the Un'Goro pylons 4285 / 4287 / 4288 / 4321, Redemption 5742). They are now
+ordinary candidates when QuestieDB places each of their objectives in the region (otherwise they are dropped
+with the reason of that objective):
+
+- a story whose objective is the giver itself, or a friendly NPC at the same place ("Listen as Kalaran
+  Windblade tells his story": kill objective on a friendly NPC), is a 10 s "talk" objective, as before;
+- a story without any objective that is turned in to its giver (within 150 yd: "Speak with J.D. Collie in a
+  moment") gets a 10 s "talk" site at the giver (`complete` step at the giver's QuestieDB position);
+- escorts stay out (`sim.isEscort`: objective text with "escort", "protect", "defend", "safely",
+  "accompany", "keep ... safe", "show ... the way" or a sentence starting with "Lead"): no arrival point nor
+  duration is known. Escorts with an exploration point (`triggerEnd`) stay candidates as before;
+- dungeon event quests stay out (no objective site is computed inside an instance).
+
+New quests in the routes: Gerenzo's Orders 1090 (A_02, H_02), Sathrah's Sacrifice 2520 and Druid of the Claw
+2561 (A_NightElf_02), Hidden Enemies 5727 (H_OrcTroll_02), the Un'Goro pylons (H_27), Redemption 5742 and its
+chain (H_29), Cache of Mau'ari 975 (A_27, H_28). The forcings of 3441 / 3453 (`A_22`, `H_24`), 4285 / 4287 /
+4288 / 4321 (`A_26`) and 5742 (`A_29`) are gone (identical guides).
+
+### Quests carried across a join of race paths (`build.mergeStates`, `"foreign"`)
+
+The trunk is simulated once, on the lead path (Dwarf, Orc). A quest of another path's log that the lead path
+does not have was never turned in by the trunk: the Undead path accepts Sample for Helbrim (1358) in Undercity
+(`H_Undead_03`, turn-in carried to The Barrens) and kept it in its log up to level 60; with the log padding
+reset at level 30, its log was full in `H_17` (Stinglasher 7731 and Zukk'ash Report 7732 were filtered out of
+the Undead path). Now, at the join:
+
+- such a quest enters the trunk log with the value `"foreign"`: the trunk turns it in (`H_01`, step filtered to
+  `race = { "Undead" }` by the replay), with no XP for the simulated race, not marked done for it, and it opens
+  no follow-up in the trunk;
+- a dungeon quest of the other path keeps a slot (`logPad`) only when that path has more of them than the lead
+  path has quests that it lacks; `logPadQuests` keeps both lists per path, and `sim.releaseDungeonQuests`
+  recomputes the padding with the abandon rule (level <= chapter minimum - 4, from level 30) instead of
+  resetting it to 0.
+
+### Forever book quests (`xp.BOOK_FACTOR`)
+
+The book quests of Forever (79953, 81947-81956, 84395-84402: "Collect 'Stonewrought Design' and bring it to
+Owen Thadd in Undercity", librarians of Stormwind and Undercity) have no QuestXP value; the median estimate of
+their level counted up to ~46 000 XP in `H_29` (seven level-60 books at 6 600). `xp.isBook` (required level 1 at
+most, a single item objective, a start object named "Book" in QuestieDB) now gives them a quarter of that
+estimate (975 XP at level 45, 1 650 at level 60): the Classic tier of a plain delivery (known level-45
+deliveries: first quartile 970 for a standard value of 3 900). It is an estimate: to check in game.
+
+### Forcings measured again
+
+After these changes, the forcings of `plans.lua` were measured again one by one (all eight paths):
+3161 / 3362 / 2605 in `A_20` (Alliance -16 min, -3 quests, +28 mobs), 3161 / 2605 in `H_16` (Horde -10 min,
+-1 quest, +43 mobs), 7843 in `H_21` (Horde -4 min, -1 quest, +22 mobs), 4023 / 4296 / 4726 in `H_24` and
+1145 / 1362 in `H_07` (identical) are removed. Kept: 3062 in `H_17` (+10 min without), the Tarren Mill hooks of
+`H_06` (+53 min without).
+
+### Studied, not kept
+
+- `strictLevel` on every 30-60 chapter: +82 min on the Alliance paths, +88 on the Horde paths (-115 and -65
+  mobs).
+- Trunk simulated from another lead path: Human for the Alliance gives the same routes and totals (only the
+  `A_08` notes that abandon the Dwarf / Gnome dungeon quests disappear); Undead for the Horde costs +11 to +34 min
+  per Horde path (Orc +29). The trunk guides are shared by every race path, so a per-race simulation could only
+  change the measure, not the routes. `grindCost` (mobs of the character's
+  level, 20 s each, as `sim.grindTo`) is unchanged.
+
 ## Known limits
 
 - Walking is a straight line in world coordinates (no pathing around mountains, no city
@@ -597,6 +677,6 @@ QuestieDB name), Scholomance 55-60, Stratholme 58-60. Entrances from QuestieDB. 
 - `TaxiPath` has no waypoints: flight length is the straight line × 1.2.
 - Objective counts come from the English objective text; without a number the defaults above apply.
 - XP of the new Forever quests is an estimate (median of known Classic quests of the same level and
-  type, × 0.5 for dungeon quests).
+  type, × 0.5 for dungeon quests, × 0.25 for the Forever book quests).
 - Trunk chapters are simulated for the primary race path only.
 - Only the default successor is simulated and validated; other `choices` are not replayed.

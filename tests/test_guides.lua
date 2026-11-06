@@ -219,7 +219,11 @@ return {
   chapter_maps_from_title_and_steps = function(t)
     local Q = Mock.loadAddon(TOC, {})
     t.eq(Q.Guides:MainMap("A_03"), 1433, "Redridge Mountains")
-    t.eq(Q.Guides:MainMap("H_04"), 1413, "Southern Barrens: the most used map of the steps")
+    -- « Southern Barrens » n'est pas un nom de zone : carte la plus présente des étapes (Tarides ou Mille pointes,
+    -- selon la régénération des guides)
+    local h4 = Q.Guides:StepMaps("H_04")
+    t.eq(Q.Guides:MainMap("H_04"), h4[1].mapId, "Southern Barrens: the most used map of the steps")
+    t.ok(h4[1].mapId == 1413 or h4[1].mapId == 1441, "H_04: The Barrens or Thousand Needles")
     t.eq(Q.Guides:MainMap("A_DwarfGnome_01"), 1426, "Coldridge Valley: Dun Morogh")
     local sm = Q.Guides:StepMaps("A_03")
     -- carte la plus présente d'abord (le nombre exact d'étapes change à chaque régénération des guides)

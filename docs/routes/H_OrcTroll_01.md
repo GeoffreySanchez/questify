@@ -1,6 +1,6 @@
 # H_OrcTroll_01 — Valley of Trials
 
-Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d306458a95` by `tools/routebuilder/build.lua`. Simulated race: Orc.
+Generated on 2026-11-07 from QuestieDB commit `80866960788084ae1592abf66a08f0d306458a95` by `tools/routebuilder/build.lua`. Simulated race: Orc.
 
 | Item | Value |
 |---|---|

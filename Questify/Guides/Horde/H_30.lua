@@ -1,18 +1,18 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 53 étapes, niveau final 60.00, ~72497 xp/h, 173 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-07.
+-- Simulation : 53 étapes, niveau final 60.00, ~72228 xp/h, 174 min.
 Q:RegisterGuide({
   id = "H_30",
   title = "Silithus",
   faction = "Horde",
   minLevel = 59, maxLevel = 60,
-  sim = { steps = 53, endLevel = 60.00, xpPerHour = 72497, minutes = 173 },
+  sim = { steps = 53, endLevel = 60.00, xpPerHour = 72228, minutes = 174 },
   steps = {
     { "note", "Not running Blackrock Depths? Abandon The Heart of the Mountain", optional = true, dungeon = "Blackrock Depths" },
-    { "hearth", 1447 }, -- pierre de foyer
-    { "goto", 1454, 45.12, 63.89, note = "Flight master" }, -- déplacement
+    { "hearth", 1452 }, -- pierre de foyer
+    { "goto", 1452, 60.47, 36.3, note = "Flight master" }, -- déplacement
     { "fly", 1444, node = 42, note = "Camp Mojache, Feralas" }, -- vol
     { "fp", 1451, 48.68, 36.67 }, -- point de vol
     { "accept", 9416 }, -- Report to General Kirika (lvl 60, ~6600 xp, sim lvl 59)

@@ -1,19 +1,20 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 39 étapes, niveau final 38.00, ~38932 xp/h, 111 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-07.
+-- Simulation : 40 étapes, niveau final 38.00, ~39880 xp/h, 108 min.
 Q:RegisterGuide({
   id = "H_10",
   title = "Dustwallow Marsh",
   faction = "Horde",
   minLevel = 37, maxLevel = 38,
   next = "H_11",
-  sim = { steps = 39, endLevel = 38.00, xpPerHour = 38932, minutes = 111 },
+  sim = { steps = 40, endLevel = 38.00, xpPerHour = 39880, minutes = 108 },
   steps = {
     { "note", "Not running City of Dalaran? Abandon Heart of Disruption, The Grave Knight", optional = true, dungeon = "City of Dalaran" },
     { "boat", 1434, 26.08, 73.35, note = "Take the boat to Ratchet (The Barrens)" }, -- bateau
-    { "fp", 1445, 35.56, 31.88 }, -- point de vol
+    { "goto", 1413, 63.08, 37.16, note = "Flight master" }, -- déplacement
+    { "fly", 1445, node = 55, note = "Brackenwall Village, Dustwallow Marsh" }, -- vol
     { "accept", 1201 }, -- Theramore Spies (lvl 35, ~2750 xp, sim lvl 37)
     { "complete", 1201, at = { 1445, 38.45, 25.29 } }, -- Theramore Spies (lvl 35, ~2750 xp, sim lvl 37)
     { "turnin", 1201, xp = 2750 }, -- Theramore Spies (lvl 35, ~2750 xp, sim lvl 37)

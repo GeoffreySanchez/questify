@@ -1,19 +1,19 @@
 # H_Undead_03 — Silverpine Forest
 
-Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d306458a95` by `tools/routebuilder/build.lua`. Simulated race: Undead.
+Generated on 2026-11-07 from QuestieDB commit `80866960788084ae1592abf66a08f0d306458a95` by `tools/routebuilder/build.lua`. Simulated race: Undead.
 
 | Item | Value |
 |---|---|
 | Level band | 12-14 |
 | Simulated level | 13.00 -> 14.02 |
-| Time | 35 min |
+| Time | 33 min |
 | XP gained | 11602 |
-| XP/h | 20047 |
-| Steps | 37 |
+| XP/h | 20887 |
+| Steps | 38 |
 | Quests turned in | 16 |
 | Hubs | 9 |
-| Median ratio (XP/s) | 5.22 |
-| Level band | grinding 27 mobs with quests up to level 17: band widened to level 20 |
+| Median ratio (XP/s) | 5.25 |
+| Level band | grinding 26 mobs with quests up to level 17: band widened to level 20 |
 | Hearthstone | no new bind; 0 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
@@ -49,7 +49,6 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 238 | Errand for Apothecary Zinge | 45 | quest level 45 above the band |
 | 243 | Into the Field | 46 | quest level 46 above the band |
 | 442 | Assault on Fenris Isle | 24 | quest level 24 above the band |
-| 452 | Pyrewood Ambush | 15 | event |
 | 480 | The Weaver | 22 | quest level 22 above the band |
 | 493 | Journey to Hillsbrad Foothills | 20 | required level 19 above the band |
 | 495 | The Crown of Will | 39 | quest level 39 above the band |
@@ -273,6 +272,7 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 98887 | Conflict at Darkspear Islands | 39 | quest level 39 above the band |
 | 98888 | Conflict at Darkspear Islands | 39 | quest level 39 above the band |
 | 530 | A Husband's Revenge | 20 | prerequisite unavailable |
+| 452 | Pyrewood Ambush | 15 | level band reached |
 | 78150 | Friend of the Library | 20 | level band reached |
 | 91921 | Return to Quinn (Again) | 11 | level band reached |
 | 78127 | The Dalaran Digest | 20 | level band reached |
@@ -288,17 +288,17 @@ XP marked `est.` is an estimate (no QuestXP value: new Forever quest).
 | 478 | Maps and Runes | 14 | level band reached |
 | 98298 | Arugal's Folly | 16 | level band reached |
 | 95981 | Watching the Roads | 20 | level band reached |
+| 424 | Arugal's Folly | 15 | level band reached |
 | 428 | Lost Deathstalkers | 12 | level band reached |
+| 99 | Arugal's Folly | 15 | level band reached |
 | 443 | Rot Hide Ichor | 17 | level band reached |
 | 450 | A Recipe For Death | 15 | level band reached |
-| 424 | Arugal's Folly | 15 | level band reached |
-| 479 | Ambermill Investigations | 16 | level band reached |
-| 482 | Dalaran's Intentions | 14 | level band reached |
 | 422 | Arugal's Folly | 11 | level band reached |
-| 481 | Dalar's Analysis | 14 | level band reached |
-| 421 | Prove Your Worth | 10 | level band reached |
 | 423 | Arugal's Folly | 14 | level band reached |
-| 99 | Arugal's Folly | 15 | level band reached |
+| 479 | Ambermill Investigations | 16 | level band reached |
+| 421 | Prove Your Worth | 10 | level band reached |
+| 482 | Dalaran's Intentions | 14 | level band reached |
+| 481 | Dalar's Analysis | 14 | level band reached |
 | 451 | A Recipe For Death | 18 | level band reached |
 | 447 | A Recipe For Death | 12 | level band reached |
 | 429 | Wild Hearts | 11 | level band reached |
@@ -313,20 +313,20 @@ below 0.35 × the median ratio, or when an objective is more than 900 yd from ev
 
 | Quest | Name | Lvl | Value | Bonus | Isolated s | Marginal s | Ratio | Marginal ratio | Sites | Dropped |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 99 | Arugal's Folly | 15 | 3660 | 0 | 707 | 564 | 5.18 | 6.49 | 1 | level band reached |
-| 421 | Prove Your Worth | 10 | 1180 | 0 | 312 | 189 | 4.96 | 6.54 | 1 | level band reached |
-| 422 | Arugal's Folly | 11 | 880 | 0 | 162 | 118 | 5.58 | 6.65 | 1 | level band reached |
-| 423 | Arugal's Folly | 14 | 2902 | 0 | 483 | 483 | 5.62 | 6.49 | 1 | level band reached |
-| 424 | Arugal's Folly | 15 | 1171 | 0 | 216 | 128 | 5.25 | 7.14 | 1 | level band reached |
+| 99 | Arugal's Folly | 15 | 3660 | 0 | 707 | 461 | 5.18 | 7.93 | 1 | level band reached |
+| 421 | Prove Your Worth | 10 | 1180 | 0 | 312 | 189 | 4.96 | 6.78 | 1 | level band reached |
+| 422 | Arugal's Folly | 11 | 880 | 0 | 162 | 118 | 5.58 | 6.99 | 1 | level band reached |
+| 423 | Arugal's Folly | 14 | 2902 | 0 | 483 | 483 | 5.62 | 6.90 | 1 | level band reached |
+| 424 | Arugal's Folly | 15 | 1171 | 0 | 216 | 128 | 5.25 | 8.28 | 1 | level band reached |
 | 425 | Ivar the Foul | 12 | 790 | 0 | 55 | 55 | 14.15 | 14.15 | 1 | level band reached |
-| 428 | Lost Deathstalkers | 12 | 859 | 634 | 138 | 14 | 4.41 | 8.01 | 0 | level band reached |
+| 428 | Lost Deathstalkers | 12 | 865 | 640 | 138 | 14 | 4.42 | 8.03 | 0 | level band reached |
 | 429 | Wild Hearts | 11 | 1752 | 0 | 541 | 413 | 3.87 | 5.70 | 1 | level band reached |
 | 430 | Return to Quinn | 11 | 660 | 0 | 147 | 22 | 6.51 | 19.80 | 0 | level band reached |
 | 435 | Escorting Erland | 11 | 880 | 0 | 69 | 69 | 5.86 | 15.58 | 1 |  |
 | 437 | The Dead Fields | 14 | 1095 | 0 | 213 | 105 | 5.43 | 10.55 | 1 |  |
-| 438 | The Decrepit Ferry | 16 | 880 | 0 | 104 | 12 | 5.50 | 10.59 | 0 |  |
-| 439 | Rot Hide Clues | 16 | 290 | 0 | 104 | 12 | 5.25 | 9.46 | 0 |  |
-| 440 | The Engraved Ring | 16 | 2205 | 1625 | 332 | 12 | 6.64 | 173.24 | 0 |  |
+| 438 | The Decrepit Ferry | 16 | 880 | 0 | 104 | 12 | 5.51 | 10.60 | 0 |  |
+| 439 | Rot Hide Clues | 16 | 290 | 0 | 104 | 12 | 5.25 | 9.47 | 0 |  |
+| 440 | The Engraved Ring | 16 | 2219 | 1639 | 332 | 12 | 6.68 | 174.34 | 0 |  |
 | 443 | Rot Hide Ichor | 17 | 9566 | 0 | 1578 | 1288 | 5.20 | 7.69 | 1 | level band reached |
 | 444 | Rot Hide Origins | 17 | 315 | 0 | 303 | 17 | 1.53 | 20.01 | 0 | level band reached |
 | 446 | Thule Ravenclaw | 16 | 290 | 0 | 303 | 17 | 2.19 | 21.75 | 0 | level band reached |
@@ -335,6 +335,7 @@ below 0.35 × the median ratio, or when an objective is more than 900 yd from ev
 | 449 | The Deathstalkers' Report | 11 | 440 | 0 | 138 | 14 | 3.37 | 22.71 | 0 |  |
 | 450 | A Recipe For Death | 15 | 1350 | 0 | 467 | 36 | 5.48 | 7.21 | 1 | level band reached |
 | 451 | A Recipe For Death | 18 | 14025 | 0 | 2243 | 2161 | 6.25 | 6.49 | 2 | level band reached |
+| 452 | Pyrewood Ambush | 15 | 1446 | 0 | 152 | 30 | 9.49 | 48.20 | 1 | level band reached |
 | 460 | Resting in Pieces | 17 | 1422 | 0 | 134 | 114 | 11.26 | 20.98 | 0 |  |
 | 461 | The Hidden Niche | 18 | 680 | 0 | 40 | 14 | 12.12 | 85.56 | 0 |  |
 | 477 | Border Crossings | 14 | 980 | 0 | 97 | 14 | 6.92 | 14.42 | 0 | level band reached |
@@ -426,6 +427,7 @@ Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint la
 ## Logistics
 
 - step 37: `boat 1420 60.7 58.9` — Take the zeppelin to Orgrimmar (Durotar)
+- step 38: `fp 1454 45.12 63.89`
 
 ## Warnings
 

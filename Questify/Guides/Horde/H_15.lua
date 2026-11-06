@@ -1,15 +1,15 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 32 étapes, niveau final 44.00, ~44487 xp/h, 129 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-07.
+-- Simulation : 32 étapes, niveau final 44.00, ~44482 xp/h, 129 min.
 Q:RegisterGuide({
   id = "H_15",
   title = "Dustwallow Marsh",
   faction = "Horde",
   minLevel = 43, maxLevel = 44,
   next = "H_16",
-  sim = { steps = 32, endLevel = 44.00, xpPerHour = 44487, minutes = 129 },
+  sim = { steps = 32, endLevel = 44.00, xpPerHour = 44482, minutes = 129 },
   steps = {
     { "hearth", 1434 }, -- pierre de foyer
     { "boat", 1434, 26.08, 73.35, note = "Take the boat to Ratchet (The Barrens)" }, -- bateau
@@ -42,6 +42,6 @@ Q:RegisterGuide({
     { "goto", 1445, 35.56, 31.88, note = "Flight master" }, -- déplacement
     { "fly", 1456, node = 22, note = "Thunder Bluff, Mulgore" }, -- vol
     { "turnin", 1276, xp = 1120 }, -- The Black Shield (lvl 37, ~1120 xp, sim lvl 43)
-    { "level", 44, at = { 1445, 43.65, 66.29 }, note = "About 172 more mobs near the last objective" }, -- farm de niveau
+    { "level", 44, at = { 1445, 43.65, 66.29 }, note = "About 173 more mobs near the last objective" }, -- farm de niveau
   },
 })

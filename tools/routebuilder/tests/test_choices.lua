@@ -125,7 +125,8 @@ return {
     -- pathFor ne suit que la suite par défaut
     local ids = {}
     for _, q in ipairs(plansm.pathFor("Alliance", "Dwarf")) do ids[#ids + 1] = q.id end
-    t.eq(table.concat(ids, ","), "A_DwarfGnome_01,A_DwarfGnome_02,A_DwarfGnome_03,A_DwarfGnome_04,A_01,A_02,A_03,A_04,A_05")
+    t.eq(table.concat(ids, ","), "A_DwarfGnome_01,A_DwarfGnome_02,A_DwarfGnome_03,A_DwarfGnome_04,A_01,A_02,A_03,A_04,A_05,"
+      .. "A_08,A_07,A_09,A_10,A_11,A_12,A_13,A_15,A_16,A_17,A_18,A_19,A_20,A_21,A_22,A_28,A_24,A_26,A_27,A_23,A_29,A_30")
   end,
 
   validate_accepts_good_choices = function(t)

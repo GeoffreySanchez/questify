@@ -8,6 +8,7 @@ Q:RegisterGuide({
   title = "Hillsbrad Foothills",
   faction = "Alliance",
   minLevel = 29, maxLevel = 30,
+  next = "A_08",
   sim = { steps = 26, endLevel = 30.00, xpPerHour = 33050, minutes = 69 },
   steps = {
     { "boat", 1437, 4.9, 57.3, note = "Take the boat to Southshore" }, -- bateau

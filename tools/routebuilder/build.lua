@@ -292,7 +292,7 @@ function build.raceFilters(D, W, faction, results, list)
       local chapters = {}
       for _, plan in ipairs(pathOf[race]) do
         local r = results[plan.id]
-        chapters[#chapters + 1] = { id = plan.id, steps = r and r.steps or {} }
+        chapters[#chapters + 1] = { id = plan.id, steps = r and r.steps or {}, minLevel = plan.minLevel }
       end
       paths.replay(D, W, faction, race, chapters, function(ci, si, msg)
         local plan = pathOf[race][ci]

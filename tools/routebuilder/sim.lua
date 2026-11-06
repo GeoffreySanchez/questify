@@ -11,6 +11,7 @@ local orderm = require("order")
 local qdb = require("qdb")
 local quality = require("quality")
 local transport = require("transport")
+local pathsm = require("paths")
 
 local sim = {}
 
@@ -64,6 +65,11 @@ sim.CONST = {
   SWEEP_AREA = 120,       -- yards : objectifs d'une même zone faits en un seul passage
   ROUTE_MIN = 90,         -- s : en dessous, marche directe sans chercher de vol ni de liaison
   BONUS_CAP = 900,        -- s, plafond du bonus « quête de transport »
+  -- quêtes de donjon prises au passage abandonnées quand elles deviennent basses, à partir des chapitres
+  -- de niveau min. DUNGEON_RELEASE_FROM (niveau de quête <= minLevel - DUNGEON_RELEASE_GAP) : mêmes
+  -- valeurs que paths.replay (validateur)
+  DUNGEON_RELEASE_FROM = pathsm.DUNGEON_RELEASE_FROM,
+  DUNGEON_RELEASE_GAP = pathsm.DUNGEON_RELEASE_GAP,
 }
 local C = sim.CONST
 
@@ -581,6 +587,8 @@ local function analyse(ctx, q)
     if q.level > plan.maxLevel + high then return nil, ("quest level %d above the band"):format(q.level) end
     local reqMax = plan.maxLevel
     if isDungeonQuest(ctx, q) then reqMax = reqMax + (plan.dungeonReqSlack or 0) end
+    -- niveau requis 60 : aucune XP de quête au niveau maximal (le personnage farmerait jusqu'à 60 pour rien)
+    reqMax = math.min(reqMax, xpm.MAX_LEVEL - 1)
     if (q.reqLevel or 0) > reqMax then return nil, ("required level %d above the band"):format(q.reqLevel) end
   end
   -- filtres de données et de règles
@@ -801,7 +809,8 @@ function sim.chapter(D, W, plan, state, opts)
     o2._noWiden = true
     local steps, report = sim.chapter(D, W, plan, state, o2)
     local widened
-    if (report.grindMobs or 0) > C.WIDEN_GRIND then
+    -- plan.widen = false : jamais (zone revisitée plus tard : ses quêtes hautes restent au chapitre suivant)
+    if (report.grindMobs or 0) > C.WIDEN_GRIND and plan.widen ~= false then
       restore(state, snap)
       o2.levelHigh = C.LEVEL_WIDE
       widened = ("grinding %d mobs with quests up to level %d: band widened to level %d"):format(
@@ -836,6 +845,12 @@ function sim.chapter(D, W, plan, state, opts)
   local cur = state.pos and mkPos(W, state.pos[1], state.pos[2], state.pos[3]) or entryPos
   local steps = {}
 
+  -- Quêtes de donjon prises au passage (journal « dungeon ») devenues basses : abandonnées en tête de
+  -- chapitre (étape note optionnelle par donjon), à partir des chapitres de niveau DUNGEON_RELEASE_FROM.
+  -- Même règle dans paths.replay (validateur) : quête prise par une étape optional + dungeon, niveau de
+  -- quête <= minLevel - DUNGEON_RELEASE_GAP.
+  sim.releaseDungeonQuests(D, plan, state, steps)
+
   -- arrivée dans le chapitre (bateau, tram, vol...) quand on vient d'un autre continent ou de loin :
   -- étapes `arrive` du plan si elles existent, sinon trajet calculé (sim.route) jusqu'au point d'entrée.
   -- arrive.via = { mapId, x, y } : trajet calculé jusqu'à ce point (quai), puis les étapes fixes.
@@ -869,6 +884,7 @@ function sim.chapter(D, W, plan, state, opts)
     local q = D.quests[id]
     if not state.log[id] then
       local info, reason = analyse(ctx, q)
+      if info and state.abandoned and state.abandoned[id] then info, reason = nil, "dungeon quest abandoned earlier" end
       if info then
         infos[#infos + 1] = info; byId[id] = info
       elseif reason then
@@ -1087,7 +1103,8 @@ function sim.chapter(D, W, plan, state, opts)
     local function keep(info, depth)
       if kept[info.q.id] or depth > 200 then return end
       kept[info.q.id] = true
-      acc = acc + (info.value - (info.bonus or 0))
+      -- pré-requis pris au passage dans un donjon (dungeonOnly) : hors candidats, sans valeur
+      acc = acc + ((info.value or 0) - (info.bonus or 0))
       local q = info.q
       for _, p in ipairs(q.preGroup) do
         if byId[p] and not byId[p].dropped then keep(byId[p], depth + 1) end
@@ -1634,6 +1651,38 @@ function sim.chapter(D, W, plan, state, opts)
   report.steps = #steps
   report.hubs = #hubs
   return steps, report
+end
+
+------------------------------------------------------------------------------
+-- Quêtes de donjon prises au passage : abandon quand elles deviennent basses
+------------------------------------------------------------------------------
+-- À partir d'un chapitre de niveau minimal DUNGEON_RELEASE_FROM, les quêtes du journal prises au passage
+-- dans un donjon (state.log[id] == "dungeon") dont le niveau est <= minLevel - DUNGEON_RELEASE_GAP sont
+-- retirées du journal (state.abandoned) ; une étape note optionnelle par donjon le dit au joueur. La
+-- place tenue par les autres parcours de race (logPad : quêtes de donjon de départ) est rendue aussi.
+function sim.releaseDungeonQuests(D, plan, state, steps)
+  if (plan.minLevel or 0) < C.DUNGEON_RELEASE_FROM then return end
+  local byDungeon, names = {}, {}
+  for _, id in ipairs(qdb.sortedKeys(state.log or {})) do
+    local q = D.quests[id]
+    if state.log[id] == "dungeon" and q and (q.level or 0) <= plan.minLevel - C.DUNGEON_RELEASE_GAP then
+      local dn = (q.zoneOrSort or 0) > 0 and D.dungeonAreas[q.zoneOrSort] or "dungeon"
+      if not byDungeon[dn] then byDungeon[dn] = {}; names[#names + 1] = dn end
+      table.insert(byDungeon[dn], q.name or tostring(id))
+      state.log[id] = nil
+      state.abandoned = state.abandoned or {}
+      state.abandoned[id] = true
+    end
+  end
+  if not state.dungeonsReleased then
+    state.dungeonsReleased = true
+    state.logPad = 0
+  end
+  table.sort(names)
+  for _, dn in ipairs(names) do
+    steps[#steps + 1] = { "note", ("Not running %s? Abandon %s"):format(dn, table.concat(byDungeon[dn], ", ")),
+                          optional = true, dungeon = dn }
+  end
 end
 
 ------------------------------------------------------------------------------

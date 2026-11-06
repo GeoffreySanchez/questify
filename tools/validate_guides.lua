@@ -260,7 +260,9 @@ function M.run(argv)
           cur = nid and byId[nid] or nil
         end
         local chapters = {}
-        for _, cg in ipairs(chain) do chapters[#chapters + 1] = { id = cg.def.id, steps = cg.def.steps or {} } end
+        for _, cg in ipairs(chain) do
+          chapters[#chapters + 1] = { id = cg.def.id, steps = cg.def.steps or {}, minLevel = cg.def.minLevel }
+        end
         -- variante false : sans étape de classe ; puis une variante par classe nommée sur le parcours
         local variants = { false }
         for _, c in ipairs(M.classVariants(chapters)) do variants[#variants + 1] = c end
@@ -268,7 +270,7 @@ function M.run(argv)
           local vchapters, indexes = {}, {}
           for k, ch in ipairs(chapters) do
             local steps, index = M.stepsForClass(ch.steps, cls or nil)
-            vchapters[k] = { id = ch.id, steps = steps }
+            vchapters[k] = { id = ch.id, steps = steps, minLevel = ch.minLevel }
             indexes[k] = index
           end
           paths.replay(D(faction), W, faction, race, vchapters, function(ci, fsi, msg)

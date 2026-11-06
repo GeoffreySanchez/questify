@@ -65,7 +65,7 @@ other chapters from the XML.
 | `quality.lua` | Itinerary checker: avoidable revisits, missed pickups, split objective areas, missed passing turn-ins. |
 | `plans.lua` | Chapter plans per faction (spec § 6), `plans.validate` (successors and `choices`). |
 | `emit.lua` | Guide file writer (spec § 5.2 format, one step per line with a comment). |
-| `classquests.lua` | Class quest chains (level ≤ 30) for `ClassQuestData.lua`. |
+| `classquests.lua` | Class quest chains (level ≤ 60) for `ClassQuestData.lua`. |
 | `overrides.lua` | Hand fixes applied at build time. |
 | `build.lua` | CLI. |
 | `backfill.lua` | Adds `choices` / `sim` to already generated guides (no QuestieDB). |
@@ -103,6 +103,8 @@ other chapters from the XML.
                                          -- objective sites of the quest); a missing task is a warning
   safeLevel = { [312] = 7 },             -- level from which the objectives of a quest are done (replaces
                                          -- the computed "safe" level: quest level - 1, mob level - 1)
+  widen = false,                         -- never widen the band (the zone is visited again later: its
+                                         -- higher quests stay for that chapter)
   arrive = { via = { 1453, 24.1, 55.4 }, steps = { { "boat", 1453, 24.1, 55.4, note = "..." } }, time = 300 },
                                          -- steps inserted when the character comes from another
                                          -- continent or more than 1500 yd away; `via` (optional):
@@ -334,6 +336,7 @@ guide with an invalid step is refused in game with one `Invalid guide <id>: step
 | `arrive.via` | Point reached by computed travel before the fixed `arrive` steps. |
 | `precede` | Pairs `{ first, second }` of task ids (`A`, `T`, `C` + quest id, `O` + quest id = all its objective sites): extra precedence. |
 | `safeLevel` | `{ [questId] = level }`: level from which the objectives of that quest are done (replaces the computed safe level). |
+| `widen` | `false`: the band is never widened (chapters 30-60, whose zones are visited again later). |
 
 ### Reports
 
@@ -535,6 +538,57 @@ right before `steps = {`, exactly where `emit.guide` puts them. A second run cha
 removed from `plans.lua` disappears, line endings (CRLF or LF) are kept, and a header that `emit.lua`
 would not write is left alone. `--check` writes nothing and exits 1 when a guide is out of date. Run it
 after changing `choices` in `plans.lua` when the guides are not regenerated.
+
+## Routes 30-60 (2026-11-06, lot H)
+
+### Chapters
+
+The trunk goes on after `A_05` and `H_05` up to level 60, from the "meta paths 1-60" plan, rebuilt and
+measured here (see `docs/routes/README.md` for the per-chapter table):
+
+- Alliance: `A_05 -> A_08 -> A_07 -> A_09 -> A_10 -> A_11 -> A_12 -> A_13 -> A_15 -> A_16 -> A_17 -> A_18 ->
+  A_19 -> A_20 -> A_21 -> A_22 -> A_28 -> A_24 -> A_26 -> A_27 -> A_23 -> A_29 -> A_30`. `A_06` (Hillsbrad
+  leftovers), `A_14` (The Hinterlands) and `A_25` (Feralas and Azshara) are written in `plans.lua` but on no
+  path: they are neither simulated nor generated.
+- Horde: `H_05 -> H_06 -> ... -> H_18 -> H_21 -> H_23 -> ... -> H_30` (`H_19` and `H_22` removed; `H_20`,
+  Tanaris 47-49, is written but on no path: Tanaris I, `H_16`, may widen its band and takes its quests).
+- Each chapter stays on one continent. Bands are contiguous (the minimum of a chapter is the maximum of the
+  previous one), `levelSlack = 0`, `levelBelow = 8` (leftover quests of a zone visited earlier), `far = 1600`
+  and `widen = false` except `H_16` (a zone visited again later keeps its higher quests for that visit).
+- Titles are zone names only (`Guides:TitleParts` translates the names listed in `ZONE_MAPS` of
+  `Questify/Engine/Guides.lua`).
+
+### Dungeon quests taken in passing
+
+Dungeon quests accepted in passing (`dungeons`, `optional` steps, log value `"dungeon"`) used to stay in the
+simulated log for good: at level 30, 10 of the 20 slots of the Alliance path were taken. From a chapter whose
+`minLevel` is at least `DUNGEON_RELEASE_FROM` (30), each such quest whose level is at most
+`minLevel - DUNGEON_RELEASE_GAP` (4) leaves the log at the start of the chapter (`sim.releaseDungeonQuests`),
+with one optional `note` step per dungeon ("Not running X? Abandon ..."). The log padding of the other race
+paths (`logPad`) is released at the same time. `paths.replay` (build and `tools/validate_guides.lua`)
+applies the same rule to quests accepted through an `optional` step with a `dungeon` name in a dungeon area
+of QuestieDB (`chapters[i].minLevel` is passed for that). Chapters below level 30 are unchanged.
+
+### Other rules
+
+- A quest that requires level 60 is never a candidate (no quest XP at the level cap; the walk would grind to
+  60 first).
+- `keep()` of the XP budget counts a prerequisite taken in passing for a dungeon (no value) as 0.
+
+### Transport (`transport.lua`)
+
+- Zeppelins Orgrimmar <-> Grom'gol and Undercity <-> Grom'gol (zeppelin masters of QuestieDB: 12136,
+  3149, 3150, 12137), boat Booty Bay <-> Ratchet (Shipmasters 9559 and 9558). Waiting and crossing time:
+  420 s, an estimate like the other links. To check in game.
+- Walk regions: Blasted Lands (1419) and Searing Gorge (1427, linked to the Burning Steppes through
+  Blackrock Mountain) are in the south of the Eastern Kingdoms.
+
+### Dungeons (`build_dungeons.lua`)
+
+Uldaman 36-47, Razorfen Downs 37-46, Maraudon 42-52, Zul'Farrak 44-54, The Temple of Atal'Hakkar 50-60,
+Blackrock Depths 52-60, Dire Maul 55-60 (one key `DIREMAUL`, area 2557: east, west and north have the same
+QuestieDB name), Scholomance 55-60, Stratholme 58-60. Entrances from QuestieDB. Raids and Blackrock Spire
+(one area for the lower and the upper spire) stay out.
 
 ## Known limits
 

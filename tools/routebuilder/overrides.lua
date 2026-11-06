@@ -15,7 +15,6 @@ return {
   },
   drop = {
     [34] = "Bellygrub is a level 24 elite; done at 22 it drags Worgen in the Woods forward",
-    [173] = "Worgen in the Woods chain: Nightbane mobs 27-31, above the 22-26 band",
     [631] = "The Thandol Span (31, req 28) gates a 157-170 mob grind at Dun Modr",
     [217] = "In Defense of the King's Lands, last part: Grawmug (17) and his guards (16), never at a safe level in Loch Modan (11-14)",
     [1056] = "Journey to Stonetalon Peak: 1,133 yd detour for a flight path the route never uses",

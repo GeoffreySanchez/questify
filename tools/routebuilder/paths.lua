@@ -19,11 +19,17 @@
 --   fly      : nœud de destination (`node`, à défaut nom dans note) découvert par une étape fp antérieure
 --              du parcours.
 --   hearth   : pierre liée par une étape sethearth antérieure, sur la même carte.
+--   donjon   : une quête de donjon prise au passage (accept `optional` + `dungeon`, zone de donjon de
+--              QuestieDB) quitte le journal en tête d'un chapitre de niveau minimal >= DUNGEON_RELEASE_FROM
+--              quand son niveau est <= minLevel - DUNGEON_RELEASE_GAP (abandon, même règle que
+--              sim.releaseDungeonQuests ; chapters[i].minLevel requis).
 
 local qdb = require("qdb")
 
 local paths = {}
 paths.LOG_CAP = 20
+paths.DUNGEON_RELEASE_FROM = 30
+paths.DUNGEON_RELEASE_GAP = 4
 
 local function raceBit(race, faction)
   if race == "Skyborne" then return faction == "Horde" and qdb.RACE_BITS.SkyborneH or qdb.RACE_BITS.SkyborneA end
@@ -57,7 +63,17 @@ function paths.replay(D, W, faction, race, chapters, onIssue)
   local log, nlog, done = {}, 0, {}
   local known, hearthMap = {}, nil
   local bit = raceBit(race, faction)
+  local inDungeon = {} -- quêtes de donjon prises au passage, dans le journal
   for ci, ch in ipairs(chapters) do
+    local minLevel = ch.minLevel or 0
+    if minLevel >= paths.DUNGEON_RELEASE_FROM then
+      for _, qid in ipairs(qdb.sortedKeys(inDungeon)) do
+        local q = D.quests[qid]
+        if log[qid] and q and (q.level or 0) <= minLevel - paths.DUNGEON_RELEASE_GAP then
+          log[qid] = nil; nlog = nlog - 1; inDungeon[qid] = nil
+        end
+      end
+    end
     for si, s in ipairs(ch.steps or {}) do
       local applies = not s.race or hasRace(s.race, race)
       local act, qid = s[1], s[2]
@@ -90,14 +106,18 @@ function paths.replay(D, W, faction, race, chapters, onIssue)
               end
               if not why and nlog + 1 > paths.LOG_CAP then why = ("quest log full (%d quests)"):format(nlog) end
               if why then bad(("accept %d: %s"):format(qid, why))
-              else log[qid] = true; nlog = nlog + 1 end
+              else
+                log[qid] = true; nlog = nlog + 1
+                local z = q.zoneOrSort or 0
+                if s.optional and s.dungeon and z > 0 and D.dungeonAreas and D.dungeonAreas[z] then inDungeon[qid] = true end
+              end
             elseif act == "complete" then
               if done[qid] then bad(("complete %d after its turnin"):format(qid))
               elseif not log[qid] then bad(("complete %d without accept"):format(qid)) end
             else
               if done[qid] then bad(("turnin %d twice"):format(qid))
               elseif not log[qid] then bad(("turnin %d without accept"):format(qid))
-              else log[qid] = nil; nlog = nlog - 1; done[qid] = true end
+              else log[qid] = nil; nlog = nlog - 1; done[qid] = true; inDungeon[qid] = nil end
             end
           end
         elseif act == "fp" then

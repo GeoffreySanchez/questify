@@ -128,7 +128,7 @@ function Actions.ResetChapter()
     if Q.Progress.Invalidate then Q.Progress.Invalidate() end
     Q.Progress:Update()
   end
-  Q:Print(L().UI_OPT_RESET_DONE, guide.title or guide.id)
+  Q:Print(L().UI_OPT_RESET_DONE, Q.Guides:DisplayTitle(guide))
 end
 
 -- Texte des mesures de temps (Q.Telemetry:Export), ou un message si le module manque.

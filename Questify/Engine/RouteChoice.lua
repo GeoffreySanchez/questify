@@ -12,6 +12,9 @@ local addonName, Q = ...
 -- La meilleure carte est recommandée ; égalité : la suite par défaut, puis l'id le plus petit.
 -- Raison : « xp » (meilleur XP/h d'au moins 5 %), sinon « level » (seule sans écart de niveau ou le
 -- plus petit), sinon « travel » (trajet le plus court), sinon « default » (route de Questify).
+-- Points forts d'une carte (RouteChoice:Highlights) : donjon de la tranche dont l'entrée est dans la
+-- zone (Q.DungeonData), quête de classe qui y commence (Q.ClassQuests, QuestieDB), points de vol des
+-- étapes ; rien d'estimé ni d'inventé.
 local RouteChoice = {}
 Q.RouteChoice = RouteChoice
 
@@ -47,8 +50,11 @@ local function questsAndXP(guide)
   return quests, xp
 end
 
--- Carte d'une suite : -> { id, guide, title, default, minLevel, maxLevel, quests, xp, minutes,
---   xpPerHour, travel, weight, under, over }
+-- Carte d'une suite : -> { id, guide, title, label, mapId, default, minLevel, maxLevel, quests, xp,
+--   minutes, xpPerHour, travel, weight, under, over }
+-- title : nom du chapitre dans la langue du client (Q.Guides:DisplayTitle) ; label : texte libre de
+-- l'entrée de choix (données du générateur, en anglais : pas affiché) ; mapId : carte de la zone
+-- (Q.Guides:MainMap), pour l'image de fond.
 function RouteChoice:Card(option, level)
   local g, entry = option.guide, option.entry or {}
   local sim = g.sim or {}
@@ -56,7 +62,7 @@ function RouteChoice:Card(option, level)
   local minLevel, maxLevel = num(g.minLevel) or 1, num(g.maxLevel) or 60
   return {
     id = g.id, guide = g, entry = option.entry, default = option.default == true,
-    title = entry.label or g.title or g.id,
+    title = Q.Guides:DisplayTitle(g), label = entry.label, mapId = Q.Guides:MainMap(g),
     minLevel = minLevel, maxLevel = maxLevel,
     quests = quests, xp = xp,
     minutes = num(sim.minutes), xpPerHour = num(sim.xpPerHour),
@@ -133,4 +139,137 @@ function RouteChoice:Rank(options, level)
   best.recommended = true
   best.reason = reasonOf(best, cards)
   return cards
+end
+
+---------------------------------------------------------------------------
+-- Points forts d'une suite (0 à 3), tirés des données existantes seulement
+---------------------------------------------------------------------------
+-- Cartes de la zone du chapitre : zones du titre (Q.Guides:TitleParts), cartes qui portent au moins
+-- un quart des étapes situées, sinon la carte la plus présente.
+local MAP_SHARE = 0.25
+
+function RouteChoice:ZoneMaps(g)
+  local set = {}
+  if type(g) ~= "table" then return set end
+  for _, p in ipairs(Q.Guides:TitleParts(g)) do
+    if p.mapId then set[p.mapId] = true end
+  end
+  local list = Q.Guides:StepMaps(g)
+  local total = 0
+  for _, e in ipairs(list) do total = total + e.count end
+  for i, e in ipairs(list) do
+    if i == 1 and next(set) == nil then set[e.mapId] = true end
+    if total > 0 and e.count / total >= MAP_SHARE then set[e.mapId] = true end
+  end
+  return set
+end
+
+-- Tranche du chapitre : de minLevel au plus haut de maxLevel et du niveau de fin simulé.
+local function band(g)
+  local lo = num(g.minLevel) or 1
+  local hi = num(g.maxLevel) or lo
+  local endLevel = g.sim and num(g.sim.endLevel)
+  if endLevel and math.floor(endLevel) > hi then hi = math.floor(endLevel) end
+  return lo, hi
+end
+
+local function listed(list, v)
+  if type(list) ~= "table" then return false end
+  for _, x in ipairs(list) do if x == v then return true end end
+  return false
+end
+
+-- Donjon (Q.DungeonData) ouvert à la faction du joueur, entrée dans la zone, niveaux qui croisent la
+-- tranche du chapitre ; le plus bas d'abord.
+local function dungeonOf(g, maps, lo, hi)
+  local data = Q.DungeonData
+  local faction = Q.Player and Q.Player.faction
+  if type(data) ~= "table" or type(faction) ~= "string" then return nil end
+  local best
+  for _, d in ipairs(data) do
+    local e = type(d) == "table" and d.entrance
+    if type(e) == "table" and num(e[1]) and num(d.minLevel) and num(d.maxLevel)
+      and listed(d.factions, faction) and maps[e[1]] and d.minLevel <= hi and d.maxLevel >= lo then
+      if not best or d.minLevel < best.minLevel then best = d end
+    end
+  end
+  if not best then return nil end
+  local name = Q.Dungeons and Q.Dungeons.Name and Q.Dungeons:Name(best) or tostring(best.name or best.key)
+  return { kind = "dungeon", key = best.key, name = name, minLevel = best.minLevel, maxLevel = best.maxLevel }
+end
+
+-- Nom de la chaîne dans la langue du client (première quête, QuestieDB), sinon le titre des données.
+local function chainTitle(chain)
+  local id = type(chain.quests) == "table" and chain.quests[1] or nil
+  local name = id and Q.QDB and Q.QDB:QuestName(id)
+  if type(name) == "string" and name ~= "" and name:sub(1, 1) ~= "#" then return name end
+  return tostring(chain.title or chain.key or "?")
+end
+
+-- Un départ (PNJ ou objet du monde, QuestieDB) de la quête placé sur une carte de la zone.
+local function startsIn(questId, maps)
+  local q = Q.QDB:Quest(questId)
+  if not q then return false end
+  local function any(ids, getter)
+    for _, id in ipairs(ids or {}) do
+      local rec = getter(Q.QDB, id)
+      if rec and type(rec.spawns) == "table" then
+        for m in pairs(rec.spawns) do
+          if maps[m] then return true end
+        end
+      end
+    end
+    return false
+  end
+  return any(q.starters.npcs, Q.QDB.Npc) or any(q.starters.objects, Q.QDB.Object)
+end
+
+-- Quête de classe (Q.ClassQuests:List) pas faite, pas commencée, pas ignorée, de la tranche du
+-- chapitre, dont la quête à prendre commence dans la zone.
+local USEFUL_STATE = { available = true, upcoming = true }
+
+local function classQuestOf(g, maps, lo, hi)
+  local CQ = Q.ClassQuests
+  if not (CQ and Q.QDB and Q.QDB:IsAvailable()) then return nil end
+  for _, row in ipairs(CQ:List()) do
+    local chain = row.chain
+    local lvl = num(chain.level) or 1
+    if USEFUL_STATE[row.state] and lvl >= lo and lvl <= hi then
+      local first = CQ:FirstQuest(chain)
+      if first and startsIn(first, maps) then
+        return { kind = "class", key = chain.key, title = chainTitle(chain) }
+      end
+    end
+  end
+  return nil
+end
+
+-- Points de vol des étapes (fp) qui concernent le personnage.
+local function fpOf(g)
+  local P = Q.Player or {}
+  local n = 0
+  for _, s in ipairs(g.steps or {}) do
+    if s.action == "fp" and (not s.race or listed(s.race, P.raceKey))
+      and (not s.class or listed(s.class, P.classFile)) then
+      n = n + 1
+    end
+  end
+  if n == 0 then return nil end
+  return { kind = "fp", count = n }
+end
+
+-- Highlights(guide) -> { { kind = "dungeon", key, name, minLevel, maxLevel } | { kind = "class", key,
+-- title } | { kind = "fp", count } } : au plus un de chaque, dans cet ordre ; liste vide sans donnée.
+function RouteChoice:Highlights(g)
+  local out = {}
+  if type(g) ~= "table" then return out end
+  local maps = self:ZoneMaps(g)
+  local lo, hi = band(g)
+  local d = dungeonOf(g, maps, lo, hi)
+  if d then out[#out + 1] = d end
+  local c = classQuestOf(g, maps, lo, hi)
+  if c then out[#out + 1] = c end
+  local f = fpOf(g)
+  if f then out[#out + 1] = f end
+  return out
 end

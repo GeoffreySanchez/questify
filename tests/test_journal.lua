@@ -89,6 +89,23 @@ return {
     t.eq(#Mock.errors, 0)
   end,
 
+  -- Client français : chapitres, en-tête des étapes et infobulle dans la langue du client.
+  route_tab_titles_translated = function(t)
+    Mock.locale = "frFR"
+    local Q = load()
+    C_Map.GetMapInfo = function(id) if id == 1426 then return { name = "Dun Morogh (carte)" } end end
+    Q.UI.Journal:ShowTab("route")
+    local J = Q.UI.Journal
+    local texts = {}
+    for _, r in ipairs(J.chapterRows) do
+      if r:IsShown() then texts[r.guide.id] = plain(r.text:GetText()) end
+    end
+    t.eq(texts.A_DwarfGnome_01, "Vallée de Froidecrête")
+    t.eq(texts.A_DwarfGnome_02, "Dun Morogh (carte)")
+    t.ok(plain(J.stepHeader:GetText()):find("Vallée de Froidecrête", 1, true), "step header")
+    t.eq(#Mock.errors, 0)
+  end,
+
   route_tab_state_icons_and_click = function(t)
     local Q = load()
     local J = Q.UI.Journal

@@ -280,7 +280,7 @@ local function chapterRow(i)
   end))
   row:SetScript("OnEnter", safe(function(self)
     if self.guide then
-      showTooltip(self, { self.guide.title or self.guide.id,
+      showTooltip(self, { Q.Guides:DisplayTitle(self.guide),
         string.format(L.UI_TRACKER_LEVELS, self.guide.minLevel or 1, self.guide.maxLevel or 60),
         L.UI_ROUTE_CHAPTER_HINT })
     end
@@ -424,7 +424,7 @@ function Journal:RefreshRoute(scrollToCurrent)
   for i, g in ipairs(chapters) do
     local row = chapterRow(i)
     row.guide = g
-    row.text:SetText(g.title or g.id)
+    row.text:SetText(Q.Guides:DisplayTitle(g))
     row.levels:SetFormattedText(L.UI_TRACKER_LEVELS, g.minLevel or 1, g.maxLevel or 60)
     local selected = guide ~= nil and guide.id == g.id
     if selected then row.selected:Show() else row.selected:Hide() end
@@ -449,7 +449,7 @@ function Journal:RefreshRoute(scrollToCurrent)
   else
     self.routeMessage:Hide()
   end
-  self.stepHeader:SetText(guide and (L.UI_ROUTE_STEPS .. " - " .. (guide.title or guide.id)) or L.UI_ROUTE_STEPS)
+  self.stepHeader:SetText(guide and (L.UI_ROUTE_STEPS .. " - " .. Q.Guides:DisplayTitle(guide)) or L.UI_ROUTE_STEPS)
   local cur = guide and Q.Progress:Current() or nil
   local curIndex
   for i, e in ipairs(entries) do

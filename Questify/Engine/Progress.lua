@@ -465,7 +465,7 @@ local function checkRollover()
       Q.char.guideId = nxt.id
       invalidate()
       Q:Fire("GUIDE_CHANGED", nxt)
-      Q:Print(Q.L.ROUTE_NEXT, nxt.title or nxt.id)
+      Q:Print(Q.L.ROUTE_NEXT, Q.Guides:DisplayTitle(nxt))
       Progress:Recompute()
     else
       if not endPrinted[g.id] then

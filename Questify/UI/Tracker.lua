@@ -1161,7 +1161,7 @@ function Tracker:Refresh()
   self.message:Hide()
 
   -- En-tête
-  self.title:SetText(guide.title or guide.id)
+  self.title:SetText(Q.Guides:DisplayTitle(guide))
   self.title:Show()
   self.levels:SetFormattedText(L.UI_TRACKER_LEVELS, guide.minLevel or 1, guide.maxLevel or 60)
   self.levels:Show()

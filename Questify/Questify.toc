@@ -45,6 +45,7 @@ Data\Maps.lua
 Data\ClassTrainers.lua
 Data\ClassSpells.lua
 Data\Caves.lua
+Data\ZoneArt.lua
 
 Engine\Guides.lua
 Engine\Progress.lua

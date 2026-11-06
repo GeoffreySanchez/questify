@@ -32,6 +32,18 @@ return {
     t.eq(#Mock.errors, 0)
   end,
 
+  -- Client français : titre du chapitre dans la langue du client (Guides:DisplayTitle).
+  tracker_title_translated = function(t)
+    Mock.locale = "frFR"
+    local Q = load()
+    t.eq(Q.UI.Tracker.title:GetText(), "Vallée de Froidecrête")
+    C_Map.GetMapInfo = function(id) if id == 1426 then return { name = "Dun Morogh (carte)" } end end
+    Q.Progress:SetGuide("A_DwarfGnome_02")
+    Q.UI.Tracker:Refresh()
+    t.eq(Q.UI.Tracker.title:GetText(), "Dun Morogh (carte)")
+    t.eq(#Mock.errors, 0)
+  end,
+
   tracker_missing_questiedb_message = function(t)
     Mock.addons.QuestieDB = false
     local Q = load()

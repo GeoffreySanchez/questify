@@ -282,6 +282,132 @@ local function eligible(target, entry, raceKey, faction)
   return true
 end
 
+---------------------------------------------------------------------------
+-- Titres affichés et cartes d'un chapitre
+---------------------------------------------------------------------------
+-- Les titres des guides générés sont en anglais (« Westfall », « Ashenvale and Stonetalon Mountains »,
+-- « Coldridge Valley »). Affichage dans la langue du client, partie par partie (« X and Y ») :
+--   (a) zone connue (ZONE_MAPS) : nom de la carte donné par le jeu (C_Map.GetMapInfo) ;
+--   (b) sinon titre de sous-zone traduit dans les textes du client (clé « CHAPTER:<titre> », par
+--       exemple Locales/StringsUI.lua pour le français) ;
+--   (c) sinon la partie telle quelle.
+-- Parties jointes par L.LIST_AND ; aucune partie traduite : le titre entier, tel quel.
+local ZONE_MAPS = {
+  ["Ashenvale"] = 1440, ["Darkshore"] = 1439, ["Dun Morogh"] = 1426, ["Durotar"] = 1411,
+  ["Duskwood"] = 1431, ["Elwynn Forest"] = 1429, ["Hillsbrad Foothills"] = 1424, ["Loch Modan"] = 1432,
+  ["Mulgore"] = 1412, ["Redridge Mountains"] = 1433, ["Silverpine Forest"] = 1421,
+  ["Stonetalon Mountains"] = 1442, ["Teldrassil"] = 1438, ["The Barrens"] = 1413,
+  ["Thousand Needles"] = 1441, ["Tirisfal Glades"] = 1420, ["Westfall"] = 1436, ["Wetlands"] = 1437,
+  ["Zephras Isle"] = 2521,
+}
+Guides.ZONE_MAPS = ZONE_MAPS
+
+local function guideOf(g)
+  if type(g) == "table" then return g end
+  return registry[g]
+end
+
+-- Nom d'une carte dans la langue du client, ou nil.
+local function mapName(mapId)
+  if not (C_Map and type(C_Map.GetMapInfo) == "function") then return nil end
+  local ok, info = pcall(C_Map.GetMapInfo, mapId)
+  if not ok or type(info) ~= "table" then return nil end
+  local name = info.name
+  if Q.Util and Q.Util.IsSecret and Q.Util.IsSecret(name) then return nil end
+  if type(name) == "string" and name ~= "" then return name end
+  return nil
+end
+
+local function splitTitle(title)
+  local parts, start = {}, 1
+  while true do
+    local i, j = title:find(" and ", start, true)
+    if not i then parts[#parts + 1] = title:sub(start); break end
+    parts[#parts + 1] = title:sub(start, i - 1)
+    start = j + 1
+  end
+  return parts
+end
+
+-- TitleParts(guide | id) -> { { text, source = "map" | "table" | "raw", mapId }, ... } : parties du
+-- titre telles qu'affichées ; mapId = carte de la zone quand la partie en est une (même sans nom).
+function Guides:TitleParts(g)
+  g = guideOf(g)
+  local out = {}
+  if not g then return out end
+  local title = tostring(g.title or g.id or "")
+  for _, part in ipairs(splitTitle(title)) do
+    local mapId = ZONE_MAPS[part]
+    local name = mapId and mapName(mapId)
+    if name then
+      out[#out + 1] = { text = name, source = "map", mapId = mapId }
+    else
+      local tr = rawget(Q.L, "CHAPTER:" .. part)
+      if type(tr) == "string" and tr ~= "" then
+        out[#out + 1] = { text = tr, source = "table", mapId = mapId }
+      else
+        out[#out + 1] = { text = part, source = "raw", mapId = mapId }
+      end
+    end
+  end
+  return out
+end
+
+-- DisplayTitle(guide | id) -> titre du chapitre dans la langue du client (suivi, journal, choix de
+-- suite, messages). Chapitre inconnu : l'id tel quel ; nil : "".
+function Guides:DisplayTitle(g)
+  if g == nil then return "" end
+  local guide = guideOf(g)
+  if not guide then return tostring(g) end
+  local parts = self:TitleParts(guide)
+  local texts, translated = {}, false
+  for i, p in ipairs(parts) do
+    texts[i] = p.text
+    if p.source ~= "raw" then translated = true end
+  end
+  if not translated then return tostring(guide.title or guide.id) end
+  if #texts == 1 then return texts[1] end
+  local sep = " " .. tostring(rawget(Q.L, "LIST_AND") or "and") .. " "
+  return table.concat(texts, sep)
+end
+
+-- StepMaps(guide | id) -> { { mapId, count }, ... } : cartes des étapes du chapitre (goto, fp, foyer,
+-- bateau, at des objectifs), de la plus présente à la moins présente (égalité : plus petit id).
+local stepMapsCache = setmetatable({}, { __mode = "k" })
+
+function Guides:StepMaps(g)
+  g = guideOf(g)
+  if not g then return {} end
+  local cached = stepMapsCache[g]
+  if cached then return cached end
+  local counts = {}
+  for _, s in ipairs(g.steps or {}) do
+    local m
+    if VALID[s.action] == "point" then m = s.mapId
+    elseif type(s.at) == "table" then m = s.at.mapId end
+    if isNum(m) then counts[m] = (counts[m] or 0) + 1 end
+  end
+  local list = {}
+  for m, n in pairs(counts) do list[#list + 1] = { mapId = m, count = n } end
+  table.sort(list, function(a, b)
+    if a.count ~= b.count then return a.count > b.count end
+    return a.mapId < b.mapId
+  end)
+  stepMapsCache[g] = list
+  return list
+end
+
+-- MainMap(guide | id) -> uiMapID de la zone du chapitre : celle de la première partie du titre si
+-- c'est une zone connue, sinon la carte la plus présente dans les étapes ; nil sans information.
+function Guides:MainMap(g)
+  g = guideOf(g)
+  if not g then return nil end
+  local first = self:TitleParts(g)[1]
+  if first and first.mapId then return first.mapId end
+  local top = self:StepMaps(g)[1]
+  return top and top.mapId or nil
+end
+
 -- Suites possibles d'un chapitre pour un personnage, dans l'ordre déclaré :
 --   { { guide, entry, default } } ; entry = l'entrée de choices (nil pour la suite par défaut ajoutée) ;
 --   default = vrai pour la suite par défaut (Guides:Next).

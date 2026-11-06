@@ -36,6 +36,18 @@
   la route par défaut est suivie sans demander. Jamais en combat : le choix s'ouvre à la fin du combat.
 - Premier choix : après Loch Modan (Nain, Gnome), la Marche de l'Ouest (route prévue) ou Sombrivage
   directement, par le bateau de Stormwind.
+- Choix de suite, nouvelle fenêtre : grande fenêtre au milieu de l'écran sur un voile sombre, grandes
+  cartes avec la carte du monde de la zone en fond (ou une image de la zone quand elle est fournie), nom
+  de la zone en gros, niveaux en badge, chiffres avec icônes, points forts tirés des données (donjon de
+  la tranche, quête de classe de la zone, points de vol) ; la carte conseillée a un halo doré qui pulse
+  doucement. Clic sur une carte pour y aller ; flèches ou Tab pour changer de carte, Entrée pour
+  choisir, Échap pour « Plus tard ». La fenêtre se ferme d'elle-même quand un combat commence et revient
+  à la fin tant que le choix n'est pas fait ; fermée par le joueur, elle ne revient plus d'elle-même
+  (même après /reload) jusqu'à la prochaine connexion : le suivi et `/qf route` la rouvrent.
+- Noms de chapitres traduits partout (suivi, journal, choix de suite, message « Chapitre suivant ») :
+  les zones prennent le nom des cartes du jeu (« Marche de l'Ouest », « Orneval et Les
+  Serres-Rocheuses ») et les zones de départ ont leur nom français (« Vallée de Froidecrête »,
+  « Comté-du-Nord », « Le Glas »…). Avant, un client français affichait « Westfall ».
 
 ### English
 - Outpost alert: in a town, at an inn or right after a merchant, Questify warns once per visit, before
@@ -68,6 +80,17 @@
   combat: the choice opens when combat ends.
 - First choice: after Loch Modan (Dwarf, Gnome), Westfall (the planned route) or Darkshore right away,
   by the Stormwind boat.
+- Route choice, new window: a large window in the middle of the screen over a dark veil, tall cards
+  with the zone's world map as background (or a picture of the zone when one is provided), the zone name
+  in large type, levels as a badge, figures with icons, highlights taken from the data (dungeon of the
+  level range, class quest of the zone, flight points); the recommended card has a softly pulsing gold
+  glow. Click a card to go there; arrows or Tab to switch card, Enter to choose, Esc for "Later". The
+  window closes by itself when combat starts and comes back afterwards while the choice is not made;
+  closed by the player, it does not come back by itself (even after /reload) until the next login: the
+  tracker and `/qf route` open it again.
+- Chapter names translated everywhere (tracker, journal, route choice, "Next chapter" message): zones
+  take the game's map names and starting areas have their localized name in French clients. Before, a
+  French client showed "Westfall".
 
 ## 0.3.0 (2026-11-05)
 

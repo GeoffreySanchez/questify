@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Questify, preview 08b: the options window</title>
+<link rel="stylesheet" href="../apercu.css">
+<style>
+  /* Options window (UI/Options.lua): 760 x 560; sidebar 168 wide at (10, -66);
+     list at x = 190, from 66 at the top to 34 at the bottom; section rows of 24; search 230 x 20 at
+     (-16, -33); "i" icon 20 x 20. Profiles section laid out as Options:Render places it. */
+  .opt { width: 760px; height: 560px; }
+  .side { position: absolute; left: 10px; top: 66px; width: 168px; bottom: 34px; background: rgba(0,0,0,.25); }
+  .side::after { content: ""; position: absolute; right: -1px; top: 0; bottom: 0; width: 1px; background: rgba(255,209,0,.25); }
+  .sec { position: absolute; left: 4px; width: 160px; height: 24px; }
+  .sec .fn { position: absolute; left: 10px; top: 5px; }
+  .child { position: absolute; left: 190px; top: 66px; width: 536px; height: 460px; }
+  .hdr { position: absolute; left: 2px; }
+  .cat .line { position: absolute; left: 0; width: 528px; height: 1px; top: 17px; background: rgba(255,209,0,.3); }
+  .info { position: absolute; width: 20px; height: 20px; }
+  /* control title: label, then the "i" icon at its TOPRIGHT (+4, +4) */
+  .ttl { position: absolute; display: flex; align-items: flex-start; }
+  .ttl .info { position: relative; margin-left: 4px; top: -4px; }
+  .tip.i-tip { left: 350px; bottom: 129px; width: 300px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap" style="width:600px">
+    <div class="brand">Questify</div>
+    <h1>The options window</h1>
+    <p>Every option in eleven sections in the sidebar, and a search on their labels, keywords and help, accent-insensitive.</p>
+    <p>The “i” icon next to each setting explains what it does. Profiles keep every setting and the tracker layout, and can be shared as a text string.</p>
+  </div>
+
+  <div class="ui" style="left:744px; top:150px">
+    <div style="zoom:1.45; position:relative">
+      <div class="bft opt">
+        <div class="bft-top"></div>
+        <div class="bft-inset"></div>
+        <div class="bft-portrait"><img src="https://wow.zamimg.com/images/wow/icons/large/inv_misc_gear_01.jpg" alt=""></div>
+        <div class="bft-title fn">Questify options</div>
+        <div class="bft-close"></div>
+
+        <div class="input search" style="left:514px; top:33px; width:230px"><span class="v fds">Search an option</span></div>
+
+        <div class="side">
+          <div class="sec" style="top:4px"><span class="fn">Route</span></div>
+          <div class="sec" style="top:28px"><span class="fn">Navigation</span></div>
+          <div class="sec" style="top:52px"><span class="fn">Automation</span></div>
+          <div class="sec" style="top:76px"><span class="fn">Loot</span></div>
+          <div class="sec" style="top:100px"><span class="fn">Class and dungeons</span></div>
+          <div class="sec" style="top:124px"><span class="fn">Map and markers</span></div>
+          <div class="sec" style="top:148px"><span class="fn">Tracker</span></div>
+          <div class="sec" style="top:172px"><span class="fn">Theme</span></div>
+          <div class="sec" style="top:196px"><span class="fn">Comfort</span></div>
+          <div class="sec" style="top:220px"><span class="fn">Tools</span></div>
+          <div class="sec" style="top:244px"><div class="hl" style="background:linear-gradient(90deg, rgba(255,209,0,.42), rgba(255,209,0,.55) 50%, rgba(255,209,0,.25))"></div><span class="fn" style="color:#fff">Profiles</span></div>
+        </div>
+
+        <div class="child">
+          <!-- section header -->
+          <div class="hdr fnl" style="top:4px">Profiles</div>
+          <!-- Active profile -->
+          <div class="hdr cat fn" style="top:32px; width:528px">Active profile<div class="line"></div></div>
+          <div class="ttl" style="left:14px; top:58px"><span class="fh">Profile used by this character</span><span class="info ico i-info"></span></div>
+          <div class="dd" style="left:18px; top:80px; width:260px"><span class="v fh">Default</span></div>
+
+          <div class="ttl" style="left:14px; top:118px"><span class="fh">Profile type</span><span class="info ico i-info"></span></div>
+          <div class="radio on" style="left:20px; top:138px"></div>
+          <div class="fhs abs" style="left:40px; top:140px">Per account (shared « Default » profile)</div>
+          <div class="radio" style="left:20px; top:158px"></div>
+          <div class="fhs abs" style="left:40px; top:160px">Per character (own profile)</div>
+
+          <!-- Manage -->
+          <div class="hdr cat fn" style="top:190px; width:528px">Manage<div class="line"></div></div>
+          <div class="input" style="left:20px; top:216px; width:180px"><span class="v fds">New profile name</span></div>
+          <div class="btn" style="left:210px; top:214px; width:120px">New</div>
+          <span class="info ico i-info" style="left:336px; top:215px"></span>
+          <div class="btn" style="left:14px; top:244px; width:120px">Copy from…</div>
+          <span class="info ico i-info" style="left:140px; top:245px"></span>
+          <div class="btn" style="left:14px; top:274px; width:120px">Delete…</div>
+          <span class="info ico i-info" style="left:140px; top:275px"></span>
+          <div class="btn" style="left:14px; top:304px; width:120px">Reset</div>
+          <span class="info ico i-info" style="left:140px; top:305px"></span>
+
+          <!-- Share -->
+          <div class="hdr cat fn" style="top:340px; width:528px">Share<div class="line"></div></div>
+          <div class="btn" style="left:14px; top:364px; width:120px">Export</div>
+          <span class="info ico i-info" style="left:140px; top:365px"></span>
+          <div class="btn" style="left:14px; top:394px; width:120px">Import</div>
+          <span class="info ico i-info" style="left:140px; top:395px"></span>
+        </div>
+        <div class="sb" style="left:734px; top:66px; height:460px"><div class="arrow up dis"></div><div class="track"></div><div class="arrow down dis"></div></div>
+
+        <!-- Tooltip of the "i" icon of "Export" (ANCHOR_RIGHT: bottom-left corner on the icon's top-right corner) -->
+        <div class="tip i-tip">
+          <div class="tt">Export</div>
+          <div class="tl">Turns the active profile into a text string to share. Your progress and your loot profile are never included.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="badge"><div class="t">Interface preview</div><div class="s">Mock-up drawn from Questify's code, not an in-game capture</div></div>
+</div>
+</body>
+</html>

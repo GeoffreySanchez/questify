@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Questify, preview 06: class quest</title>
+<link rel="stylesheet" href="../apercu.css">
+<style>
+  /* class quest alert glow: tint (1, 0.82, 0), BLEND fade on parchment */
+  .glow.class { background: radial-gradient(ellipse 62% 95% at 42% 50%, rgba(255,209,0,.55) 0%, rgba(255,209,0,.22) 62%, rgba(255,209,0,0) 100%); }
+  .pop { position: relative; width: 360px; padding: 68px 16px 40px; }
+  .pop .content { position: relative; }
+  .items { display: grid; grid-template-columns: repeat(7, 32px); gap: 4px; margin-bottom: 4px; }
+  .items img { width: 32px; height: 32px; display: block; box-shadow: 0 0 0 1px rgba(0,0,0,.8); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap" style="width:560px">
+    <div class="brand">Questify</div>
+    <h1>Class quests</h1>
+    <p>A glowing alert in the tracker when a class quest chain becomes available. One click opens its window: start, objectives, rewards and the XP of the whole chain.</p>
+    <p>“Add to route” inserts it into your route, “Ignore” sets it aside (you can turn it back on in the journal).</p>
+    <p>Dwarf Warrior level 10. Of the Warrior's three chains (Stormwind, Ironforge, Darnassus), Questify offers the one whose trainer is nearest: Granis Swiftaxe, in Kharanos.</p>
+  </div>
+
+  <!-- Class quest window (UI/ClassQuestPopup.lua: 360 wide, ButtonFrameTemplate) -->
+  <div class="ui" style="left:742px; top:236px">
+    <div style="zoom:1.75">
+      <div class="bft pop">
+        <div class="bft-top"></div>
+        <div class="bft-inset"></div>
+        <div class="bft-portrait"><img src="https://wow.zamimg.com/images/wow/icons/large/classicon_warrior.jpg" alt=""></div>
+        <div class="bft-title fn">Class quests</div>
+        <div class="bft-close"></div>
+        <div class="content">
+          <div class="fnl wrap" style="width:250px; margin-bottom:4px">Muren Stormpike</div>
+          <div class="fhs" style="height:18px">Level 10</div>
+          <div class="fh wrap" style="width:328px; margin-bottom:10px">Starts with <span style="color:#00ff96">Granis Swiftaxe</span> (Dun Morogh)</div>
+          <div class="fn" style="height:18px">Objectives</div>
+          <div class="fh wrap" style="width:328px; margin-bottom:10px">Speak with Muren Stormpike.</div>
+          <div class="fn" style="height:20px">Rewards</div>
+          <div class="items">
+            <!-- Grey Iron Weapons (1682), one to choose: Umbral Axe, Umbral Dagger, Umbral Mace, Umbral Sword -->
+            <img src="https://wow.zamimg.com/images/wow/icons/large/inv_axe_17.jpg" alt="">
+            <img src="https://wow.zamimg.com/images/wow/icons/large/inv_weapon_shortblade_15.jpg" alt="">
+            <img src="https://wow.zamimg.com/images/wow/icons/large/inv_mace_12.jpg" alt="">
+            <img src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt="">
+          </div>
+          <div class="fh" style="height:18px">2565 XP</div>
+        </div>
+        <div class="btn" style="right:164px; bottom:4px; width:110px">Ignore</div>
+        <div class="btn" style="right:8px; bottom:4px; width:150px">Add to route</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tracker with the alert (UI/Tracker.lua) -->
+  <div class="ui" style="left:1420px; top:236px">
+    <div style="zoom:1.75">
+      <div class="trk th-parchment">
+        <div class="bg"></div><div class="edge"></div>
+        <div class="row head">
+          <div class="title fn t-title">Dun Morogh</div>
+          <div class="levels fhs t-levels">6-11</div>
+        </div>
+        <div class="bar">
+          <div class="bbg"></div><div class="fill" style="width:82.5%"></div>
+          <div class="btxt fhs t-bar" style="white-space:pre">85/103  ·  ~5k XP left</div>
+        </div>
+        <div class="xp fhs t-xp">18.9k XP/h · level in 12 min</div>
+        <div class="alert">
+          <div class="glow class"></div>
+          <span class="ico i-accept"></span>
+          <div class="atxt fn t-class">Class quest available: Muren Stormpike</div>
+        </div>
+        <div class="cur">
+          <span class="cicon ico i-accept"></span>
+          <div class="dist fhs t-dist">64 yd</div>
+          <div class="chunk fh t-body wrap">Accept <span class="c-quest">Rejold's New Brew</span> from <span class="c-npc">Pilot Bellowfiz</span></div>
+        </div>
+        <div class="next"><img class="ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="ntxt fds t-dim">Tundra MacGrann's Stolen Stash</span></div>
+        <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Turn in: Tundra MacGrann's Stolen Stash</span></div>
+        <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Turn in: Rejold's New Brew</span></div>
+        <div class="grip ico i-grip"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="badge"><div class="t">Interface preview</div><div class="s">Mock-up drawn from Questify's code, not an in-game capture</div></div>
+</div>
+</body>
+</html>

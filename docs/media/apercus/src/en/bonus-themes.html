@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Questify, bonus preview: the tracker themes</title>
+<link rel="stylesheet" href="../apercu.css">
+<style>
+  .cards { position: absolute; left: 48px; right: 48px; top: 420px; display: flex; gap: 24px; justify-content: center; }
+  /* Background of each card: the "world" colour of the theme preview in the options
+     (UI/Options.lua, Build.themes: 0.30, 0.36, 0.26), so that the transparent theme stays readable. */
+  .card { width: 438px; padding: 22px 24px 20px; border-radius: 10px; background: #4d5c42;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.06), 0 10px 30px rgba(0,0,0,.45); }
+  .card .lbl { margin-top: 16px; font-family: var(--sans); font-size: 21px; font-weight: 600; color: #f2f2f2; }
+  .card .lbl small { font-weight: 400; color: #cfd6c7; font-size: 17px; margin-left: 6px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap" style="width:1400px; top:84px">
+    <div class="brand">Questify</div>
+    <h1>Four tracker themes</h1>
+    <p>Background, border and text colours change at once, from the options or with /qf theme.<br>The background opacity is set separately (90% here); the text always stays sharp.</p>
+  </div>
+
+  <div class="cards">
+    <!-- Parchment -->
+    <div class="card">
+      <div style="zoom:1.5">
+        <div class="trk th-parchment">
+          <div class="bg"></div><div class="edge"></div>
+          <div class="row head"><div class="title fn t-title">Coldridge Valley</div><div class="levels fhs t-levels">1-6</div></div>
+          <div class="bar"><div class="bbg"></div><div class="fill" style="width:30%"></div><div class="btxt fhs t-bar" style="white-space:pre">12/40  ·  ~3.5k XP left</div></div>
+          <div class="xp fhs t-xp">11.8k XP/h · level in 4 min</div>
+          <div class="cur">
+            <img class="cicon ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt="">
+            <div class="dist fhs t-dist">142 yd</div>
+            <div class="chunk fh t-body wrap">Do: <span class="c-quest">The Troll Cave</span><br>&nbsp;&nbsp;<span class="c-todo">Frostmane Troll Whelp slain: 5/14</span></div>
+            <div class="mob"><span class="skull ico i-skull"></span><span class="mname fhs t-body"><span class="c-mob">Frostmane Troll Whelp</span></span><span class="mlvl fds t-dim"><span class="c-lvl">Level 3-4</span></span></div>
+          </div>
+          <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Turn in: The Troll Cave</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Accept: The Stolen Journal</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Accept: Scalding Mornbrew Delivery</span></div>
+          <div class="grip ico i-grip"></div>
+        </div>
+      </div>
+      <div class="lbl">Parchment <small>(default)</small></div>
+    </div>
+
+    <!-- Black -->
+    <div class="card">
+      <div style="zoom:1.5">
+        <div class="trk th-dark">
+          <div class="bg"></div><div class="edge"></div>
+          <div class="row head"><div class="title fn t-title">Coldridge Valley</div><div class="levels fhs t-levels">1-6</div></div>
+          <div class="bar"><div class="bbg"></div><div class="fill" style="width:30%"></div><div class="btxt fhs t-bar" style="white-space:pre">12/40  ·  ~3.5k XP left</div></div>
+          <div class="xp fhs t-xp">11.8k XP/h · level in 4 min</div>
+          <div class="cur">
+            <img class="cicon ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt="">
+            <div class="dist fhs t-dist">142 yd</div>
+            <div class="chunk fh t-body wrap">Do: <span class="c-quest">The Troll Cave</span><br>&nbsp;&nbsp;<span class="c-todo">Frostmane Troll Whelp slain: 5/14</span></div>
+            <div class="mob"><span class="skull ico i-skull"></span><span class="mname fhs t-body"><span class="c-mob">Frostmane Troll Whelp</span></span><span class="mlvl fds t-dim"><span class="c-lvl">Level 3-4</span></span></div>
+          </div>
+          <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Turn in: The Troll Cave</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Accept: The Stolen Journal</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Accept: Scalding Mornbrew Delivery</span></div>
+          <div class="grip ico i-grip"></div>
+        </div>
+      </div>
+      <div class="lbl">Black</div>
+    </div>
+
+    <!-- Transparent -->
+    <div class="card">
+      <div style="zoom:1.5">
+        <div class="trk th-transparent">
+          <div class="row head"><div class="title fn t-title">Coldridge Valley</div><div class="levels fhs t-levels">1-6</div></div>
+          <div class="bar"><div class="bbg"></div><div class="fill" style="width:30%"></div><div class="btxt fhs t-bar" style="white-space:pre">12/40  ·  ~3.5k XP left</div></div>
+          <div class="xp fhs t-xp">11.8k XP/h · level in 4 min</div>
+          <div class="cur">
+            <img class="cicon ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt="">
+            <div class="dist fhs t-dist">142 yd</div>
+            <div class="chunk fh t-body wrap">Do: <span class="c-quest">The Troll Cave</span><br>&nbsp;&nbsp;<span class="c-todo">Frostmane Troll Whelp slain: 5/14</span></div>
+            <div class="mob"><span class="skull ico i-skull"></span><span class="mname fhs t-body"><span class="c-mob">Frostmane Troll Whelp</span></span><span class="mlvl fds t-dim"><span class="c-lvl">Level 3-4</span></span></div>
+          </div>
+          <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Turn in: The Troll Cave</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Accept: The Stolen Journal</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Accept: Scalding Mornbrew Delivery</span></div>
+          <div class="grip ico i-grip"></div>
+        </div>
+      </div>
+      <div class="lbl">Transparent</div>
+    </div>
+
+    <!-- Grey fade -->
+    <div class="card">
+      <div style="zoom:1.5">
+        <div class="trk th-gradient">
+          <div class="bg"></div>
+          <div class="row head"><div class="title fn t-title">Coldridge Valley</div><div class="levels fhs t-levels">1-6</div></div>
+          <div class="bar"><div class="bbg"></div><div class="fill" style="width:30%"></div><div class="btxt fhs t-bar" style="white-space:pre">12/40  ·  ~3.5k XP left</div></div>
+          <div class="xp fhs t-xp">11.8k XP/h · level in 4 min</div>
+          <div class="cur">
+            <img class="cicon ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt="">
+            <div class="dist fhs t-dist">142 yd</div>
+            <div class="chunk fh t-body wrap">Do: <span class="c-quest">The Troll Cave</span><br>&nbsp;&nbsp;<span class="c-todo">Frostmane Troll Whelp slain: 5/14</span></div>
+            <div class="mob"><span class="skull ico i-skull"></span><span class="mname fhs t-body"><span class="c-mob">Frostmane Troll Whelp</span></span><span class="mlvl fds t-dim"><span class="c-lvl">Level 3-4</span></span></div>
+          </div>
+          <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Turn in: The Troll Cave</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Accept: The Stolen Journal</span></div>
+          <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Accept: Scalding Mornbrew Delivery</span></div>
+          <div class="grip ico i-grip"></div>
+        </div>
+      </div>
+      <div class="lbl">Grey fade</div>
+    </div>
+  </div>
+
+  <div class="badge"><div class="t">Interface preview</div><div class="s">Mock-up drawn from Questify's code, not an in-game capture</div></div>
+</div>
+</body>
+</html>

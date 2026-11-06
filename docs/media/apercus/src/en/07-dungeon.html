@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Questify, preview 07: suggested dungeon</title>
+<link rel="stylesheet" href="../apercu.css">
+<style>
+  /* dungeon alert glow: tint (1, 0.5, 0.2), BLEND fade on parchment */
+  .glow.dungeon { background: radial-gradient(ellipse 62% 95% at 42% 50%, rgba(255,128,51,.50) 0%, rgba(255,128,51,.20) 62%, rgba(255,128,51,0) 100%); }
+  .alert img.ico { position: absolute; left: 2px; top: 2px; width: 16px; height: 16px; }
+  .pop { position: relative; width: 380px; min-height: 220px; padding: 68px 16px 40px; }
+  .pop .content { position: relative; }
+  .ql { width: 340px; margin-bottom: 3px; }
+  .ok { color: #ffffff; } .giver { color: #00ff96; } .locked { color: #909090; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap" style="width:560px">
+    <div class="brand">Questify</div>
+    <h1>Suggested dungeon</h1>
+    <p>The tracker suggests the dungeons that suit your level and faction. One click opens its window: levels, entrance and the quests to pick up in town before you go.</p>
+    <p>Quests you cannot take yet stay greyed out, with the reason. “Add to route” inserts the quests, the dungeon entrance, then the turn-ins.</p>
+    <p>Dwarf level 17, Darkshore.</p>
+  </div>
+
+  <!-- Dungeon window (UI/DungeonPopup.lua: 380 wide, ButtonFrameTemplate) -->
+  <div class="ui" style="left:706px; top:250px">
+    <div style="zoom:1.75">
+      <div class="bft pop">
+        <div class="bft-top"></div>
+        <div class="bft-inset"></div>
+        <div class="bft-portrait"><img src="https://wow.zamimg.com/images/wow/icons/large/inv_misc_bone_humanskull_01.jpg" alt=""></div>
+        <div class="bft-title fn">Dungeon</div>
+        <div class="bft-close"></div>
+        <div class="content">
+          <div class="fnl wrap" style="width:270px; margin-bottom:4px">The Deadmines</div>
+          <div class="fhs" style="height:18px">Level 17-26</div>
+          <div class="fh wrap" style="width:340px; margin-bottom:10px">Entrance: Westfall</div>
+          <div class="fn" style="height:18px">Quests</div>
+          <div class="ql fhs wrap">- <span class="ok">Oh Brother. . . - <span class="giver">Wilder Thistlenettle</span> (Stormwind City)</span></div>
+          <div class="ql fhs wrap">- <span class="ok">Collecting Memories - <span class="giver">Wilder Thistlenettle</span> (Stormwind City)</span></div>
+          <div class="ql fhs wrap">- <span class="ok">Underground Assault - <span class="giver">Shoni the Shilent</span> (Stormwind City)</span></div>
+          <div class="ql fhs wrap">- <span class="locked">The Defias Brotherhood - Gryan Stoutmantle (Westfall) (needs an earlier quest)</span></div>
+          <div class="ql fhs wrap">- <span class="locked">Red Silk Bandanas - Scout Riell (Westfall) (needs an earlier quest)</span></div>
+          <div class="ql fhs wrap">- <span class="locked">Destruction in Deadmines - Alba Fairmoon (Westfall) (needs an earlier quest)</span></div>
+        </div>
+        <div class="btn" style="right:164px; bottom:4px; width:110px">Ignore</div>
+        <div class="btn" style="right:8px; bottom:4px; width:150px">Add to route</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tracker with the dungeon alert (UI/Tracker.lua) -->
+  <div class="ui" style="left:1420px; top:250px">
+    <div style="zoom:1.75">
+      <div class="trk th-parchment">
+        <div class="bg"></div><div class="edge"></div>
+        <div class="row head">
+          <div class="title fn t-title">Darkshore</div>
+          <div class="levels fhs t-levels">16-19</div>
+        </div>
+        <div class="bar">
+          <div class="bbg"></div><div class="fill" style="width:39.5%"></div>
+          <div class="btxt fhs t-bar" style="white-space:pre">47/119  ·  ~32k XP left</div>
+        </div>
+        <div class="xp fhs t-xp">24.1k XP/h · level in 31 min</div>
+        <div class="alert">
+          <div class="glow dungeon"></div>
+          <img class="ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_misc_bone_humanskull_01.jpg" alt="">
+          <div class="atxt fn t-dungeon">Suggested dungeon: The Deadmines (lvl 17-26)</div>
+        </div>
+        <div class="cur">
+          <img class="cicon ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt="">
+          <div class="dist fhs t-dist">212 yd</div>
+          <div class="chunk fh t-body wrap">Do: <span class="c-quest">The Tower of Althalaxx</span><br>&nbsp;&nbsp;<span class="c-todo">Worn Parchment: 1/4</span></div>
+          <div class="mob">
+            <span class="skull ico i-skull"></span>
+            <span class="mname fhs t-body"><span class="c-mob">Dark Strand Fanatic</span></span>
+            <span class="mlvl fds t-dim"><span class="c-lvl">Level 16-17</span></span>
+          </div>
+        </div>
+        <div class="next"><img class="ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="ntxt fds t-dim">Cave Mushrooms</span></div>
+        <div class="next"><img class="ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="ntxt fds t-dim">The Red Crystal</span></div>
+        <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Turn in: The Cliffspring River</span></div>
+        <div class="grip ico i-grip"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="badge"><div class="t">Interface preview</div><div class="s">Mock-up drawn from Questify's code, not an in-game capture</div></div>
+</div>
+</body>
+</html>

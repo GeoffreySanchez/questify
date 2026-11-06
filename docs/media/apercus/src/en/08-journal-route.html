@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Questify, preview 08: journal, Route tab</title>
+<link rel="stylesheet" href="../apercu.css">
+<style>
+  /* Journal (UI/Journal.lua): 520 x 560; content from (10, -64) to (-10, 30); chapters 150 wide
+     (rows of 20), steps 290 wide (rows of 18), lists 432 high. */
+  .jr { width: 520px; height: 560px; }
+  .content { position: absolute; left: 10px; top: 64px; width: 500px; height: 466px; }
+  .list { position: absolute; top: 24px; height: 432px; overflow: hidden; }
+  .chap { position: relative; width: 150px; height: 20px; }
+  .chap .t { position: absolute; left: 4px; top: 4px; width: 110px; }
+  .chap .l { position: absolute; right: 4px; top: 4px; }
+  .step { position: relative; width: 290px; height: 18px; }
+  .step .st, .step .ac { position: absolute; top: 2px; width: 14px; height: 14px; }
+  .step .st { left: 2px; } .step .ac { left: 18px; }
+  .step .ac.done { filter: grayscale(1); }
+  .step .t { position: absolute; left: 36px; top: 3px; width: 252px; }
+  .done-t { color: #bfbfbf; } .cur-t { color: #ffd100; }
+  .tip.step-tip { left: 482px; bottom: 220px; width: 250px; }
+  /* tabs under the frame (PanelTabButtonTemplate, sized to their text, 3 apart) */
+  .tabs { position: absolute; left: 12px; top: 558px; display: flex; gap: 3px; align-items: flex-start; }
+  .tabs .tab { position: relative; min-width: 76px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap" style="width:540px">
+    <div class="brand">Questify</div>
+    <h1>The journal (/qf), Route tab</h1>
+    <p>Your faction's chapters on the left, the steps of the followed chapter on the right: done, current, to do.</p>
+    <p>Click a chapter to follow it; click a step to make it the current one. “Change route” reopens the choice of what comes next. The “Class quests” tab lists class chains and dungeons.</p>
+  </div>
+
+  <div class="ui" style="left:688px; top:70px">
+    <div style="zoom:1.55; position:relative">
+      <div class="bft jr">
+        <div class="bft-top"></div>
+        <div class="bft-inset"></div>
+        <div class="bft-portrait"><img src="https://wow.zamimg.com/images/wow/icons/large/inv_misc_book_09.jpg" alt=""></div>
+        <div class="bft-title fn">Questify</div>
+        <div class="bft-close"></div>
+
+        <div class="content">
+          <div class="fn abs" style="left:4px; top:4px">Chapters</div>
+          <div class="fn abs ell" style="left:184px; top:4px; width:290px">Steps - Coldridge Valley</div>
+
+          <!-- Alliance chapters, sorted by minimum level then id -->
+          <div class="list" style="left:2px; width:150px">
+            <div class="chap"><div class="hl"></div><span class="t fhs ell" style="color:#ffd100">Coldridge Valley</span><span class="l fds">1-6</span></div>
+            <div class="chap"><span class="t fhs ell">Northshire</span><span class="l fds">1-6</span></div>
+            <div class="chap"><span class="t fhs ell">Shadowglen</span><span class="l fds">1-6</span></div>
+            <div class="chap"><span class="t fhs ell">Zephras Isle</span><span class="l fds">1-15</span></div>
+            <div class="chap"><span class="t fhs ell">Dun Morogh</span><span class="l fds">6-11</span></div>
+            <div class="chap"><span class="t fhs ell">Elwynn Forest</span><span class="l fds">6-11</span></div>
+            <div class="chap"><span class="t fhs ell">Teldrassil</span><span class="l fds">6-11</span></div>
+            <div class="chap"><span class="t fhs ell">Loch Modan</span><span class="l fds">11-14</span></div>
+            <div class="chap"><span class="t fhs ell">Westfall</span><span class="l fds">11-16</span></div>
+            <div class="chap"><span class="t fhs ell">Darkshore</span><span class="l fds">11-19</span></div>
+            <div class="chap"><span class="t fhs ell">Westfall</span><span class="l fds">14-16</span></div>
+            <div class="chap"><span class="t fhs ell">Darkshore</span><span class="l fds">16-19</span></div>
+            <div class="chap"><span class="t fhs ell">Ashenvale and Stonetalon Mountains</span><span class="l fds">20-22</span></div>
+            <div class="chap"><span class="t fhs ell">Redridge Mountains and Duskwood</span><span class="l fds">22-26</span></div>
+            <div class="chap"><span class="t fhs ell">Wetlands</span><span class="l fds">26-29</span></div>
+            <div class="chap"><span class="t fhs ell">Hillsbrad Foothills</span><span class="l fds">29-30</span></div>
+          </div>
+          <div class="sb" style="left:158px; top:24px; height:432px"><div class="arrow up dis"></div><div class="track"></div><div class="arrow down dis"></div></div>
+
+          <!-- Steps of the chapter: 24 rows shown out of 40 -->
+          <div class="list" style="left:182px; width:290px">
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-accept done"></span><span class="t fhs ell done-t">Accept: Dwarven Outfitters</span></div>
+            <div class="step"><span class="st ico i-ready"></span><img class="ac ico done" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="t fhs ell done-t">Dwarven Outfitters</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-turnin done"></span><span class="t fhs ell done-t">Turn in: Dwarven Outfitters</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-accept done"></span><span class="t fhs ell done-t">Accept: Coldridge Valley Mail Delivery</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-accept done"></span><span class="t fhs ell done-t">Accept: A New Threat</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-turnin done"></span><span class="t fhs ell done-t">Turn in: Coldridge Valley Mail Delivery</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-accept done"></span><span class="t fhs ell done-t">Accept: Coldridge Valley Mail Delivery</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-accept done"></span><span class="t fhs ell done-t">Accept: The Boar Hunter</span></div>
+            <div class="step"><span class="st ico i-ready"></span><img class="ac ico done" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="t fhs ell done-t">The Boar Hunter</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-turnin done"></span><span class="t fhs ell done-t">Turn in: The Boar Hunter</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-accept done"></span><span class="t fhs ell done-t">Accept: The Troll Cave</span></div>
+            <div class="step"><span class="st ico i-ready"></span><span class="ac ico i-turnin done"></span><span class="t fhs ell done-t">Turn in: Coldridge Valley Mail Delivery</span></div>
+            <div class="step"><div class="hl"></div><span class="st ico i-current"></span><img class="ac ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="t fhs ell cur-t">The Troll Cave</span></div>
+            <div class="step"><span class="ac ico i-turnin"></span><span class="t fhs ell">Turn in: The Troll Cave</span></div>
+            <div class="step"><span class="ac ico i-accept"></span><span class="t fhs ell">Accept: The Stolen Journal</span></div>
+            <div class="step"><span class="ac ico i-accept"></span><span class="t fhs ell">Accept: Scalding Mornbrew Delivery</span></div>
+            <div class="step"><span class="ac ico i-turnin"></span><span class="t fhs ell">Turn in: Scalding Mornbrew Delivery</span></div>
+            <div class="step"><span class="ac ico i-accept"></span><span class="t fhs ell">Accept: Bring Back the Mug</span></div>
+            <div class="step"><span class="ac ico i-accept"></span><span class="t fhs ell">Accept: Grund and Gozwin</span></div>
+            <div class="step"><span class="ac ico i-accept"></span><span class="t fhs ell">Accept: A Refugee's Quandary</span></div>
+            <div class="step"><img class="ac ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="t fhs ell">A New Threat</span></div>
+            <div class="step"><img class="ac ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="t fhs ell">The Stolen Journal</span></div>
+            <div class="step"><img class="ac ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="t fhs ell">A Refugee's Quandary</span></div>
+            <div class="step"><img class="ac ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt=""><span class="t fhs ell">A Refugee's Quandary</span></div>
+          </div>
+          <div class="sb" style="left:478px; top:24px; height:432px"><div class="arrow up dis"></div><div class="track"></div><div class="thumb" style="top:17px; height:24px"></div><div class="arrow down"></div></div>
+        </div>
+
+        <!-- Options… (120 wide, 8 from the right) and Change route (130 wide, 6 to its left) -->
+        <div class="btn" style="right:134px; bottom:4px; width:130px">Change route</div>
+        <div class="btn" style="right:8px; bottom:4px; width:120px">Options…</div>
+
+        <!-- Step tooltip (hover) -->
+        <div class="tip step-tip">
+          <div class="tt">Accept: The Stolen Journal</div>
+          <div class="tl">Accept <span style="color:#ffd100">The Stolen Journal</span> from <span style="color:#00ff96">Grelin Whitebeard</span></div>
+          <div class="tl" style="color:#aaaaaa">To do</div>
+          <div class="tl" style="color:#66bbff">Click: make this the current step</div>
+        </div>
+      </div>
+      <div class="tabs">
+        <div class="tab on"><span class="fns">Route</span></div>
+        <div class="tab"><span class="fns">Class quests</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="badge"><div class="t">Interface preview</div><div class="s">Mock-up drawn from Questify's code, not an in-game capture</div></div>
+</div>
+</body>
+</html>

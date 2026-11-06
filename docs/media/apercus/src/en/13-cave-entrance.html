@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Questify, preview 13: cave entrance</title>
+<link rel="stylesheet" href="../apercu.css">
+<style>
+  /* Scene: a drawn hillside with a cave mouth (not a game capture) and the waypoint the navigation
+     addon shows. Its title is the one Questify passes (Nav/Navigation.lua, caveTitle):
+     NAV_CAVE_ENTER .. " — " .. step title. */
+  .scene { position: absolute; left: 700px; top: 236px; width: 600px; height: 560px; border-radius: 14px; overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.07), 0 18px 50px rgba(0,0,0,.6); }
+  .scene svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .wp { position: absolute; left: 0; right: 0; top: 96px; text-align: center; }
+  .wp .name { font-family: var(--friz); font-size: 25px; line-height: 28px; color: #fff; white-space: nowrap;
+    text-shadow: -1px 0 0 #000, 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, 0 2px 6px rgba(0,0,0,.8); }
+  .wp .yd { margin-top: 4px; font-family: var(--friz); font-size: 19px; line-height: 22px; color: var(--gold);
+    text-shadow: -1px 0 0 #000, 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000; }
+  .scene-note { position: absolute; left: 700px; top: 812px; width: 600px; text-align: center;
+    font-family: var(--sans); font-size: 16px; line-height: 1.45; color: #8d94a0; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap" style="width:560px">
+    <div class="brand">Questify</div>
+    <h1>Caves: in through the entrance</h1>
+    <p>When the objective is inside a known cave, the waypoint first leads to its entrance, not to the mountain above the target. Its title says so: “Cave entrance — The Grizzled Den”.</p>
+    <p>At the entrance or inside, the arrow points straight at the target. To leave for elsewhere, the waypoint leads to the “Cave exit”.</p>
+    <p>Dwarf level 7, Dun Morogh.</p>
+  </div>
+
+  <div class="scene">
+    <svg viewBox="0 0 600 560" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#2b3550"/><stop offset=".55" stop-color="#55658a"/><stop offset="1" stop-color="#8592ae"/>
+        </linearGradient>
+        <linearGradient id="far" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#c9d2e3"/><stop offset="1" stop-color="#7c879f"/>
+        </linearGradient>
+        <linearGradient id="near" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#e9eef6"/><stop offset=".5" stop-color="#b9c3d5"/><stop offset="1" stop-color="#8994ab"/>
+        </linearGradient>
+        <linearGradient id="snow" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#f4f7fb"/><stop offset="1" stop-color="#cdd5e3"/>
+        </linearGradient>
+        <radialGradient id="mouth" cx=".5" cy=".7" r=".7">
+          <stop offset="0" stop-color="#05060a"/><stop offset=".7" stop-color="#121521"/><stop offset="1" stop-color="#2a3044"/>
+        </radialGradient>
+        <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffd84a" stop-opacity=".0"/><stop offset=".25" stop-color="#ffd84a" stop-opacity=".55"/><stop offset="1" stop-color="#ffd84a" stop-opacity=".0"/>
+        </linearGradient>
+        <radialGradient id="halo" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#ffe27a" stop-opacity=".55"/><stop offset="1" stop-color="#ffe27a" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="600" height="560" fill="url(#sky)"/>
+      <!-- far range -->
+      <path d="M0 250 L70 190 L120 222 L190 150 L250 208 L320 160 L395 214 L460 172 L530 226 L600 196 L600 560 L0 560Z" fill="url(#far)" opacity=".75"/>
+      <!-- slope with the cave -->
+      <path d="M0 330 L110 262 L190 286 L300 236 L400 282 L480 256 L600 300 L600 560 L0 560Z" fill="url(#near)"/>
+      <path d="M110 262 L150 276 L128 282 L96 271Z M300 236 L346 258 L318 262 L282 249Z M480 256 L520 270 L500 274 L466 265Z" fill="#ffffff" opacity=".8"/>
+      <!-- rock face around the cave -->
+      <path d="M178 462 C184 420 204 380 236 352 C262 330 286 318 306 320 C336 322 362 340 384 366 C408 396 420 430 424 462Z" fill="#7a859d"/>
+      <path d="M206 462 C212 430 228 398 250 376 C270 358 290 350 304 350 C326 352 346 366 362 386 C380 410 390 436 394 462Z" fill="#646f88"/>
+      <!-- snowfield in front -->
+      <path d="M0 470 C120 440 210 452 300 446 C400 440 480 452 600 438 L600 560 L0 560Z" fill="url(#snow)"/>
+      <!-- cave mouth -->
+      <path d="M238 452 C240 424 250 400 266 384 C278 372 292 366 304 368 C320 370 334 382 344 398 C356 416 362 434 364 452 C330 446 272 446 238 452Z" fill="url(#mouth)"/>
+      <!-- rocks -->
+      <path d="M200 456 L214 434 L234 438 L242 458Z M358 456 L370 432 L390 440 L398 460Z M176 462 L188 446 L204 452 L206 466Z" fill="#59637a"/>
+      <!-- footprints toward the mouth -->
+      <g fill="#a9b3c6" opacity=".9">
+        <ellipse cx="300" cy="545" rx="7" ry="3.2"/><ellipse cx="288" cy="528" rx="6.5" ry="3"/>
+        <ellipse cx="302" cy="512" rx="6" ry="2.8"/><ellipse cx="291" cy="497" rx="5.5" ry="2.6"/>
+        <ellipse cx="301" cy="484" rx="5" ry="2.4"/><ellipse cx="293" cy="472" rx="4.5" ry="2.2"/>
+        <ellipse cx="300" cy="462" rx="4" ry="2"/>
+      </g>
+      <!-- waypoint: light beam on the entrance and a gold pin -->
+      <rect x="293" y="216" width="14" height="236" fill="url(#beam)"/>
+      <ellipse cx="300" cy="448" rx="30" ry="8" fill="url(#halo)"/>
+      <circle cx="300" cy="196" r="34" fill="url(#halo)"/>
+      <path d="M300 226 C292 212 280 202 280 188 C280 176 289 168 300 168 C311 168 320 176 320 188 C320 202 308 212 300 226Z" fill="#ffd200" stroke="#3d2a00" stroke-width="2.5" stroke-linejoin="round"/>
+      <circle cx="300" cy="188" r="7" fill="#3d2a00"/>
+    </svg>
+    <div class="wp">
+      <div class="name">Cave entrance — The Grizzled Den</div>
+      <div class="yd">64 yd</div>
+    </div>
+  </div>
+  <div class="scene-note">Waypoint title as Questify passes it to WaypointUI, TomTom or ShortestPath Forever (drawn scene)</div>
+
+  <!-- Tracker (UI/Tracker.lua): the Wendigo Mane drops from five monsters (QuestieDB) -->
+  <div class="ui" style="left:1350px; top:292px">
+    <div style="zoom:2">
+      <div class="trk th-parchment">
+        <div class="bg"></div><div class="edge"></div>
+        <div class="row head">
+          <div class="title fn t-title">Dun Morogh</div>
+          <div class="levels fhs t-levels">6-11</div>
+        </div>
+        <div class="bar">
+          <div class="bbg"></div><div class="fill" style="width:31.1%"></div>
+          <div class="btxt fhs t-bar" style="white-space:pre">32/103  ·  ~16.8k XP left</div>
+        </div>
+        <div class="xp fhs t-xp">17.6k XP/h · level in 9 min</div>
+        <div class="cur">
+          <img class="cicon ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt="">
+          <div class="dist fhs t-dist">118 yd</div>
+          <div class="chunk fh t-body wrap">Do: <span class="c-quest">The Grizzled Den</span><br>&nbsp;&nbsp;<span class="c-todo">Wendigo Mane: 3/8</span></div>
+          <div class="mob">
+            <span class="skull ico i-skull"></span>
+            <span class="mname fhs t-body"><span class="c-mob">Young Wendigo</span></span>
+            <span class="mlvl fds t-dim"><span class="c-lvl">Level 5-6</span></span>
+          </div>
+          <div class="mob">
+            <span class="skull ico i-skull"></span>
+            <span class="mname fhs t-body"><span class="c-mob">Wendigo</span></span>
+            <span class="mlvl fds t-dim"><span class="c-lvl">Level 6-7</span></span>
+          </div>
+          <div class="mob">
+            <span class="skull ico i-skull"></span>
+            <span class="mname fhs t-body"><span class="c-mob">Edan the Howler</span></span>
+            <span class="mlvl fds t-dim"><span class="c-lvl">Level 9</span></span>
+          </div>
+          <div class="mob">
+            <span class="skull ico i-skull"></span>
+            <span class="mname fhs t-body"><span class="c-mob">Old Icebeard</span></span>
+            <span class="mlvl fds t-dim"><span class="c-lvl">Level 11</span></span>
+          </div>
+          <div class="mob">
+            <span class="skull ico i-skull"></span>
+            <span class="mname fhs t-body"><span class="c-mob">Vagash</span></span>
+            <span class="mlvl fds t-dim"><span class="c-lvl">Level 11</span></span>
+          </div>
+        </div>
+        <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Turn in: Evershine</span></div>
+        <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Accept: The Perfect Stout</span></div>
+        <div class="next"><span class="ico i-accept"></span><span class="ntxt fds t-dim">Accept: A Favor for Evershine</span></div>
+        <div class="grip ico i-grip"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="badge"><div class="t">Interface preview</div><div class="s">Mock-up drawn from Questify's code, not an in-game capture</div></div>
+</div>
+</body>
+</html>

@@ -1,6 +1,6 @@
 # A_DwarfGnome_01 — Coldridge Valley
 
-Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: Dwarf.
+Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d306458a95` by `tools/routebuilder/build.lua`. Simulated race: Dwarf.
 
 | Item | Value |
 |---|---|
@@ -14,6 +14,7 @@ Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Hubs | 5 |
 | Median ratio (XP/s) | 4.30 |
 | Grinding (level steps) | ~10 mobs |
+| Hearthstone | no new bind; 0 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
 

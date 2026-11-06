@@ -1,7 +1,7 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-04.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
 -- Simulation : 52 étapes, niveau final 6.27, ~11675 xp/h, 44 min.
 Q:RegisterGuide({
   id = "A_Human_01",
@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Human" },
   minLevel = 1, maxLevel = 6,
   next = "A_Human_02",
+  sim = { steps = 52, endLevel = 6.27, xpPerHour = 11675, minutes = 44 },
   steps = {
     { "accept", 783 }, -- A Threat Within (lvl 1, ~40 xp, sim lvl 1)
     { "turnin", 783, xp = 40 }, -- A Threat Within (lvl 1, ~40 xp, sim lvl 1)

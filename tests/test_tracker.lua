@@ -32,6 +32,18 @@ return {
     t.eq(#Mock.errors, 0)
   end,
 
+  -- Client français : titre du chapitre dans la langue du client (Guides:DisplayTitle).
+  tracker_title_translated = function(t)
+    Mock.locale = "frFR"
+    local Q = load()
+    t.eq(Q.UI.Tracker.title:GetText(), "Vallée de Froidecrête")
+    C_Map.GetMapInfo = function(id) if id == 1426 then return { name = "Dun Morogh (carte)" } end end
+    Q.Progress:SetGuide("A_DwarfGnome_02")
+    Q.UI.Tracker:Refresh()
+    t.eq(Q.UI.Tracker.title:GetText(), "Dun Morogh (carte)")
+    t.eq(#Mock.errors, 0)
+  end,
+
   tracker_missing_questiedb_message = function(t)
     Mock.addons.QuestieDB = false
     local Q = load()
@@ -245,6 +257,32 @@ return {
     Mock.click(T.alert, "LeftButton")
     t.eq(Q.UI.ClassQuestPopup.chain, b)
     t.ok(not Q.UI.ClassQuestPopup.counter:IsShown(), "no counter for a single alert")
+    t.eq(#Mock.errors, 0)
+  end,
+
+  tracker_class_alert_says_late = function(t)
+    local Q = load()
+    local T = Q.UI.Tracker
+    Mock.player.level = 20
+    Mock.fire("PLAYER_LEVEL_UP", 20)
+    local a, b = Ext.warlockChain(), Ext.warlockChain()
+    b.key, b.title, b.level, b.quests = "WARLOCK_X", "Other chain", 20, { 999999 }
+    Ext.fakeClassQuests(Q, { { chain = a, state = "available" } })
+    Q:Fire("CLASSQUESTS_CHANGED")
+    t.eq(plain(T.alertText:GetText()), string.format(Q.L.UI_CLASS_ALERT_LATE_ONE, "The Stolen Tome"))
+    Ext.fakeClassQuests(Q, { { chain = a, state = "available" }, { chain = b, state = "available" } })
+    Q:Fire("CLASSQUESTS_CHANGED")
+    t.eq(plain(T.alertText:GetText()), string.format(Q.L.UI_CLASS_ALERT_LATE_ONE, "The Stolen Tome"),
+      "one late chain among others: its name")
+    local a2 = Ext.warlockChain()
+    a2.key, a2.level = "WARLOCK_Y", 5
+    Ext.fakeClassQuests(Q, { { chain = a, state = "available" }, { chain = a2, state = "available" } })
+    Q:Fire("CLASSQUESTS_CHANGED")
+    t.eq(plain(T.alertText:GetText()), string.format(Q.L.UI_CLASS_ALERT_LATE_MANY, 2))
+    -- aucune en retard : texte habituel
+    Ext.fakeClassQuests(Q, { { chain = b, state = "available" } })
+    Q:Fire("CLASSQUESTS_CHANGED")
+    t.eq(plain(T.alertText:GetText()), string.format(Q.L.UI_CLASS_ALERT_ONE, "Other chain"))
     t.eq(#Mock.errors, 0)
   end,
 

@@ -1,8 +1,8 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-04.
--- Simulation : 40 étapes, niveau final 6.08, ~12346 xp/h, 38 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
+-- Simulation : 40 étapes, niveau final 6.08, ~12347 xp/h, 38 min.
 Q:RegisterGuide({
   id = "H_OrcTroll_01",
   title = "Valley of Trials",
@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "Orc", "Troll" },
   minLevel = 1, maxLevel = 6,
   next = "H_OrcTroll_02",
+  sim = { steps = 40, endLevel = 6.08, xpPerHour = 12347, minutes = 38 },
   steps = {
     { "accept", 4641 }, -- Your Place In The World (lvl 1, ~40 xp, sim lvl 1)
     { "turnin", 4641, xp = 40 }, -- Your Place In The World (lvl 1, ~40 xp, sim lvl 1)
@@ -46,7 +47,7 @@ Q:RegisterGuide({
     { "turnin", 6394, xp = 445 }, -- Thazz'ril's Pick (lvl 4, ~445 xp, sim lvl 5)
     { "accept", 99123 }, -- Lost in the Shadows (lvl 8, ~700 xp, sim lvl 5)
     { "complete", 99123, at = { 1411, 51.41, 79.29 } }, -- Lost in the Shadows (lvl 8, ~700 xp, sim lvl 5)
-    { "accept", 96876, at = { 1411, 51.03, 55.6 }, note = "Loot Ukor's Lost Pack to start the quest" }, -- Ukor's Lost Pack (lvl 8, ~530 xp, sim lvl 5)
+    { "accept", 96876, at = { 1411, 51.17, 55.26 }, note = "Loot Ukor's Lost Pack to start the quest" }, -- Ukor's Lost Pack (lvl 8, ~530 xp, sim lvl 5)
     { "turnin", 96652, xp = 135 }, -- The Adventurer (lvl 6, ~135 xp, sim lvl 5)
     { "turnin", 96876, xp = 530 }, -- Ukor's Lost Pack (lvl 8, ~530 xp, sim lvl 5)
     { "turnin", 99123, xp = 700 }, -- Lost in the Shadows (lvl 8, ~700 xp, sim lvl 5)

@@ -14,6 +14,10 @@
 --   * Auberdine <-> Rut'theran ; tram Stormwind <-> Ironforge ; zeppelins Orgrimmar <-> Undercity ;
 --   * Skyborne : Valanaar (quai est) <-> Dalaran (Alliance, puis portail Skyborne vers Stormwind),
 --     Valanaar (quai ouest) <-> plateau des Guetteurs du ciel, en Mulgore (Horde).
+-- Ajouts du lot H (routes 30-60, 2026-11-06), positions des PNJ de QuestieDB, à vérifier en jeu :
+--   * zeppelins Orgrimmar <-> Grom'gol (Snurk Bucksquick, Nez'raz) et Undercity <-> Grom'gol
+--     (Hin Denburg, Squibby Overspeck), maîtres des zeppelins de QuestieDB ;
+--   * bateau neutre Booty Bay <-> Ratchet (Grizzlowe et Grimble, « Shipmaster » de QuestieDB).
 -- Durées : attente moyenne (demi-rotation) + traversée, en secondes (estimations).
 
 local transport = {}
@@ -23,10 +27,11 @@ local REGION = {
   -- Royaumes de l'Est, nord des montagnes
   [1426] = "EK_N", [1455] = "EK_N", [1432] = "EK_N", [1437] = "EK_N", [1417] = "EK_N", [1424] = "EK_N",
   [1416] = "EK_N", [1421] = "EK_N", [1420] = "EK_N", [1458] = "EK_N", [1418] = "EK_N", [1422] = "EK_N",
-  [1423] = "EK_N", [1425] = "EK_N", [1427] = "EK_N",
-  -- Royaumes de l'Est, sud
+  [1423] = "EK_N", [1425] = "EK_N",
+  -- Royaumes de l'Est, sud (Gorge des Vents brûlants : reliée aux Steppes ardentes par le mont
+  -- Rochenoire ; Terres foudroyées : au sud du Marais des Chagrins)
   [1429] = "EK_S", [1453] = "EK_S", [1436] = "EK_S", [1433] = "EK_S", [1431] = "EK_S", [1434] = "EK_S",
-  [1430] = "EK_S", [1428] = "EK_S", [1435] = "EK_S",
+  [1430] = "EK_S", [1428] = "EK_S", [1435] = "EK_S", [1427] = "EK_S", [1419] = "EK_S",
   -- Kalimdor (Teldrassil à part, voir regionOf)
   [1439] = "KAL", [1440] = "KAL", [1442] = "KAL", [1413] = "KAL", [1411] = "KAL", [1454] = "KAL", [1412] = "KAL",
   [1456] = "KAL", [1441] = "KAL", [1443] = "KAL", [1445] = "KAL", [1444] = "KAL", [1446] = "KAL", [1447] = "KAL",
@@ -64,6 +69,10 @@ local ORG_ZEP, UC_ZEP = { 1411, 50.8, 13.5 }, { 1420, 60.7, 58.9 }
 local ZEPHRAS_EAST, ZEPHRAS_WEST = { 2521, 65.1, 81.4 }, { 2521, 58.1, 80.4 }
 local DALARAN, DALARAN_PORTAL, SW_PORTAL_ARRIVAL = { 1416, 15.0, 57.0 }, { 1416, 12.0, 56.2 }, { 1453, 49.0, 87.0 }
 local SKYWATCHER = { 1412, 33.6, 24.7 }
+-- lot H : maîtres des zeppelins et capitaines de QuestieDB (PNJ 12136, 3149, 3150, 12137, 9559, 9558)
+local ORG_ZEP_GROMGOL, GROMGOL_ZEP_ORG = { 1411, 50.69, 12.89 }, { 1434, 31.43, 29.91 }
+local UC_ZEP_GROMGOL, GROMGOL_ZEP_UC = { 1420, 61.78, 59.18 }, { 1434, 31.54, 29.36 }
+local BOOTY_BAY_DOCK, RATCHET_DOCK = { 1434, 26.08, 73.35 }, { 1413, 63.54, 38.61 }
 
 both({ id = "tram_if_sw", kind = "boat", from = IF_TRAM, to = SW_TRAM, time = 180,
        note = "Take the Deeprun Tram to Stormwind" },
@@ -92,6 +101,15 @@ link({ id = "portal_darn_rut", kind = "portal", faction = "Alliance", from = DAR
 both({ id = "zep_org_uc", kind = "boat", faction = "Horde", from = ORG_ZEP, to = UC_ZEP, time = 420,
        note = "Take the zeppelin to Undercity (Tirisfal Glades)" },
      { id = "zep_uc_org", note = "Take the zeppelin to Orgrimmar (Durotar)" })
+both({ id = "zep_org_gromgol", kind = "boat", faction = "Horde", from = ORG_ZEP_GROMGOL, to = GROMGOL_ZEP_ORG, time = 420,
+       note = "Take the zeppelin to Grom'gol (Stranglethorn Vale)" },
+     { id = "zep_gromgol_org", note = "Take the zeppelin to Orgrimmar (Durotar)" })
+both({ id = "zep_uc_gromgol", kind = "boat", faction = "Horde", from = UC_ZEP_GROMGOL, to = GROMGOL_ZEP_UC, time = 420,
+       note = "Take the zeppelin to Grom'gol (Stranglethorn Vale)" },
+     { id = "zep_gromgol_uc", note = "Take the zeppelin to Undercity (Tirisfal Glades)" })
+both({ id = "boat_bb_ratchet", kind = "boat", from = BOOTY_BAY_DOCK, to = RATCHET_DOCK, time = 420,
+       note = "Take the boat to Ratchet (The Barrens)" },
+     { id = "boat_ratchet_bb", note = "Take the boat to Booty Bay (Stranglethorn Vale)" })
 -- Skyborne
 both({ id = "sky_zephras_dalaran", kind = "boat", faction = "Alliance", races = { "Skyborne" }, from = ZEPHRAS_EAST,
        to = DALARAN, time = 330, note = "Take the skyboat to Dalaran (east dock of Valanaar)" },

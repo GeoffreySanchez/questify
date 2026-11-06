@@ -1,6 +1,6 @@
 # A_NightElf_01 — Shadowglen
 
-Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: NightElf.
+Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d306458a95` by `tools/routebuilder/build.lua`. Simulated race: NightElf.
 
 | Item | Value |
 |---|---|
@@ -13,6 +13,7 @@ Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Quests turned in | 17 |
 | Hubs | 2 |
 | Median ratio (XP/s) | 2.50 |
+| Hearthstone | no new bind; 0 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
 

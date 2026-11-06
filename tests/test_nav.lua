@@ -191,6 +191,85 @@ return {
     t.eq(Mock.countCalls("WaypointUIAPI.Navigation.NewUserNavigation"), 0)
   end,
 
+  -- ShortestPath confie ses virages à WaypointUI en coordonnées 0-1, que l'API de WaypointUI lit en 0-100 :
+  -- le virage tombait au coin nord-ouest de la carte (« Trajet vers … 2129 yds » pour un PNJ à 65 yd).
+  -- Avec les deux addons, NewUserNavigation est enveloppée : 0-1 converti, 0-100 inchangé.
+  waypointui_input_scaled_for_shortestpath_turns = function(t)
+    Mock.addons.ShortestPathForever = true
+    Mock.addons.WaypointUI = true
+    local Q = load({ ["nav.routing"] = true })
+    local nav = WaypointUIAPI.Navigation
+    -- le virage tel que ShortestPath le transmet (C_Map, 0-1)
+    local res = nav.NewUserNavigation({ name = "Trajet vers Rejold", mapID = 1426, x = 0.3019, y = 0.4573 })
+    local call = Mock.lastCall("WaypointUIAPI.Navigation.NewUserNavigation").args[1]
+    t.near(call.x, 30.19, 0.0001); t.near(call.y, 45.73, 0.0001)
+    t.eq(call.name, "Trajet vers Rejold"); t.eq(call.mapID, 1426)
+    t.ok(res, "WaypointUI's return value passed through")
+    -- un appel en 0-100 (le nôtre, ou un autre addon) passe tel quel
+    nav.NewUserNavigation({ name = "Camp", mapID = 1426, x = 22.6, y = 71.4 })
+    call = Mock.lastCall("WaypointUIAPI.Navigation.NewUserNavigation").args[1]
+    t.eq(call.x, 22.6); t.eq(call.y, 71.4)
+    -- enveloppée une seule fois, même après d'autres cibles
+    local wrapped = nav.NewUserNavigation
+    Q.Nav:SetTarget(1426, 22.6, 71.4, "Camp")
+    t.eq(nav.NewUserNavigation, wrapped, "not wrapped twice")
+    -- la navigation nommée de Questify reste en 0-100
+    t.eq(Mock.lastCall("WaypointUIAPI.Navigation.NewUserNavigation").args[1].x, 22.6)
+    noNavErrors(t)
+  end,
+
+  -- Les virages de ShortestPath passent en silence (WaypointUI sonnait à chaque virage), et un virage
+  -- identique au précédent, que WaypointUI suit encore, n'est pas reposé.
+  shortestpath_turns_are_silent_and_not_repeated = function(t)
+    Mock.addons.ShortestPathForever = true
+    Mock.addons.WaypointUI = true
+    load({ ["nav.routing"] = true })
+    local nav = WaypointUIAPI.Navigation
+    local current
+    nav.IsUserNavigationTracked = function() return current ~= nil end
+    nav.GetUserNavigation = function() return current end
+    local function turn(x, y)
+      return nav.NewUserNavigation({ name = "Trajet vers Rejold", mapID = 1426, x = x, y = y })
+    end
+    local before = Mock.countCalls("WaypointUIAPI.Navigation.NewUserNavigation")
+    current = turn(0.3019, 0.4573)
+    t.eq(Mock.countCalls("WaypointUIAPI.Navigation.NewUserNavigation"), before + 1)
+    t.eq(Mock.lastCall("WaypointUIAPI.Navigation.NewUserNavigation").args[1].suppressAudio, true, "silent")
+    local same = turn(0.3019, 0.4573)
+    t.eq(Mock.countCalls("WaypointUIAPI.Navigation.NewUserNavigation"), before + 1, "same turn not re-placed")
+    t.eq(same, current, "current navigation returned")
+    current = turn(0.3050, 0.4600)
+    t.eq(Mock.countCalls("WaypointUIAPI.Navigation.NewUserNavigation"), before + 2, "next turn placed")
+    current = nil                                -- WaypointUI ne suit plus rien : le même virage repasse
+    turn(0.3050, 0.4600)
+    t.eq(Mock.countCalls("WaypointUIAPI.Navigation.NewUserNavigation"), before + 3)
+    noNavErrors(t)
+  end,
+
+  -- WaypointUI suit déjà une navigation (un virage, ou le repère du jeu qu'il adopte) : à chaque nouvelle
+  -- cible, Questify ne repose pas la sienne avant le calcul (le repère sautait cible -> virage).
+  shortestpath_does_not_reseed_a_tracking_waypointui = function(t)
+    Mock.addons.ShortestPathForever = true
+    Mock.addons.WaypointUI = true
+    load({ ["nav.routing"] = true })
+    t.eq(Mock.countCalls("WaypointUIAPI.Navigation.NewUserNavigation"), 1, "first target: seeded")
+    WaypointUIAPI.Navigation.IsUserNavigationTracked = function() return true end
+    local navs = Mock.countCalls("ShortestPathForever.API.Navigate")
+    accept179()                                   -- nouvelle cible
+    t.eq(Mock.countCalls("ShortestPathForever.API.Navigate"), navs + 1, "routed to the new target")
+    t.eq(Mock.countCalls("WaypointUIAPI.Navigation.NewUserNavigation"), 1, "not re-seeded")
+    noNavErrors(t)
+  end,
+
+  -- WaypointUI seul (sans ShortestPath) : son API n'est pas touchée.
+  waypointui_untouched_without_shortestpath = function(t)
+    Mock.addons.WaypointUI = true
+    load()
+    WaypointUIAPI.Navigation.NewUserNavigation({ name = "Corner", mapID = 1426, x = 0.5, y = 0.5 })
+    local call = Mock.lastCall("WaypointUIAPI.Navigation.NewUserNavigation").args[1]
+    t.eq(call.x, 0.5); t.eq(call.y, 0.5)
+  end,
+
   routing_without_shortestpath_uses_display = function(t)
     local Q = load({ ["nav.routing"] = true })
     t.eq(Mock.countCalls("C_Map.SetUserWaypoint"), 1)

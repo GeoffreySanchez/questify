@@ -1,8 +1,8 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-04.
--- Simulation : 45 étapes, niveau final 17.05, ~18038 xp/h, 78 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
+-- Simulation : 44 étapes, niveau final 17.07, ~18059 xp/h, 78 min.
 Q:RegisterGuide({
   id = "A_DwarfGnome_04",
   title = "Westfall",
@@ -10,13 +10,13 @@ Q:RegisterGuide({
   races = { "Dwarf", "Gnome" },
   minLevel = 14, maxLevel = 16,
   next = "A_01",
+  sim = { steps = 44, endLevel = 17.07, xpPerHour = 18059, minutes = 78 },
   steps = {
     { "accept", 64 }, -- The Forgotten Heirloom (lvl 12, ~910 xp, sim lvl 15)
     { "accept", 151 }, -- Poor Old Blanchy (lvl 14, ~1250 xp, sim lvl 15)
     { "fp", 1436, 56.55, 52.64 }, -- point de vol
     { "accept", 12 }, -- The People's Militia (lvl 12, ~910 xp, sim lvl 15)
     { "accept", 92744 }, -- Murloc Gills (lvl 12, ~910 xp, sim lvl 15)
-    { "sethearth", 1436, 52.86, 53.71 }, -- lier la pierre de foyer
     { "accept", 92742 }, -- Testing the Wells (lvl 12, ~910 xp, sim lvl 15)
     { "complete", 92742, obj = 2, at = { 1436, 46.08, 38.14 } }, -- Testing the Wells (lvl 12, ~910 xp, sim lvl 15)
     { "complete", 92744, at = { 1436, 34.53, 17 } }, -- Murloc Gills (lvl 12, ~910 xp, sim lvl 15)
@@ -33,8 +33,8 @@ Q:RegisterGuide({
     { "turnin", 138, xp = 580 }, -- Captain Sander's Hidden Treasure (lvl 16, ~580 xp, sim lvl 15)
     { "accept", 139 }, -- Captain Sander's Hidden Treasure (lvl 16, ~580 xp, sim lvl 15)
     { "complete", 12, obj = 2, at = { 1436, 44.8, 25.95 } }, -- The People's Militia (lvl 12, ~910 xp, sim lvl 15)
-    { "complete", 92745, at = { 1436, 45.29, 20.05 } }, -- The State of the Mines (lvl 14, ~980 xp, sim lvl 15)
-    { "turnin", 139, xp = 580 }, -- Captain Sander's Hidden Treasure (lvl 16, ~580 xp, sim lvl 15)
+    { "complete", 92745, at = { 1436, 45.29, 20.05 } }, -- The State of the Mines (lvl 14, ~980 xp, sim lvl 16)
+    { "turnin", 139, xp = 580 }, -- Captain Sander's Hidden Treasure (lvl 16, ~580 xp, sim lvl 16)
     { "accept", 140 }, -- Captain Sander's Hidden Treasure (lvl 16, ~1150 xp, sim lvl 16)
     { "turnin", 140, xp = 1150 }, -- Captain Sander's Hidden Treasure (lvl 16, ~1150 xp, sim lvl 16)
     { "complete", 12, at = { 1436, 31.61, 33.78 } }, -- The People's Militia (lvl 12, ~910 xp, sim lvl 16)

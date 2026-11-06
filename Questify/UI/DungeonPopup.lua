@@ -153,6 +153,7 @@ function Popup:Show(d, index, total)
   if type(d) ~= "table" then return end
   self:Create()
   self.dungeon = d
+  self.demo = d.demo == true   -- scène /qf demo : les boutons ferment sans agir (UI/Demo.lua)
   local y = 0
   if tonumber(total) and total > 1 then
     self.counter:SetFormattedText(L.UI_POPUP_COUNTER, tonumber(index) or 1, total)
@@ -229,6 +230,7 @@ end
 -- Choix du joueur : le donjon est marqué vu (l'alerte disparaît), puis ajouté ou ignoré (le module
 -- envoie DUNGEONS_CHANGED), puis la fenêtre se ferme.
 function Popup:Choose(action)
+  if self.demo then return self:Hide() end   -- démo : rien n'est marqué ni ajouté
   local d = self.dungeon
   local D = Q.Dungeons
   if d and D then

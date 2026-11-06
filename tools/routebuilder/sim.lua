@@ -11,6 +11,7 @@ local orderm = require("order")
 local qdb = require("qdb")
 local quality = require("quality")
 local transport = require("transport")
+local pathsm = require("paths")
 
 local sim = {}
 
@@ -34,9 +35,11 @@ sim.CONST = {
   CHAIN_DISCOUNT = 0.7,   -- valeur actualisée des suites d'une chaîne
   FP_RADIUS = 150,        -- yards, passage près d'un maître de vol inconnu
   FP_SAVE = 300,          -- s gagnées plus tard par un point de vol découvert
-  SETHEARTH_LEAVE = 800,  -- yards, éloignement qui justifie de lier la pierre au hub
-  HEARTH_NEAR = 120,      -- yards, la tâche suivante doit être aussi près de l'auberge
-  HEARTH_FAR = 1200,      -- yards, et aussi loin de la position actuelle
+  SETHEARTH_LEAVE = 800,  -- yards, fin du premier passage à une auberge (lieu de la liaison)
+  HEARTH_NEAR = 120,      -- yards, auberge déjà liée : pas de nouvelle liaison si la candidate est aussi près
+  HEARTH_INN = 200,       -- yards, auberges candidates à la liaison : à cette distance d'un hub du chapitre
+  HEARTH_BUNDLE = 250,    -- yards, tâches ramenées en paquet après un retour par la pierre (autour de l'auberge)
+  HEARTH_BINDS = 2,       -- liaisons au plus par chapitre (deuxième liaison quand le hub change)
   HEARTH_CD = 3600,       -- s de recharge de la pierre de foyer
   HEARTH_CAST = 10,       -- s d'incantation
   FLY_RATIO = 0.7,        -- vol retenu s'il coûte moins de 70 % de la marche
@@ -62,6 +65,11 @@ sim.CONST = {
   SWEEP_AREA = 120,       -- yards : objectifs d'une même zone faits en un seul passage
   ROUTE_MIN = 90,         -- s : en dessous, marche directe sans chercher de vol ni de liaison
   BONUS_CAP = 900,        -- s, plafond du bonus « quête de transport »
+  -- quêtes de donjon prises au passage abandonnées quand elles deviennent basses, à partir des chapitres
+  -- de niveau min. DUNGEON_RELEASE_FROM (niveau de quête <= minLevel - DUNGEON_RELEASE_GAP) : mêmes
+  -- valeurs que paths.replay (validateur)
+  DUNGEON_RELEASE_FROM = pathsm.DUNGEON_RELEASE_FROM,
+  DUNGEON_RELEASE_GAP = pathsm.DUNGEON_RELEASE_GAP,
 }
 local C = sim.CONST
 
@@ -579,6 +587,8 @@ local function analyse(ctx, q)
     if q.level > plan.maxLevel + high then return nil, ("quest level %d above the band"):format(q.level) end
     local reqMax = plan.maxLevel
     if isDungeonQuest(ctx, q) then reqMax = reqMax + (plan.dungeonReqSlack or 0) end
+    -- niveau requis 60 : aucune XP de quête au niveau maximal (le personnage farmerait jusqu'à 60 pour rien)
+    reqMax = math.min(reqMax, xpm.MAX_LEVEL - 1)
     if (q.reqLevel or 0) > reqMax then return nil, ("required level %d above the band"):format(q.reqLevel) end
   end
   -- filtres de données et de règles
@@ -799,7 +809,8 @@ function sim.chapter(D, W, plan, state, opts)
     o2._noWiden = true
     local steps, report = sim.chapter(D, W, plan, state, o2)
     local widened
-    if (report.grindMobs or 0) > C.WIDEN_GRIND then
+    -- plan.widen = false : jamais (zone revisitée plus tard : ses quêtes hautes restent au chapitre suivant)
+    if (report.grindMobs or 0) > C.WIDEN_GRIND and plan.widen ~= false then
       restore(state, snap)
       o2.levelHigh = C.LEVEL_WIDE
       widened = ("grinding %d mobs with quests up to level %d: band widened to level %d"):format(
@@ -834,6 +845,12 @@ function sim.chapter(D, W, plan, state, opts)
   local cur = state.pos and mkPos(W, state.pos[1], state.pos[2], state.pos[3]) or entryPos
   local steps = {}
 
+  -- Quêtes de donjon prises au passage (journal « dungeon ») devenues basses : abandonnées en tête de
+  -- chapitre (étape note optionnelle par donjon), à partir des chapitres de niveau DUNGEON_RELEASE_FROM.
+  -- Même règle dans paths.replay (validateur) : quête prise par une étape optional + dungeon, niveau de
+  -- quête <= minLevel - DUNGEON_RELEASE_GAP.
+  sim.releaseDungeonQuests(D, plan, state, steps)
+
   -- arrivée dans le chapitre (bateau, tram, vol...) quand on vient d'un autre continent ou de loin :
   -- étapes `arrive` du plan si elles existent, sinon trajet calculé (sim.route) jusqu'au point d'entrée.
   -- arrive.via = { mapId, x, y } : trajet calculé jusqu'à ce point (quai), puis les étapes fixes.
@@ -867,6 +884,7 @@ function sim.chapter(D, W, plan, state, opts)
     local q = D.quests[id]
     if not state.log[id] then
       local info, reason = analyse(ctx, q)
+      if info and state.abandoned and state.abandoned[id] then info, reason = nil, "dungeon quest abandoned earlier" end
       if info then
         infos[#infos + 1] = info; byId[id] = info
       elseif reason then
@@ -884,18 +902,33 @@ function sim.chapter(D, W, plan, state, opts)
     info.dropped = reason
     report.dropped[#report.dropped + 1] = { info.q.id, reason, id = info.q.id, reason = reason }
   end
+  -- quêtes du journal (chapitre précédent) rendues dans ce chapitre : leur rendu débloque leurs suites
+  -- (ex. 967 The Tower of Althalaxx, faite à Sombrivage et rendue en Orneval, ouvre 970)
+  local turnedInHere = {}
+  for _, id in ipairs(qdb.sortedKeys(state.log)) do
+    local q = D.quests[id]
+    if q and state.log[id] ~= "dungeon" then
+      local found = false
+      for _, n in ipairs(q.finishers.npcs) do if #spawnsIn(ctx, "npc", n, true) > 0 then found = true end end
+      for _, n in ipairs(q.finishers.objects) do if #spawnsIn(ctx, "object", n, true) > 0 then found = true end end
+      turnedInHere[id] = found or nil
+    end
+  end
+  local function have(p)
+    return state.done[p] or turnedInHere[p] or (byId[p] and not byId[p].dropped and not byId[p].carry)
+  end
   local function prereqOk(info)
     local q = info.q
     if #q.preSingle > 0 then
       local ok = false
       for _, p in ipairs(q.preSingle) do
-        if state.done[p] or (byId[p] and not byId[p].dropped and not byId[p].carry) then ok = true end
+        if have(p) then ok = true end
       end
       if not ok then return false end
     end
     -- (une quête rendue dans un chapitre suivant ne débloque rien dans celui-ci)
     for _, p in ipairs(q.preGroup) do
-      if not state.done[p] and not (byId[p] and not byId[p].dropped and not byId[p].carry) then return false end
+      if not have(p) then return false end
     end
     for _, x in ipairs(q.exclusiveTo) do if state.done[x] or state.log[x] then return false end end
     return true
@@ -1070,7 +1103,8 @@ function sim.chapter(D, W, plan, state, opts)
     local function keep(info, depth)
       if kept[info.q.id] or depth > 200 then return end
       kept[info.q.id] = true
-      acc = acc + (info.value - (info.bonus or 0))
+      -- pré-requis pris au passage dans un donjon (dungeonOnly) : hors candidats, sans valeur
+      acc = acc + ((info.value or 0) - (info.bonus or 0))
       local q = info.q
       for _, p in ipairs(q.preGroup) do
         if byId[p] and not byId[p].dropped then keep(byId[p], depth + 1) end
@@ -1284,6 +1318,26 @@ function sim.chapter(D, W, plan, state, opts)
     end
   end
 
+  -- ordre imposé par le plan : plan.precede = { { "A3376", "O757" }, ... } (la première tâche avant la
+  -- seconde ; "O<q>" désigne tous les objectifs de la quête q). Une paire dont une tâche manque est ignorée.
+  for _, pair in ipairs(plan.precede or {}) do
+    local function resolve(key)
+      local out = {}
+      if taskOf[key] then out[1] = taskOf[key]; return out end
+      for _, t in ipairs(tasks) do
+        if t.id:sub(1, #key + 1) == key .. "_" then out[#out + 1] = t end
+      end
+      return out
+    end
+    local firsts, seconds = resolve(pair[1]), resolve(pair[2])
+    if #firsts == 0 or #seconds == 0 then
+      ctx.warnings[#ctx.warnings + 1] = ("precede %s < %s: task not in the chapter"):format(pair[1], pair[2])
+    end
+    for _, b in ipairs(seconds) do
+      for _, a in ipairs(firsts) do if a ~= b then addAfter(b, a.id) end end
+    end
+  end
+
   -- 6. Ordonnancement (avec le niveau simulé : une quête n'est prise qu'au niveau requis)
   for _, t in ipairs(tasks) do
     local info = t.info
@@ -1299,6 +1353,8 @@ function sim.chapter(D, W, plan, state, opts)
         for _, s in ipairs(sites) do
           for _, k in ipairs(s.kills or {}) do safe = math.max(safe, k[1] - C.SAFE_MOB_ABOVE) end
         end
+        -- niveau « sûr » donné par le plan (objectif sans danger réel, fait dès la prise)
+        if plan.safeLevel and plan.safeLevel[q.id] then safe = plan.safeLevel[q.id] end
         if safe > (t.reqLevel or 1) then t.reqLevel, t.safeLevel = safe, true end
       end
       if counted then
@@ -1349,8 +1405,14 @@ function sim.chapter(D, W, plan, state, opts)
   local orderOpts = { logCap = ctx.logCap, initialLog = initialLog, ids = orderIds, levelXP = xpm.LEVEL_XP,
                       level = state.level, xp = state.xp }
 
-  -- 7. Pierre de foyer : hub le plus fréquenté, si la route y revient après s'en être éloignée
-  local sethearthAt = sim.planSethearth(ctx, ordered, hubs)
+  -- 7. Pierre de foyer : liaisons (au plus HEARTH_BINDS) choisies sur le coût réel du trajet avec la
+  -- pierre, puis retours en paquet (tâches de l'auberge ramenées après un retour par la pierre)
+  local hearthBinds
+  ordered, hearthBinds = sim.planHearth(ctx, ordered, hubs, cur, finish, {
+    logCap = ctx.logCap, initialLog = initialLog, ids = orderIds, levelXP = xpm.LEVEL_XP,
+    level = state.level, xp = state.xp, grindCost = grindCost and function(l, x, target)
+      return math.floor(grindCost(l, x, target) * 100 + 0.5) end or nil })
+  report.hearthPlan = hearthBinds.summary
 
   -- 8. Marche de la route : logistique + XP
   local lastSite
@@ -1374,8 +1436,9 @@ function sim.chapter(D, W, plan, state, opts)
     end
     return n
   end
-  for idx, t in ipairs(ordered) do repeat
-    if t.q and skipQ[t.q] then break end
+  local carryBind -- liaison d'une tâche sautée : faite à la tâche suivante
+  for _, t in ipairs(ordered) do repeat
+    if t.q and skipQ[t.q] then carryBind = carryBind or hearthBinds[t.id]; break end
     if (t.kind == "A" or t.kind == "C" or t.kind == "O") and t.info and not t.info.carried then
       local q = t.info.q
       local skip
@@ -1405,6 +1468,7 @@ function sim.chapter(D, W, plan, state, opts)
         report.dropped[#report.dropped + 1] = { q.id, skip, id = q.id, reason = skip }
         report.levelSkipped = report.levelSkipped or {}
         report.levelSkipped[q.id] = skip
+        carryBind = carryBind or hearthBinds[t.id]
         break
       end
     end
@@ -1506,8 +1570,9 @@ function sim.chapter(D, W, plan, state, opts)
         state.done[q.id] = true
       end
     end
-    if sethearthAt and sethearthAt.index == idx then
-      local inn = sethearthAt.pos
+    local inn = hearthBinds[t.id] or carryBind
+    carryBind = nil
+    if inn then
       cur = sim.travel(ctx, steps, cur, inn, fms)
       steps[#steps + 1] = { "sethearth", inn.m, round2(inn.x), round2(inn.y) }
       state.time = state.time + C.QUEST_ACTION
@@ -1586,6 +1651,38 @@ function sim.chapter(D, W, plan, state, opts)
   report.steps = #steps
   report.hubs = #hubs
   return steps, report
+end
+
+------------------------------------------------------------------------------
+-- Quêtes de donjon prises au passage : abandon quand elles deviennent basses
+------------------------------------------------------------------------------
+-- À partir d'un chapitre de niveau minimal DUNGEON_RELEASE_FROM, les quêtes du journal prises au passage
+-- dans un donjon (state.log[id] == "dungeon") dont le niveau est <= minLevel - DUNGEON_RELEASE_GAP sont
+-- retirées du journal (state.abandoned) ; une étape note optionnelle par donjon le dit au joueur. La
+-- place tenue par les autres parcours de race (logPad : quêtes de donjon de départ) est rendue aussi.
+function sim.releaseDungeonQuests(D, plan, state, steps)
+  if (plan.minLevel or 0) < C.DUNGEON_RELEASE_FROM then return end
+  local byDungeon, names = {}, {}
+  for _, id in ipairs(qdb.sortedKeys(state.log or {})) do
+    local q = D.quests[id]
+    if state.log[id] == "dungeon" and q and (q.level or 0) <= plan.minLevel - C.DUNGEON_RELEASE_GAP then
+      local dn = (q.zoneOrSort or 0) > 0 and D.dungeonAreas[q.zoneOrSort] or "dungeon"
+      if not byDungeon[dn] then byDungeon[dn] = {}; names[#names + 1] = dn end
+      table.insert(byDungeon[dn], q.name or tostring(id))
+      state.log[id] = nil
+      state.abandoned = state.abandoned or {}
+      state.abandoned[id] = true
+    end
+  end
+  if not state.dungeonsReleased then
+    state.dungeonsReleased = true
+    state.logPad = 0
+  end
+  table.sort(names)
+  for _, dn in ipairs(names) do
+    steps[#steps + 1] = { "note", ("Not running %s? Abandon %s"):format(dn, table.concat(byDungeon[dn], ", ")),
+                          optional = true, dungeon = dn }
+  end
 end
 
 ------------------------------------------------------------------------------
@@ -1693,46 +1790,140 @@ function sim.flightMasters(ctx)
   return out
 end
 
--- Choisit où lier la pierre de foyer : pendant le premier passage au hub le plus fréquenté, si la
--- route y revient après s'en être éloignée de plus de SETHEARTH_LEAVE yards. La pierre est liée
--- après la tâche de ce premier passage la plus proche de l'aubergiste (détour minimal : souvent une
--- quête prise ou rendue à l'auberge même), pas à la fin du passage.
-function sim.planSethearth(ctx, ordered, hubs)
-  local best
-  for _, h in ipairs(hubs) do if not best or h.count > best.count then best = h end end
-  if not best then return nil end
-  local inn, innD
+-- Auberges de la faction à moins de HEARTH_INN yards d'un hub du chapitre (une par lieu).
+function sim.hearthInns(ctx, hubs)
+  local out = {}
   for _, id in ipairs(ctx.D.innkeepers or {}) do
     local n = ctx.D.npcs[id]
     if n and (not n.friendly or n.friendly:find(ctx.letter, 1, true)) then
       for _, m in ipairs(qdb.sortedKeys(n.spawns)) do
         for _, p in ipairs(n.spawns[m]) do
           local pos = mkPos(ctx.W, m, p[1], p[2])
-          local d = pos and yards(pos, best.pos)
-          if d and d <= 200 and (not inn or d < innD) then inn, innD = pos, d end
+          local near = false
+          for _, h in ipairs(pos and hubs or {}) do
+            if yards(pos, h.pos) <= C.HEARTH_INN then near = true; break end
+          end
+          if near then
+            for _, o in ipairs(out) do if yards(o, pos) <= C.HEARTH_NEAR then near = false; break end end
+          end
+          if near then pos.npc = id; out[#out + 1] = pos end
         end
       end
     end
   end
-  if not inn then return nil end
-  local hearth = ctx.state.hearth and mkPos(ctx.W, ctx.state.hearth[1], ctx.state.hearth[2], ctx.state.hearth[3])
-  if hearth and yards(hearth, inn) <= C.HEARTH_NEAR then return nil end
-  local firstVisit, left, pick, pickD
-  for i, t in ipairs(ordered) do
-    local d = yards(t.pos, best.pos)
-    if d <= C.HUB_RADIUS then
-      if not firstVisit then firstVisit = i
-      elseif left then return { index = pick, pos = inn } end
-    elseif firstVisit and d > C.SETHEARTH_LEAVE then
-      left = true
-    end
-    -- premier passage (jusqu'au premier grand éloignement) : tâche la plus proche de l'auberge
-    if firstVisit and not left then
-      local di = yards(t.pos, inn)
-      if not pickD or di < pickD - 1e-9 then pick, pickD = i, di end
+  return out
+end
+
+-- Tâche après laquelle la pierre est liée à l'auberge `inn` : premier passage à moins de HEARTH_INN
+-- yards à partir de l'indice `from`, puis, tant que la route reste à moins de SETHEARTH_LEAVE yards,
+-- la tâche la plus proche de l'aubergiste (détour minimal). Renvoie l'indice ou nil.
+local function bindIndex(seq, inn, from)
+  local pick, pickD
+  for i = from or 1, #seq do
+    local t = seq[i]
+    local d = yards(t.endPos or t.pos, inn)
+    if not pick then
+      if d <= C.HEARTH_INN then pick, pickD = i, d end
+    else
+      if d > C.SETHEARTH_LEAVE then break end
+      if d < pickD - 1e-9 then pick, pickD = i, d end
     end
   end
-  return nil
+  return pick
+end
+
+-- Pierre de foyer du chapitre. Plans comparés sur le coût réel du trajet (order.hearthCost : marche,
+-- retours par la pierre avec sa recharge, détours pour la lier) : aucune liaison, une liaison à une
+-- auberge proche d'un hub (premier passage), ou deux (la seconde au premier passage à une autre auberge
+-- après la première : le hub du chapitre change). Puis retours en paquet (order.hearthBundles) : les
+-- tâches faites près de l'auberge sont ramenées juste après un retour par la pierre quand le coût baisse,
+-- et le plan est choisi à nouveau. Renvoie la séquence et { [taskId] = auberge } (liaison après la tâche),
+-- avec `summary` (texte du rapport).
+function sim.planHearth(ctx, ordered, hubs, start, finish, fopts)
+  local state = ctx.state
+  local function cs(a, b) return math.floor(walk(a, b) * 100 + 0.5) end
+  local bound = state.hearth and mkPos(ctx.W, state.hearth[1], state.hearth[2], state.hearth[3])
+  local o = { start = start, finish = finish, dist = cs, inn = bound,
+    ready = math.floor(((state.hearthReadyAt or 0) - (state.time or 0)) * 100 + 0.5),
+    cd = C.HEARTH_CD * 100, use = (C.HEARTH_CAST + C.HEARTH_PENALTY) * 100,
+    real = (C.HEARTH_CAST + C.HEARTH_LOAD) * 100, bindDur = C.QUEST_ACTION * 100,
+    dur = function(t) return math.floor((t.dur or 0) * 100 + 0.5) end,
+    radius = math.floor(C.HEARTH_BUNDLE / C.WALK * 100 + 0.5) }
+  local inns = {}
+  for _, p in ipairs(sim.hearthInns(ctx, hubs)) do
+    if not (bound and yards(bound, p) <= C.HEARTH_NEAR) then inns[#inns + 1] = p end
+  end
+  -- trajet vers le chapitre suivant (opts.nextEntry) depuis la fin du chapitre, avec la pierre liée et
+  -- disponible ou non à ce moment : une liaison sert aussi au départ du chapitre suivant (sim.route)
+  local nextPos = ctx.opts.nextEntry and mkPos(ctx.W, ctx.opts.nextEntry[1], ctx.opts.nextEntry[2], ctx.opts.nextEntry[3])
+  local fms = sim.flightMasters(ctx)
+  local function endTravel(seq, fin)
+    if not nextPos or not fin.pos then return 0 end
+    if regionOf(fin.pos) == regionOf(nextPos) and yards(fin.pos, nextPos) <= 1500 then return 0 end
+    local saved = { state.hearth, state.hearthReadyAt, state.time, state.knownTaxi }
+    local taxi = {}
+    for node in pairs(state.knownTaxi or {}) do taxi[node] = true end
+    for _, t in ipairs(seq) do if t.kind == "F" and t.fm then taxi[t.fm.node] = true end end
+    state.hearth = fin.inn and { fin.inn.m, fin.inn.x, fin.inn.y } or nil
+    state.time, state.hearthReadyAt, state.knownTaxi = 0, fin.time >= fin.ready and 0 or 1, taxi
+    local legs = sim.route(ctx, fin.pos, nextPos, fms)
+    state.hearth, state.hearthReadyAt, state.time, state.knownTaxi = saved[1], saved[2], saved[3], saved[4]
+    if not legs then return C.TRANSIT * 100 end
+    local sec = 0
+    for _, l in ipairs(legs) do sec = sec + (l.time or 0) end
+    return math.floor(sec * 100 + 0.5)
+  end
+  -- meilleur plan sur une séquence ; `keep` : plan déjà retenu (liaisons par tâche), comparé aussi
+  local function best(seq, keep)
+    local plans = { { binds = {}, n = 0 } }
+    if keep then plans[#plans + 1] = keep end
+    for _, a in ipairs(inns) do
+      local ia = bindIndex(seq, a)
+      if ia then
+        plans[#plans + 1] = { binds = { [seq[ia].id] = a }, n = 1 }
+        if C.HEARTH_BINDS >= 2 then
+          for _, b in ipairs(inns) do
+            local ib = b ~= a and bindIndex(seq, b, ia + 1)
+            if ib and seq[ib].id ~= seq[ia].id then
+              plans[#plans + 1] = { binds = { [seq[ia].id] = a, [seq[ib].id] = b }, n = 2 }
+            end
+          end
+        end
+      end
+    end
+    local pick, pickCost, pickUses
+    for _, pl in ipairs(plans) do
+      o.binds = pl.binds
+      local c, uses, _, fin = orderm.hearthCost(seq, o)
+      c = c + endTravel(seq, fin)
+      if not pickCost or c < pickCost or (c == pickCost and pl.n < pick.n) then pick, pickCost, pickUses = pl, c, uses end
+    end
+    return pick, pickCost, pickUses
+  end
+  local plan, cost, uses = best(ordered)
+  local bundles = 0
+  if C.HEARTH_BUNDLE > 0 and not os.getenv("ROUTEBUILDER_NO_BUNDLE") then
+    for _ = 1, 2 do
+      o.binds = plan.binds
+      local seq2, n = orderm.hearthBundles(ordered, o, fopts)
+      if n == 0 then break end
+      local plan2, cost2, uses2 = best(seq2, plan)
+      ordered, plan, cost, uses, bundles = seq2, plan2, cost2, uses2, bundles + n
+    end
+  end
+  local out = {}
+  local names = {}
+  for k, t in ipairs(ordered) do
+    local inn = plan.binds[t.id]
+    if inn then
+      out[t.id] = inn
+      local n = ctx.D.npcs[inn.npc]
+      names[#names + 1] = ("%s after task %d"):format(n and n.name or "inn", k)
+    end
+  end
+  out.summary = ("%s; %d return(s) planned, %d bundle(s)"):format(
+    #names > 0 and ("bound to " .. table.concat(names, ", then ")) or "no new bind", uses or 0, bundles)
+  return ordered, out
 end
 
 -- Ramassage des points de vol inconnus sur une marche de a à b : maître de vol à moins de

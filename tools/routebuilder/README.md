@@ -19,6 +19,12 @@ luajit tools/routebuilder/build.lua [--db PATH] [--questie PATH] [--faction Alli
 # Check every guide listed in Guides.xml against QuestieDB (exit code 1 on any violation)
 luajit tools/validate_guides.lua [--db PATH] [--questie PATH] [--guides DIR]
 
+# Add the `choices` and `sim` fields to already generated guides, without QuestieDB (see below)
+luajit tools/routebuilder/backfill.lua [--guides DIR] [--check]
+
+# Travel time from the end of a chapter to each of its `choices`, without QuestieDB (see below)
+luajit tools/routebuilder/travel.lua <planId> [--guides DIR] [--report DIR]
+
 # Tests of the generator
 luajit tools/routebuilder/tests/run.lua [pattern]
 ```
@@ -57,13 +63,15 @@ other chapters from the XML.
 | `sim.lua` | Chapter simulation: candidates, objective sites, hubs, value / time ratios, drops, tasks, logistics (fp, sethearth, hearth, fly, level), XP simulation. |
 | `order.lua` | Task ordering: nearest feasible neighbour, then or-opt, with precedence, log cap and final tasks, then the hub / area sweep. |
 | `quality.lua` | Itinerary checker: avoidable revisits, missed pickups, split objective areas, missed passing turn-ins. |
-| `plans.lua` | Chapter plans per faction (spec § 6). |
+| `plans.lua` | Chapter plans per faction (spec § 6), `plans.validate` (successors and `choices`). |
 | `emit.lua` | Guide file writer (spec § 5.2 format, one step per line with a comment). |
-| `classquests.lua` | Class quest chains (level ≤ 30) for `ClassQuestData.lua`. |
+| `classquests.lua` | Class quest chains (level ≤ 60) for `ClassQuestData.lua`. |
 | `overrides.lua` | Hand fixes applied at build time. |
 | `build.lua` | CLI. |
+| `backfill.lua` | Adds `choices` / `sim` to already generated guides (no QuestieDB). |
+| `travel.lua` | Travel time to each `choices` target with `sim.route`, from generated guides and reports (no QuestieDB). |
 | `data/*.csv` | Forever DB2 tables, build 1.60.1.70707 (wago.tools): `UiMapAssignment`, `UiMap`, `TaxiNodes`, `TaxiPath`, `AreaTable`, `Map`. |
-| `tests/` | `run.lua` runner, `test_world.lua`, `test_xp.lua`, `test_sim.lua` (on the synthetic `fixture_zone.lua`), `test_emit.lua`. |
+| `tests/` | `run.lua` runner, `test_world.lua`, `test_xp.lua`, `test_sim.lua` (on the synthetic `fixture_zone.lua`), `test_emit.lua`, `test_choices.lua` (`choices`, `sim`, validation, backfill, travel; no QuestieDB). |
 
 ## Plans (`plans.lua`)
 
@@ -80,6 +88,10 @@ other chapters from the XML.
   entry = { 1426, 29.93, 71.20 },        -- first hub; start position when the character has none
   exit = { mapId, x, y },                -- optional point where the chapter should end
   next = "A_DwarfGnome_02",              -- or nextByRace = { Dwarf = "A_01", ... }
+  choices = {                            -- optional: 2 to 4 successors offered at the end of the chapter
+    { id = "A_DwarfGnome_02", travel = { kind = "walk", minutes = 2 } },  -- must include the default
+    { id = "A_Human_02", races = { "Gnome" }, label = "...", travel = { kind = "tram" }, weight = 1 },
+  },                                     -- (see "Successor choices" below)
   flightPaths = { "Ironforge, Dun Morogh" }, -- TaxiNodes names to pick up in this chapter (planned detour)
   dungeons = { "The Hall of Thanes" },   -- dungeon quests (QuestieDB dungeon names) accepted in passing, optional
   optional = { [96391] = "Hall of Thanes" }, -- forced quests marked optional + dungeon label
@@ -87,6 +99,12 @@ other chapters from the XML.
   levelSlack = 1,                        -- levels of overshoot allowed above maxLevel (XP budget)
   logCap = 20,
   strictLevel = true,                    -- grinding before a level-gated task counts in the ordering
+  precede = { { "A3376", "O757" } },     -- first task before the second (A/T/C<quest>, O<quest> = all
+                                         -- objective sites of the quest); a missing task is a warning
+  safeLevel = { [312] = 7 },             -- level from which the objectives of a quest are done (replaces
+                                         -- the computed "safe" level: quest level - 1, mob level - 1)
+  widen = false,                         -- never widen the band (the zone is visited again later: its
+                                         -- higher quests stay for that chapter)
   arrive = { via = { 1453, 24.1, 55.4 }, steps = { { "boat", 1453, 24.1, 55.4, note = "..." } }, time = 300 },
                                          -- steps inserted when the character comes from another
                                          -- continent or more than 1500 yd away; `via` (optional):
@@ -156,7 +174,9 @@ All thresholds are in `sim.CONST` (`sim.lua`).
    are discounted: value and time of a quest include 0.7 × those of the quests it unlocks.
 7. **Drops.** "far" when an objective is more than 900 yd from every hub; "low ratio" when both
    the isolated and the marginal ratio are below 0.35 × the median isolated ratio; then quests whose
-   prerequisite was dropped. **XP budget**: quests are ranked by marginal ratio (forced first) and
+   prerequisite was dropped. A prerequisite counts as available when it is done, kept in the chapter,
+   or in the quest log and turned in in this chapter (a quest done in the previous chapter whose
+   finisher is here: its follow-ups stay candidates). **XP budget**: quests are ranked by marginal ratio (forced first) and
    kept, with their prerequisites, until their XP reaches `maxLevel + levelSlack` (1 by default);
    the rest is dropped as "level band reached". Exclusive quests keep the better ratio.
 8. **Tasks and ordering.** A (accept), O (objective site), T (turn-in), C (timed quest done in
@@ -168,9 +188,7 @@ All thresholds are in `sim.CONST` (`sim.lua`).
    Nearest feasible neighbour by walking time (ties within 20 yd: T, then A, then O), then or-opt
    (moves of 1 to 3 consecutive tasks, at most 200 passes) while the total walking time drops.
 9. **Logistics.** `fp` when a walk passes within 150 yd of an unknown faction flight master;
-   `sethearth` at the inn (≤ 200 yd) of the busiest hub when the route returns there after
-   leaving it by more than 800 yd; `hearth` when the next task is within 120 yd of the
-   hearthstone, more than 1200 yd away and the 3600 s cooldown is over; `fly` when the flight
+   `sethearth` and `hearth`: see "Hearthstone" below; `fly` when the flight
    plus the walks to and from the flight masters takes under 0.7 × the walk (both nodes known;
    flight time = straight line × 1.2 / 32 yd/s + 20 s); `level` at the end when the level is below
    `maxLevel`, pointing to the densest group of hostile mobs of suitable level within 600 yd of
@@ -187,6 +205,58 @@ their simulated XP, dropped quests with the reason, a candidate table (value, bo
 marginal time and ratio), the logistic steps and the data warnings (new Forever quests without a
 finisher spawn, objectives without a position, missing flight masters).
 
+## Guide format
+
+One `Q:RegisterGuide({ ... })` call per file. Chapter fields: `id`, `title`, `faction`, `races`,
+`minLevel`, `maxLevel`, `next`, `nextByRace`, `choices`, `sim` (see below), `steps`. One step per line:
+
+| Steps | Form |
+|---|---|
+| `accept`, `complete`, `turnin` | `{ "accept", questId }` |
+| `goto`, `fp`, `sethearth`, `boat` | `{ "goto", uiMapId, x, y }` (x, y in 0-100) |
+| `hearth`, `fly` | `{ "hearth", uiMapId }`, `{ "fly", uiMapId, node = TaxiNodes.ID }` |
+| `level` | `{ "level", n }` |
+| `note` | `{ "note", "text" }` |
+
+Optional step fields: `obj` (objective index), `note`, `at = { uiMapId, x, y }`, `xp`, `node`,
+`optional`, `dungeon`, `race = { raceKey, ... }`, `class = { classFile, ... }`,
+`classes = { classFile, ... }`. `Questify/Engine/Guides.lua` (`Guides:Normalize`) is the reference: a
+guide with an invalid step is refused in game with one `Invalid guide <id>: step <n>: ...` line.
+
+### Class steps (`classes`)
+
+```lua
+    { "accept", 1599, classes = { "WARLOCK" } }, -- Beginnings
+    { "complete", 1599, at = { 1426, 28.6, 66.1 }, classes = { "WARLOCK" } },
+    { "turnin", 1599, xp = 355, classes = { "WARLOCK" } },
+```
+
+- `classes` lists game `classFile` names: `WARRIOR`, `PALADIN`, `HUNTER`, `ROGUE`, `PRIEST`, `SHAMAN`,
+  `MAGE`, `WARLOCK`, `DRUID` (upper case). Absent: every class. The list must not be empty; an unknown
+  name refuses the guide in game (`step 3: accept: unknown class 'WARLOK' in classes`) and fails
+  `validate_guides.lua`.
+- For a character of another class the step does not exist: not listed, never current, not counted
+  in the tracker progress or the chapter end, not in the journal, not counted on the route choice
+  cards, not a route quest for the automatic accept and turn-in. Step keys keep the index in the file
+  (`g:<guideId>:<index>`): saved step states, telemetry and its export name the same step for every
+  class.
+- `class` is different: the step stays listed and is skipped (reason "class") for the other classes.
+  It is meant for general quests restricted to some classes ("all but Warlock"). Use `classes` for
+  the class quests woven into the route.
+- Weave a whole chain: `accept`, `complete` and `turnin` steps of every quest, all with the same
+  `classes`. In a chapter shared by several races, add `race` when the quest is not open to all of
+  them.
+- A chain of `ClassQuestData.lua` whose remaining quests (not turned in yet) all have a `turnin` step
+  for the character, in the current chapter (not skipped or ticked by the player) or in a following
+  chapter of the route (successor chosen by the player, else the default one), is "In the route": no
+  alert, no "Add to route" button, and an older manual add (`cq:` inserted steps) is removed. Only
+  `turnin` steps count: a chain whose turn-in lies outside the route is still offered.
+- `validate_guides.lua` checks the field (same rule as in game) and, on quest steps, that each class
+  is allowed by the quest's class mask (`quest 1598 not available to class MAGE`). Each race path is
+  replayed once without the class steps, then once per class named on the path with its own steps
+  (the 20-quest log is counted per class); an issue seen only with the steps of some classes ends
+  with `(race path: Gnome, class: WARLOCK)`.
+
 ## Review checklist (Tasks 14-16)
 
 1. Run `build.lua` for the faction, then `validate_guides.lua` (must exit 0).
@@ -195,6 +265,7 @@ finisher spawn, objectives without a position, missing flight masters).
 3. Check flight paths (`flightPaths`) and the level band (`maxLevel`, `levelSlack`): a chapter that
    overshoots its band makes the next chapter drop quests as "level band reached".
 4. Regenerate and run `luajit tests/run.lua` (the boot test loads every guide).
+5. For a plan with `choices`, run `travel.lua <planId>` and update `travel.minutes` if it changed.
 
 ## Changes from Stream E (Tasks 14-16)
 
@@ -263,6 +334,9 @@ finisher spawn, objectives without a position, missing flight masters).
 | `dungeonLevelHigh` | Dungeon quests accepted up to quest level `maxLevel + n`. |
 | `strictLevel` | Ordering counts the grinding before a level-gated task (see below). |
 | `arrive.via` | Point reached by computed travel before the fixed `arrive` steps. |
+| `precede` | Pairs `{ first, second }` of task ids (`A`, `T`, `C` + quest id, `O` + quest id = all its objective sites): extra precedence. |
+| `safeLevel` | `{ [questId] = level }`: level from which the objectives of that quest are done (replaces the computed safe level). |
+| `widen` | `false`: the band is never widened (chapters 30-60, whose zones are visited again later). |
 
 ### Reports
 
@@ -293,10 +367,16 @@ moved earlier when the walk saved is worth the extra grinding. Moves of a segmen
 `needLevel` task are tried even when they lengthen the walk (they can save grinding). Without
 `strictLevel`, the ordering is unchanged.
 
-It is on for `A_DwarfGnome_03` only. On the Dwarf path it removes most objectives done 3 to 4
+It is on for `A_DwarfGnome_03`, `A_NightElf_02`, `A_NightElf_03` and `H_05`. On the Dwarf path it removes most objectives done 3 to 4
 levels too low in Loch Modan for a few minutes of grinding. On every chapter, it would add about 1 h
 of simulated time over the Dwarf path (more walking in the trunk), and on `A_DwarfGnome_02` it adds
-15 min for no safety gain.
+15 min for no safety gain. On `H_05` (QuestieDB v1.0.11) it saves 12 min. Without it, the band is
+widened and the chapter ends with 44 mobs of grinding. An objective area of 567 "Dangerous!" is also
+split for no reason (a `free` quality item).
+On `A_NightElf_02` and `A_NightElf_03` (QuestieDB v1.0.11, 2026-11-06) it saves 23 min on the Night Elf
+path: Escaping Ban'ethil (99053) went from level 9 to 10, and the ordering then did objectives before their
+safe level, with 105 mobs of grinding in Teldrassil and up to 159 for a chain head in Darkshore. On every
+chapter at once it was measured again on v1.0.11: +37 to +99 min per race path (rejected).
 
 ### Hub sweep, one pass per area, turn-in in passing (`order.lua` step 5)
 
@@ -337,6 +417,179 @@ master, written before `note`. Hand-written `fly` steps of a plan's `arrive` get
 name matches their `note`. `tools/validate_guides.lua` fails on a `fly` step without `node`, with an
 unknown node, or with a node that is not on the step's destination map.
 
+## Hearthstone (2026-11-06)
+
+### Use (`sim.route`)
+
+During the walk, the router (Dijkstra) takes the hearthstone when it is bound, its 3600 s cooldown is
+over, and `HEARTH_CAST + HEARTH_PENALTY` (10 + 120 s) plus the walk from the inn beats walking (or
+flying) to the next task. The penalty keeps the stone for a return worth it: with straight-line
+walking, a return of about 910 yd or more. `HEARTH_FAR` (declared, never read) is gone.
+
+### Cost model (`order.hearthCost`)
+
+Real travel cost of an ordered sequence, in centiseconds: walks, returns by the stone with the same rule
+and its cooldown (the duration of the tasks counts for the cooldown), and bind detours. It also returns
+the final state (position, bound inn, ready time).
+
+### Binds (`sim.planHearth`)
+
+After the ordering, candidate inns are the faction innkeepers within `HEARTH_INN` (200 yd) of a hub of
+the chapter (one per place, not the inn already bound). A bind goes after the task of the first pass at
+the inn that is nearest to the innkeeper (until the route goes more than `SETHEARTH_LEAVE`, 800 yd,
+away). The plans compared are: no bind, one bind, or two (`HEARTH_BINDS`: the second at the first pass
+at another inn after the first, when the hub of the chapter changes). Each plan costs
+`order.hearthCost` plus the computed travel (`sim.route`) from the end of the chapter to the start of the
+next one (`opts.nextEntry`, from `build.lua`), with the stone bound and ready or not: a bind also serves
+the start of the next chapter. The cheapest plan wins (ties: fewer binds).
+
+### Return bundles (`order.hearthBundles`)
+
+Then, for each end of task, the later tasks within `HEARTH_BUNDLE` (250 yd) of the inn bound at that time
+are pulled right after it (in order, precedence kept) when the sequence stays feasible (log cap, levels,
+no extra grinding) and `order.hearthCost` drops: one return by the stone does them all. The bind plan is
+then chosen again. `ROUTEBUILDER_NO_BUNDLE=1` turns this pass off (comparison).
+
+The report summary has a "Hearthstone" line: binds (innkeeper, after which task), returns planned by the
+model, bundles applied.
+
+Measured on QuestieDB v1.0.11 (2026-11-06): 0 to -5 min per race path 1-30. The simulator gives little
+room: walking is 30-45 % of a chapter, and the long legs (over 910 yd) that end at an inn when the stone is
+ready are few (upper bound for all chapters together: about 106 min over 23 chapters if every long leg
+ended at an inn). A lower penalty (90 s: the same decision as walking 1.3 times longer than the straight
+line) was measured too and not kept: -1 min on the Horde paths, -13 min on the Alliance trunk paths but
+only through a different trunk (Redridge then grinds 116 mobs), +12 min in Darkshore for the Night Elf.
+
+## Successor choices and simulated metrics (`choices`, `sim`)
+
+### Guide fields
+
+`emit.lua` writes two fields in `Q:RegisterGuide`, after `next` / `nextByRace` and before `steps`:
+
+```lua
+  choices = {
+    { id = "A_DwarfGnome_04", travel = { kind = "walk", minutes = 2 } },
+    { id = "A_01", travel = { kind = "boat", minutes = 7 } },
+  },
+  sim = { steps = 78, endLevel = 15.55, xpPerHour = 21188, minutes = 119 },
+```
+
+- `choices` is copied from the plan, one entry per line, fields in the order `id`, `races`, `label`,
+  `travel = { kind, minutes }`, `weight` (absent fields are omitted). The game offers the entries, in
+  this order, at the end of the chapter. `kind` is one of `walk`, `fly`, `boat`, `zeppelin`, `tram`,
+  `portal`, `hearth`.
+- `sim` is written for every simulated chapter. It has the same four values as the header comment
+  `-- Simulation : N étapes, niveau final X, ~Y xp/h, Z min.` (`endLevel` with 2 decimals, the
+  others rounded to integers), so the game can show them.
+
+### Default path only
+
+`next` / `nextByRace` stay the default successor: `plans.pathFor`, the simulation (state carried from
+chapter to chapter, merged trunk state, carried turn-ins, race filters) and the race-path replay of
+`tools/validate_guides.lua` follow it only. **The other choices are neither simulated nor replayed
+from the branch point**: each target chapter was simulated from its own default predecessors. A player
+who takes an alternative may arrive at a lower level than the target was tuned for, or with other
+flight paths (for example `A_DwarfGnome_03` -> `A_01` arrives at about 15.5 for a chapter of band
+16-19), and a quest carried across the branch would be lost (none crosses the current branch point).
+
+### Validation (`plans.validate`)
+
+`build.lua` runs `plans.validate` before loading QuestieDB and stops (exit code 1, one
+`plans.lua: <planId>: <message>` line per error) when:
+
+- `next` or `nextByRace` points to an unknown chapter;
+- `choices` is not a list, or has fewer than 2 or more than 4 entries;
+- an entry has no `id`, an unknown `id`, the chapter's own `id`, an `id` already listed, or an `id`
+  of the other faction;
+- the default successor (`next`, or `nextByRace[race]` for each race of the chapter) is not an entry,
+  or its entry has `races` without that race; or the plan has `choices` but no default successor;
+- `travel.kind` is not one of the kinds above, `travel.minutes` is not a whole number of minutes,
+  `races` names a race that does not play the chapter, `label` is not a string, `weight` is not a
+  positive number.
+
+`tools/validate_guides.lua` runs the same checks on the generated guides, and fails when a guide's
+`sim` field differs from its `-- Simulation :` header.
+
+### Travel time (`travel.lua`)
+
+`travel.minutes` is written in `plans.lua` by hand from `luajit tools/routebuilder/travel.lua
+<planId>`, which uses the generator's travel code (`sim.route`: walking inside a walk region, flights
+between known flight paths, `transport.lua` links) without QuestieDB:
+
+- start: `at` of the chapter's last guide step, else the last task of its report itinerary
+  (`docs/routes/<planId>.md`);
+- end: the first task of the target's report itinerary, else the target's `entry`;
+- known flight paths: `fp` steps of the guides on the simulated race's path up to the chapter;
+- the hearthstone is ignored (its cooldown is not known outside the simulation).
+
+The command prints the legs, the main kind (first leg that is not a walk) and the minutes (seconds / 60,
+rounded), and exits 1 when `plans.lua` has other values; `test_choices.lua` runs the same check on the
+shipped guides, so regenerate, run `travel.lua` and update `plans.lua` together. The target's own
+`sim.minutes` already counts its arrival from its default predecessor (`A_01` starts with the boat), so
+the two values overlap and should not be added.
+
+### Backfill (`backfill.lua`)
+
+`build.lua` writes both fields, but a full regeneration needs QuestieDB and rewrites every guide.
+`backfill.lua` adds them to the guides already generated: for each guide listed in `Guides.xml` with a
+`-- Simulation :` header, it removes any `choices` block and `sim` line from the `Q:RegisterGuide`
+header, then writes `emit.choicesLines(plan)` and `emit.simLine` (values read from the header comment)
+right before `steps = {`, exactly where `emit.guide` puts them. A second run changes nothing, a choice
+removed from `plans.lua` disappears, line endings (CRLF or LF) are kept, and a header that `emit.lua`
+would not write is left alone. `--check` writes nothing and exits 1 when a guide is out of date. Run it
+after changing `choices` in `plans.lua` when the guides are not regenerated.
+
+## Routes 30-60 (2026-11-06, lot H)
+
+### Chapters
+
+The trunk goes on after `A_05` and `H_05` up to level 60, from the "meta paths 1-60" plan, rebuilt and
+measured here (see `docs/routes/README.md` for the per-chapter table):
+
+- Alliance: `A_05 -> A_08 -> A_07 -> A_09 -> A_10 -> A_11 -> A_12 -> A_13 -> A_15 -> A_16 -> A_17 -> A_18 ->
+  A_19 -> A_20 -> A_21 -> A_22 -> A_28 -> A_24 -> A_26 -> A_27 -> A_23 -> A_29 -> A_30`. `A_06` (Hillsbrad
+  leftovers), `A_14` (The Hinterlands) and `A_25` (Feralas and Azshara) are written in `plans.lua` but on no
+  path: they are neither simulated nor generated.
+- Horde: `H_05 -> H_06 -> ... -> H_18 -> H_21 -> H_23 -> ... -> H_30` (`H_19` and `H_22` removed; `H_20`,
+  Tanaris 47-49, is written but on no path: Tanaris I, `H_16`, may widen its band and takes its quests).
+- Each chapter stays on one continent. Bands are contiguous (the minimum of a chapter is the maximum of the
+  previous one), `levelSlack = 0`, `levelBelow = 8` (leftover quests of a zone visited earlier), `far = 1600`
+  and `widen = false` except `H_16` (a zone visited again later keeps its higher quests for that visit).
+- Titles are zone names only (`Guides:TitleParts` translates the names listed in `ZONE_MAPS` of
+  `Questify/Engine/Guides.lua`).
+
+### Dungeon quests taken in passing
+
+Dungeon quests accepted in passing (`dungeons`, `optional` steps, log value `"dungeon"`) used to stay in the
+simulated log for good: at level 30, 10 of the 20 slots of the Alliance path were taken. From a chapter whose
+`minLevel` is at least `DUNGEON_RELEASE_FROM` (30), each such quest whose level is at most
+`minLevel - DUNGEON_RELEASE_GAP` (4) leaves the log at the start of the chapter (`sim.releaseDungeonQuests`),
+with one optional `note` step per dungeon ("Not running X? Abandon ..."). The log padding of the other race
+paths (`logPad`) is released at the same time. `paths.replay` (build and `tools/validate_guides.lua`)
+applies the same rule to quests accepted through an `optional` step with a `dungeon` name in a dungeon area
+of QuestieDB (`chapters[i].minLevel` is passed for that). Chapters below level 30 are unchanged.
+
+### Other rules
+
+- A quest that requires level 60 is never a candidate (no quest XP at the level cap; the walk would grind to
+  60 first).
+- `keep()` of the XP budget counts a prerequisite taken in passing for a dungeon (no value) as 0.
+
+### Transport (`transport.lua`)
+
+- Zeppelins Orgrimmar <-> Grom'gol and Undercity <-> Grom'gol (zeppelin masters of QuestieDB: 12136,
+  3149, 3150, 12137), boat Booty Bay <-> Ratchet (Shipmasters 9559 and 9558). Waiting and crossing time:
+  420 s, an estimate like the other links. To check in game.
+- Walk regions: Blasted Lands (1419) and Searing Gorge (1427, linked to the Burning Steppes through
+  Blackrock Mountain) are in the south of the Eastern Kingdoms.
+
+### Dungeons (`build_dungeons.lua`)
+
+Uldaman 36-47, Razorfen Downs 37-46, Maraudon 42-52, Zul'Farrak 44-54, The Temple of Atal'Hakkar 50-60,
+Blackrock Depths 52-60, Dire Maul 55-60 (one key `DIREMAUL`, area 2557: east, west and north have the same
+QuestieDB name), Scholomance 55-60, Stratholme 58-60. Entrances from QuestieDB. Raids and Blackrock Spire
+(one area for the lower and the upper spire) stay out.
+
 ## Known limits
 
 - Walking is a straight line in world coordinates (no pathing around mountains, no city
@@ -346,3 +599,4 @@ unknown node, or with a node that is not on the step's destination map.
 - XP of the new Forever quests is an estimate (median of known Classic quests of the same level and
   type, × 0.5 for dungeon quests).
 - Trunk chapters are simulated for the primary race path only.
+- Only the default successor is simulated and validated; other `choices` are not replayed.

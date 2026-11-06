@@ -16,7 +16,7 @@ fusionnées. Classic Era est retiré : l'addon ne vise plus que WoW: Forever (un
   camelote, choix des métiers, largeur du suivi réglable.
 - Talents : rappels de points à dépenser, `/qf talents` (relevé des arbres) et builds niveau par
   niveau (45 builds, popup « Apprendre », onglets Build et Sorts à apprendre dans la fenêtre des
-  talents, `/qf build`). Voir « À vérifier en jeu ».
+  talents, `/qf build`) : retirés de l'addon pour le moment (voir le tag v0.3.0 pour y revenir).
 - StepGuard : un donneur qui ne propose pas la quête attendue -> étape passée, `/qf back` pour la rouvrir.
 - `/qf bug` (alias `/qf report`, bouton « Rapport de bug » des options) : un seul rapport à copier
   avec versions, addons, perso, route (étape courante et suivantes, cible), position, navigation,
@@ -34,6 +34,9 @@ dossier AddOns (il n'est plus chargé).
 ## À vérifier en jeu (lancement de Forever)
 
 Chaque point débloque une partie ; aucun ne bloque tout. Jouer avec `/qf bug` sous la main.
+
+Les points 1, 2 et 5 à 11 concernent les talents et les builds, retirés pour le moment : à reprendre
+quand ils reviennent.
 
 1. `/qf check`, puis `/qf talents` sur un Chaman : les `spellID` des nœuds correspondent à ceux d'Icy Veins.
 2. « Apprendre » par l'addon (achat du rang + validation) fonctionne hors combat.

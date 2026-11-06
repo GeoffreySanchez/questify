@@ -2,16 +2,15 @@ local addonName, Q = ...
 
 -- Commandes /questify et /qf, et bouton du compartiment d'addons.
 --   /qf            ouvre ou ferme le journal
---   /qf build      ouvre la fenêtre du build du personnage
 --   /qf skip       passe l'étape courante
 --   /qf back       rouvre l'étape précédente
+--   /qf classe     journal sur l'onglet Quêtes de classe (alias /qf class)
 --   /qf options    fenêtre d'options (/qf options <texte> : avec cette recherche)
 --   /qf wizard     assistant de navigation
 --   /qf export     mesures de temps, prêtes à copier
 --   /qf debug      messages de débogage (QuestifyDB.debug)
 --   /qf check      autodiagnostic du client (API, QuestieDB, navigation, route) ; alias /qf diag
 --   /qf bug        rapport de bug prêt à copier (alias /qf report) ; /qf bug clear vide les erreurs gardées
---   /qf talents    relevé des arbres de talents du client
 --   /qf theme <clé>     thème du suivi (parchment, dark, transparent, gradient) ; seul : la liste
 --   /qf opacity <0-100> opacité du fond et de la bordure du suivi ; seul : la valeur actuelle
 --   /qf reset      efface la progression du personnage (après confirmation)
@@ -75,6 +74,20 @@ COMMANDS.back = function()
   if not Q.Progress:Back() then Q:Print(L.UI_SLASH_NO_BACK) end
 end
 
+-- Choix de la suite : le chapitre en attente, sinon le chapitre courant (choix d'avance) ou le dernier
+-- chapitre où une suite a été choisie (UI/RouteChoicePopup.lua).
+COMMANDS.route = function()
+  local P = Q.UI and Q.UI.RouteChoicePopup
+  if P then P:OpenForPlayer() end
+end
+
+-- Quêtes de classe : retrouver une quête en retard et l'ajouter à la route.
+COMMANDS.classe = function()
+  local J = journal()
+  if J then J:ShowTab("class") end
+end
+COMMANDS.class = COMMANDS.classe
+
 COMMANDS.options = function(rest)
   local O = Q.UI and Q.UI.Options
   if not O then return end
@@ -82,13 +95,6 @@ COMMANDS.options = function(rest)
   if rest and rest ~= "" then O:SetSearch(rest) end
 end
 COMMANDS.config = COMMANDS.options
-
--- Fenêtre du build du personnage (autonome ; en combat, elle s'ouvre à la fin du combat).
-COMMANDS.build = function()
-  local W = Q.UI and Q.UI.BuildWindow
-  if not W then return end
-  if W:Open("build") == false then Q:Print(L.UI_SLASH_BUILD_COMBAT) end
-end
 
 COMMANDS.wizard = function()
   if Q.UI and Q.UI.Wizard then Q.UI.Wizard:Show() end
@@ -106,14 +112,6 @@ COMMANDS.debug = function()
   QuestifyDB = QuestifyDB or {}
   QuestifyDB.debug = not QuestifyDB.debug
   Q:Print(QuestifyDB.debug and L.UI_SLASH_DEBUG_ON or L.UI_SLASH_DEBUG_OFF)
-end
-
--- Relevé des arbres de talents Forever (C_ClassTalents / C_Traits : nœuds, positions, rangs max,
--- sorts, monnaie) dans QuestifyDB.talentDump[<jeu>][<classe>] : sert à écrire et vérifier
--- les presets. Échec (API absente, pas de configuration) : Dump affiche lui-même la raison.
-COMMANDS.talents = function()
-  local n = Q.Talents and Q.Talents:Dump() or 0
-  if n > 0 then Q:Print(L.UI_SLASH_TALENTS_DUMPED, n) end
 end
 
 -- Réglages rapides du suivi (UI/Themes.lua), aussi dans la fenêtre d'options (section Thème).
@@ -169,6 +167,11 @@ COMMANDS.report = COMMANDS.bug
 
 COMMANDS.reset = function()
   if StaticPopup_Show then StaticPopup_Show(RESET_DIALOG) end
+end
+
+-- Commande cachée (absente de l'aide) : scènes d'exemple pour les captures en jeu (UI/Demo.lua).
+COMMANDS.demo = function(rest)
+  if Q.UI and Q.UI.Demo then Q.UI.Demo:Handle(rest) end
 end
 
 COMMANDS.help = function()

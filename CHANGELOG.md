@@ -1,5 +1,98 @@
 # Changelog
 
+## Non publié
+
+### Français
+- Alerte d'avant-poste : en ville, à l'auberge ou juste après un marchand, Questify prévient une fois
+  par passage, avant de repartir, s'il reste moins de 6 places libres dans les sacs (ou moins de 20 %),
+  s'il n'y a plus de nourriture, ou plus de boisson pour les classes à mana, et si l'équipement est à
+  réparer. Ligne dans le suivi, message au milieu de l'écran et dans la discussion, regroupés.
+- Quêtes de classe en retard : entrée « Quêtes de classe » dans le menu de la minicarte et `/qf classe`
+  ouvrent l'onglet du journal ; les quêtes en retard y sont en tête (« En retard (niv. N) ») avec
+  « Ajouter à la route » en un clic, même ignorées ; le suivi dit « Quête de classe en retard ».
+- Builds de talents, popup de talent, onglets Build / Sorts à apprendre : retirés pour le moment
+  (`/qf build` et `/qf talents` aussi). Les builds déjà enregistrés restent dans les données du
+  personnage, simplement plus lus.
+- Itinéraire ShortestPath avec WaypointUI : le repère ne part plus dans le coin nord-ouest de la
+  carte (« Trajet vers … 2129 yds » pour un PNJ à 65 yards). ShortestPath confie ses virages à
+  WaypointUI en coordonnées 0-1, que WaypointUI lit en 0-100 ; Questify convertit ces coordonnées au
+  passage, quand les deux addons sont chargés. Les trajets lancés soi-même avec ShortestPath en
+  profitent aussi.
+- Itinéraire ShortestPath avec WaypointUI : plus de « ding » à chaque virage (les virages passent en
+  silence), un virage identique n'est pas reposé, et le repère ne saute plus sur la cible puis sur le
+  virage à chaque nouvelle cible (toutes les 3 s pendant un objectif).
+- Journal : un chapitre fini (par exemple après un clic droit de trop sur sa dernière étape, qui fait
+  passer au chapitre suivant) peut être rechoisi dans l'onglet Route et reste affiché ; on y rouvre
+  l'étape passée avec `/qf back` ou en cliquant dessus. Avant, le journal renvoyait aussitôt au chapitre
+  suivant et il n'y avait aucun moyen de revenir.
+- Choix de suite : en fin de chapitre, quand plusieurs zones peuvent suivre, des cartes au milieu de
+  l'écran les présentent (niveaux, quêtes et XP des remises, durée et XP/h simulées, trajet), avec celle
+  que Questify conseille, un liseré doré, le badge « Conseillé » et sa raison (meilleure XP par heure,
+  mieux adapté à ton niveau, trajet le plus court). « Y aller », « Garder la route prévue » ou
+  « Plus tard » : le suivi rappelle alors le choix, et un clic dessus ou `/qf route` le rouvre. On peut
+  aussi choisir d'avance pendant le chapitre, ou revenir sur son choix plus tard (`/qf route`, bouton
+  « Changer de route » du journal). Une seule suite : on y passe comme avant, avec un message
+  « Chapitre suivant : … ». Option « Choisir la suite en fin de chapitre » (section Route) : désactivée,
+  la route par défaut est suivie sans demander. Jamais en combat : le choix s'ouvre à la fin du combat.
+- Premier choix : après Loch Modan (Nain, Gnome), la Marche de l'Ouest (route prévue) ou Sombrivage
+  directement, par le bateau de Stormwind.
+- Choix de suite, nouvelle fenêtre : grande fenêtre au milieu de l'écran sur un voile sombre, grandes
+  cartes avec la carte du monde de la zone en fond (ou une image de la zone quand elle est fournie), nom
+  de la zone en gros, niveaux en badge, chiffres avec icônes, points forts tirés des données (donjon de
+  la tranche, quête de classe de la zone, points de vol) ; la carte conseillée a un halo doré qui pulse
+  doucement. Clic sur une carte pour y aller ; au clavier, flèches pour changer de carte puis Entrée
+  pour choisir (Entrée seule ne choisit rien : elle reste à la discussion), Échap pour « Plus tard ». La fenêtre se ferme d'elle-même quand un combat commence et revient
+  à la fin tant que le choix n'est pas fait ; fermée par le joueur, elle ne revient plus d'elle-même
+  (même après /reload) jusqu'à la prochaine connexion : le suivi et `/qf route` la rouvrent.
+- Noms de chapitres traduits partout (suivi, journal, choix de suite, message « Chapitre suivant ») :
+  les zones prennent le nom des cartes du jeu (« Marche de l'Ouest », « Orneval et Les
+  Serres-Rocheuses ») et les zones de départ ont leur nom français (« Vallée de Froidecrête »,
+  « Comté-du-Nord », « Le Glas »…). Avant, un client français affichait « Westfall ».
+
+### English
+- Outpost alert: in a town, at an inn or right after a merchant, Questify warns once per visit, before
+  you leave, when fewer than 6 bag slots (or under 20%) are free, when you have no food, or no drink for
+  mana classes, and when your gear needs repairs. Tracker line, centre-screen and chat message, grouped.
+- Overdue class quests: a "Class quests" entry in the minimap menu and `/qf class` open the journal tab;
+  overdue quests come first ("Overdue (lvl N)") with a one-click "Add to route", even when ignored; the
+  tracker says "Class quest overdue".
+- Talent builds, talent popup, Build / Spells to learn tabs: removed for now (`/qf build` and
+  `/qf talents` too). Builds already saved stay in the character data, just no longer read.
+- ShortestPath routing with WaypointUI: the waypoint no longer lands in the north-west corner of the
+  map ("Journey to … 2129 yds" for an NPC 65 yards away). ShortestPath hands its turns to WaypointUI in
+  0-1 coordinates, which WaypointUI reads as 0-100; Questify converts them on the way, when both addons
+  are loaded. Journeys you start yourself with ShortestPath benefit too.
+- ShortestPath routing with WaypointUI: no more "ding" on every turn (turns are silent), an identical
+  turn is not placed again, and the waypoint no longer jumps to the target and back to the turn on
+  every new target (every 3 s during an objective).
+- Journal: a finished chapter (for example after one right-click too many on its last step, which moves
+  on to the next chapter) can be chosen again in the Route tab and stays shown; reopen the skipped step
+  with `/qf back` or by clicking it. Before, the journal sent you straight back to the next chapter and
+  there was no way back.
+- Route choice: at the end of a chapter that can be followed by several zones, cards in the middle of
+  the screen show them (levels, quests and turn-in XP, simulated time and XP/h, travel), with the one
+  Questify recommends: gold border, "Recommended" badge and its reason (best XP per hour, best fit for
+  your level, shortest trip). "Go there", "Keep the planned route" or "Later": the tracker then reminds
+  you, and clicking it or `/qf route` opens the choice again. You can also choose ahead during the
+  chapter, or change your mind later (`/qf route`, "Change route" button of the journal). A single next
+  chapter: you move on as before, with a "Next chapter: …" message. Option "Choose what comes next at
+  the end of a chapter" (Route section): off, the default route is followed without asking. Never in
+  combat: the choice opens when combat ends.
+- First choice: after Loch Modan (Dwarf, Gnome), Westfall (the planned route) or Darkshore right away,
+  by the Stormwind boat.
+- Route choice, new window: a large window in the middle of the screen over a dark veil, tall cards
+  with the zone's world map as background (or a picture of the zone when one is provided), the zone name
+  in large type, levels as a badge, figures with icons, highlights taken from the data (dungeon of the
+  level range, class quest of the zone, flight points); the recommended card has a softly pulsing gold
+  glow. Click a card to go there; with the keyboard, arrows to switch card then Enter to choose (Enter
+  alone chooses nothing: it stays with the chat), Esc for "Later". The
+  window closes by itself when combat starts and comes back afterwards while the choice is not made;
+  closed by the player, it does not come back by itself (even after /reload) until the next login: the
+  tracker and `/qf route` open it again.
+- Chapter names translated everywhere (tracker, journal, route choice, "Next chapter" message): zones
+  take the game's map names and starting areas have their localized name in French clients. Before, a
+  French client showed "Westfall".
+
 ## 0.3.0 (2026-11-05)
 
 ### Français

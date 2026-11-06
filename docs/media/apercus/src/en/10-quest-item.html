@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Questify, preview 10: quest item</title>
+<link rel="stylesheet" href="../apercu.css">
+<style>
+  /* Quest item button (UI/QuestItemButton.lua): 36 x 36, top-right corner 6 left of the
+     tracker and 40 below its top; golden UI-ActionButton-Border in ADD (1.8 x the size). */
+  .qitem { position: absolute; left: -42px; top: 40px; width: 36px; height: 36px; }
+  .qitem img { width: 36px; height: 36px; display: block; box-shadow: 0 0 0 1px #000; }
+  .qitem .border { position: absolute; left: -14.4px; top: -14.4px; width: 64.8px; height: 64.8px; border-radius: 12px;
+    background: radial-gradient(closest-side, rgba(255,209,0,0) 62%, rgba(255,209,0,.85) 72%, rgba(255,209,0,.35) 86%, rgba(255,209,0,0) 100%); }
+  .tip.item { width: 190px; right: 48px; bottom: -6px; }
+  .tip.item .tt { color: #fff; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap" style="width:480px">
+    <div class="brand">Questify</div>
+    <h1>The quest item to use</h1>
+    <p>When the current step asks you to use an item, a button appears to the left of the tracker. Click it to use the item; you can also give it a key in the game's Key Bindings.</p>
+    <p>Here, the bear trap for “Plagued Lands”, in Darkshore.</p>
+  </div>
+
+  <div class="ui" style="left:1196px; top:300px">
+    <div style="zoom:2.4; position:relative">
+      <div class="qitem">
+        <div class="border"></div>
+        <img src="https://wow.zamimg.com/images/wow/icons/large/inv_misc_orb_03.jpg" alt="">
+        <div class="tip item">
+          <div class="tt">Tharnariun's Hope</div>
+          <div class="tl">Quest Item</div>
+          <div class="tl" style="color:#99ccff">Click: use the item</div>
+        </div>
+      </div>
+      <div class="trk th-parchment">
+        <div class="bg"></div><div class="edge"></div>
+        <div class="row head">
+          <div class="title fn t-title">Darkshore</div>
+          <div class="levels fhs t-levels">16-19</div>
+        </div>
+        <div class="bar">
+          <div class="bbg"></div><div class="fill" style="width:27.7%"></div>
+          <div class="btxt fhs t-bar" style="white-space:pre">33/119  ·  ~37.3k XP left</div>
+        </div>
+        <div class="xp fhs t-xp">22.8k XP/h · level in 26 min</div>
+        <div class="cur">
+          <img class="cicon ico" src="https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg" alt="">
+          <div class="dist fhs t-dist">96 yd</div>
+          <div class="chunk fh t-body wrap">Do: <span class="c-quest">Plagued Lands</span><br>&nbsp;&nbsp;<span class="c-todo">Rabid Thistle Bear Captured: 0/1</span></div>
+          <div class="mob">
+            <span class="skull ico i-skull"></span>
+            <span class="mname fhs t-body"><span class="c-mob">Captured Rabid Thistle Bear</span></span>
+            <span class="mlvl fds t-dim"><span class="c-lvl">Level 14</span></span>
+          </div>
+        </div>
+        <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Turn in: A Lost Master</span></div>
+        <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Turn in: Plagued Lands</span></div>
+        <div class="next"><span class="ico i-turnin"></span><span class="ntxt fds t-dim">Turn in: The Absent Minded Prospector</span></div>
+        <div class="grip ico i-grip"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="badge"><div class="t">Interface preview</div><div class="s">Mock-up drawn from Questify's code, not an in-game capture</div></div>
+</div>
+</body>
+</html>

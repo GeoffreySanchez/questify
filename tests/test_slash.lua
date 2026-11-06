@@ -27,6 +27,21 @@ return {
     t.eq(#Mock.errors, 0)
   end,
 
+  slash_class_opens_the_class_quests_tab = function(t)
+    local Q = load()
+    qf("classe")
+    t.ok(QuestifyJournal and QuestifyJournal:IsShown(), "journal shown")
+    t.eq(Q.UI.Journal.tab, "class")
+    Q.UI.Journal:ShowTab("route")
+    qf("class")
+    t.eq(Q.UI.Journal.tab, "class", "alias")
+    qf("CLASSE")
+    t.ok(QuestifyJournal:IsShown(), "stays open")
+    qf("help")
+    t.ok(Q.L.UI_SLASH_HELP:find("/qf class", 1, true), "listed in the help")
+    t.eq(#Mock.errors, 0)
+  end,
+
   slash_options_opens_the_options_window = function(t)
     local Q = load()
     qf("options")
@@ -115,6 +130,17 @@ return {
     t.ok(Mock.printed(Q.L.UI_SLASH_HELP))
     qf("help")
     t.eq(Mock.countPrinted(Q.L.UI_SLASH_HELP), 2)
+  end,
+
+  -- builds et talents retirés pour le moment : /qf build et /qf talents tombent sur l'aide
+  slash_build_and_talents_are_unknown_commands = function(t)
+    local Q = load()
+    qf("build")
+    t.eq(Mock.countPrinted(Q.L.UI_SLASH_HELP), 1, "/qf build shows the help")
+    qf("talents")
+    t.eq(Mock.countPrinted(Q.L.UI_SLASH_HELP), 2, "/qf talents shows the help")
+    t.ok(not Q.UI.BuildWindow and not QuestifyBuildWindow, "no build window")
+    t.eq(#Mock.errors, 0)
   end,
 
   slash_errors_are_contained = function(t)

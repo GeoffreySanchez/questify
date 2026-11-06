@@ -85,7 +85,7 @@ return {
     t.eq(radios[2].text, Q.L.REWARD_SPEC_SHAMAN_CASTER)
     for _, r in ipairs(radios) do t.eq(r.isSelected(r.data), r.data == "melee", "checked: " .. r.data) end
     t.eq(keys(Ext.menuElements("checkbox")), { "autoQuest", "autoReward", "zoneMode", "mapPins" })
-    t.eq(keys(Ext.menuElements("button")), { "options", "journal", "build", "wizard", "bug" })
+    t.eq(keys(Ext.menuElements("button")), { "options", "journal", "class", "wizard", "bug" })
     t.eq(Ext.menuElements("button", "options")[1].text, Q.L.MINIMAP_MENU_OPTIONS)
     t.ok(#Ext.menuElements("divider") >= 1)
     noErrors(t)
@@ -144,6 +144,9 @@ return {
     local J = Q.UI.Journal
     Ext.menuElements("button", "journal")[1].setSelected()
     t.eq(J.tab, "route")
+    Ext.menuElements("button", "class")[1].setSelected()
+    t.eq(J.tab, "class", "class quests entry opens the class tab")
+    t.eq(Ext.menuElements("button", "class")[1].text, Q.L.MINIMAP_MENU_CLASS)
     local opened = {}
     Q.UI.Wizard = { Show = function() opened[#opened + 1] = "wizard" end }
     Q.UI.Report = { Show = function() opened[#opened + 1] = "report" end }

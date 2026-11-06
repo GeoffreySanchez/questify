@@ -1,4 +1,4 @@
--- tools/routebuilder/classquests.lua : chaînes de quêtes de classe (niveau <= 30) pour
+-- tools/routebuilder/classquests.lua : chaînes de quêtes de classe (niveau <= 60) pour
 -- Questify/Guides/ClassQuestData.lua (forme de la Task 7) :
 --   Q.ClassQuestData = { [classFile] = { { key, title, faction, races, level, quests = {...},
 --                                         exclusive = { clés des chaînes qui s'excluent avec celle-ci },
@@ -8,7 +8,7 @@ local qdb = require("qdb")
 local emitm = require("emit")
 
 local cq = {}
-cq.MAX_LEVEL = 30
+cq.MAX_LEVEL = 60
 
 local ALLIANCE_BITS = 1 + 4 + 8 + 64 + 4294967296
 local HORDE_BITS = 2 + 16 + 32 + 128 + 8589934592
@@ -293,7 +293,7 @@ function cq.emit(data, meta)
   w("local addonName, Q = ...")
   w("-- Généré par tools/routebuilder/classquests.lua (via build.lua). Ne pas modifier à la main.")
   w(("-- Source : QuestieDB commit %s, généré le %s."):format(meta.commit or "unknown", meta.date or os.date("%Y-%m-%d")))
-  w("-- Chaînes de quêtes de classe jusqu'au niveau 30 : IDs de quêtes, ordre, niveaux, IDs des objets de récompense.")
+  w(("-- Chaînes de quêtes de classe jusqu'au niveau %d : IDs de quêtes, ordre, niveaux, IDs des objets de récompense."):format(cq.MAX_LEVEL))
   w("Q.ClassQuestData = {")
   local classes = {}
   for k in pairs(data) do classes[#classes + 1] = k end

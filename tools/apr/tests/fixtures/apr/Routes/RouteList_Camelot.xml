@@ -1,0 +1,6 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <!-- Liste fictive pour les tests de tools/apr : seules les routes Forever sont lues. -->
+    <Script file="Routes/Forever/Alliance/Test_Alliance.lua"/>
+    <Script file="Routes/Forever/Horde/Test_Horde.lua"/>
+    <Script file="Routes/Other/Ignored.lua"/>
+</Ui>

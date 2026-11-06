@@ -18,7 +18,21 @@
 --   logCap = n|nil                   -- plafond du journal (défaut 20)
 --   strictLevel = true|nil           -- farm des tâches bloquées par le niveau compté dans l'ordonnancement
 --                                    -- (objectifs jamais avancés vers un niveau plus bas ; plus de marche)
---   next = id | nextByRace = { [raceKey] = id } }
+--   precede = { { "A3376", "O757" }, ... }|nil  -- ordre imposé : la première tâche avant la seconde
+--                                    -- (A/T/C<quête> ; O<quête> = tous les objectifs de la quête)
+--   safeLevel = { [questId] = n }|nil -- niveau dès lequel les objectifs de la quête sont faits (remplace le
+--                                    -- niveau « sûr » calculé : quête niveau - 1, monstres niveau - 1)
+--   next = id | nextByRace = { [raceKey] = id }
+--   choices = { { id = planId, races = {raceKey,...}|nil, label = "..."|nil, weight = n|nil,
+--                 travel = { kind = "walk"|"fly"|"boat"|"zeppelin"|"tram"|"portal"|"hearth",
+--                            minutes = n|nil }|nil }, ... }|nil
+--                                    -- choix de suite proposés au joueur en fin de chapitre (2 à 4, ordre
+--                                    -- d'affichage) ; la suite par défaut (next, ou nextByRace de chaque race
+--                                    -- concernée) doit en faire partie et reste la seule simulée (pathFor).
+--                                    -- travel.minutes : tools/routebuilder/travel.lua <planId> (sim.route
+--                                    -- depuis la fin du chapitre, d'après les guides et rapports générés).
+--                                    -- Contrôlé par plans.validate (build.lua s'arrête sur une erreur).
+-- }
 --
 -- Identifiants : A_<Start>_<NN>, A_<NN> (tronc commun), H_<Start>_<NN>, H_<NN>, A_Skyborne_<NN>, H_Skyborne_<NN>.
 -- Les rectangles `bounds` et les points `entry` des chapitres autres que A_DwarfGnome_01 sont une
@@ -29,6 +43,10 @@ local DUN_MOROGH, ELWYNN, TELDRASSIL, DARKSHORE, LOCH_MODAN, WESTFALL = 1426, 14
 local REDRIDGE, DUSKWOOD, WETLANDS, ASHENVALE, STONETALON, HILLSBRAD = 1433, 1431, 1437, 1440, 1442, 1424
 local DUROTAR, MULGORE, TIRISFAL, SILVERPINE, BARRENS, NEEDLES, ZEPHRAS = 1411, 1412, 1420, 1421, 1413, 1441, 2521
 local IRONFORGE, STORMWIND, DARNASSUS, ORGRIMMAR, THUNDERBLUFF, UNDERCITY = 1455, 1453, 1457, 1454, 1456, 1458
+local ALTERAC, ARATHI, BADLANDS, BLASTED, WPL, EPL, HINTERLANDS = 1416, 1417, 1418, 1419, 1422, 1423, 1425
+local SEARING, BURNING, STV, SWAMP = 1427, 1428, 1434, 1435
+local DESOLACE, FERALAS, DUSTWALLOW, TANARIS, AZSHARA, FELWOOD, UNGORO, SILITHUS, WINTERSPRING =
+  1443, 1444, 1445, 1446, 1447, 1448, 1449, 1451, 1452
 
 local plans = {}
 
@@ -47,12 +65,23 @@ plans.Alliance = {
     flightPaths = { "Ironforge, Dun Morogh" },
     dungeons = { "The Hall of Thanes", "Gnomeregan" },
     optional = { [96391] = "The Hall of Thanes", [96392] = "The Hall of Thanes", [96393] = "The Hall of Thanes" },
+    -- Réserve de MacGrann (312) : un coffre, pas de monstre à tuer ; faite dès la prise (38.51, 53.93) au lieu
+    -- d'attendre le niveau 11 (retour depuis Gol'Bolar). Mesuré : Nain/Gnome 1-30 -16 min.
+    safeLevel = { [312] = 7 },
   },
   {
     id = "A_DwarfGnome_03", title = "Loch Modan", faction = "Alliance", races = { "Dwarf", "Gnome" },
     zones = { LOCH_MODAN, IRONFORGE }, endZones = { STORMWIND },
     minLevel = 11, maxLevel = 14, entry = { LOCH_MODAN, 33.9, 51.0 }, next = "A_DwarfGnome_04", strictLevel = true,
     flightPaths = { "Thelsamar, Loch Modan" },
+    -- Fin à Stormwind : Marche de l'Ouest à pied (suite par défaut) ou Sombrivage par le bateau du port
+    -- de Stormwind (A_01 commence par ce bateau). Minutes : travel.lua A_DwarfGnome_03 (guides du
+    -- 2026-11-06, QuestieDB v1.0.11, lot I) : fin au sud de Stormwind, Marche de l'Ouest 122 s de marche,
+    -- Sombrivage 80 s de marche + 300 s de bateau + 44 s de marche.
+    choices = {
+      { id = "A_DwarfGnome_04", travel = { kind = "walk", minutes = 2 } },
+      { id = "A_01", travel = { kind = "boat", minutes = 7 } },
+    },
   },
   {
     id = "A_DwarfGnome_04", title = "Westfall", faction = "Alliance", races = { "Dwarf", "Gnome" },
@@ -63,6 +92,8 @@ plans.Alliance = {
     entry = { WESTFALL, 56.3, 47.5 }, next = "A_01",
     flightPaths = { "Stormwind, Elwynn", "Sentinel Hill, Westfall" },
     dungeons = { "The Deadmines" },
+    -- Poor Old Blanchy (151) : écartée par le budget d'XP (« level band reached ») ; +1 085 XP pour +3 min
+    force = { [151] = true },
   },
   -- Humain : Northshire, Elwynn, Marche de l'Ouest
   {
@@ -82,6 +113,9 @@ plans.Alliance = {
     entry = { WESTFALL, 56.3, 47.5 }, next = "A_01",
     flightPaths = { "Sentinel Hill, Westfall" },
     dungeons = { "The Deadmines" },
+    -- Rumi of Gnomeregan (79093, niveau 20) : écartée « au-dessus de la tranche » ; rendue à Stormwind en fin
+    -- de chapitre. Forcée ici seulement : un forçage global la placerait plus tôt (Elwynn + Stormwind).
+    force = { [79093] = true },
   },
   -- Elfe de la nuit : Shadowglen, Teldrassil, Sombrivage (toute la zone), puis tronc commun aux Carmines
   {
@@ -94,11 +128,16 @@ plans.Alliance = {
     zones = { TELDRASSIL, DARNASSUS }, endZones = { DARKSHORE },
     minLevel = 6, maxLevel = 11, entry = { TELDRASSIL, 55.9, 57.3 }, next = "A_NightElf_03",
     flightPaths = { "Rut'theran Village, Teldrassil" },
+    -- strictLevel (QuestieDB v1.0.11 : Escaping Ban'ethil 99053 passe niveau 10) : sans lui, 105 mobs de farm
+    -- au milieu du chapitre pour des objectifs avancés avant leur niveau ; avec lui (et sur A_NightElf_03),
+    -- Elfe 1-30 -23 min, farm 105 -> 11 mobs ici.
+    strictLevel = true,
   },
   {
     id = "A_NightElf_03", title = "Darkshore", faction = "Alliance", races = { "NightElf" },
     zones = { DARKSHORE }, minLevel = 11, maxLevel = 19, entry = { DARKSHORE, 37.0, 44.0 },
     flightPaths = { "Auberdine, Darkshore" },
+    strictLevel = true, -- avec A_NightElf_02 (voir là-bas) : sinon jusqu'à 159 mobs de farm pour une tête de chaîne
     dungeons = { "Blackfathom Deeps" },
     nextByRace = { NightElf = "A_02" },
   },
@@ -131,6 +170,9 @@ plans.Alliance = {
     flightPaths = { "Lakeshire, Redridge", "Darkshire, Duskwood" },
     dungeons = { "The Stockade" },
     optional = { [253] = "Group quest: Eliza, level 31 elite" },
+    -- Worgen in the Woods (173) : écartée ici seulement (chaîne de Nightbane 27-31) ; faite en A_07 (30-34).
+    -- Avant le lot H (2026-11-06), écartée dans overrides.lua pour toute la route.
+    drop = { [173] = "Worgen in the Woods chain: Nightbane mobs 27-31, above the 22-26 band" },
   },
   {
     id = "A_04", title = "Wetlands", faction = "Alliance", zones = { WETLANDS },
@@ -149,13 +191,166 @@ plans.Alliance = {
   },
   {
     id = "A_05", title = "Hillsbrad Foothills", faction = "Alliance", zones = { HILLSBRAD },
-    minLevel = 29, maxLevel = 30, levelSlack = 0, entry = { HILLSBRAD, 49.3, 52.3 },
+    minLevel = 29, maxLevel = 30, levelSlack = 0, entry = { HILLSBRAD, 49.3, 52.3 }, next = "A_08",
     flightPaths = { "Southshore, Hillsbrad" },
     -- bateau Menethil -> Southshore (sinon ligne droite par-dessus la mer)
     arrive = { via = { WETLANDS, 4.9, 57.3 }, steps = {
       { "boat", WETLANDS, 4.9, 57.3, note = "Take the boat to Southshore" },
     }, time = 420 },
     dungeons = { "City of Dalaran", "Excavation Site: Wetlands" },
+  },
+  -- Routes 30-60 (lot H, 2026-11-06) : chapitres du plan « meta paths 1-60 », reconstruits et mesurés ici
+  -- (docs/routes/README.md). Ordre du parcours (next) :
+  --   A_05 -> A_08 -> A_07 -> A_09 -> A_10 -> A_11 -> A_12 -> A_13 -> A_15 -> A_16 -> A_17 -> A_18 -> A_19 ->
+  --   A_20 -> A_21 -> A_22 -> A_28 -> A_24 -> A_26 -> A_27 -> A_23 -> A_29 -> A_30.
+  -- Les Steppes ardentes (A_28) suivent la Gorge des Vents brûlants (contenu 52-54) et les Maleterres de
+  -- l'Ouest (A_23) passent à 57-58 (contenu 55-58 ; à 51-53 : ~1 050 mobs de farm mesurés). A_06, A_14 et
+  -- A_25 sont écrits mais hors chaîne (aucun parcours ne les suit : ni simulés, ni générés).
+  -- Chaque chapitre est sur un seul continent. Tranches contiguës (minLevel = maxLevel du précédent),
+  -- levelBelow = 8 (restes d'une zone déjà visitée), far = 1600, widen = false (une zone revisitée plus tard
+  -- garde ses quêtes hautes pour cette visite). Entrées : maîtres de vol ou donneurs de QuestieDB.
+  {
+    id = "A_08", title = "Ashenvale", faction = "Alliance", zones = { ASHENVALE },
+    minLevel = 30, maxLevel = 32, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { ASHENVALE, 34.41, 47.99 }, next = "A_07",
+    flightPaths = { "Astranaar, Ashenvale" },
+    dungeons = { "Blackfathom Deeps" },
+  },
+  {
+    id = "A_07", title = "Duskwood", faction = "Alliance", zones = { DUSKWOOD },
+    minLevel = 32, maxLevel = 33, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { DUSKWOOD, 77.49, 44.29 }, next = "A_09",
+    flightPaths = { "Darkshire, Duskwood" },
+  },
+  {
+    id = "A_09", title = "Thousand Needles", faction = "Alliance", zones = { NEEDLES, BARRENS },
+    bounds = { [BARRENS] = { 58, 32, 66, 42 } }, -- Ratchet
+    minLevel = 33, maxLevel = 34, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { NEEDLES, 77.79, 77.27 }, next = "A_10",
+    flightPaths = { "Ratchet, The Barrens" },
+    dungeons = { "Razorfen Kraul" },
+  },
+  {
+    id = "A_10", title = "Stranglethorn Vale", faction = "Alliance", zones = { STV },
+    bounds = { [STV] = { 20, 0, 55, 40 } }, -- nord : camp rebelle, Nesingwary
+    minLevel = 34, maxLevel = 35, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { STV, 35.66, 10.81 }, next = "A_11",
+  },
+  {
+    id = "A_11", title = "Desolace", faction = "Alliance", zones = { DESOLACE },
+    minLevel = 35, maxLevel = 37, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { DESOLACE, 64.66, 10.54 }, next = "A_12",
+    flightPaths = { "Nijel's Point, Desolace" },
+  },
+  {
+    id = "A_12", title = "Stranglethorn Vale and Swamp of Sorrows", faction = "Alliance", zones = { STV, SWAMP },
+    minLevel = 37, maxLevel = 39, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { STV, 27.0, 77.13 }, next = "A_13",
+    flightPaths = { "Booty Bay, Stranglethorn" },
+  },
+  {
+    id = "A_13", title = "Arathi Highlands", faction = "Alliance", zones = { ALTERAC, ARATHI },
+    minLevel = 39, maxLevel = 40, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { ARATHI, 45.73, 46.10 }, next = "A_15",
+    -- titre : aucune étape mesurée dans les Montagnes d'Alterac (zone gardée pour les candidates)
+    flightPaths = { "Refuge Pointe, Arathi" },
+    dungeons = { "Scarlet Monastery", "Gnomeregan" },
+  },
+  {
+    id = "A_15", title = "Dustwallow Marsh", faction = "Alliance", zones = { DUSTWALLOW, DESOLACE },
+    minLevel = 40, maxLevel = 41, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { DUSTWALLOW, 67.48, 51.30 }, next = "A_16",
+    -- titre : aucune quête de Désolace retenue (mesuré) ; zone gardée pour les candidates
+    flightPaths = { "Theramore, Dustwallow Marsh" },
+    dungeons = { "Razorfen Downs", "Maraudon" },
+  },
+  {
+    id = "A_16", title = "Badlands", faction = "Alliance", zones = { BADLANDS },
+    minLevel = 41, maxLevel = 42, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { BADLANDS, 37.90, 10.59 }, next = "A_17",
+    dungeons = { "Uldaman" },
+  },
+  {
+    id = "A_17", title = "Stranglethorn Vale", faction = "Alliance", zones = { STV },
+    minLevel = 42, maxLevel = 44, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { STV, 27.0, 77.13 }, next = "A_18",
+  },
+  {
+    id = "A_18", title = "Tanaris", faction = "Alliance", zones = { TANARIS },
+    minLevel = 44, maxLevel = 45, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { TANARIS, 51.01, 29.34 }, next = "A_19",
+    flightPaths = { "Gadgetzan, Tanaris" },
+    dungeons = { "Zul'Farrak" },
+  },
+  {
+    id = "A_19", title = "Feralas", faction = "Alliance", zones = { FERALAS },
+    minLevel = 45, maxLevel = 46, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { FERALAS, 30.24, 43.25 }, next = "A_20",
+    flightPaths = { "Feathermoon, Feralas" },
+    dungeons = { "Maraudon" },
+  },
+  {
+    id = "A_20", title = "Tanaris", faction = "Alliance", zones = { TANARIS },
+    minLevel = 46, maxLevel = 48, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { TANARIS, 51.01, 29.34 }, next = "A_21",
+    dungeons = { "Zul'Farrak" },
+    -- plan « meta paths » : 5 quêtes seulement sans elles (~1 500 mobs de farm)
+    force = { [3161] = true, [3362] = true, [2605] = true },
+  },
+  {
+    id = "A_21", title = "Stranglethorn Vale", faction = "Alliance", zones = { STV, SWAMP },
+    minLevel = 48, maxLevel = 50, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { STV, 27.0, 77.13 }, next = "A_22",
+    dungeons = { "The Temple of Atal'Hakkar" },
+  },
+  {
+    id = "A_22", title = "Searing Gorge and Blasted Lands", faction = "Alliance", zones = { SEARING, BLASTED },
+    minLevel = 50, maxLevel = 52, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { SEARING, 37.94, 30.86 }, next = "A_28",
+    flightPaths = { "Thorium Point, Searing Gorge", "Nethergarde Keep, Blasted Lands" },
+    dungeons = { "Blackrock Depths" },
+  },
+  {
+    id = "A_28", title = "Burning Steppes", faction = "Alliance", zones = { BURNING },
+    minLevel = 52, maxLevel = 53, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { BURNING, 84.33, 68.33 }, next = "A_24",
+    flightPaths = { "Morgan's Vigil, Burning Steppes" },
+    dungeons = { "Blackrock Depths" },
+  },
+  {
+    id = "A_24", title = "Felwood", faction = "Alliance", zones = { FELWOOD },
+    minLevel = 53, maxLevel = 54, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { FELWOOD, 62.49, 24.24 }, next = "A_26",
+    flightPaths = { "Talonbranch Glade, Felwood" },
+  },
+  {
+    id = "A_26", title = "Un'Goro Crater", faction = "Alliance", zones = { UNGORO },
+    minLevel = 54, maxLevel = 56, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { UNGORO, 45.23, 5.83 }, next = "A_27",
+    flightPaths = { "Marshal's Refuge, Un'Goro Crater" },
+  },
+  {
+    id = "A_27", title = "Winterspring", faction = "Alliance", zones = { WINTERSPRING },
+    minLevel = 56, maxLevel = 57, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { WINTERSPRING, 62.33, 36.61 }, next = "A_23",
+    flightPaths = { "Everlook, Winterspring" },
+  },
+  {
+    id = "A_23", title = "Western Plaguelands", faction = "Alliance", zones = { WPL },
+    minLevel = 57, maxLevel = 58, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { WPL, 42.92, 85.06 }, next = "A_29",
+    flightPaths = { "Chillwind Camp, Western Plaguelands" },
+    dungeons = { "Scholomance" },
+  },
+  {
+    id = "A_29", title = "Eastern Plaguelands", faction = "Alliance", zones = { EPL },
+    minLevel = 58, maxLevel = 59, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { EPL, 71.81, 49.60 }, next = "A_30",
+    flightPaths = { "Light's Hope Chapel, Eastern Plaguelands" },
+    dungeons = { "Stratholme" },
+  },
+  {
+    id = "A_30", title = "Silithus", faction = "Alliance", zones = { WINTERSPRING, SILITHUS },
+    minLevel = 59, maxLevel = 60, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { SILITHUS, 50.58, 34.45 },
+    -- titre : aucune étape mesurée au Berceau-de-l'Hiver (A_27 y prend les quêtes) ; zone gardée
+    flightPaths = { "Cenarion Hold, Silithus" },
+  },
+  -- Hors chaîne (écrits, ni simulés ni générés)
+  {
+    id = "A_06", title = "Hillsbrad Foothills", faction = "Alliance", zones = { HILLSBRAD },
+    minLevel = 30, maxLevel = 32, levelSlack = 0, entry = { HILLSBRAD, 49.34, 52.27 }, next = "A_08",
+    -- hors chaîne : restes des Contreforts d'Hautebrande (A_05 finit déjà à 30)
+  },
+  {
+    id = "A_14", title = "The Hinterlands", faction = "Alliance", zones = { HINTERLANDS },
+    minLevel = 43, maxLevel = 46, levelSlack = 0, entry = { HINTERLANDS, 11.07, 46.15 }, next = "A_15",
+    flightPaths = { "Aerie Peak, The Hinterlands" },
+    -- hors chaîne : peu de quêtes Alliance, beaucoup de farm (plan « meta paths »)
+  },
+  {
+    id = "A_25", title = "Feralas and Azshara", faction = "Alliance", zones = { FERALAS, AZSHARA },
+    minLevel = 54, maxLevel = 55, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { FERALAS, 30.24, 43.25 }, next = "A_26",
+    flightPaths = { "Talrendis Point, Azshara" },
+    dungeons = { "Dire Maul" },
   },
 }
 
@@ -178,6 +373,11 @@ plans.Horde = {
     id = "H_Tauren_01", title = "Camp Narache", faction = "Horde", races = { "Tauren" },
     zones = { MULGORE }, bounds = { [MULGORE] = { 33, 62, 66, 92 } }, endZones = { MULGORE },
     minLevel = 1, maxLevel = 6, entry = { MULGORE, 43.9, 76.7 }, next = "H_Tauren_02",
+    -- Socle du camp (747, 750, 780, 745, 781) avec 752 et 3376, sinon écartés par le budget d'XP ; forcer le
+    -- socle seul faisait perdre 752 et Sharptusk (55 -> 64 min). 3376 prise avant le premier passage à
+    -- Brambleblade (objectif de 757 au même endroit). Mesuré (QuestieDB v1.0.11) : Tauren 1-30 -62 min.
+    force = { [747] = true, [750] = true, [780] = true, [745] = true, [781] = true, [752] = true, [3376] = true },
+    precede = { { "A3376", "O757" } },
   },
   {
     id = "H_Tauren_02", title = "Mulgore", faction = "Horde", races = { "Tauren" },
@@ -190,6 +390,7 @@ plans.Horde = {
     id = "H_Undead_01", title = "Deathknell", faction = "Horde", races = { "Undead" },
     zones = { TIRISFAL }, bounds = { [TIRISFAL] = { 26, 56, 40, 74 } }, endZones = { TIRISFAL },
     minLevel = 1, maxLevel = 6, entry = { TIRISFAL, 30.8, 66.2 }, next = "H_Undead_02",
+    drop = { [590] = "Opened by the turn-in of 8 in Brill: 1,071 yd back to Calvin Montague, then back to Brill, for 110 XP" },
   },
   {
     id = "H_Undead_02", title = "Tirisfal Glades", faction = "Horde", races = { "Undead" },
@@ -237,13 +438,158 @@ plans.Horde = {
   {
     id = "H_04", title = "Southern Barrens and Thousand Needles", faction = "Horde", zones = { BARRENS, NEEDLES },
     minLevel = 25, maxLevel = 28, levelSlack = 0, levelBelow = 6, far = 1600, entry = { BARRENS, 44.5, 59.1 }, next = "H_05",
+    -- Egg Hunt (868) faite dans le sud des Tarides avant Mille pointes, sans y revenir. Mesuré : Horde -11 min.
+    precede = { { "O868", "O1153" }, { "O868", "A1149" }, { "O868", "A5147" }, { "O868", "A4821" } },
     flightPaths = { "Freewind Post, Thousand Needles" },
   },
   {
     id = "H_05", title = "Hillsbrad Foothills", faction = "Horde", zones = { HILLSBRAD },
     minLevel = 28, maxLevel = 30, levelSlack = 0, levelBelow = 6, far = 1600, entry = { HILLSBRAD, 62.0, 20.0 }, endZones = { UNDERCITY },
+    next = "H_06",
+    -- strictLevel (QuestieDB v1.0.11) : sans lui, tranche élargie (147 mobs à farmer), 44 mobs de farm final,
+    -- 188 min et une zone d'objectifs coupée sans contrainte (567 Dangerous!) ; avec lui, 176 min, aucun farm.
+    strictLevel = true,
     flightPaths = { "Tarren Mill, Hillsbrad" },
     dungeons = { "City of Dalaran" },
+  },
+  -- Routes 30-60 (lot H, 2026-11-06) : chapitres du plan « meta paths 1-60 », reconstruits et mesurés ici
+  -- (docs/routes/README.md). Ordre : H_05 -> H_06 -> ... -> H_18 -> H_21 -> H_23 -> ... -> H_30. H_19 (Marais
+  -- des Chagrins 45-46 : aucune quête mesurée) et H_22 (Féralas 49-50 : aucune quête) sont supprimés ; H_20
+  -- (Tanaris 47-49 : 5 quêtes, ~700 mobs de farm) est hors chaîne, Tanaris I (H_16) prend ses quêtes hautes.
+  -- Chaque chapitre est sur un seul continent. Tranches contiguës, levelBelow = 8, far = 1600, widen = false
+  -- (sauf H_16). Entrées : maîtres de vol ou donneurs de QuestieDB.
+  {
+    id = "H_06", title = "Alterac Mountains and Arathi Highlands", faction = "Horde", zones = { HILLSBRAD, ALTERAC, ARATHI },
+    minLevel = 30, maxLevel = 32, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { HILLSBRAD, 60.14, 18.62 }, endZones = { UNDERCITY }, next = "H_07",
+    flightPaths = { "Hammerfall, Arathi" },
+    dungeons = { "City of Dalaran", "Scarlet Monastery" },
+    -- plan « meta paths » : accroches de Tarren Mill (Prison Break In, Stone Tokens, Infiltration,
+    -- Dalaran Patrols, The Hammer May Fall)
+    force = { [544] = true, [556] = true, [533] = true, [545] = true, [676] = true },
+  },
+  {
+    id = "H_07", title = "Thousand Needles", faction = "Horde", zones = { NEEDLES, BARRENS },
+    bounds = { [BARRENS] = { 44, 26, 53, 32 } }, -- Carrefour et Bastion : The Swarm Grows, The Kolkar of Desolace
+    endZones = { ORGRIMMAR, DESOLACE },
+    minLevel = 32, maxLevel = 33, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { NEEDLES, 45.14, 49.11 }, next = "H_08",
+    force = { [1145] = true, [1362] = true },
+  },
+  {
+    id = "H_08", title = "Desolace", faction = "Horde", zones = { DESOLACE },
+    minLevel = 33, maxLevel = 35, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { DESOLACE, 21.60, 74.13 }, next = "H_09",
+    flightPaths = { "Shadowprey Village, Desolace" },
+    dungeons = { "Maraudon" },
+  },
+  {
+    id = "H_09", title = "Stranglethorn Vale", faction = "Horde", zones = { STV },
+    minLevel = 35, maxLevel = 37, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { STV, 32.54, 29.35 }, next = "H_10",
+    flightPaths = { "Grom'gol, Stranglethorn" },
+    dungeons = { "Gnomeregan" },
+  },
+  {
+    id = "H_10", title = "Dustwallow Marsh", faction = "Horde", zones = { DUSTWALLOW },
+    minLevel = 37, maxLevel = 38, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { DUSTWALLOW, 35.56, 31.88 }, next = "H_11",
+    flightPaths = { "Brackenwall Village, Dustwallow Marsh" },
+    dungeons = { "Razorfen Downs" },
+  },
+  {
+    id = "H_11", title = "Arathi Highlands", faction = "Horde", zones = { ARATHI, HILLSBRAD, ALTERAC },
+    minLevel = 38, maxLevel = 39, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { ARATHI, 73.02, 32.70 }, next = "H_12",
+    -- The Crown of Will (518-521, Tarren Mill) : objectifs dans les Montagnes d'Alterac
+    dungeons = { "Scarlet Monastery" },
+  },
+  {
+    id = "H_12", title = "Badlands", faction = "Horde", zones = { BADLANDS },
+    minLevel = 39, maxLevel = 40, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { BADLANDS, 3.99, 44.78 }, next = "H_13",
+    flightPaths = { "Kargath, Badlands" },
+    dungeons = { "Uldaman" },
+  },
+  {
+    id = "H_13", title = "Stranglethorn Vale", faction = "Horde", zones = { STV },
+    minLevel = 40, maxLevel = 41, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { STV, 32.54, 29.35 }, next = "H_14",
+  },
+  {
+    id = "H_14", title = "Swamp of Sorrows", faction = "Horde", zones = { SWAMP },
+    minLevel = 41, maxLevel = 43, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { SWAMP, 46.07, 54.83 }, next = "H_15",
+    flightPaths = { "Stonard, Swamp of Sorrows" },
+    dungeons = { "The Temple of Atal'Hakkar" },
+  },
+  {
+    id = "H_15", title = "Desolace", faction = "Horde", zones = { DESOLACE },
+    minLevel = 43, maxLevel = 44, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { DESOLACE, 21.60, 74.13 }, next = "H_16",
+    dungeons = { "Maraudon" },
+  },
+  {
+    id = "H_16", title = "Tanaris", faction = "Horde", zones = { TANARIS },
+    minLevel = 44, maxLevel = 46, levelSlack = 0, levelBelow = 8, far = 1600, entry = { TANARIS, 51.60, 25.44 }, next = "H_17",
+    flightPaths = { "Gadgetzan, Tanaris" },
+    dungeons = { "Zul'Farrak" },
+  },
+  {
+    id = "H_17", title = "Feralas", faction = "Horde", zones = { FERALAS },
+    minLevel = 46, maxLevel = 47, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { FERALAS, 75.45, 44.36 }, next = "H_18",
+    flightPaths = { "Camp Mojache, Feralas" },
+  },
+  {
+    id = "H_18", title = "Stranglethorn Vale", faction = "Horde", zones = { STV },
+    minLevel = 47, maxLevel = 48, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { STV, 26.87, 77.10 }, next = "H_21",
+    flightPaths = { "Booty Bay, Stranglethorn" },
+  },
+  {
+    id = "H_21", title = "The Hinterlands", faction = "Horde", zones = { HINTERLANDS },
+    minLevel = 48, maxLevel = 51, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { HINTERLANDS, 81.70, 81.76 }, next = "H_23",
+    flightPaths = { "Revantusk Village, The Hinterlands" },
+  },
+  {
+    id = "H_23", title = "Blasted Lands", faction = "Horde", zones = { BLASTED },
+    minLevel = 51, maxLevel = 52, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { BLASTED, 50.55, 14.20 }, next = "H_24",
+  },
+  {
+    id = "H_24", title = "Searing Gorge and Burning Steppes", faction = "Horde", zones = { SEARING, BURNING },
+    minLevel = 52, maxLevel = 53, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { SEARING, 34.84, 30.87 }, next = "H_25",
+    flightPaths = { "Thorium Point, Searing Gorge", "Flame Crest, Burning Steppes" },
+    dungeons = { "Blackrock Depths" },
+    force = { [4023] = true, [4296] = true, [4726] = true },
+  },
+  {
+    id = "H_25", title = "Azshara", faction = "Horde", zones = { AZSHARA },
+    minLevel = 53, maxLevel = 54, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { AZSHARA, 21.96, 49.62 }, next = "H_26",
+    flightPaths = { "Valormok, Azshara" },
+  },
+  {
+    id = "H_26", title = "Felwood", faction = "Horde", zones = { FELWOOD },
+    minLevel = 54, maxLevel = 55, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { FELWOOD, 34.44, 53.96 }, next = "H_27",
+    flightPaths = { "Bloodvenom Post, Felwood" },
+  },
+  {
+    id = "H_27", title = "Un'Goro Crater", faction = "Horde", zones = { UNGORO },
+    minLevel = 55, maxLevel = 56, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { UNGORO, 45.23, 5.83 }, next = "H_28",
+    flightPaths = { "Marshal's Refuge, Un'Goro Crater" },
+  },
+  {
+    id = "H_28", title = "Felwood and Winterspring", faction = "Horde", zones = { FELWOOD, WINTERSPRING },
+    minLevel = 56, maxLevel = 57, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { WINTERSPRING, 60.47, 36.30 }, next = "H_29",
+    flightPaths = { "Everlook, Winterspring" },
+  },
+  {
+    id = "H_29", title = "Western Plaguelands and Eastern Plaguelands", faction = "Horde", zones = { WPL, EPL },
+    minLevel = 57, maxLevel = 59, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { WPL, 38.40, 54.05 }, next = "H_30",
+    flightPaths = { "Light's Hope Chapel, Eastern Plaguelands" },
+    dungeons = { "Scholomance", "Stratholme" },
+  },
+  {
+    id = "H_30", title = "Silithus", faction = "Horde", zones = { WINTERSPRING, SILITHUS },
+    minLevel = 59, maxLevel = 60, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { SILITHUS, 48.68, 36.67 },
+    -- titre : Berceau-de-l'Hiver seulement traversé (pierre de foyer, vol) ; ses quêtes sont faites en H_28
+    flightPaths = { "Cenarion Hold, Silithus" },
+  },
+  -- Hors chaîne (écrits, ni simulés ni générés)
+  {
+    id = "H_20", title = "Tanaris", faction = "Horde", zones = { TANARIS },
+    minLevel = 47, maxLevel = 49, levelSlack = 0, levelBelow = 8, far = 1600, widen = false, entry = { TANARIS, 51.60, 25.44 }, next = "H_21",
+    dungeons = { "Zul'Farrak" },
+    -- comme A_20 : quêtes de Tanaris à plus de 1 600 yd de Gadgetzan (sinon 1 quête, ~700 mobs de farm)
+    force = { [3161] = true, [3362] = true, [2605] = true },
   },
 }
 
@@ -279,6 +625,121 @@ function plans.pathIn(list, race)
     p = nid and byId[nid] or nil
   end
   return path
+end
+
+-- Genres de trajet admis dans choices[i].travel.kind (lus tels quels par le jeu).
+plans.TRAVEL_KINDS = { "walk", "fly", "boat", "zeppelin", "tram", "portal", "hearth" }
+-- Races de chaque faction (clés de nextByRace et de choices[i].races).
+plans.RACES = {
+  Alliance = { "Human", "Dwarf", "NightElf", "Gnome", "Skyborne" },
+  Horde = { "Orc", "Undead", "Tauren", "Troll", "Skyborne" },
+}
+
+local function contains(list, v)
+  for _, x in ipairs(list or {}) do if x == v then return true end end
+  return false
+end
+
+local function sortedKeys(t)
+  local keys = {}
+  for k in pairs(t or {}) do keys[#keys + 1] = k end
+  table.sort(keys, function(a, b) return tostring(a) < tostring(b) end)
+  return keys
+end
+
+-- Contrôle des suites d'une table de plans { Alliance = {...}, Horde = {...} } (plans par défaut) :
+-- `next` / `nextByRace` vers des chapitres connus, et `choices` (2 à 4 entrées, chapitres connus de la
+-- même faction, sans doublon ni le chapitre lui-même, races de la faction, genre de trajet admis,
+-- minutes entières, suite par défaut présente pour chaque race qui la suit). Renvoie la liste des
+-- erreurs { id = planId, msg = "..." } (vide si tout va bien). build.lua s'arrête sur la première liste
+-- non vide ; tools/validate_guides.lua applique le même contrôle aux guides générés.
+function plans.validate(p)
+  p = p or plans
+  local errs = {}
+  local function err(id, fmt, ...) errs[#errs + 1] = { id = id, msg = fmt:format(...) } end
+  local byId = {}
+  for _, faction in ipairs({ "Alliance", "Horde" }) do
+    for _, plan in ipairs(p[faction] or {}) do
+      if byId[plan.id] then err(plan.id, "duplicate chapter id") end
+      byId[plan.id] = plan
+    end
+  end
+  local kinds = table.concat(plans.TRAVEL_KINDS, ", ")
+  for _, faction in ipairs({ "Alliance", "Horde" }) do
+    for _, plan in ipairs(p[faction] or {}) do
+      local id = plan.id
+      local races = plan.races or plans.RACES[plan.faction] or {}
+      if plan.next ~= nil and not byId[plan.next] then err(id, "next %q is not a known chapter", tostring(plan.next)) end
+      for _, race in ipairs(sortedKeys(plan.nextByRace)) do
+        local nid = plan.nextByRace[race]
+        if not byId[nid] then err(id, "nextByRace.%s %q is not a known chapter", tostring(race), tostring(nid)) end
+      end
+      local list = plan.choices
+      if list ~= nil and type(list) ~= "table" then
+        err(id, "choices must be a list")
+      elseif list ~= nil then
+        if #list < 2 or #list > 4 then err(id, "choices has %d entries (2 to 4 expected)", #list) end
+        local seen = {}
+        for i, c in ipairs(list) do
+          local at = ("choices[%d]"):format(i)
+          if type(c) ~= "table" or type(c.id) ~= "string" or c.id == "" then
+            err(id, "%s: missing id", at)
+          else
+            local target = byId[c.id]
+            if not target then err(id, "%s: %q is not a known chapter", at, c.id)
+            elseif target.faction ~= plan.faction then
+              err(id, "%s: %q is a %s chapter, this one is %s", at, c.id, tostring(target.faction), tostring(plan.faction))
+            end
+            if c.id == id then err(id, "%s: a chapter cannot be its own choice", at) end
+            if seen[c.id] then err(id, "%s: duplicate id %q", at, c.id) end
+            seen[c.id] = seen[c.id] or c
+            if c.races ~= nil then
+              if type(c.races) ~= "table" or #c.races == 0 then err(id, "%s: races must be a non-empty list", at)
+              else
+                for _, r in ipairs(c.races) do
+                  if not contains(races, r) then err(id, "%s: race %s does not play this chapter", at, tostring(r)) end
+                end
+              end
+            end
+            if c.label ~= nil and type(c.label) ~= "string" then err(id, "%s: label must be a string", at) end
+            if c.weight ~= nil and (type(c.weight) ~= "number" or c.weight <= 0) then
+              err(id, "%s: weight must be a positive number", at)
+            end
+            if c.travel ~= nil then
+              local t = c.travel
+              if type(t) ~= "table" or not contains(plans.TRAVEL_KINDS, t.kind) then
+                err(id, "%s: travel.kind %s is not one of %s", at, tostring(type(t) == "table" and t.kind or t), kinds)
+              elseif t.minutes ~= nil and (type(t.minutes) ~= "number" or t.minutes < 0 or t.minutes ~= math.floor(t.minutes)) then
+                err(id, "%s: travel.minutes must be a whole number of minutes", at)
+              end
+            end
+          end
+        end
+        -- suite par défaut : proposée à chaque race qui la suit (pathFor : nextByRace[race], sinon next)
+        if plan.next == nil and plan.nextByRace == nil then
+          err(id, "choices without a default successor (next or nextByRace)")
+        end
+        for _, race in ipairs(races) do
+          local nid = (plan.nextByRace and plan.nextByRace[race]) or plan.next
+          if nid ~= nil then
+            local c = seen[nid]
+            local field = (plan.nextByRace and plan.nextByRace[race]) and ("nextByRace." .. race) or "next"
+            if not c then err(id, "default successor %s = %q is not in choices", field, tostring(nid))
+            elseif c.races and type(c.races) == "table" and not contains(c.races, race) then
+              err(id, "default successor %s = %q is not offered to %s (choices races)", field, tostring(nid), race)
+            end
+          end
+        end
+      end
+    end
+  end
+  -- une erreur répétée pour plusieurs races n'est donnée qu'une fois
+  local out, dup = {}, {}
+  for _, e in ipairs(errs) do
+    local key = e.id .. "\0" .. e.msg
+    if not dup[key] then dup[key] = true; out[#out + 1] = e end
+  end
+  return out
 end
 
 return plans

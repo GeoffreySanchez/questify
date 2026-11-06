@@ -13,9 +13,10 @@ local routeSet            -- { [questId] = true } ; nil = à reconstruire
 -- Quêtes de la route
 ---------------------------------------------------------------------------
 -- Même filtrage que le moteur de progression : une étape qui ne concerne pas ce personnage
--- (race, classe, quêtes de donjon coupées) ne rend pas sa quête « de la route ».
+-- (étape d'une autre classe, race, classe, quêtes de donjon coupées) ne rend pas sa quête « de la route ».
 local function stepApplies(step)
   local P = Q.Player
+  if not Q.Guides.StepForClass(step, P.classFile) then return false end
   if step.race and not Q.Util.Contains(step.race, P.raceKey) then return false end
   if step.class and not Q.Util.Contains(step.class, P.classFile) then return false end
   if step.optional and Q.Settings:Get("dungeonQuests") == false then return false end

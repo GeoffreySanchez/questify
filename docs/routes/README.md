@@ -17,27 +17,27 @@ its reason in the chapter report).
 | Chapter | Zone | Band | Sim level | XP/h | Steps | Time | Grind (mobs) | Quality items |
 |---|---|---|---|---|---|---|---|---|
 | A_DwarfGnome_01 | Coldridge Valley | 1-6 | 1.00 -> 6.01 | 12 650 | 40 | 36 min | 10 | 0 |
-| A_DwarfGnome_02 | Dun Morogh (+ Ironforge) | 6-11 | 6.00 -> 12.01 | 19 079 | 103 | 115 min | 0 | 0 |
-| A_DwarfGnome_03 | Loch Modan (+ Ironforge) | 11-14 | 12.00 -> 15.55 | 21 188 | 79 | 119 min | 68 | 0 |
-| A_DwarfGnome_04 | Westfall | 14-16 | 15.00 -> 17.05 | 18 038 | 45 | 78 min | 0 | 0 |
+| A_DwarfGnome_02 | Dun Morogh (+ Ironforge) | 6-11 | 6.00 -> 11.99 | 19 817 | 104 | 110 min | 0 | 0 |
+| A_DwarfGnome_03 | Loch Modan (+ Ironforge) | 11-14 | 11.00 -> 15.57 | 21 162 | 79 | 121 min | 73 | 0 |
+| A_DwarfGnome_04 | Westfall | 14-16 | 15.00 -> 17.07 | 18 059 | 44 | 78 min | 0 | 0 |
 | A_Human_01 | Northshire | 1-6 | 1.00 -> 6.27 | 11 675 | 52 | 44 min | 0 | 0 |
-| A_Human_02 | Elwynn Forest (+ Stormwind) | 6-11 | 6.00 -> 11.82 | 17 638 | 110 | 115 min | 0 | 0 |
-| A_Human_03 | Westfall | 11-16 | 11.00 -> 16.09 | 23 333 | 72 | 133 min | 0 | 0 |
+| A_Human_02 | Elwynn Forest (+ Stormwind) | 6-11 | 6.00 -> 12.00 | 18 105 | 113 | 117 min | 0 | 0 |
+| A_Human_03 | Westfall | 11-16 | 11.00 -> 16.06 | 22 380 | 68 | 133 min | 0 | 0 |
 | A_NightElf_01 | Shadowglen | 1-6 | 1.00 -> 6.53 | 10 037 | 44 | 57 min | 0 | 0 |
-| A_NightElf_02 | Teldrassil (+ Darnassus) | 6-11 | 6.00 -> 12.04 | 19 372 | 117 | 108 min | 0 | 0 |
-| A_NightElf_03 | Darkshore (whole zone) | 11-19 | 12.00 -> 19.66 | 23 494 | 157 | 295 min | 240 | 1 |
-| A_Skyborne_01 | Zephras Isle | 1-15 | 1.00 -> 17.08 | 28 555 | 205 | 232 min | 60 | 0 |
-| A_01 | Darkshore (trunk) | 16-19 | 16.00 -> 19.90 | 26 898 | 119 | 158 min | 0 | 0 |
-| A_02 | Ashenvale and Stonetalon Mountains | 20-22 | 19.00 -> 22.00 | 29 914 | 62 | 112 min | 11 | 0 |
-| A_03 | Redridge Mountains and Duskwood | 22-26 | 22.00 -> 26.76 | 31 832 | 156 | 283 min | 0 | 0 |
-| A_04 | Wetlands | 26-29 | 26.00 -> 29.00 | 34 361 | 89 | 156 min | 34 | 0 |
-| A_05 | Hillsbrad Foothills | 29-30 | 29.00 -> 30.00 | 33 324 | 26 | 80 min | 44 | 0 |
+| A_NightElf_02 | Teldrassil (+ Darnassus) | 6-11 | 6.00 -> 12.11 | 17 701 | 119 | 121 min | 11 | 0 |
+| A_NightElf_03 | Darkshore (whole zone) | 11-19 | 12.00 -> 19.27 | 26 043 | 161 | 246 min | 64 | 0 |
+| A_Skyborne_01 | Zephras Isle | 1-15 | 1.00 -> 17.85 | 30 420 | 208 | 244 min | 83 | 0 |
+| A_01 | Darkshore (trunk) | 16-19 | 16.00 -> 19.88 | 26 899 | 119 | 158 min | 0 | 0 |
+| A_02 | Ashenvale and Stonetalon Mountains | 20-22 | 19.00 -> 22.00 | 26 612 | 62 | 144 min | 13 | 0 |
+| A_03 | Redridge Mountains and Duskwood | 22-26 | 22.00 -> 26.76 | 32 165 | 154 | 280 min | 0 | 0 |
+| A_04 | Wetlands | 26-29 | 26.00 -> 29.15 | 33 914 | 88 | 169 min | 72 | 0 |
+| A_05 | Hillsbrad Foothills | 29-30 | 29.00 -> 30.00 | 33 050 | 26 | 69 min | 11 | 0 |
 
 Race paths:
 
 - Dwarf / Gnome: Coldridge, Dun Morogh, Loch Modan, Westfall (through the Deeprun Tram), then the trunk
-  from A_01 (Stormwind Harbor boat to Auberdine). About 18 h 57 min of simulated play to level 30
-  (1 137 min), with about 167 mobs of grinding in all.
+  from A_01 (Stormwind Harbor boat to Auberdine). About 19 h 25 min of simulated play to level 30
+  (1 165 min), with about 179 mobs of grinding in all (QuestieDB v1.0.11).
 - Human: Northshire, Elwynn, Westfall, then the trunk from A_01.
 - Night Elf: Shadowglen, Teldrassil, the whole of Darkshore, then the trunk from A_02 (Ashenvale).
 - Skyborne: Zephras Isle (1-17), skyboat to Dalaran and Skyborne portal to Stormwind, then A_01.
@@ -91,13 +91,15 @@ on any step that is invalid for a race it applies to.
 
 ### Known limits
 
-- Grinding on the Dwarf path (167 mobs in all, 404 before the 2026-11-04 review):
+- Grinding on the Dwarf path (275 mobs in all on QuestieDB v1.0.11; 167 on the data of 2026-11-04, 404
+  before the 2026-11-04 review):
   - A_DwarfGnome_01: about 10 mobs at the end;
-  - A_DwarfGnome_03: about 68 mobs, to reach the safe level of the Loch Modan objectives (15-17)
+  - A_DwarfGnome_03: about 109 mobs, to reach the safe level of the Loch Modan objectives (15-17)
     instead of fighting mobs 3-4 levels higher;
-  - A_02: about 11 mobs; A_04: about 34 mobs; A_05: about 44 mobs at the end.
+  - A_02: about 73 mobs; A_04: about 72 mobs; A_05: about 11 mobs at the end.
 
-  A_NightElf_03 still grinds about 240 mobs (Darkshore alone from 12 to 19). Doing a dungeon replaces it.
+  A_NightElf_02 grinds about 105 mobs and A_NightElf_03 about 77 (240 on the data of 2026-11-04).
+  Doing a dungeon replaces it.
 - Walking is a straight line inside a region. Regions are split where mountains block the way
   (Stormwind/Elwynn side vs Dun Morogh/Loch Modan side, top and bottom of Teldrassil).
 - XP of new Forever quests is an estimate (`est.` in the reports).
@@ -138,23 +140,68 @@ Quality items before / after the sweep (same data, `ROUTEBUILDER_NO_SWEEP=1` for
 | Alliance trunk (A_01-A_05) | 14 | 0 |
 | Horde trunk (H_01-H_05) | 15 | 15 (log cap) |
 
+## Changes for QuestieDB v1.0.11 (2026-11-06)
+
+- The routes are generated from QuestieDB v1.0.11 (commit `80866960`). With the earlier data, H_Undead_01
+  broke a prerequisite: A Light in the Darkness (98389) now needs The Damned (376).
+- Hand fixes:
+  - `overrides.lua`: objective point of Riverpaw Gnoll Bounty (11) on the western Riverpaw pack
+    (1429, 26.46, 86.65, a Riverpaw Runt spawn). A_Human_02 goes from 120 to 117 min.
+  - `plans.lua`:
+    - Rumi of Gnomeregan (79093) is forced in A_Human_03: +737 XP for the same time.
+    - Poor Old Blanchy (151) is forced in A_DwarfGnome_04: +1 085 XP for 3 more minutes.
+    - A Rogue's Deal (590) is dropped from H_Undead_01. Undead 01-03 go from 347 to 335 min, and
+      H_Undead_02 uses the hearthstone twice again.
+    - `strictLevel` on H_05: 188 -> 176 min, without grinding.
+- Side effect: A_01 goes from 153 to 158 min. The trunk starts from the lowest path (Human), and the
+  Human fixes change that start state. With the same 42 quests, the ordering finds another route.
+
+## Changes of 2026-11-06, wave B (generator)
+
+Each change was measured on the simulator, then the guides were regenerated (`--faction all`).
+
+| Race path 1-30 | Before (QuestieDB v1.0.11, wave A) | After |
+|---|---|---|
+| Human | 1 119 min | 1 114 min |
+| Dwarf / Gnome | 1 185 min | 1 165 min |
+| Night Elf | 1 110 min | 1 086 min |
+| Orc / Troll | 1 174 min | 1 161 min |
+| Tauren | 1 258 min | 1 181 min |
+| Undead | 1 306 min | 1 290 min |
+| Skyborne (Alliance) | 1 068 min | 1 064 min |
+| Skyborne (Horde) | 1 220 min | 1 205 min |
+
+- Hearthstone: binds chosen on the real travel cost, up to two per chapter, with the travel to the next
+  chapter counted, and return bundles (see `tools/routebuilder/README.md`, "Hearthstone"). 0 to -5 min
+  per path. Teldrassil binds at Dolanaar earlier (step 39 instead of 55); Zephras Isle (Horde) binds at
+  Valanaar for its second hub. A bind that is never used is no longer written (Zephras Isle Alliance, Bloodhoof
+  in the Tauren start).
+- Prerequisites: a quest of the log turned in in this chapter now opens its follow-ups (The Tower of
+  Althalaxx 970 and 973 in A_02, after 967 done in Darkshore).
+- `strictLevel` on A_NightElf_02 and A_NightElf_03: Escaping Ban'ethil (99053) is level 10 in v1.0.11, and
+  the ordering did objectives before their safe level (105 mobs of grinding in Teldrassil). Night Elf -24 min.
+- Tauren start: the camp quests 747, 750, 780, 745 and 781 are forced with 752 and 3376, and Break
+  Sharptusk! is accepted before the first trip to Brambleblade Ravine. Tauren -77 min (Mulgore 232 -> 158 min).
+- Tundra MacGrann's Stolen Stash (312) is done right after it is accepted (`safeLevel`): Dwarf -16 min.
+- Egg Hunt (868) is done in the Southern Barrens before Thousand Needles: Horde -11 min.
+
 ## Horde
 
 | Chapter | Zone | Band | Sim level | XP/h | Steps | Time | Grind (mobs) | Quality items |
 |---|---|---|---|---|---|---|---|---|
-| H_OrcTroll_01 | Valley of Trials | 1-6 | 1.00 -> 6.08 | 12 346 | 40 | 38 min | 0 | 0 |
-| H_OrcTroll_02 | Durotar (+ Orgrimmar) | 6-12 | 6.00 -> 13.07 | 15 299 | 108 | 184 min | 48 | 0 |
-| H_Tauren_01 | Camp Narache | 1-6 | 1.00 -> 7.14 | 13 031 | 48 | 54 min | 15 | 0 |
-| H_Tauren_02 | Mulgore (+ Thunder Bluff) | 6-12 | 7.00 -> 13.65 | 13 002 | 86 | 229 min | 0 | 0 |
-| H_Undead_01 | Deathknell | 1-6 | 1.00 -> 6.03 | 9 442 | 38 | 49 min | 0 | 0 |
-| H_Undead_02 | Tirisfal Glades (+ Undercity) | 6-12 | 6.00 -> 13.06 | 15 511 | 133 | 182 min | 17 | 0 |
-| H_Undead_03 | Silverpine Forest (+ Undercity) | 12-15 | 13.00 -> 16.24 | 22 086 | 87 | 114 min | 0 | 0 |
-| H_Skyborne_01 | Zephras Isle | 1-15 | 1.00 -> 17.06 | 25 514 | 208 | 258 min | 91 | 0 |
-| H_01 | The Barrens (trunk) | 12-17 | 13.00 -> 17.87 | 23 934 | 130 | 174 min | 0 | 0 |
-| H_02 | Stonetalon Mountains and The Barrens | 17-21 | 17.00 -> 21.03 | 25 370 | 97 | 158 min | 0 | 0 |
-| H_03 | Ashenvale and Stonetalon Mountains | 21-25 | 21.00 -> 25.00 | 31 256 | 99 | 217 min | 64 | 6 |
-| H_04 | Southern Barrens and Thousand Needles | 25-28 | 25.00 -> 28.00 | 26 990 | 111 | 243 min | 89 | 3 |
-| H_05 | Hillsbrad Foothills | 28-30 | 28.00 -> 30.00 | 26 892 | 67 | 191 min | 47 | 6 |
+| H_OrcTroll_01 | Valley of Trials | 1-6 | 1.00 -> 6.08 | 12 347 | 40 | 38 min | 0 | 0 |
+| H_OrcTroll_02 | Durotar (+ Orgrimmar) | 6-12 | 6.00 -> 12.83 | 16 238 | 107 | 165 min | 0 | 0 |
+| H_Tauren_01 | Camp Narache | 1-6 | 1.00 -> 7.34 | 11 775 | 38 | 65 min | 0 | 0 |
+| H_Tauren_02 | Mulgore (+ Thunder Bluff) | 6-12 | 7.00 -> 13.13 | 16 336 | 101 | 158 min | 27 | 0 |
+| H_Undead_01 | Deathknell | 1-6 | 1.00 -> 6.02 | 10 280 | 35 | 45 min | 1 | 0 |
+| H_Undead_02 | Tirisfal Glades (+ Undercity) | 6-12 | 6.00 -> 13.00 | 15 765 | 132 | 177 min | 0 | 0 |
+| H_Undead_03 | Silverpine Forest (+ Undercity) | 12-15 | 13.00 -> 16.25 | 23 227 | 89 | 110 min | 0 | 0 |
+| H_Skyborne_01 | Zephras Isle | 1-15 | 1.00 -> 17.98 | 30 647 | 211 | 247 min | 57 | 0 |
+| H_01 | The Barrens (trunk) | 12-17 | 12.00 -> 17.85 | 23 121 | 132 | 186 min | 2 | 2 |
+| H_02 | Stonetalon Mountains and The Barrens | 17-21 | 17.00 -> 21.14 | 24 560 | 99 | 171 min | 0 | 0 |
+| H_03 | Ashenvale and Stonetalon Mountains | 21-25 | 21.00 -> 25.11 | 31 546 | 98 | 216 min | 55 | 6 |
+| H_04 | Southern Barrens and Thousand Needles | 25-28 | 25.00 -> 28.00 | 30 704 | 108 | 206 min | 72 | 1 |
+| H_05 | Hillsbrad Foothills | 28-30 | 28.00 -> 30.10 | 29 668 | 57 | 183 min | 0 | 5 |
 
 Race paths:
 
@@ -193,11 +240,12 @@ Race paths:
 
 ### Known limits
 
-- Grinding on the Orc path: about 48 mobs in H_OrcTroll_02 (830 is now done after Lieutenant Benedict,
-  see below), 64 in H_03, 89 in H_04 and 47 in H_05. The Southern Barrens and Needles quests of the
-  band are not enough.
-- Quality items left: H_03 (6), H_04 (3) and H_05 (6) accept some quests on a later pass because the
-  20-quest log is full on the first one.
+- Grinding on the Orc path (QuestieDB v1.0.11): about 2 mobs in H_01, 55 in H_03 and 85 in H_04.
+  H_OrcTroll_02 no longer grinds (830 is done after Lieutenant Benedict, see below), and H_05 no longer
+  grinds with `strictLevel`. The Southern Barrens and Needles quests of the band are not enough.
+- Quality items left: H_03 (6), H_04 (2) and H_05 (3) accept some quests on a later pass because the
+  20-quest log is full on the first one. In H_01, 842 and 6365 are turned in on a later pass because
+  of the level (2).
 - Barrens chapters walk a lot: about 80 min in H_01 and 96 min in H_02. The zone is large, and
   flights are used only when they are clearly faster.
 
@@ -211,3 +259,124 @@ Race paths:
   - Horde: skyboat from the west dock of Valanaar to Skywatcher Plateau.
 - Dock positions come from the dockmaster NPCs in QuestieDB. Arrival points are estimates
   (see `tools/routebuilder/transport.lua`).
+
+## Routes 30-60 (2026-11-06, lot H)
+
+The trunk goes on to level 60 after A_05 and H_05. The chapters come from the "meta paths 1-60" plan
+(zones, order, dungeons), rebuilt and measured here; bands, order and some chapters were changed after
+measuring (see below). Every chapter stays on one continent. The tables give the simulated Dwarf (Alliance)
+and Orc (Horde) path; the other race paths share these chapters.
+
+### Alliance 30-60
+
+| Chapter | Zone | Band | Sim level | XP/h | Steps | Time | Grind (mobs) | Quality items |
+|---|---|---|---|---|---|---|---|---|
+| A_08 | Ashenvale | 30-32 | 30.00 -> 32.00 | 28 721 | 41 | 205 min | 327 | 0 |
+| A_07 | Duskwood | 32-33 | 32.00 -> 33.00 | 31 624 | 25 | 103 min | 198 | 0 |
+| A_09 | Thousand Needles | 33-34 | 33.00 -> 34.00 | 25 084 | 36 | 140 min | 143 | 0 |
+| A_10 | Stranglethorn Vale | 34-35 | 34.00 -> 35.00 | 47 704 | 62 | 79 min | 11 | 0 |
+| A_11 | Desolace | 35-37 | 35.00 -> 37.00 | 38 550 | 61 | 216 min | 206 | 0 |
+| A_12 | Stranglethorn Vale and Swamp of Sorrows | 37-39 | 37.00 -> 39.62 | 44 649 | 74 | 282 min | 0 | 0 |
+| A_13 | Arathi Highlands | 39-40 | 39.00 -> 40.15 | 33 753 | 38 | 82 min | 0 | 0 |
+| A_15 | Dustwallow Marsh | 40-41 | 40.00 -> 41.00 | 37 056 | 45 | 125 min | 71 | 0 |
+| A_16 | Badlands | 41-42 | 41.00 -> 42.00 | 40 276 | 35 | 142 min | 155 | 0 |
+| A_17 | Stranglethorn Vale | 42-44 | 42.00 -> 44.00 | 36 218 | 68 | 344 min | 297 | 0 |
+| A_18 | Tanaris | 44-45 | 44.00 -> 45.00 | 44 892 | 44 | 149 min | 122 | 0 |
+| A_19 | Feralas | 45-46 | 45.00 -> 46.00 | 54 427 | 72 | 130 min | 5 | 0 |
+| A_20 | Tanaris | 46-48 | 46.00 -> 48.00 | 50 502 | 30 | 300 min | 699 | 0 |
+| A_21 | Stranglethorn Vale | 48-50 | 48.00 -> 50.00 | 63 643 | 20 | 260 min | 708 | 0 |
+| A_22 | Searing Gorge and Blasted Lands | 50-52 | 50.00 -> 52.00 | 57 708 | 64 | 313 min | 396 | 0 |
+| A_28 | Burning Steppes | 52-53 | 52.00 -> 53.00 | 61 568 | 30 | 157 min | 306 | 0 |
+| A_24 | Felwood | 53-54 | 53.00 -> 54.00 | 58 377 | 54 | 172 min | 11 | 0 |
+| A_26 | Un'Goro Crater | 54-56 | 54.00 -> 56.00 | 57 324 | 59 | 371 min | 758 | 0 |
+| A_27 | Winterspring | 56-57 | 56.00 -> 57.00 | 55 796 | 48 | 202 min | 350 | 0 |
+| A_23 | Western Plaguelands | 57-58 | 57.00 -> 58.00 | 77 553 | 83 | 151 min | 145 | 0 |
+| A_29 | Eastern Plaguelands | 58-59 | 58.00 -> 59.00 | 62 723 | 41 | 194 min | 357 | 3 |
+| A_30 | Silithus | 59-60 | 59.00 -> 60.00 | 75 144 | 53 | 167 min | 95 | 0 |
+
+Order: A_05 -> A_08 -> A_07 -> A_09 -> A_10 -> A_11 -> A_12 -> A_13 -> A_15 -> A_16 -> A_17 -> A_18 -> A_19 ->
+A_20 -> A_21 -> A_22 -> A_28 -> A_24 -> A_26 -> A_27 -> A_23 -> A_29 -> A_30.
+
+- Burning Steppes (A_28) come right after Searing Gorge (content 52-54) and the Western Plaguelands (A_23)
+  move to 57-58: at 51-53 their quests (55-58) needed about 1 050 mobs of grinding to reach the safe level.
+- Not on the path (written in `tools/routebuilder/plans.lua`, not generated): A_06 Hillsbrad leftovers,
+  A_14 The Hinterlands, A_25 Feralas and Azshara (2 quests and 357 mobs of grinding when measured at 54-55).
+- The Booty Bay <-> Ratchet boat links Stranglethorn and the Barrens (Thousand Needles, Tanaris).
+
+### Horde 30-60
+
+| Chapter | Zone | Band | Sim level | XP/h | Steps | Time | Grind (mobs) | Quality items |
+|---|---|---|---|---|---|---|---|---|
+| H_06 | Alterac Mountains and Arathi Highlands | 30-32 | 30.00 -> 32.07 | 37 788 | 51 | 154 min | 10 | 0 |
+| H_07 | Thousand Needles | 32-33 | 32.00 -> 33.00 | 25 888 | 40 | 118 min | 63 | 0 |
+| H_08 | Desolace | 33-35 | 33.00 -> 35.00 | 39 717 | 54 | 183 min | 75 | 0 |
+| H_09 | Stranglethorn Vale | 35-37 | 35.00 -> 37.04 | 39 818 | 98 | 214 min | 12 | 0 |
+| H_10 | Dustwallow Marsh | 37-38 | 37.00 -> 38.00 | 38 998 | 39 | 112 min | 57 | 0 |
+| H_11 | Arathi Highlands | 38-39 | 38.00 -> 39.29 | 33 118 | 52 | 191 min | 32 | 0 |
+| H_12 | Badlands | 39-40 | 39.00 -> 40.34 | 41 718 | 25 | 133 min | 0 | 0 |
+| H_13 | Stranglethorn Vale | 40-41 | 40.00 -> 41.18 | 45 349 | 42 | 102 min | 0 | 0 |
+| H_14 | Swamp of Sorrows | 41-43 | 41.00 -> 43.00 | 49 014 | 40 | 220 min | 384 | 0 |
+| H_15 | Desolace | 43-44 | 43.00 -> 44.00 | 38 665 | 26 | 165 min | 361 | 0 |
+| H_16 | Tanaris | 44-46 | 44.00 -> 46.00 | 47 770 | 58 | 288 min | 502 | 0 |
+| H_17 | Feralas | 46-47 | 46.00 -> 47.01 | 50 867 | 56 | 147 min | 0 | 0 |
+| H_18 | Stranglethorn Vale | 47-48 | 47.00 -> 48.18 | 47 183 | 63 | 193 min | 0 | 0 |
+| H_21 | The Hinterlands | 48-51 | 48.00 -> 51.00 | 56 167 | 64 | 427 min | 838 | 0 |
+| H_23 | Blasted Lands | 51-52 | 51.00 -> 52.00 | 62 061 | 31 | 149 min | 165 | 0 |
+| H_24 | Searing Gorge and Burning Steppes | 52-53 | 52.00 -> 53.00 | 53 983 | 38 | 178 min | 270 | 0 |
+| H_25 | Azshara | 53-54 | 53.00 -> 54.00 | 44 716 | 24 | 224 min | 278 | 0 |
+| H_26 | Felwood | 54-55 | 54.00 -> 55.00 | 65 623 | 48 | 159 min | 219 | 0 |
+| H_27 | Un'Goro Crater | 55-56 | 55.00 -> 56.00 | 63 565 | 62 | 171 min | 186 | 0 |
+| H_28 | Felwood and Winterspring | 56-57 | 56.00 -> 57.03 | 64 465 | 73 | 180 min | 0 | 0 |
+| H_29 | Western Plaguelands and Eastern Plaguelands | 57-59 | 57.00 -> 59.00 | 64 186 | 85 | 367 min | 662 | 2 |
+| H_30 | Silithus | 59-60 | 59.00 -> 60.00 | 72 167 | 53 | 174 min | 96 | 0 |
+
+Order: H_05 -> H_06 -> ... -> H_18 -> H_21 -> H_23 -> ... -> H_30.
+
+- H_19 (Swamp of Sorrows 45-46: no quest measured) and H_22 (Feralas 49-50: no quest) are removed. H_20
+  (Tanaris 47-49) is written but not on the path: 5 quests and about 700 mobs of grinding, even with the
+  three far quests forced. Tanaris I (H_16, 44-46) may widen its band and takes the higher Tanaris quests;
+  this also saves a round trip to Kalimdor between Stranglethorn and the Hinterlands.
+- New zeppelins Orgrimmar <-> Grom'gol and Undercity <-> Grom'gol (zeppelin masters of QuestieDB).
+
+### Totals per race path (simulated)
+
+| Race path | 1-30 | 30-60 (trunk) | 1-60 | Quests 1-60 | Grind 1-60 (mobs) |
+|---|---|---|---|---|---|
+| Human | 1 114 min | 4 284 min | 5 398 min (90 h) | 580 | 5 456 |
+| Dwarf / Gnome | 1 165 min | 4 284 min | 5 449 min (91 h) | 586 | 5 539 |
+| Night Elf | 1 086 min | 4 284 min | 5 370 min (90 h) | 567 | 5 531 |
+| Skyborne (Alliance) | 1 064 min | 4 284 min | 5 348 min (89 h) | 566 | 5 539 |
+| Orc / Troll | 1 165 min | 4 249 min | 5 414 min (90 h) | 546 | 4 339 |
+| Tauren | 1 185 min | 4 249 min | 5 434 min (91 h) | 543 | 4 366 |
+| Undead | 1 294 min | 4 249 min | 5 543 min (92 h) | 586 | 4 340 |
+| Skyborne (Horde) | 1 209 min | 4 249 min | 5 458 min (91 h) | 566 | 4 396 |
+
+The Horde paths 1-30 take 4 more minutes than before: H_05 now hands over to H_06 (quests carried into
+Alterac and Arathi, hearthstone planned for the next chapter), 179 -> 183 min. The Alliance 1-30 chapters
+are unchanged.
+
+### Rules of the 30-60 chapters
+
+- Contiguous bands (the minimum of a chapter is the maximum of the previous one), `levelSlack = 0`,
+  `levelBelow = 8`, `far = 1600`, `widen = false` (a zone visited again later keeps its higher quests).
+- Dungeon quests taken in passing are abandoned when they get low (level <= chapter minimum - 4, from
+  level 30): an optional note at the start of the chapter names them. Before this rule, 10 of the 20 log
+  slots of the Alliance path were still taken at level 30 by Deadmines, Stockade and Hall of Thanes quests.
+- Quests that require level 60 are never taken (no quest XP at the cap).
+- Dungeons offered by the Dungeons window (`DungeonData.lua`) now go up to 60: Uldaman, Maraudon,
+  Zul'Farrak, The Temple of Atal'Hakkar, Blackrock Depths, Dire Maul, Scholomance, Stratholme.
+- Class quest chains (`ClassQuestData.lua`) now go up to level 60.
+
+### Known limits (30-60)
+
+- Grinding is the main cost: about 5 360 mobs on the Alliance trunk 30-60 and 4 210 on the Horde trunk
+  (20 s per mob). The quests of a zone rarely fill a whole band. Weakest chapters: A_20 and A_21 (Tanaris II,
+  Stranglethorn IV: 8-9 quests, ~700 mobs each), A_26 (Un'Goro: ~760 mobs), H_21 (The Hinterlands 48-51:
+  ~840 mobs), H_29 (Plaguelands: ~660 mobs), H_14 and H_15 (Swamp of Sorrows, Desolace II).
+- Chains that start in another zone or a capital are often lost ("prerequisite unavailable"), and quests
+  turned in in a capital are dropped ("finisher outside the chapter zones"). `APR-COMPARE.md` shows APR ahead
+  on most 30-60 chapters for that reason (quest XP only: travel and grinding are not compared).
+- Elite and group quests of levels 50-60 are simulated like solo quests (20 s per mob).
+- Titles of the 30-60 chapters are zone names; zones missing from `ZONE_MAPS` (`Questify/Engine/Guides.lua`)
+  are shown in English on a French client.
+- Transport times (zeppelins, Booty Bay boat) are estimates; nothing was checked in game.

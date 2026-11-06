@@ -3,7 +3,7 @@
 --   luajit tools/routebuilder/build_dungeons.lua [--db PATH] [--questie PATH] [--data DIR] [--out FILE]
 --          [--date YYYY-MM-DD]
 -- Lit la vue Forever de QuestieDB (Alliance puis Horde, chargeur en bac à sable qdb.lua) et écrit
--- Questify/Guides/DungeonData.lua : pour chaque donjon jusqu'au niveau ~45, sa zone, sa plage
+-- Questify/Guides/DungeonData.lua : pour chaque donjon jusqu'au niveau 60 (hors raids), sa zone, sa plage
 -- de niveaux, les factions autorisées, l'entrée (uiMapID, x, y en 0-100) et, par faction, les quêtes
 -- (IDs, PNJ de départ et sa position, PNJ de fin et sa position, niveaux, masque de races,
 -- préquêtes). Seulement des faits (IDs, niveaux, coordonnées) : aucun texte n'est repris d'un guide.
@@ -46,7 +46,19 @@ local DUNGEONS = {
   { key = "SM", area = 796, min = 28, max = 45 },                        -- Monastère écarlate (toutes les ailes)
   { key = "GNOMER", area = 721, min = 29, max = 38 },                    -- Gnomeregan
   { key = "RFK", area = 491, min = 29, max = 38 },                       -- Kraal de Tranchebauge
+  -- Lot H (routes 30-60, 2026-11-06) : niveaux du plan « meta paths 1-60 », à vérifier en jeu.
+  { key = "ULDAMAN", area = 1337, min = 36, max = 47 },                  -- Uldaman
   { key = "RFD", area = 722, min = 37, max = 46 },                       -- Souilles de Tranchebauge
+  { key = "MARAUDON", area = 2100, min = 42, max = 52 },                 -- Maraudon
+  { key = "ZF", area = 1176, min = 44, max = 54 },                       -- Zul'Farrak
+  { key = "ST", area = 1477, min = 50, max = 60 },                       -- Temple d'Atal'Hakkar
+  { key = "BRD", area = 1584, min = 52, max = 60 },                      -- Profondeurs de Rochenoire
+  -- Hache-Tripes : une seule clé (est, ouest et nord ont le même nom et la même zone 2557 dans QuestieDB)
+  { key = "DIREMAUL", area = 2557, min = 55, max = 60 },                 -- Hache-Tripes
+  { key = "SCHOLO", area = 2057, min = 55, max = 60 },                   -- Scholomance
+  { key = "STRAT", area = 2017, min = 58, max = 60 },                    -- Stratholme
+  -- Raids (Cœur du Magma, Onyxia, Zul'Gurub, Ahn'Qiraj, Naxxramas...) et Pic Rochenoire (zone 1583
+  -- commune à la partie basse et à la partie haute, raid de 10) : hors catalogue.
 }
 
 -- Entrées de secours (uiMapID, x, y) quand QuestieDB n'en donne pas : à vérifier en jeu.

@@ -25,9 +25,14 @@ local hold = {}         -- étapes rouvertes par Back() : pas de validation auto
 local activation = {}   -- hearth/fly : { map, serial } au moment où l'étape devient courante
 local zoneSerial = 0
 local entriesCache
+local entriesClass      -- classe du joueur au moment où entriesCache a été construit
+local aheadCache        -- { sig, set } : rendus des chapitres suivants (Progress:RouteTurnins)
 local cache             -- { states = {[key] = {state, reason}}, current = entry }
 local lastKey
 local endPrinted = {}
+local chosen            -- chapitre choisi à la main (SetGuide, journal) : s'il est déjà fini, on y reste
+                        -- (pas de bascule) tant que le joueur n'y a rien rouvert (voir checkRollover)
+local pendingChoice     -- chapitre fini qui attend le choix de sa suite (voir resolveNext)
 local ticker
 local logPending = false
 
@@ -74,6 +79,7 @@ end
 
 local function invalidate()
   entriesCache = nil
+  aheadCache = nil
   cache = nil
 end
 Progress.Invalidate = invalidate
@@ -113,11 +119,16 @@ function Progress:Guide()
   return Q.Guides:Get(charState().guideId)
 end
 
--- Change de chapitre et recalcule (envoie "GUIDE_CHANGED").
-function Progress:SetGuide(id)
+-- Change de chapitre et recalcule (envoie "GUIDE_CHANGED"). stay = true (choix du joueur dans le
+-- journal) : un chapitre déjà fini (toutes ses étapes faites ou passées) reste le chapitre courant, pour
+-- y rouvrir une étape passée par erreur (clic sur l'étape, /qf back) ; sans stay (choix automatique à la
+-- connexion, /qf reset), la bascule enchaîne comme avant vers le chapitre suivant.
+function Progress:SetGuide(id, stay)
   local g = Q.Guides:Get(id)
   if not g or not Q.char then return false end
   Q.char.guideId = id
+  chosen = stay and id or nil
+  pendingChoice = nil
   invalidate()
   Q:Fire("GUIDE_CHANGED", g)
   self:Update()
@@ -126,25 +137,36 @@ end
 
 ---------------------------------------------------------------------------
 -- Liste des entrées : étapes insérées d'abord, puis celles du chapitre.
+-- Les étapes réservées à d'autres classes (champ `classes`, Q.Guides.StepForClass) n'y sont pas : ni
+-- courantes, ni comptées, ni dans le journal. Les clés gardent l'index de l'étape dans le chapitre
+-- ("g:<guideId>:<index>", "i:<tag>:<index>") : les états enregistrés (Q.char.manual / skipped), les
+-- mesures (Q.char.telemetry) et leur export désignent la même étape du fichier pour toutes les classes.
 ---------------------------------------------------------------------------
 function Progress:Entries()
-  if entriesCache then return entriesCache end
+  local classFile = Q.Player and Q.Player.classFile
+  if entriesCache and entriesClass == classFile then return entriesCache end
+  local forClass = Q.Guides.StepForClass
   local list = {}
   local c = charState()
   for _, group in ipairs(c.inserted) do
     if type(group) == "table" and type(group.tag) == "string" and type(group.steps) == "table" then
       for j, step in ipairs(group.steps) do
-        list[#list + 1] = { key = "i:" .. group.tag .. ":" .. j, step = step, index = j, source = "inserted", tag = group.tag }
+        if forClass(step, classFile) then
+          list[#list + 1] = { key = "i:" .. group.tag .. ":" .. j, step = step, index = j, source = "inserted",
+            tag = group.tag }
+        end
       end
     end
   end
   local g = self:Guide()
   if g then
     for i, step in ipairs(g.steps) do
-      list[#list + 1] = { key = "g:" .. g.id .. ":" .. i, step = step, index = i, source = "guide" }
+      if forClass(step, classFile) then
+        list[#list + 1] = { key = "g:" .. g.id .. ":" .. i, step = step, index = i, source = "guide" }
+      end
     end
   end
-  entriesCache = list
+  entriesCache, entriesClass = list, classFile
   return list
 end
 
@@ -222,6 +244,7 @@ end
 
 local function filterSkip(step)
   local P = Q.Player
+  if not Q.Guides.StepForClass(step, P.classFile) then return "class" end   -- hors des entrées d'habitude
   if step.race and not Q.Util.Contains(step.race, P.raceKey) then return "race" end
   if step.class and not Q.Util.Contains(step.class, P.classFile) then return "class" end
   if step.optional and Q.Settings:Get("dungeonQuests") == false then return "optional" end
@@ -396,18 +419,68 @@ end
 ---------------------------------------------------------------------------
 -- Mise à jour et messages
 ---------------------------------------------------------------------------
+-- Choix de suite (champ choices des guides, Engine/RouteChoice.lua, UI/RouteChoicePopup.lua) :
+-- Q.char.routeChoices[<chapitre>] = suite choisie par le joueur ; Q.char.routeChoiceLast = dernier
+-- chapitre où il a choisi (/qf route depuis un chapitre plus loin). pendingChoice : chapitre fini qui
+-- attend un choix ; on y reste, aucune étape n'est courante, le suivi le dit (Progress:PendingChoice).
+
+local function choiceState()
+  local c = charState()
+  if type(c.routeChoices) ~= "table" then c.routeChoices = {} end
+  return c.routeChoices
+end
+
+-- Suites possibles du chapitre g pour le personnage (Q.Guides:Choices).
+local function optionsOf(g)
+  local P = Q.Player or {}
+  return Q.Guides:Choices(g, P.raceKey, P.faction)
+end
+
+-- Suite du chapitre fini g : -> chapitre, ou nil, true quand le joueur doit choisir. Une seule suite, ou
+-- l'option route.choicePopup coupée : la suite par défaut, sans demander. Un choix déjà fait est repris.
+-- La demande (ROUTE_CHOICE_NEEDED) part une fois par chapitre et par session, hors de Update (le
+-- gestionnaire peut rappeler Progress, voir Progress:ChooseRoute).
+local function resolveNext(g)
+  local options = optionsOf(g)
+  if #options == 0 then return nil end
+  if #options == 1 then return options[1].guide end
+  local stored = choiceState()[g.id]
+  for _, o in ipairs(options) do
+    if o.guide.id == stored then return o.guide end
+  end
+  if Q.Settings:Get("route.choicePopup") == false then
+    for _, o in ipairs(options) do
+      if o.default then return o.guide end
+    end
+    return options[1].guide
+  end
+  if pendingChoice ~= g.id then
+    pendingChoice = g.id
+    Q:After(0, function() Q:Fire("ROUTE_CHOICE_NEEDED", g.id) end)
+  end
+  return nil, true
+end
+
 local function checkRollover()
   local visited = {}
   while true do
     local g = Progress:Guide()
     if not g or visited[g.id] then return end
     visited[g.id] = true
-    if not Progress:GuideFinished() then return end
-    local nxt = Q.Guides:Next(g, Q.Player.raceKey)
+    if not Progress:GuideFinished() then
+      -- une étape du chapitre choisi est (r)ouverte : la bascule normale reprend quand il sera fini
+      if g.id == chosen then chosen = nil end
+      if g.id == pendingChoice then pendingChoice = nil end
+      return
+    end
+    if g.id == chosen then return end   -- choisi à la main alors qu'il était fini : on y reste
+    local nxt, waiting = resolveNext(g)
+    if waiting then return end          -- plusieurs suites : le joueur choisit (ROUTE_CHOICE_NEEDED)
     if nxt and not visited[nxt.id] then
       Q.char.guideId = nxt.id
       invalidate()
       Q:Fire("GUIDE_CHANGED", nxt)
+      Q:Print(Q.L.ROUTE_NEXT, Q.Guides:DisplayTitle(nxt))
       Progress:Recompute()
     else
       if not endPrinted[g.id] then
@@ -601,6 +674,123 @@ function Progress:ResetGuide(guideId)
   return true
 end
 
+---------------------------------------------------------------------------
+-- Choix de suite
+---------------------------------------------------------------------------
+-- Chapitre fini qui attend le choix de sa suite, ou nil.
+function Progress:PendingChoice()
+  return pendingChoice
+end
+
+-- Suites possibles du chapitre guideId (courant par défaut) : liste de Q.Guides:Choices.
+function Progress:RouteOptions(guideId)
+  local g = Q.Guides:Get(guideId or charState().guideId)
+  if not g then return {} end
+  return optionsOf(g)
+end
+
+-- Chapitre dont /qf route rouvre le choix : le chapitre courant s'il a plusieurs suites, sinon le
+-- dernier chapitre où le joueur a choisi ; nil s'il n'y en a pas.
+function Progress:ChoiceNode()
+  local c = charState()
+  if c.guideId and #self:RouteOptions(c.guideId) >= 2 then return c.guideId end
+  local last = c.routeChoiceLast
+  if last and #self:RouteOptions(last) >= 2 then return last end
+  return nil
+end
+
+-- Suite choisie par le joueur : chosenId pour le chapitre fromId (gardée dans Q.char.routeChoices).
+--   fromId courant : fini, on passe à la suite (par la bascule normale) ; en cours, le choix servira à
+--   sa fin ;
+--   fromId derrière le joueur (rechoix, /qf route) : on passe tout de suite à chosenId.
+-- -> false si chosenId n'est pas une suite possible de fromId pour ce personnage.
+function Progress:ChooseRoute(fromId, chosenId)
+  if not Q.char then return false end
+  local from = Q.Guides:Get(fromId)
+  if not from then return false end
+  local found = false
+  for _, o in ipairs(optionsOf(from)) do
+    if o.guide.id == chosenId then found = true; break end
+  end
+  if not found then return false end
+  choiceState()[fromId] = chosenId
+  charState().routeChoiceLast = fromId
+  aheadCache = nil   -- la route à venir change (Progress:RouteTurnins)
+  if pendingChoice == fromId then pendingChoice = nil end
+  local cur = charState().guideId
+  if cur == fromId or cur == chosenId then
+    cache = nil
+    self:Update()
+  else
+    self:SetGuide(chosenId)
+  end
+  Q:Fire("ROUTE_CHOSEN", fromId, chosenId)
+  return true
+end
+
+---------------------------------------------------------------------------
+-- Route à venir
+---------------------------------------------------------------------------
+-- Suite du chapitre g sur la route du joueur, sans rien demander : la suite qu'il a choisie
+-- (Q.char.routeChoices), sinon la suite par défaut, sinon la première possible ; nil en fin de route.
+local function nextOnRoute(g)
+  local options = optionsOf(g)
+  if #options == 0 then return nil end
+  local rc = charState().routeChoices
+  local stored = type(rc) == "table" and rc[g.id] or nil
+  for _, o in ipairs(options) do
+    if o.guide.id == stored then return o.guide end
+  end
+  for _, o in ipairs(options) do
+    if o.default then return o.guide end
+  end
+  return options[1].guide
+end
+
+-- Rendus (étapes « turnin » qui concernent le personnage) des chapitres qui suivent g sur la route.
+local function turninsAfter(g)
+  local set, visited = {}, { [g.id] = true }
+  local nxt = nextOnRoute(g)
+  while nxt and not visited[nxt.id] do
+    visited[nxt.id] = true
+    for _, step in ipairs(nxt.steps) do
+      if step.action == "turnin" and type(step.questId) == "number" and not filterSkip(step) then
+        set[step.questId] = true
+      end
+    end
+    nxt = nextOnRoute(nxt)
+  end
+  return set
+end
+
+-- RouteTurnins() -> { [questId] = true } : quêtes que la route rendra encore pour ce personnage.
+-- Étapes « turnin » qui le concernent (champ classes, filtres race et class, quêtes de donjon) du
+-- chapitre courant, sauf celles qu'il a passées ou cochées lui-même, et des chapitres suivants (suite
+-- choisie, sinon suite par défaut). Sert aux quêtes de classe tissées dans la route
+-- (Engine/ClassQuests.lua : état « inroute »). La partie des chapitres suivants est gardée en cache
+-- jusqu'au prochain changement de chapitre, de registre, de choix de suite ou d'option.
+function Progress:RouteTurnins()
+  local set = {}
+  local g = self:Guide()
+  if not g then return set end
+  local P = Q.Player or {}
+  local sig = table.concat({ g.id, Q.Guides:Serial(), tostring(P.classFile), tostring(P.raceKey),
+    tostring(P.faction), tostring(Q.Settings:Get("dungeonQuests")) }, "|")
+  if not (aheadCache and aheadCache.sig == sig) then
+    aheadCache = { sig = sig, set = turninsAfter(g) }
+  end
+  for id in pairs(aheadCache.set) do set[id] = true end
+  local c = charState()
+  for _, e in ipairs(self:Entries()) do
+    local step = e.step
+    if e.source == "guide" and step.action == "turnin" and type(step.questId) == "number"
+      and not c.skipped[e.key] and not c.manual[e.key] and not filterSkip(step) then
+      set[step.questId] = true
+    end
+  end
+  return set
+end
+
 -- Insère des étapes (quêtes de classe…) avant la route ; un tag existant est remplacé.
 function Progress:InsertSteps(tag, steps)
   if type(tag) ~= "string" or tag == "" or type(steps) ~= "table" or not Q.char then return false end
@@ -704,6 +894,7 @@ end)
 Q:On("SETTINGS_CHANGED", function(path)
   if path == "dungeonQuests" then
     cache = nil
+    aheadCache = nil
     Progress:Update()
   end
 end)

@@ -1,7 +1,7 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-04.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
 -- Simulation : 44 étapes, niveau final 6.53, ~10037 xp/h, 57 min.
 Q:RegisterGuide({
   id = "A_NightElf_01",
@@ -10,6 +10,7 @@ Q:RegisterGuide({
   races = { "NightElf" },
   minLevel = 1, maxLevel = 6,
   next = "A_NightElf_02",
+  sim = { steps = 44, endLevel = 6.53, xpPerHour = 10037, minutes = 57 },
   steps = {
     { "accept", 456 }, -- The Balance of Nature (lvl 2, ~170 xp, sim lvl 1)
     { "complete", 456, at = { 1438, 61.71, 43.79 } }, -- The Balance of Nature (lvl 2, ~170 xp, sim lvl 1)

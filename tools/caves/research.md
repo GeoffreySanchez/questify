@@ -234,7 +234,7 @@ Remarque : la page warcraft.wiki.gg/wiki/UiMapID donne les anciens identifiants 
 - Zone : nord-ouest de Deathknell. uiMapID 1420.
 - Entrée : **[27, 59]**. Des commentaires donnent [26.96, 59.40], [27, 59] et [26, 60] pour la mine/grotte ; StrategyWiki cite [27, 59]. Sources : https://warcraft.wiki.gg/wiki/Night_Web%27s_Hollow, https://classicdb.ch/?quest=380, https://strategywiki.org/wiki/World_of_Warcraft/Zones/Tirisfal_Glades (valeurs lues via résumé de recherche).
 - Contrôle : Young Night Web Spider 1504 (30/30), Night Web Spider 1505, Night Web Matriarch 1688 à [24, 58].
-- PNJ : 1504, 1505, 1688. Pas d'objet. Les jeunes araignées sont aussi dehors (vers [29, 58]).
+- PNJ : 1505, 1688. Pas d'objet. Young Night Web Spider 1504 n'est pas listée : elle vit aussi dehors (vers [29, 58]) et élargit le contour.
 - Utilisé par : chapitre Deathknell (H_Undead_01), quête « Night Web's Hollow ».
 - Confiance : moyenne.
 

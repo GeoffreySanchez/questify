@@ -180,9 +180,17 @@ function build.simulateFaction(D, W, faction, ov, only)
     end
     return out
   end
+  -- point de départ du trajet vers le chapitre suivant du parcours (quai d'arrivée ou entrée)
+  local function nextEntry(plan, race)
+    local path = plansm.pathFor(faction, race)
+    for i, p in ipairs(path) do
+      local n = p.id == plan.id and path[i + 1]
+      if n then return (n.arrive and n.arrive.via) or n.entry end
+    end
+  end
   local function run(plan, state, race, exitTo)
     local steps, report = sim.chapter(D, W, plan, state, { overrides = ov, carryZones = carryZones(plan, race),
-      exitTo = exitTo })
+      exitTo = exitTo, nextEntry = exitTo or nextEntry(plan, race) })
     build.applyInserts(plan.id, steps, ov)
     report.simRace = race
     results[plan.id] = { plan = plan, steps = steps, report = report }
@@ -284,7 +292,7 @@ function build.raceFilters(D, W, faction, results, list)
       local chapters = {}
       for _, plan in ipairs(pathOf[race]) do
         local r = results[plan.id]
-        chapters[#chapters + 1] = { id = plan.id, steps = r and r.steps or {} }
+        chapters[#chapters + 1] = { id = plan.id, steps = r and r.steps or {}, minLevel = plan.minLevel }
       end
       paths.replay(D, W, faction, race, chapters, function(ci, si, msg)
         local plan = pathOf[race][ci]
@@ -355,6 +363,7 @@ function build.reportText(D, plan, steps, report, meta)
   w(("| Median ratio (XP/s) | %.2f |"):format(report.medianRatio or 0))
   if report.grindMobs then w(("| Grinding (level steps) | ~%d mobs |"):format(report.grindMobs)) end
   if report.widened then w(("| Level band | %s |"):format(report.widened)) end
+  if report.hearthPlan then w(("| Hearthstone | %s |"):format(report.hearthPlan)) end
   w()
   w("## Kept quests (turn-in order)")
   w()
@@ -504,6 +513,14 @@ function build.main(argv)
     print("usage: luajit tools/routebuilder/build.lua [--db PATH] [--questie PATH] [--faction Alliance|Horde|all]")
     print("       [--only <planId>] [--report DIR] [--out DIR] [--overrides FILE] [--date YYYY-MM-DD] [--jit]")
     return 0
+  end
+  -- Suites des plans (next, nextByRace, choices) contrôlées avant de charger QuestieDB et de simuler.
+  -- Seule la suite par défaut est simulée ; les autres choix ne sont pas rejoués.
+  local errs = plansm.validate(plansm)
+  if #errs > 0 then
+    for _, e in ipairs(errs) do io.stderr:write(("plans.lua: %s: %s\n"):format(e.id, e.msg)) end
+    io.stderr:write(("build stopped: %d error(s) in tools/routebuilder/plans.lua\n"):format(#errs))
+    return 1
   end
   -- Interpréteur par défaut (résultat identique d'une exécution à l'autre) ; --jit pour aller plus vite.
   if jit and not o.jit then jit.off() end

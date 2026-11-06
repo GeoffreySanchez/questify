@@ -1,6 +1,6 @@
 # A_Human_01 — Northshire
 
-Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: Human.
+Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d306458a95` by `tools/routebuilder/build.lua`. Simulated race: Human.
 
 | Item | Value |
 |---|---|
@@ -13,6 +13,7 @@ Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac
 | Quests turned in | 21 |
 | Hubs | 2 |
 | Median ratio (XP/s) | 3.11 |
+| Hearthstone | no new bind; 0 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
 

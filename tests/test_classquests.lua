@@ -12,17 +12,26 @@ local DATA = {
     { key = "WARLOCK_HUMAN", title = "Human only", faction = "Alliance", races = 1, level = 1, quests = { 9002 },
       rewards = {} },
     { key = "WARLOCK_LATE", title = "Late chain", faction = "Alliance", level = 10, quests = { 9003 }, rewards = {} },
-    -- 3365 demande 3364 (préquête) : disponible seulement quand 3364 est rendue
-    { key = "WARLOCK_PREREQ", title = "Needs 3364", level = 1, quests = { 3365 }, rewards = {} },
+    -- 9700 demande 3364 (préquête) : disponible seulement quand 3364 est rendue. Pas 3365 (même
+    -- préquête) : le guide de test la rend, la chaîne serait « dans la route ».
+    { key = "WARLOCK_PREREQ", title = "Needs 3364", level = 1, quests = { 9700 }, rewards = {} },
   },
   MAGE = {
     { key = "MAGE_1", title = "Mage chain", level = 1, quests = { 9100 }, rewards = {} },
   },
 }
 
+-- Quête de la chaîne WARLOCK_PREREQ : préquête 3364, absente des guides de test.
+local PREREQ_QDB = { quests = { [9700] = {
+  name = "Needs Mornbrew", startedBy = { { 836 } }, finishedBy = { { 836 } },
+  requiredLevel = 1, questLevel = 4, requiredRaces = ALLIANCE, objectivesText = { "Talk to Durnan." },
+  preQuestSingle = { 3364 },
+} } }
+
 local function load(opts)
   opts = opts or {}
   opts.extraFiles = opts.extraFiles or { GUIDES }
+  opts.qdb = opts.qdb or PREREQ_QDB
   opts.beforeLogin = function(Q) Q.ClassQuestData = DATA end
   return Mock.loadAddon(TOC, opts)
 end
@@ -122,6 +131,9 @@ return {
     -- dernière quête rendue : faite
     turnIn(1598); turnIn(1599)
     t.eq(stateOf(Q, "WARLOCK_1598"), "done")
+    -- le joueur est près des donneurs : les chaînes proposées par une étape (ClassQuestOffer) ne sont pas
+    -- comptées deux fois ; option coupée, l'alerte les compte toutes
+    Q.Settings:Set("classQuestOffer", false)
     t.eq(#Q.ClassQuests:Alerts(), 2, "late and prereq chains are available, 1598 is done")
   end,
 
@@ -188,6 +200,29 @@ return {
     turnIn(1598); turnIn(1599)
     t.eq(Q.ClassQuests:Add("WARLOCK_1598"), false, "nothing left to do")
     t.eq(#Q.char.inserted, 0)
+  end,
+
+  is_late_when_available_below_the_player_level = function(t)
+    warlock()
+    local Q = load()
+    Mock.player.level = 10
+    Mock.fire("PLAYER_LEVEL_UP", 10)
+    local CQ = Q.ClassQuests
+    t.eq(stateOf(Q, "WARLOCK_1598"), "available")
+    t.ok(CQ.IsLate({ level = 1 }, "available"), "level 1 chain, player 10")
+    t.ok(not CQ.IsLate({ level = 10 }, "available"), "same level: not late")
+    t.ok(not CQ.IsLate({ level = 1 }, "ignored"), "ignored: not late")
+    t.ok(not CQ.IsLate({ level = 1 }, "added"), "added: not late")
+    t.ok(not CQ.IsLate({ level = 1 }, "done"), "done: not late")
+  end,
+
+  add_on_an_ignored_chain_adds_it_in_one_call = function(t)
+    warlock()
+    local Q = load()
+    t.eq(Q.ClassQuests:Ignore("WARLOCK_1598"), true)
+    t.eq(Q.ClassQuests:Add("WARLOCK_1598"), true)
+    t.eq(stateOf(Q, "WARLOCK_1598"), "added")
+    t.eq(Q.char.classQuests.ignored.WARLOCK_1598, nil)
   end,
 
   ignore_removes_steps = function(t)

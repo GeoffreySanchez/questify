@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Questify, preview 14: equip a pair</title>
+<link rel="stylesheet" href="../apercu.css">
+<style>
+  /* Upgrade announcement (UI/UpgradePopup.lua): 420 wide, 48 + 24 + 24 (pair) = 96 high, centre +180;
+     backdrop UI-Tooltip-Background / UI-Tooltip-Border (edge 14, insets 4), black at 0.8, gold border.
+     48 x 48 icon at LEFT +14 with a pulsing gold UI-ActionButton-Border (1.9 x, ADD); GameFontNormalLarge
+     text from (74, -12) to (-12, 26), wrapped and centred vertically; GameFontDisableSmall hint at the
+     bottom left (74, 14). */
+  .up { position: absolute; width: 420px; height: 96px; border-radius: 5px;
+    box-shadow: 0 0 0 1px #000, inset 0 0 0 1.5px #e0b400, inset 0 0 0 2.5px rgba(0,0,0,.85), 0 10px 30px rgba(0,0,0,.6); }
+  .up::before { content: ""; position: absolute; inset: 4px; border-radius: 2px; background: rgba(0,0,0,.8); }
+  .up .icon { position: absolute; left: 14px; top: 24px; width: 48px; height: 48px; }
+  .up .icon img { width: 48px; height: 48px; display: block; box-shadow: 0 0 0 1px #000; }
+  .up .icon .border { position: absolute; left: -21.6px; top: -21.6px; width: 91.2px; height: 91.2px; border-radius: 16px;
+    background: radial-gradient(closest-side, rgba(255,209,0,0) 58%, rgba(255,209,0,.7) 68%, rgba(255,209,0,.22) 80%, rgba(255,209,0,0) 90%); }
+  .up .text { position: absolute; left: 74px; right: 12px; top: 12px; bottom: 26px; display: flex; align-items: center; }
+  .up .text .fnl { white-space: normal; }
+  .up .hint { position: absolute; left: 74px; bottom: 14px; white-space: pre; }
+  .q1 { color: #ffffff; } .q2 { color: #1eff00; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap" style="width:560px">
+    <div class="brand">Questify</div>
+    <h1>Gear upgrades</h1>
+    <p>When an item that improves your gear lands in your bags, an announcement appears in the middle of the screen. Click to equip it, right-click to close.</p>
+    <p>With a two-handed weapon equipped, a one-hander or a shield may only win as a pair with the other half from your bags: Questify announces the pair, and one click equips both.</p>
+    <p>Dwarf Paladin level 14, Loch Modan: Coldridge Hammer equipped, Compact Hammer in the bags, Ironplate Buckler just received.</p>
+  </div>
+
+  <div class="ui" style="left:820px; top:430px">
+    <div style="zoom:2.25">
+      <div class="up">
+        <div class="icon">
+          <div class="border"></div>
+          <img src="https://wow.zamimg.com/images/wow/icons/large/inv_shield_10.jpg" alt="">
+        </div>
+        <div class="text"><div class="fnl">Equip <span class="q2">[Compact Hammer]</span> and <span class="q2">[Ironplate Buckler]</span> to gain power</div></div>
+        <div class="hint fds">Click: equip   Right-click: close</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="badge"><div class="t">Interface preview</div><div class="s">Mock-up drawn from Questify's code, not an in-game capture</div></div>
+</div>
+</body>
+</html>

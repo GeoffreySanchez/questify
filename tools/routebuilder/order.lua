@@ -438,4 +438,117 @@ function order.build(tasks, start, rawDist, opts)
   return seq, issues
 end
 
+------------------------------------------------------------------------------
+-- Pierre de foyer
+------------------------------------------------------------------------------
+-- Coût réel du trajet d'une séquence avec la pierre de foyer (centièmes de seconde entiers) :
+--   o = { start = pos, finish = pos|nil, dist = function(a, b) -> cs (entier),
+--         inn = pos|nil (pierre liée au départ), ready = cs (instant où elle est disponible),
+--         binds = { [taskId] = innPos } (pierre liée à cette auberge juste après la tâche : aller-retour),
+--         cd = cs (recharge), use = cs (coût de décision : incantation + pénalité),
+--         real = cs (temps réel : incantation + chargement), bindDur = cs, dur = function(t) -> cs }
+-- Chaque trajet entre deux tâches prend la pierre si elle est liée, disponible, et si
+-- `use` + marche depuis l'auberge < marche directe (même règle que sim.route) ; elle est alors
+-- rechargée `cd` après l'arrivée à l'auberge. Le temps des tâches compte pour la recharge, pas dans le
+-- coût renvoyé (constant). Renvoie coût (marche + pierre + détours de liaison), nombre de retours,
+-- la liste des indices k où le trajet vers seq[k] prend la pierre, et l'état final
+-- { pos, inn, ready, time } (position, auberge liée, disponibilité de la pierre, temps).
+function order.hearthCost(seq, o)
+  local dist = o.dist
+  local total, time, pos = 0, 0, o.start
+  local inn, ready = o.inn, o.ready or 0
+  local uses, at = 0, {}
+  local binds = o.binds or {}
+  local function leg(q)
+    local w = dist(pos, q)
+    if inn and time >= ready then
+      local fromInn = dist(inn, q)
+      if o.use + fromInn < w then
+        total = total + o.real + fromInn
+        time = time + o.real
+        ready = time + o.cd
+        time = time + fromInn
+        uses = uses + 1
+        return true
+      end
+    end
+    total, time = total + w, time + w
+    return false
+  end
+  for k, t in ipairs(seq) do
+    if leg(t.pos) then at[#at + 1] = k end
+    time = time + (o.dur and o.dur(t) or 0)
+    pos = t.endPos or t.pos
+    local b = binds[t.id]
+    if b then
+      local d = dist(pos, b)
+      total, time = total + d + (o.bindDur or 0), time + d + (o.bindDur or 0)
+      pos, inn = b, b
+    end
+  end
+  if o.finish then leg(o.finish) end
+  return total, uses, at, { pos = pos, inn = inn, ready = ready, time = time }
+end
+
+-- Retours à l'auberge regroupés (« paquets ») : pour chaque fin de tâche i, les tâches suivantes faites
+-- à moins de `radius` (centièmes de seconde de marche) de l'auberge liée à cet instant sont ramenées juste
+-- après i (dans leur ordre, précédences respectées), pour qu'un seul retour par la pierre de foyer les
+-- fasse toutes. Un paquet est gardé s'il reste faisable (order.feasible + farm pas plus long) et si le coût
+-- réel (order.hearthCost) baisse. Au plus `rounds` paquets (défaut 6).
+--   fopts = options de order.feasible (+ grindCost éventuel) ; o = options de order.hearthCost + radius.
+-- Renvoie la nouvelle séquence et le nombre de paquets appliqués.
+function order.hearthBundles(seq, o, fopts, rounds)
+  local function evaluate(s)
+    local ok, grind = check(s, fopts)
+    if not ok then return nil end
+    return order.hearthCost(s, o) + (grind or 0)
+  end
+  local current = evaluate(seq)
+  if not current then return seq, 0 end
+  local applied = 0
+  for _ = 1, rounds or 6 do
+    local bestSeq, bestCost
+    -- auberge liée à la fin de chaque tâche (liaisons de la séquence courante)
+    local innAt, inn = {}, o.inn
+    for k, t in ipairs(seq) do
+      if o.binds and o.binds[t.id] then inn = o.binds[t.id] end
+      innAt[k] = inn
+    end
+    for i = 1, #seq - 1 do
+      local h = innAt[i]
+      if h then
+        local placed = {}
+        for k = 1, i do placed[seq[k].id] = true end
+        local bundle, rest = {}, {}
+        for k = i + 1, #seq do
+          local t = seq[k]
+          local take = false
+          if not t.final and t.kind ~= "C" and o.dist(h, t.pos) <= o.radius then
+            take = true
+            for _, a in ipairs(t.after or {}) do
+              if fopts.ids and fopts.ids[a] and not placed[a] then take = false; break end
+            end
+          end
+          if take then bundle[#bundle + 1] = t; placed[t.id] = true else rest[#rest + 1] = t end
+        end
+        -- un paquet utile commence plus loin que la tâche suivante (sinon rien ne change)
+        if #bundle > 0 and bundle[1] ~= seq[i + 1] then
+          local cand = {}
+          for k = 1, i do cand[#cand + 1] = seq[k] end
+          for _, t in ipairs(bundle) do cand[#cand + 1] = t end
+          for _, t in ipairs(rest) do cand[#cand + 1] = t end
+          local c = evaluate(cand)
+          if c and c < current and (not bestCost or c < bestCost) then bestSeq, bestCost = cand, c end
+        end
+      end
+    end
+    if not bestSeq then break end
+    seq, current = bestSeq, bestCost
+    applied = applied + 1
+  end
+  return seq, applied
+end
+
+order.check = check
+
 return order

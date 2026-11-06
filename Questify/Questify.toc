@@ -29,7 +29,6 @@ Locales\StringsZone.lua
 Locales\StringsVersion.lua
 Locales\StringsMinimap.lua
 Locales\StringsOptions.lua
-Locales\StringsTalents.lua
 
 Core\Init.lua
 Core\Util.lua
@@ -44,26 +43,20 @@ Data\Constants.lua
 Data\QDB.lua
 Data\Maps.lua
 Data\ClassTrainers.lua
-Data\TalentBuilds.lua
 Data\ClassSpells.lua
-Data\SpellQuests.lua
 Data\Caves.lua
+Data\ZoneArt.lua
 
 Engine\Guides.lua
 Engine\Progress.lua
+Engine\RouteChoice.lua
 Engine\Targets.lua
 Engine\ZoneMode.lua
 Engine\Format.lua
 Engine\ClassQuests.lua
 Engine\Trainer.lua
-Engine\SpellList.lua
 Engine\Professions.lua
-Engine\TalentTree.lua
-Engine\Builds.lua
-Engine\TalentLearn.lua
-Engine\BuildEditor.lua
-Engine\BuildCodec.lua
-Engine\Talents.lua
+Engine\ClassQuestOffer.lua
 Engine\StepGuard.lua
 Engine\Telemetry.lua
 Engine\XPRate.lua
@@ -87,14 +80,10 @@ UI\MobPanel.lua
 UI\Nameplates.lua
 UI\ObjectGlow.lua
 UI\UpgradePopup.lua
-UI\TalentPopup.lua
-UI\BuildWindow.lua
-UI\BuildPane.lua
-UI\SpellsPane.lua
-UI\TalentFrameHook.lua
 UI\ProfessionPicker.lua
 UI\ClassQuestPopup.lua
 UI\DungeonPopup.lua
+UI\RouteChoicePopup.lua
 UI\MapPins.lua
 UI\MinimapButton.lua
 UI\Journal.lua
@@ -102,6 +91,7 @@ UI\Wizard.lua
 UI\QuestItemButton.lua
 UI\Report.lua
 UI\Options.lua
+UI\Demo.lua
 UI\Slash.lua
 
 Guides\Guides.xml

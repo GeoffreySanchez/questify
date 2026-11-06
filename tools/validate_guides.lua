@@ -6,12 +6,20 @@
 --
 -- Contrôles par étape : action valide ; quête connue ; quête éligible pour au moins une race du
 -- chapitre (ou de la faction) ; coordonnées 0-100 sur une uiMap connue ; étape `fly` avec un `node`
--- (TaxiNodes.ID) connu et situé sur la carte de destination.
+-- (TaxiNodes.ID) connu et situé sur la carte de destination ; champ `classes` (étape propre à certaines
+-- classes) : liste non vide de classFile connus (même règle que Q.Guides:Normalize), et pour une étape
+-- de quête, chaque classe admise par le masque de classes de la quête.
 -- Contrôles par parcours de race (tools/routebuilder/paths.lua, chaque race de chaque chapitre de
 -- départ, en suivant next / nextByRace) : prérequis rendus avant l'accept, journal de 20 quêtes au
 -- plus, complete / turnin seulement pour une quête du journal, pas d'accept après le rendu ni de
 -- répétition d'un chapitre à l'autre, `obj` dans la liste des objectifs, vol vers un point de vol
--- découvert, pierre de foyer liée.
+-- découvert, pierre de foyer liée. Seule la suite par défaut est rejouée : les autres entrées de
+-- `choices` ne le sont pas. Avec des étapes `classes` sur le parcours, il est rejoué une fois sans
+-- elles (classes sans étape propre) puis une fois par classe nommée, avec les étapes de cette classe :
+-- le journal de chaque classe est compté à part.
+-- Contrôles des suites (plans.validate, comme build.lua sur plans.lua) : next / nextByRace vers des
+-- guides chargés, `choices` de 2 à 4 guides de la même faction avec la suite par défaut ; champ `sim`
+-- égal à l'en-tête « -- Simulation : » (tools/routebuilder/backfill.lua).
 
 local here = (arg and arg[0] or ""):match("^(.*)[/\\]validate_guides%.lua$") or "tools"
 package.path = here .. "/routebuilder/?.lua;" .. package.path
@@ -19,6 +27,8 @@ package.path = here .. "/routebuilder/?.lua;" .. package.path
 local qdb = require("qdb")
 local world = require("world")
 local paths = require("paths")
+local plansm = require("plans")
+local backfill = require("backfill")
 
 local M = {}
 
@@ -35,6 +45,65 @@ local FACTION_RACES = {
 local function raceBit(race, faction)
   if race == "Skyborne" then return faction == "Horde" and 8589934592 or 4294967296 end
   return RACE_BITS[race]
+end
+
+-- Étapes propres à une classe (champ `classes`) : mêmes noms que Q.CLASS_BITS (Data/Constants.lua).
+local KNOWN_CLASSES = qdb.CLASS_BITS
+
+local function classNames(v)
+  if type(v) == "string" then return { v } end
+  if type(v) == "table" then return v end
+  return nil
+end
+
+-- classesProblem(valeur du champ classes) -> nil si valide (ou absent), sinon le message.
+function M.classesProblem(v)
+  if v == nil then return nil end
+  local list = classNames(v)
+  if not list then return "classes must be a list of class names" end
+  for _, c in ipairs(list) do
+    if type(c) ~= "string" then return "classes must be a list of class names" end
+  end
+  if #list == 0 then return "classes must name at least one class" end
+  for _, c in ipairs(list) do
+    if not KNOWN_CLASSES[c] then return ("unknown class '%s' in classes"):format(c) end
+  end
+  return nil
+end
+
+-- classVariants(chapitres) -> classes connues nommées par les étapes `classes` du parcours, triées.
+function M.classVariants(chapters)
+  local seen, out = {}, {}
+  for _, ch in ipairs(chapters) do
+    for _, s in ipairs(ch.steps or {}) do
+      if type(s) == "table" then
+        for _, c in ipairs(classNames(s.classes) or {}) do
+          if KNOWN_CLASSES[c] and not seen[c] then seen[c] = true; out[#out + 1] = c end
+        end
+      end
+    end
+  end
+  table.sort(out)
+  return out
+end
+
+-- stepsForClass(étapes, classe | nil) -> étapes vues par cette classe (nil : seulement les étapes sans
+-- `classes`), index d'origine de chacune.
+function M.stepsForClass(steps, cls)
+  local out, index = {}, {}
+  for i, s in ipairs(steps or {}) do
+    local keep = true
+    local list = type(s) == "table" and classNames(s.classes)
+    if list then
+      keep = false
+      for _, c in ipairs(list) do if cls and c == cls then keep = true end end
+    end
+    if keep then
+      out[#out + 1] = s
+      index[#out] = i
+    end
+  end
+  return out, index
 end
 
 local function readFile(path)
@@ -67,7 +136,17 @@ local function loadGuide(path)
   setfenv(fn, {})
   local ok, e = pcall(fn, "Questify", Q)
   if not ok then return nil, e end
-  return defs, nil, stepLines(text), Q
+  return defs, nil, stepLines(text), Q, text
+end
+
+-- Numéro de la première ligne du texte qui correspond au motif (0 si aucune).
+local function lineOf(text, pattern)
+  local n = 0
+  for line in (text .. "\n"):gmatch("([^\n]*)\n") do
+    n = n + 1
+    if line:match(pattern) then return n end
+  end
+  return 0
 end
 
 function M.run(argv)
@@ -104,7 +183,7 @@ function M.run(argv)
   local guides, byId = {}, {}
   for _, rel in ipairs(files) do
     local path = opts.guides .. "/" .. rel
-    local defs, err, lines, Q = loadGuide(path)
+    local defs, err, lines, Q, text = loadGuide(path)
     if not defs then
       bad(path, 0, "load error: " .. tostring(err))
     elseif rel:match("ClassQuestData%.lua$") then
@@ -115,10 +194,34 @@ function M.run(argv)
         if type(def.id) ~= "string" then bad(path, 0, "guide without id")
         elseif byId[def.id] then bad(path, 0, "duplicate guide id " .. def.id)
         else
-          local g = { def = def, path = path, lines = lines }
+          local g = { def = def, path = path, lines = lines, text = text }
           guides[#guides + 1] = g
           byId[def.id] = g
         end
+      end
+    end
+  end
+
+  -- suites (next, nextByRace, choices) : même contrôle que build.lua sur plans.lua
+  local byFaction = { Alliance = {}, Horde = {} }
+  for _, g in ipairs(guides) do table.insert(byFaction[g.def.faction == "Horde" and "Horde" or "Alliance"], g.def) end
+  for _, e in ipairs(plansm.validate(byFaction)) do
+    local g = byId[e.id]
+    local line = g and lineOf(g.text, "^%s*choices%s*=")
+    if g and line == 0 then line = lineOf(g.text, "^%s*next") end
+    bad(g and g.path or "?", line, e.msg)
+  end
+  -- champ sim : valeurs de l'en-tête « -- Simulation : » (lu par le jeu, l'en-tête ne l'est pas)
+  for _, g in ipairs(guides) do
+    local want = backfill.parseSim(g.text)
+    local got = g.def.sim
+    if want then
+      local same = type(got) == "table"
+      for k, v in pairs(want) do
+        if same and (type(got[k]) ~= "number" or math.abs(got[k] - v) > 1e-9) then same = false end
+      end
+      if not same then
+        bad(g.path, lineOf(g.text, "^%s*sim%s*="), "sim field missing or different from the Simulation header (run tools/routebuilder/backfill.lua)")
       end
     end
   end
@@ -157,22 +260,46 @@ function M.run(argv)
           cur = nid and byId[nid] or nil
         end
         local chapters = {}
-        for _, cg in ipairs(chain) do chapters[#chapters + 1] = { id = cg.def.id, steps = cg.def.steps or {} } end
-        paths.replay(D(faction), W, faction, race, chapters, function(ci, si, msg)
-          local cg = chain[ci]
-          local key = cg.path .. ":" .. tostring(si) .. ":" .. msg
-          if not pathIssues[key] then
-            pathIssues[key] = { path = cg.path, line = cg.lines[si], msg = msg, races = {} }
-            issueOrder[#issueOrder + 1] = key
+        for _, cg in ipairs(chain) do
+          chapters[#chapters + 1] = { id = cg.def.id, steps = cg.def.steps or {}, minLevel = cg.def.minLevel }
+        end
+        -- variante false : sans étape de classe ; puis une variante par classe nommée sur le parcours
+        local variants = { false }
+        for _, c in ipairs(M.classVariants(chapters)) do variants[#variants + 1] = c end
+        for _, cls in ipairs(variants) do
+          local vchapters, indexes = {}, {}
+          for k, ch in ipairs(chapters) do
+            local steps, index = M.stepsForClass(ch.steps, cls or nil)
+            vchapters[k] = { id = ch.id, steps = steps, minLevel = ch.minLevel }
+            indexes[k] = index
           end
-          table.insert(pathIssues[key].races, race)
-        end)
+          paths.replay(D(faction), W, faction, race, vchapters, function(ci, fsi, msg)
+            local cg = chain[ci]
+            local si = indexes[ci][fsi]
+            local key = cg.path .. ":" .. tostring(si) .. ":" .. msg
+            local it = pathIssues[key]
+            if not it then
+              it = { path = cg.path, line = cg.lines[si], msg = msg, races = {}, raceSeen = {}, classes = {},
+                     classSeen = {}, base = false }
+              pathIssues[key] = it
+              issueOrder[#issueOrder + 1] = key
+            end
+            if not it.raceSeen[race] then it.raceSeen[race] = true; table.insert(it.races, race) end
+            if not cls then
+              it.base = true
+            elseif not it.classSeen[cls] then
+              it.classSeen[cls] = true; table.insert(it.classes, cls)
+            end
+          end)
+        end
       end
     end
   end
   for _, key in ipairs(issueOrder) do
     local it = pathIssues[key]
-    bad(it.path, it.line, ("%s (race path: %s)"):format(it.msg, table.concat(it.races, ",")))
+    -- relevé seulement avec les étapes de certaines classes : on les nomme
+    local cls = (not it.base and #it.classes > 0) and (", class: " .. table.concat(it.classes, ",")) or ""
+    bad(it.path, it.line, ("%s (race path: %s%s)"):format(it.msg, table.concat(it.races, ","), cls))
   end
 
   for _, g in ipairs(guides) do
@@ -197,6 +324,8 @@ function M.run(argv)
               bad(path, line, ("%s coordinates out of 0-100: %s, %s"):format(label, tostring(x), tostring(y)))
             end
           end
+          local classesErr = M.classesProblem(s.classes)
+          if classesErr then bad(path, line, classesErr) end
           if s.at then checkPoint(s.at[1], s.at[2], s.at[3], "at") end
           if POINT_ACTIONS[action] then checkPoint(s[2], s[3], s[4], action) end
           if (action == "hearth" or action == "fly") and (type(s[2]) ~= "number" or not W.maps[s[2]]) then
@@ -231,6 +360,14 @@ function M.run(argv)
                 if b and qdb.hasBit(q.races, b) then ok = true end
               end
               if not ok then bad(path, line, ("quest %d not available to %s"):format(qid, table.concat(races, ","))) end
+              -- étape de classe : chaque classe nommée doit pouvoir faire la quête
+              if not classesErr and (q.classes or 0) ~= 0 then
+                for _, c in ipairs(classNames(s.classes) or {}) do
+                  if not qdb.hasBit(q.classes, KNOWN_CLASSES[c]) then
+                    bad(path, line, ("quest %d not available to class %s"):format(qid, c))
+                  end
+                end
+              end
               -- guide hors de tout parcours de race : contrôle limité au chapitre lui-même
               if not onPath[def.id] then
                 if action == "accept" then

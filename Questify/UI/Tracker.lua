@@ -14,7 +14,7 @@ local addonName, Q = ...
 -- d'abord). Les étapes regroupées dans la zone ne sont pas répétées dans les étapes suivantes.
 -- Confort de jeu (Engine/XPRate, Hearth, Danger, Supplies) : ligne XP/h sous la barre, XP restante
 -- du chapitre dans la barre, lignes de la pierre de foyer sous l'étape, avertissements (danger,
--- sacs, réparation) sous l'étape courante. Chaque module est lu sous pcall : absent ou en erreur,
+-- sacs, réparation, nourriture, boisson) sous l'étape courante. Chaque module est lu sous pcall : absent ou en erreur,
 -- il n'affiche rien.
 -- Le clic sur un monstre passe par les boutons sécurisés d'UI/MobPanel.lua, posés par-dessus ses
 -- lignes sans s'ancrer au suivi : un enfant sécurisé rendrait le suivi protégé (impossible à
@@ -165,12 +165,22 @@ local MANUAL_DONE = { note = true, ["goto"] = true, boat = true, fly = true, hea
 
 local function onCurrentClick(button)
   local cur = Q.Progress:Current()
+  if not cur and button == "LeftButton" and Q.Progress.PendingChoice and Q.Progress:PendingChoice() then
+    local P = Q.UI and Q.UI.RouteChoicePopup
+    if P then P:OpenForPlayer() end
+    return
+  end
   if button == "RightButton" then
     if IsShiftKeyDown and IsShiftKeyDown() then
       Q.Progress:Back()
     elseif cur then
       Q.Progress:Skip(cur.key)
     end
+  elseif button == "LeftButton" and cur and cur.step.action == "classquest" then
+    -- offre de quête de classe : la fenêtre propose d'ajouter la chaîne à la route ou de l'ignorer
+    local P = Q.UI and Q.UI.ClassQuestPopup
+    local chain = Q.ClassQuests and Q.ClassQuests:FindChain(cur.step.key)
+    if P and chain then P:Show(chain) end
   elseif button == "LeftButton" and cur and MANUAL_DONE[cur.step.action] then
     Q.Progress:MarkDone(cur.key)
   end
@@ -182,6 +192,7 @@ local function currentTooltip(owner)
   if cur then
     lines[#lines + 1] = Q.Format:StepTitle(cur)
     if MANUAL_DONE[cur.step.action] then lines[#lines + 1] = L.UI_TRACKER_HINT_DONE end
+    if cur.step.action == "classquest" then lines[#lines + 1] = L.STEP_CLASSQUEST_HINT end
   end
   lines[#lines + 1] = L.UI_TRACKER_HINT_SKIP
   lines[#lines + 1] = L.UI_TRACKER_HINT_BACK
@@ -321,7 +332,7 @@ function Tracker:Create()
   xpLine:Hide()
   self.xpLine = xpLine
 
-  -- Avertissements de confort (danger, sacs, réparation), créés à la demande
+  -- Avertissements de confort (danger, sacs, réparation, nourriture, boisson), créés à la demande
   self.warnLines = {}
 
   -- Alerte de quête de classe
@@ -418,36 +429,7 @@ function Tracker:Create()
   tr:Hide()
   self.trainerAlert, self.trainerText, self.trainerPulse = tr, trText, trPulse
 
-  -- Alerte des talents (point à dépenser, talent conseillé) : clic = la popup des talents (spec 7.6),
-  -- sinon (elle ne peut pas s'afficher) la fenêtre des talents
-  local ta = CreateFrame("Button", nil, f)
-  ta:SetHeight(20)
-  ta:RegisterForClicks("LeftButtonUp")
-  local taGlow = ta:CreateTexture(nil, "BACKGROUND")
-  taGlow:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
-  taGlow:SetBlendMode("ADD")
-  taGlow:SetVertexColor(0.3, 1, 0.4)
-  taGlow:SetAllPoints(ta)
-  local taPulse = taGlow:CreateAnimationGroup()
-  taPulse:SetLooping("BOUNCE")
-  local taFade = taPulse:CreateAnimation("Alpha")
-  taFade:SetFromAlpha(0.15)
-  taFade:SetToAlpha(0.9)
-  taFade:SetDuration(0.8)
-  local taIcon = ta:CreateTexture(nil, "ARTWORK")
-  taIcon:SetSize(16, 16)
-  taIcon:SetPoint("LEFT", ta, "LEFT", 2, 0)
-  local taText = ta:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  taText:SetPoint("LEFT", taIcon, "RIGHT", 4, 0)
-  taText:SetPoint("RIGHT", ta, "RIGHT", -2, 0)
-  taText:SetJustifyH("LEFT")
-  taText:SetWordWrap(false)
-  ta:SetScript("OnClick", function() Q.SafeCall(Tracker.OnTalentClick, Tracker) end)
-  ta:SetScript("OnEnter", function(btn) Q.SafeCall(Tracker.TalentTooltip, Tracker, btn) end)
-  ta:SetScript("OnLeave", hideTooltip)
-  ta:Hide()
-  self.talentAlert, self.talentText, self.talentIcon, self.talentPulse = ta, taText, taIcon, taPulse
-  self.glows = { glow, dgGlow, trGlow, taGlow }
+  self.glows = { glow, dgGlow, trGlow }
 
   -- Étape courante
   local cur = CreateFrame("Button", nil, f)
@@ -515,7 +497,7 @@ end
 local TEXT_ROLES = {
   message = "body", title = "title", levels = "levels", barText = "bar", xpLine = "xp",
   alertText = "classAlert", dungeonText = "dungeonAlert", trainerText = "trainerAlert",
-  talentText = "talentAlert", distance = "distance",
+  distance = "distance",
 }
 
 -- Thème du suivi : fond et bordure (opacité), couleurs du texte, de la barre et des lueurs.
@@ -612,6 +594,12 @@ end
 ---------------------------------------------------------------------------
 -- Chaînes en alerte. Alerts() peut renvoyer des chaînes ou des lignes { chain, state } :
 -- on accepte les deux formes.
+-- Une chaîne en alerte est « disponible » : elle est en retard si son niveau est sous celui du joueur.
+local function isLate(chain)
+  local cq = Q.ClassQuests
+  return cq and cq.IsLate and cq.IsLate(chain, "available") or false
+end
+
 local function classAlerts()
   local cq = Q.ClassQuests
   if not (cq and cq.Alerts) then return {} end
@@ -627,7 +615,13 @@ local function classAlerts()
       if type(chain) == "table" and chain.key then out[#out + 1] = chain end
     end
   end
-  return out
+  -- les chaînes en retard passent en tête (l'ordre reste stable pour le reste)
+  local late, rest = {}, {}
+  for _, chain in ipairs(out) do
+    if isLate(chain) then late[#late + 1] = chain else rest[#rest + 1] = chain end
+  end
+  for _, chain in ipairs(rest) do late[#late + 1] = chain end
+  return late
 end
 Tracker.ClassAlerts = function() return classAlerts() end
 
@@ -762,75 +756,6 @@ function Tracker:TrainerTooltip(owner)
   showTooltip(owner, lines)
 end
 
-local TALENT_ICON = "Interface\\Icons\\Ability_Marksmanship"
-
--- Premier talent à prendre : -> nom, icône (du jeu, d'après le spellID) ou nil.
-local function nextTalent(alert)
-  local entry = alert.due and alert.due[1]
-  if not entry then return nil end
-  local name = C_Spell and C_Spell.GetSpellName and C_Spell.GetSpellName(entry.spellID)
-  local icon = C_Spell and C_Spell.GetSpellTexture and C_Spell.GetSpellTexture(entry.spellID)
-  if Q.Util.IsSecret(name) or type(name) ~= "string" then name = nil end
-  if Q.Util.IsSecret(icon) or not icon then icon = nil end
-  return name, icon
-end
-
--- Clic sur la ligne talents : la popup (I6) ; si elle ne peut pas s'afficher maintenant (arbre pas prêt…),
--- la fenêtre des talents. En combat la popup se remet à la fin du combat, rien d'autre ne s'ouvre.
-function Tracker:OnTalentClick()
-  local P = Q.UI.TalentPopup
-  if P and P:Show() then return end
-  if InCombatLockdown and InCombatLockdown() then return end
-  Q.Talents:OpenFrame()
-end
-
-local function obsoleteText(reason)
-  return string.format(L.TALENT_BAND_OBSOLETE, L["BUILD_OBSOLETE_" .. tostring(reason)] or tostring(reason))
-end
-
-function Tracker:TalentTooltip(owner)
-  local alert = Q.Talents and Q.Talents:Alert()
-  if not alert then return end
-  local lines = { string.format(L.UI_TALENT_ALERT, alert.unspent) }
-  local advice = alert.due[1] and Q.Talents:Advice(alert.due[1], alert.tree)
-  if alert.obsolete then
-    lines[#lines + 1] = obsoleteText(alert.obsolete)
-  elseif advice then
-    lines[#lines + 1] = string.format(L.UI_TALENT_NEXT, advice)
-  elseif not alert.build then
-    lines[#lines + 1] = L.UI_TALENT_NO_BUILD
-  end
-  lines[#lines + 1] = L.UI_TALENT_HINT
-  showTooltip(owner, lines)
-end
-
-function Tracker:LayoutTalentAlert(y)
-  local alert = Q.Talents and Q.Talents:Alert()
-  if not alert then
-    self.talentAlert:Hide()
-    self.talentPulse:Stop()
-    return y
-  end
-  local name, icon = nextTalent(alert)
-  if alert.obsolete then
-    self.talentText:SetText(L.UI_TALENT_ALERT_OBSOLETE)
-    self.talentIcon:SetTexture(TALENT_ICON)
-  elseif name then
-    self.talentText:SetFormattedText(L.UI_TALENT_ALERT_NEXT, name)
-    self.talentIcon:SetTexture(icon or TALENT_ICON)
-  else
-    self.talentText:SetFormattedText(L.UI_TALENT_ALERT, alert.unspent)
-    self.talentIcon:SetTexture(TALENT_ICON)
-  end
-  local f = self.frame
-  self.talentAlert:ClearAllPoints()
-  self.talentAlert:SetPoint("TOPLEFT", f, "TOPLEFT", PAD, -y)
-  self.talentAlert:SetPoint("TOPRIGHT", f, "TOPRIGHT", -PAD, -y)
-  self.talentAlert:Show()
-  if not self.talentPulse:IsPlaying() then self.talentPulse:Play() end
-  return y + 20 + 4
-end
-
 -- Place l'alerte à la hauteur y si elle doit s'afficher ; -> nouvelle hauteur.
 function Tracker:LayoutTrainerAlert(y)
   local alert = Q.Trainer and Q.Trainer:Alert()
@@ -864,9 +789,8 @@ end
 function Tracker:ShowMessage(text)
   local f = self.frame
   self.entry, self.target = nil, nil
-  for _, r in ipairs({ self.title, self.levels, self.bar, self.alert, self.trainerAlert, self.talentAlert, self.current }) do r:Hide() end
+  for _, r in ipairs({ self.title, self.levels, self.bar, self.alert, self.trainerAlert, self.current }) do r:Hide() end
   self.trainerPulse:Stop()
-  self.talentPulse:Stop()
   if self.dungeonAlert then
     self.dungeonAlert:Hide()
     self.dungeonPulse:Stop()
@@ -1069,7 +993,9 @@ function Tracker:LayoutCurrent(cur, yTop, zone)
     local mobs = Q.UI.MobPanel and Q.UI.MobPanel:MobsFor(cur) or {}
     segs = stepSegments(cur, mobs)
   elseif not segs then
-    segs = { { text = L.UI_TRACKER_DONE } }
+    -- chapitre fini qui attend le choix de sa suite : un clic rouvre le choix (onCurrentClick)
+    local pending = Q.Progress.PendingChoice and Q.Progress:PendingChoice()
+    segs = { { text = pending and L.UI_ROUTECHOICE_TRACKER or L.UI_TRACKER_DONE } }
   end
   local slots = {}
   local nText, nMob, yy = 0, 0, 0
@@ -1241,7 +1167,7 @@ function Tracker:Refresh()
   self.message:Hide()
 
   -- En-tête
-  self.title:SetText(guide.title or guide.id)
+  self.title:SetText(Q.Guides:DisplayTitle(guide))
   self.title:Show()
   self.levels:SetFormattedText(L.UI_TRACKER_LEVELS, guide.minLevel or 1, guide.maxLevel or 60)
   self.levels:Show()
@@ -1260,7 +1186,15 @@ function Tracker:Refresh()
   -- Alerte de quête de classe
   local alerts = classAlerts()
   if #alerts > 0 then
-    if #alerts == 1 then
+    local lateCount = 0
+    for _, chain in ipairs(alerts) do
+      if isLate(chain) then lateCount = lateCount + 1 end
+    end
+    if lateCount == 1 then
+      self.alertText:SetFormattedText(L.UI_CLASS_ALERT_LATE_ONE, chainTitle(alerts[1]))   -- les retards sont en tête
+    elseif lateCount > 1 then
+      self.alertText:SetFormattedText(L.UI_CLASS_ALERT_LATE_MANY, lateCount)
+    elseif #alerts == 1 then
       self.alertText:SetFormattedText(L.UI_CLASS_ALERT_ONE, chainTitle(alerts[1]))
     else
       self.alertText:SetFormattedText(L.UI_CLASS_ALERT_MANY, #alerts)
@@ -1277,7 +1211,6 @@ function Tracker:Refresh()
   end
   y = self:LayoutDungeonAlert(y)
   y = self:LayoutTrainerAlert(y)
-  y = self:LayoutTalentAlert(y)
 
   -- Étape courante
   local entries = Q.Progress:Entries()
@@ -1368,7 +1301,6 @@ Q:On("GUIDE_CHANGED", refresh)
 Q:On("CLASSQUESTS_CHANGED", refresh)
 Q:On("DUNGEONS_CHANGED", refresh)
 Q:On("TRAINER_CHANGED", refresh)
-Q:On("TALENTS_CHANGED", refresh)
 -- Mode zone : entrée ou sortie, objectif en tête changé : nouvelle cible, nouvelle liste.
 Q:On("ZONEMODE_CHANGED", function()
   if not Tracker.frame then return end

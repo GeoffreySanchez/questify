@@ -1,18 +1,19 @@
 # A_DwarfGnome_04 — Westfall
 
-Generated on 2026-11-04 from QuestieDB commit `c5de61ab7c629132a772cccddf7f604ac48cecf9` by `tools/routebuilder/build.lua`. Simulated race: Dwarf.
+Generated on 2026-11-06 from QuestieDB commit `80866960788084ae1592abf66a08f0d306458a95` by `tools/routebuilder/build.lua`. Simulated race: Dwarf.
 
 | Item | Value |
 |---|---|
 | Level band | 14-16 |
-| Simulated level | 15.00 -> 17.05 |
+| Simulated level | 15.00 -> 17.07 |
 | Time | 78 min |
-| XP gained | 23390 |
-| XP/h | 18038 |
-| Steps | 45 |
+| XP gained | 23361 |
+| XP/h | 18059 |
+| Steps | 44 |
 | Quests turned in | 14 |
 | Hubs | 8 |
 | Median ratio (XP/s) | 6.12 |
+| Hearthstone | no new bind; 0 return(s) planned, 0 bundle(s) |
 
 ## Kept quests (turn-in order)
 
@@ -134,7 +135,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 2 | A | 151 | Poor Old Blanchy | 1436 | 59.9, 19.4 | 1 |  |
 | 3 | A | 12 | The People's Militia | 1436 | 56.3, 47.5 | 667 |  |
 | 4 | A | 92744 | Murloc Gills | 1436 | 52.5, 53.0 | 185 |  |
-| 5 | A | 92742 | Testing the Wells | 1436 | 52.5, 53.0 | 21 |  |
+| 5 | A | 92742 | Testing the Wells | 1436 | 52.5, 53.0 | 0 |  |
 | 6 | O | 92742 | Testing the Wells | 1436 | 46.1, 38.1 | 412 |  |
 | 7 | O | 92744 | Murloc Gills | 1436 | 34.5, 17.0 | 637 |  |
 | 8 | A | 136 | Captain Sander's Hidden Treasure | 1436 | 34.5, 17.0 | 0 |  |
@@ -175,7 +176,7 @@ yards from the previous task (blank after a flight, boat or zone change). Return
 | 43 | A | 2040 | Underground Assault | 1453 | 62.6, 34.1 | 154 |  |
 | 44 | T | 92748 | Explosive Consultation | 1453 | 61.9, 30.6 | 43 |  |
 
-Walking between tasks: 13656 yd (~33 min at 7 yd/s).
+Walking between tasks: 13634 yd (~32 min at 7 yd/s).
 
 ## Qualité
 
@@ -196,7 +197,6 @@ Reason: why the ordering kept it: `log cap`, `level` or `chain` (a constraint la
 ## Logistics
 
 - step 3: `fp 1436 56.55 52.64`
-- step 6: `sethearth 1436 52.86 53.71`
 
 ## Warnings
 

@@ -21,7 +21,7 @@ local TAB_INDEX = { route = 1, class = 2 }
 local CHAPTER_W, CHAPTER_ROW_H = 150, 20
 local STEP_W, STEP_ROW_H = 290, 18
 local CLASS_W, CLASS_ROW_H = 456, 46
-local CLASS_ITEMS = 5
+local CLASS_ITEMS = 3
 local LIST_H = 432
 
 Journal.STATE_ICONS = {
@@ -35,10 +35,12 @@ local ICONS = Journal.STATE_ICONS
 local CQ_STATE_TEXT = {
   available = "UI_CQ_AVAILABLE", upcoming = "UI_CQ_UPCOMING", added = "UI_CQ_ADDED",
   ignored = "UI_CQ_IGNORED", inprogress = "UI_CQ_INPROGRESS", done = "UI_CQ_DONE",
+  inroute = "UI_CQ_INROUTE",   -- quêtes déjà étapes de la route (Engine/ClassQuests.lua) : aucun bouton
 }
+local CQ_LATE_COLOR = "|cffff5050"   -- couleur d'alerte : chaîne en retard
 local CQ_STATE_COLOR = {
   available = "|cff40ff40", upcoming = "|cffaaaaaa", added = "|cffffd100",
-  ignored = "|cff808080", inprogress = "|cff66bbff", done = "|cff808080",
+  ignored = "|cff808080", inprogress = "|cff66bbff", done = "|cff808080", inroute = "|cffffd100",
 }
 
 local function playSound(kit)
@@ -154,6 +156,17 @@ function Journal:Create()
     if Q.UI.Options then Q.UI.Options:Open() end
   end))
   self.optionsButton = opt
+  -- Choix de suite (UI/RouteChoicePopup.lua) : rouvre le choix du chapitre courant ou du dernier choisi
+  local route = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
+  route:SetSize(130, 22)
+  route:SetPoint("RIGHT", opt, "LEFT", -6, 0)
+  route:SetText(L.UI_ROUTECHOICE_JOURNAL)
+  route:SetScript("OnClick", safe(function()
+    playSound("IG_MAINMENU_OPTION_CHECKBOX_ON")
+    local P = Q.UI.RouteChoicePopup
+    if P then P:OpenForPlayer() end
+  end))
+  self.routeButton = route
   f:Hide()
   -- Sons d'ouverture et de fermeture branchés après le Hide() initial (pas de son à la création).
   f:HookScript("OnShow", function() playSound("IG_CHARACTER_INFO_OPEN") end)
@@ -261,13 +274,14 @@ local function chapterRow(i)
   row:SetScript("OnClick", safe(function(self)
     if self.guide then
       playSound("IG_MAINMENU_OPTION_CHECKBOX_ON")
-      Q.Progress:SetGuide(self.guide.id)
+      -- true : un chapitre déjà fini reste affiché, pour y rouvrir une étape passée par erreur
+      Q.Progress:SetGuide(self.guide.id, true)
       Journal:RefreshRoute(true)
     end
   end))
   row:SetScript("OnEnter", safe(function(self)
     if self.guide then
-      showTooltip(self, { self.guide.title or self.guide.id,
+      showTooltip(self, { Q.Guides:DisplayTitle(self.guide),
         string.format(L.UI_TRACKER_LEVELS, self.guide.minLevel or 1, self.guide.maxLevel or 60),
         L.UI_ROUTE_CHAPTER_HINT })
     end
@@ -411,7 +425,7 @@ function Journal:RefreshRoute(scrollToCurrent)
   for i, g in ipairs(chapters) do
     local row = chapterRow(i)
     row.guide = g
-    row.text:SetText(g.title or g.id)
+    row.text:SetText(Q.Guides:DisplayTitle(g))
     row.levels:SetFormattedText(L.UI_TRACKER_LEVELS, g.minLevel or 1, g.maxLevel or 60)
     local selected = guide ~= nil and guide.id == g.id
     if selected then row.selected:Show() else row.selected:Hide() end
@@ -436,7 +450,7 @@ function Journal:RefreshRoute(scrollToCurrent)
   else
     self.routeMessage:Hide()
   end
-  self.stepHeader:SetText(guide and (L.UI_ROUTE_STEPS .. " - " .. (guide.title or guide.id)) or L.UI_ROUTE_STEPS)
+  self.stepHeader:SetText(guide and (L.UI_ROUTE_STEPS .. " - " .. Q.Guides:DisplayTitle(guide)) or L.UI_ROUTE_STEPS)
   local cur = guide and Q.Progress:Current() or nil
   local curIndex
   for i, e in ipairs(entries) do
@@ -466,12 +480,45 @@ function Journal:BuildClass(panel)
   self.classEmpty = empty
 end
 
-local function classAction(method, key)
+local CQ_CONFIRM = { Add = "UI_CQ_ADDED_MSG", Track = "UI_CQ_TRACKED_MSG" }
+
+local function classAction(method, key, chain)
   local cq = Q.ClassQuests
   if not (cq and cq[method]) then return end
   playSound("IG_MAINMENU_OPTION_CHECKBOX_ON")
-  cq[method](cq, key)
+  local done = cq[method](cq, key)
+  -- confirmation dans la discussion (un échec explicite, retour faux, n'en donne pas)
+  if done ~= false and chain and CQ_CONFIRM[method] then
+    Q:Print(L[CQ_CONFIRM[method]], Q.UI.ClassQuestPopup.ChainTitle(chain))
+  end
   Journal:RefreshClass()
+end
+
+local function isLate(chain, state)
+  local cq = Q.ClassQuests
+  return cq and cq.IsLate and cq.IsLate(chain, state) or false
+end
+
+-- Ordre d'affichage : en retard, disponibles, ajoutées, en cours, dans la route, à venir, faites,
+-- ignorées.
+local CQ_RANK = { available = 2, added = 3, inprogress = 4, inroute = 5, upcoming = 6, done = 7, ignored = 8 }
+
+-- Tri stable : à rang égal l'ordre du moteur est conservé.
+local function sortedClassRows(list)
+  local rows = {}
+  for _, item in ipairs(list or {}) do
+    if type(item) == "table" and type(item.chain) == "table" then
+      rows[#rows + 1] = { item = item, rank = isLate(item.chain, item.state) and 1 or CQ_RANK[item.state] or 9,
+        index = #rows + 1 }
+    end
+  end
+  table.sort(rows, function(a, b)
+    if a.rank ~= b.rank then return a.rank < b.rank end
+    return a.index < b.index
+  end)
+  local out = {}
+  for i, r in ipairs(rows) do out[i] = r.item end
+  return out
 end
 
 local function classTooltip(row)
@@ -505,18 +552,18 @@ local function classRow(i)
   end
   local title = row:CreateFontString(nil, "OVERLAY", "GameFontNormal")
   title:SetPoint("TOPLEFT", row, "TOPLEFT", 8, -7)
-  title:SetWidth(200)
+  title:SetWidth(150)
   title:SetJustifyH("LEFT")
   title:SetWordWrap(false)
   local info = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   info:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -4)
-  info:SetWidth(200)
+  info:SetWidth(150)
   info:SetJustifyH("LEFT")
   info:SetWordWrap(false)
   row.title, row.info, row.items = title, info, {}
   for j = 1, CLASS_ITEMS do
     local b = Q.UI.ClassQuestPopup.CreateItemButton(row, 24)
-    b:SetPoint("LEFT", row, "LEFT", 214 + (j - 1) * 26, 0)
+    b:SetPoint("LEFT", row, "LEFT", 160 + (j - 1) * 26, 0)
     row.items[j] = b
   end
   local function button(label, width)
@@ -528,12 +575,19 @@ local function classRow(i)
   end
   row.ignoreButton = button(L.UI_BTN_IGNORE, 80)
   row.unignoreButton = button(L.UI_BTN_UNIGNORE, 80)
-  row.addButton = button(L.UI_BTN_ADD, 80)
+  row.addButton = button(L.UI_BTN_ADD_ROUTE, 118)
+  row.trackButton = button(L.UI_BTN_TRACK, 118)
   row.ignoreButton:SetPoint("RIGHT", row, "RIGHT", -6, 0)
   row.unignoreButton:SetPoint("RIGHT", row, "RIGHT", -6, 0)
   -- Ignorer et Réactiver occupent la même place (jamais affichés ensemble) : Ajouter à leur gauche.
   row.addButton:SetPoint("RIGHT", row, "RIGHT", -90, 0)
-  row.addButton:SetScript("OnClick", safe(function() if row.chain then classAction("Add", row.chain.key) end end))
+  row.trackButton:SetPoint("RIGHT", row, "RIGHT", -90, 0)   -- Ajouter et Suivre : jamais ensemble
+  row.addButton:SetScript("OnClick", safe(function()
+    if row.chain then classAction("Add", row.chain.key, row.chain) end
+  end))
+  row.trackButton:SetScript("OnClick", safe(function()
+    if row.chain then classAction("Track", row.chain.key, row.chain) end
+  end))
   row.ignoreButton:SetScript("OnClick", safe(function() if row.chain then classAction("Ignore", row.chain.key) end end))
   row.unignoreButton:SetScript("OnClick", safe(function() if row.chain then classAction("Unignore", row.chain.key) end end))
   row:SetScript("OnEnter", safe(classTooltip))
@@ -548,8 +602,12 @@ local function setClassRow(row, item)
   row.title:SetText(Q.UI.ClassQuestPopup.ChainTitle(chain))
   local stateKey = CQ_STATE_TEXT[state]
   local stateText = stateKey and L[stateKey] or tostring(state)
-  row.info:SetText(string.format(L.UI_CLASS_ROW_INFO, tonumber(chain.level) or 1,
-    (CQ_STATE_COLOR[state] or "|cffffffff") .. stateText .. "|r"))
+  if isLate(chain, state) then
+    row.info:SetText(CQ_LATE_COLOR .. string.format(L.UI_CQ_LATE, tonumber(chain.level) or 1) .. "|r")
+  else
+    row.info:SetText(string.format(L.UI_CLASS_ROW_INFO, tonumber(chain.level) or 1,
+      (CQ_STATE_COLOR[state] or "|cffffffff") .. stateText .. "|r"))
+  end
   local items, n = {}, 0
   local rewards = type(chain.rewards) == "table" and chain.rewards or {}
   for _, id in ipairs(chain.quests or {}) do
@@ -568,6 +626,7 @@ local function setClassRow(row, item)
   local canAdd = state == "available" or state == "upcoming" or state == "inprogress" or state == "ignored"
   local canIgnore = state == "available" or state == "upcoming" or state == "inprogress" or state == "added"
   if canAdd then row.addButton:Show() else row.addButton:Hide() end
+  if state == "added" then row.trackButton:Show() else row.trackButton:Hide() end
   if canIgnore then row.ignoreButton:Show() else row.ignoreButton:Hide() end
   if state == "ignored" then row.unignoreButton:Show() else row.unignoreButton:Hide() end
   row:Show()
@@ -583,11 +642,9 @@ function Journal:RefreshClass()
     if ok and type(res) == "table" then list = res elseif not ok then Q:ReportError(res) end
   end
   local n = 0
-  for _, item in ipairs(list or {}) do
-    if type(item) == "table" and type(item.chain) == "table" then
-      n = n + 1
-      setClassRow(classRow(n), item)
-    end
+  for _, item in ipairs(sortedClassRows(list)) do
+    n = n + 1
+    setClassRow(classRow(n), item)
   end
   for i = n + 1, #self.classRows do
     self.classRows[i].chain = nil

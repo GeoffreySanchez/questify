@@ -77,11 +77,12 @@ Schema.SECTIONS = {
 -- de chemin de réglage, il n'est donc ni exporté ni changé par un changement de profil.
 Schema.CHAR_STATE = {
   guideId = true, manual = true, skipped = true, inserted = true, classQuests = true, telemetry = true,
-  wizardDone = true, specRoleAnswered = true, talentPopup = true,
+  wizardDone = true, specRoleAnswered = true,
+  routeChoices = true, routeChoiceLast = true,
 }
 
 -- Réglages de Settings.defaults dont le contrôle est ailleurs que dans les Options (sans entrée au schéma).
-Schema.ELSEWHERE = { talentAlert = true }
+Schema.ELSEWHERE = {}
 
 ---------------------------------------------------------------------------
 -- Outils
@@ -127,7 +128,7 @@ function Actions.ResetChapter()
     if Q.Progress.Invalidate then Q.Progress.Invalidate() end
     Q.Progress:Update()
   end
-  Q:Print(L().UI_OPT_RESET_DONE, guide.title or guide.id)
+  Q:Print(L().UI_OPT_RESET_DONE, Q.Guides:DisplayTitle(guide))
 end
 
 -- Texte des mesures de temps (Q.Telemetry:Export), ou un message si le module manque.
@@ -152,6 +153,9 @@ local function add(e) E[#E + 1] = e; return e end
 add({ id = "zoneMode", section = "route", category = "path", type = "toggle", path = "zoneMode",
   label = "ZONE_OPT", tip = "OPT_TIP_ZONEMODE",
   keywords = "zone mode regrouper grouper objectifs proches visite nearby objectives group" })
+add({ id = "route.choicePopup", section = "route", category = "path", type = "toggle",
+  path = "route.choicePopup", label = "OPT_ROUTE_CHOICE", tip = "OPT_TIP_ROUTE_CHOICE",
+  keywords = "choix suite cartes chapitre suivant zone bifurcation route choice next chapter cards branch" })
 add({ id = "openJournal", section = "route", category = "path", type = "action",
   label = "OPT_OPEN_JOURNAL", tip = "OPT_TIP_OPEN_JOURNAL",
   keywords = "journal chapitre chapitres etapes chapter chapters steps liste",
@@ -236,7 +240,6 @@ add({ id = "lootSingle", section = "loot", category = "profile", type = "info", 
 add({ id = "trainerAlert", section = "class", category = "spells", type = "toggle", path = "trainerAlert",
   label = "UI_OPT_TRAINER", tip = "OPT_TIP_TRAINER",
   keywords = "maitre de classe entraineur sorts trainer spells class" })
--- talentAlert n'a plus d'entrée ici : sa case est dans la roue dentée de l'onglet Build (UI/BuildPane.lua).
 add({ id = "professions", section = "class", category = "professions", type = "action",
   label = "UI_OPT_PROFESSIONS", tip = "OPT_TIP_PROFESSIONS",
   keywords = "metiers metier minage herboristerie depecage cuisine professions profession mining herbalism",
@@ -250,6 +253,9 @@ add({ id = "dungeonSuggest", section = "class", category = "dungeons", type = "t
 add({ id = "dungeonQuests", section = "class", category = "dungeons", type = "toggle", path = "dungeonQuests",
   label = "UI_OPT_DUNGEON", tip = "OPT_TIP_DUNGEON_QUESTS",
   keywords = "donjon donjons quetes instance dungeon quests route" })
+add({ id = "classQuestOffer", section = "class", category = "dungeons", type = "toggle", path = "classQuestOffer",
+  label = "UI_OPT_CLASSQUEST_OFFER", tip = "OPT_TIP_CLASSQUEST_OFFER",
+  keywords = "quetes de classe proposer donneur etape passage class quests offer giver step" })
 add({ id = "openClassQuests", section = "class", category = "dungeons", type = "action",
   label = "OPT_OPEN_CLASS", tip = "OPT_TIP_OPEN_CLASS",
   keywords = "quetes de classe donjons journal class quests dungeons",
@@ -333,7 +339,7 @@ add({ id = "dangerAlert", section = "comfort", category = "warnings", type = "to
   keywords = "danger elite elites alerte monstres niveau warning elite level" })
 add({ id = "supplyReminders", section = "comfort", category = "warnings", type = "toggle", path = "supplyReminders",
   label = "COMFORT_OPT_SUPPLIES", tip = "OPT_TIP_SUPPLIES",
-  keywords = "vendre reparer sacs ville rappel sell repair bags town reminder" })
+  keywords = "vendre reparer sacs ville avant-poste auberge nourriture boisson rappel sell repair bags town outpost inn food drink reminder" })
 
 -- Outils ------------------------------------------------------------------
 add({ id = "wizard", section = "tools", category = "wizards", type = "action",

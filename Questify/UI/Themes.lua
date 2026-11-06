@@ -36,7 +36,7 @@ local TOOLTIP_EDGE = {
 ---------------------------------------------------------------------------
 -- Rôles : title (titre du chapitre), body (étape courante), dim (étapes suivantes, niveaux des
 -- monstres), levels (niveaux du chapitre), distance, bar (texte de la barre), xp (ligne XP/h),
--- warn (avertissements), alertes (classAlert, dungeonAlert, trainerAlert, talentAlert).
+-- warn (avertissements), alertes (classAlert, dungeonAlert, trainerAlert).
 local LIGHT_TEXT = {
   title = { 1, 0.82, 0 },
   body = { 1, 1, 1 },
@@ -49,7 +49,6 @@ local LIGHT_TEXT = {
   classAlert = { 1, 0.82, 0 },
   dungeonAlert = { 1, 0.7, 0.4 },
   trainerAlert = { 0.5, 0.85, 1 },
-  talentAlert = { 0.45, 1, 0.5 },
 }
 
 -- Sur le monde, le gris des étapes suivantes est éclairci.
@@ -70,7 +69,6 @@ local PARCHMENT_TEXT = {
   classAlert = { 0.48, 0.27, 0 },
   dungeonAlert = { 0.60, 0.22, 0.04 },
   trainerAlert = { 0.08, 0.30, 0.55 },
-  talentAlert = { 0.10, 0.42, 0.12 },
 }
 
 -- Codes de couleur intégrés aux textes (Engine/Format.lua, textes, modules de confort, suivi)

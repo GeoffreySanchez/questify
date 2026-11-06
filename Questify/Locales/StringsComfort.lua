@@ -1,7 +1,7 @@
 local addonName, Q = ...
 
--- Textes du confort de jeu : vols automatiques, pierre de foyer, alerte de danger, sacs et
--- réparation, XP/h. Toutes les clés commencent par COMFORT_ pour ne pas entrer en collision avec
+-- Textes du confort de jeu : vols automatiques, pierre de foyer, alerte de danger, alerte
+-- d'avant-poste (sacs, réparation, nourriture, boisson), XP/h. Toutes les clés commencent par COMFORT_ pour ne pas entrer en collision avec
 -- les textes des autres modules.
 Q:RegisterStrings({
   enUS = {
@@ -10,7 +10,7 @@ Q:RegisterStrings({
     COMFORT_OPT_AUTOFLY = "Take the step's flight at the flight master (hold Shift to choose yourself)",
     COMFORT_OPT_HEARTH = "Hearthstone cooldown and walking or flying hint on hearth steps",
     COMFORT_OPT_DANGER = "Warn about elites and monsters 3+ levels above you",
-    COMFORT_OPT_SUPPLIES = "Remind me to sell and repair before leaving town",
+    COMFORT_OPT_SUPPLIES = "Before heading out: warn about full bags, repairs, food and drink",
     COMFORT_OPT_XPRATE = "XP per hour and time to level in the tracker",
 
     -- Nombres et durées
@@ -45,18 +45,26 @@ Q:RegisterStrings({
     COMFORT_DANGER_RARE = "Rare nearby: %s (level %s)",
     COMFORT_DANGER_CHAT_RARE = "Rare: %s, level %s, is nearby.",
 
-    -- Sacs et réparation
-    COMFORT_BAGS_FULL = "Bags almost full (%d free): sell before leaving town",
-    COMFORT_REPAIR = "Gear at %d%%: repair before leaving town",
-    COMFORT_BAGS_CHAT = "Your bags are almost full (%d free slot(s)): sell before you leave town.",
-    COMFORT_REPAIR_CHAT = "Your gear is at %d%%: repair before you leave town.",
+    -- Alerte d'avant-poste : lignes du suivi
+    COMFORT_BAGS_FULL = "Bags almost full: %s",
+    COMFORT_SLOTS_FREE = "%d of %d slots free",
+    COMFORT_SLOTS_FREE_ONE = "%d of %d slots free",
+    COMFORT_REPAIR = "Gear at %d%%: repair before heading out",
+    COMFORT_NO_FOOD = "No food in your bags",
+    COMFORT_NO_DRINK = "No drink in your bags",
+    -- Alerte d'avant-poste : discussion et milieu de l'écran (problèmes regroupés)
+    COMFORT_SUPPLY_ALERT = "Before you head out: %s.",
+    COMFORT_LIST_SEP = ", ",
+    COMFORT_PART_REPAIR = "gear at %d%%",
+    COMFORT_PART_FOOD = "no food",
+    COMFORT_PART_DRINK = "no drink",
   },
   frFR = {
     COMFORT_OPT_TITLE = "Confort",
     COMFORT_OPT_AUTOFLY = "Prendre le vol de l'étape chez le maître de vol (Maj pour choisir toi-même)",
     COMFORT_OPT_HEARTH = "Recharge de la pierre de foyer et trajet à pied ou en vol sur les étapes de foyer",
     COMFORT_OPT_DANGER = "Prévenir des élites et des monstres de 3 niveaux ou plus au-dessus de toi",
-    COMFORT_OPT_SUPPLIES = "Rappel pour vendre et réparer avant de quitter la ville",
+    COMFORT_OPT_SUPPLIES = "Avant de repartir : prévenir des sacs pleins, des réparations, de la nourriture et de la boisson",
     COMFORT_OPT_XPRATE = "XP par heure et temps avant le prochain niveau dans le suivi",
 
     COMFORT_DECIMAL = ",",
@@ -86,9 +94,16 @@ Q:RegisterStrings({
     COMFORT_DANGER_RARE = "Rare proche : %s (niveau %s)",
     COMFORT_DANGER_CHAT_RARE = "Rare : %s, niveau %s, est tout près.",
 
-    COMFORT_BAGS_FULL = "Sacs presque pleins (%d libres) : vends avant de quitter la ville",
-    COMFORT_REPAIR = "Équipement à %d %% : répare avant de quitter la ville",
-    COMFORT_BAGS_CHAT = "Tes sacs sont presque pleins (%d place(s) libre(s)) : vends avant de quitter la ville.",
-    COMFORT_REPAIR_CHAT = "Ton équipement est à %d %% : répare avant de quitter la ville.",
+    COMFORT_BAGS_FULL = "Sacs presque pleins : %s",
+    COMFORT_SLOTS_FREE = "%d places libres sur %d",
+    COMFORT_SLOTS_FREE_ONE = "%d place libre sur %d",
+    COMFORT_REPAIR = "Équipement à %d %% : répare avant de repartir",
+    COMFORT_NO_FOOD = "Pas de nourriture dans les sacs",
+    COMFORT_NO_DRINK = "Pas de boisson dans les sacs",
+    COMFORT_SUPPLY_ALERT = "Avant de repartir : %s.",
+    COMFORT_LIST_SEP = ", ",
+    COMFORT_PART_REPAIR = "équipement à %d %%",
+    COMFORT_PART_FOOD = "pas de nourriture",
+    COMFORT_PART_DRINK = "pas de boisson",
   },
 })

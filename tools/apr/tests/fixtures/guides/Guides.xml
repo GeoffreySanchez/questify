@@ -1,0 +1,6 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+  <!-- Guides fictifs pour les tests de tools/apr. -->
+  <Script file="Alliance\T_01.lua"/>
+  <Script file="Alliance\T_02.lua"/>
+  <Script file="ClassQuestData.lua"/>
+</Ui>

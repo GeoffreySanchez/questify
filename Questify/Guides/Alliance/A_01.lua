@@ -1,14 +1,15 @@
 local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
--- Source : QuestieDB commit c5de61ab7c629132a772cccddf7f604ac48cecf9, généré le 2026-11-04.
--- Simulation : 119 étapes, niveau final 19.90, ~26898 xp/h, 158 min.
+-- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
+-- Simulation : 119 étapes, niveau final 19.88, ~26899 xp/h, 158 min.
 Q:RegisterGuide({
   id = "A_01",
   title = "Darkshore",
   faction = "Alliance",
   minLevel = 16, maxLevel = 19,
   next = "A_02",
+  sim = { steps = 119, endLevel = 19.88, xpPerHour = 26899, minutes = 158 },
   steps = {
     { "boat", 1453, 24.1, 55.4, note = "Take the boat to Auberdine (Stormwind Harbor)" }, -- bateau
     { "fp", 1439, 36.34, 45.58 }, -- point de vol

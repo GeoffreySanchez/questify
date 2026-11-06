@@ -420,17 +420,6 @@ function Diag:Report()
   add("Reward role: %s", tostring(Q.Rewards and Q.Rewards:Role(P.classFile) or (Q.char and Q.char.rewardRole) or "auto"))
   if Q.Profiles then add("Profile: %s (%s)", tostring(Q.Profiles:Active()), tostring(Q.Profiles:Mode())) end
   add("Spec: %s", Q.SpecRole and select(2, pcall(Q.SpecRole.Describe, Q.SpecRole)) or "-")
-  if Q.Builds then
-    -- specID lu du jeu et index de spé : le choix du build fourni se replie sur l'index (I9, R14)
-    local group = Q.Builds:ActiveGroup()
-    add("Talent spec: group %s, index %s, specID %s", tostring(group), tostring(Q.Builds:SpecIndex(group) or "-"),
-      tostring(Q.Builds:SpecID(group) or "-"))
-  end
-  if Q.TalentLearn and Q.TalentLearn.available == false then
-    add("Talent learning: unavailable (%s)", tostring(Q.TalentLearn.lastError or "?"))
-  elseif Q.TalentLearn and Q.TalentLearn.lastError then
-    add("Talent learning: last failure (%s)", tostring(Q.TalentLearn.lastError))
-  end
 
   local addons = {}
   for _, name in ipairs({ "QuestieDB", "TomTom", "WaypointUI", "ShortestPathForever" }) do

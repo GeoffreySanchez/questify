@@ -340,6 +340,13 @@ local ZONE_MAPS = {
   ["Stonetalon Mountains"] = 1442, ["Teldrassil"] = 1438, ["The Barrens"] = 1413,
   ["Thousand Needles"] = 1441, ["Tirisfal Glades"] = 1420, ["Westfall"] = 1436, ["Wetlands"] = 1437,
   ["Zephras Isle"] = 2521,
+  -- zones 30-60 (uiMapID Classic, tirés de QuestieDB)
+  ["Alterac Mountains"] = 1416, ["Arathi Highlands"] = 1417, ["Badlands"] = 1418, ["Blasted Lands"] = 1419,
+  ["Western Plaguelands"] = 1422, ["Eastern Plaguelands"] = 1423, ["The Hinterlands"] = 1425,
+  ["Searing Gorge"] = 1427, ["Burning Steppes"] = 1428, ["Stranglethorn Vale"] = 1434,
+  ["Swamp of Sorrows"] = 1435, ["Desolace"] = 1443, ["Feralas"] = 1444, ["Dustwallow Marsh"] = 1445,
+  ["Tanaris"] = 1446, ["Azshara"] = 1447, ["Felwood"] = 1448, ["Un'Goro Crater"] = 1449, ["Silithus"] = 1451,
+  ["Winterspring"] = 1452,
 }
 Guides.ZONE_MAPS = ZONE_MAPS
 

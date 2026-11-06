@@ -169,6 +169,11 @@ COMMANDS.reset = function()
   if StaticPopup_Show then StaticPopup_Show(RESET_DIALOG) end
 end
 
+-- Commande cachée (absente de l'aide) : scènes d'exemple pour les captures en jeu (UI/Demo.lua).
+COMMANDS.demo = function(rest)
+  if Q.UI and Q.UI.Demo then Q.UI.Demo:Handle(rest) end
+end
+
 COMMANDS.help = function()
   Q:Print(L.UI_SLASH_HELP)
 end

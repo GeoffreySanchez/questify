@@ -90,6 +90,7 @@ UI\Wizard.lua
 UI\QuestItemButton.lua
 UI\Report.lua
 UI\Options.lua
+UI\Demo.lua
 UI\Slash.lua
 
 Guides\Guides.xml

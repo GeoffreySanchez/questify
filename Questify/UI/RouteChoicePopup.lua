@@ -856,6 +856,7 @@ end
 
 -- Le joueur ferme sans choisir : si le chapitre attendait ce choix, plus de réouverture automatique.
 function Popup:Dismiss(fromId)
+  if self.cards and self.cards.demo then return end   -- scène /qf demo : rien n'est retenu
   if fromId and Q.Progress:PendingChoice() == fromId then
     local set = dismissedSet(true)
     if set then set[fromId] = true end
@@ -882,6 +883,7 @@ end
 
 function Popup:Choose(id)
   local fromId = self.fromId
+  if self.cards and self.cards.demo then fromId = nil end   -- scène /qf demo : ferme sans choisir
   self.resume = nil
   self:Close()
   if fromId and id then Q.Progress:ChooseRoute(fromId, id) end

@@ -364,7 +364,7 @@ end
 -- equipPair.
 function Popup:EquipCurrent()
   local cur = self.current
-  if not cur or inCombat() then return false end
+  if not cur or inCombat() or cur.demo then return false end   -- annonce de démo (UI/Demo.lua) : rien n'est équipé
   local equip = (C_Item and C_Item.EquipItemByName) or EquipItemByName
   if not equip then return false end
   if cur.pair then return equipPair(equip, cur.pair.main, cur.pair.off) end

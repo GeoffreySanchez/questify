@@ -247,6 +247,7 @@ function Popup:Show(chain, index, total)
   if type(chain) ~= "table" then return end
   self:Create()
   self.chain = chain
+  self.demo = chain.demo == true   -- scène /qf demo : les boutons ferment sans agir (UI/Demo.lua)
   local y = 0
 
   if tonumber(total) and total > 1 then
@@ -338,6 +339,7 @@ end
 -- Choix du joueur : la chaîne est d'abord marquée vue (l'alerte disparaît), puis ajoutée ou
 -- ignorée (le module envoie CLASSQUESTS_CHANGED), puis la fenêtre se ferme.
 function Popup:Choose(action)
+  if self.demo then return self:Hide() end   -- démo : rien n'est marqué ni ajouté
   local chain = self.chain
   local cq = Q.ClassQuests
   if chain and cq then

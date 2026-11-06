@@ -336,7 +336,7 @@ add({ id = "dangerAlert", section = "comfort", category = "warnings", type = "to
   keywords = "danger elite elites alerte monstres niveau warning elite level" })
 add({ id = "supplyReminders", section = "comfort", category = "warnings", type = "toggle", path = "supplyReminders",
   label = "COMFORT_OPT_SUPPLIES", tip = "OPT_TIP_SUPPLIES",
-  keywords = "vendre reparer sacs ville rappel sell repair bags town reminder" })
+  keywords = "vendre reparer sacs ville avant-poste auberge nourriture boisson rappel sell repair bags town outpost inn food drink reminder" })
 
 -- Outils ------------------------------------------------------------------
 add({ id = "wizard", section = "tools", category = "wizards", type = "action",

@@ -14,7 +14,7 @@ local addonName, Q = ...
 -- d'abord). Les étapes regroupées dans la zone ne sont pas répétées dans les étapes suivantes.
 -- Confort de jeu (Engine/XPRate, Hearth, Danger, Supplies) : ligne XP/h sous la barre, XP restante
 -- du chapitre dans la barre, lignes de la pierre de foyer sous l'étape, avertissements (danger,
--- sacs, réparation) sous l'étape courante. Chaque module est lu sous pcall : absent ou en erreur,
+-- sacs, réparation, nourriture, boisson) sous l'étape courante. Chaque module est lu sous pcall : absent ou en erreur,
 -- il n'affiche rien.
 -- Le clic sur un monstre passe par les boutons sécurisés d'UI/MobPanel.lua, posés par-dessus ses
 -- lignes sans s'ancrer au suivi : un enfant sécurisé rendrait le suivi protégé (impossible à
@@ -326,7 +326,7 @@ function Tracker:Create()
   xpLine:Hide()
   self.xpLine = xpLine
 
-  -- Avertissements de confort (danger, sacs, réparation), créés à la demande
+  -- Avertissements de confort (danger, sacs, réparation, nourriture, boisson), créés à la demande
   self.warnLines = {}
 
   -- Alerte de quête de classe

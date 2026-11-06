@@ -3,6 +3,13 @@
 ## Non publié
 
 ### Français
+- Alerte d'avant-poste : en ville, à l'auberge ou juste après un marchand, Questify prévient une fois
+  par passage, avant de repartir, s'il reste moins de 6 places libres dans les sacs (ou moins de 20 %),
+  s'il n'y a plus de nourriture, ou plus de boisson pour les classes à mana, et si l'équipement est à
+  réparer. Ligne dans le suivi, message au milieu de l'écran et dans la discussion, regroupés.
+- Quêtes de classe en retard : entrée « Quêtes de classe » dans le menu de la minicarte et `/qf classe`
+  ouvrent l'onglet du journal ; les quêtes en retard y sont en tête (« En retard (niv. N) ») avec
+  « Ajouter à la route » en un clic, même ignorées ; le suivi dit « Quête de classe en retard ».
 - Builds de talents, popup de talent, onglets Build / Sorts à apprendre : retirés pour le moment
   (`/qf build` et `/qf talents` aussi). Les builds déjà enregistrés restent dans les données du
   personnage, simplement plus lus.
@@ -31,6 +38,12 @@
   directement, par le bateau de Stormwind.
 
 ### English
+- Outpost alert: in a town, at an inn or right after a merchant, Questify warns once per visit, before
+  you leave, when fewer than 6 bag slots (or under 20%) are free, when you have no food, or no drink for
+  mana classes, and when your gear needs repairs. Tracker line, centre-screen and chat message, grouped.
+- Overdue class quests: a "Class quests" entry in the minimap menu and `/qf class` open the journal tab;
+  overdue quests come first ("Overdue (lvl N)") with a one-click "Add to route", even when ignored; the
+  tracker says "Class quest overdue".
 - Talent builds, talent popup, Build / Spells to learn tabs: removed for now (`/qf build` and
   `/qf talents` too). Builds already saved stay in the character data, just no longer read.
 - ShortestPath routing with WaypointUI: the waypoint no longer lands in the north-west corner of the

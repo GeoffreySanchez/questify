@@ -69,6 +69,11 @@ local function press(P, key)
   fn(P.frame, key)
 end
 
+local function release(P, key)
+  local fn = P.frame:GetScript("OnKeyUp")
+  fn(P.frame, key)
+end
+
 local function enterCombat()
   Mock.player.combat = true
   Mock.fire("PLAYER_REGEN_DISABLED")
@@ -437,6 +442,96 @@ return {
     t.eq(Q.char.routeChoices.T_FROM, target)
     t.eq(P.keyboard, false, "keyboard released")
     noErrors(t)
+  end,
+
+  -- Ouverture automatique : Entrée et Tab ne sont pas pris tant qu'aucune flèche n'a servi (le
+  -- joueur qui tape Entrée pour écrire dans la discussion ne choisit rien) ; le survol à l'apparition
+  -- ne compte pas ; après une flèche, Entrée choisit la carte active.
+  popup_enter_needs_an_arrow = function(t)
+    local Q, P = ready()
+    local prop = {}
+    P.frame.SetPropagateKeyboardInput = function(_, v) prop[#prop + 1] = v end
+    local rec = P.focus
+    press(P, "ENTER")
+    t.ok(P:IsShown(), "Enter right after the automatic opening: no choice")
+    t.eq(prop[#prop], true, "Enter passes to the game (chat)")
+    t.eq(Q.char.routeChoices.T_FROM, nil)
+    press(P, "NUMPADENTER")
+    t.ok(P:IsShown()); t.eq(prop[#prop], true)
+    press(P, "TAB")
+    t.eq(prop[#prop], true, "Tab passes to the game before an arrow")
+    t.eq(P.focus, rec, "Tab does not move the active card")
+    -- curseur immobile sur l'autre carte à l'apparition
+    local other = rec % 2 + 1
+    P.cardFrames[other].frame:GetScript("OnEnter")(P.cardFrames[other].frame)
+    press(P, "ENTER")
+    t.ok(P:IsShown(), "hovering is not an action")
+    t.eq(prop[#prop], true)
+    press(P, "LEFT")
+    t.eq(prop[#prop], false, "arrow taken")
+    local target = P.cards[P.focus].id
+    press(P, "ENTER")
+    t.ok(not P:IsShown(), "after an arrow, Enter chooses")
+    t.eq(Q.char.routeChoices.T_FROM, target)
+    noErrors(t)
+  end,
+
+  -- Une nouvelle ouverture repart sans flèche : Entrée de nouveau propagée.
+  popup_arrow_does_not_carry_over = function(t)
+    local Q, P = ready()
+    press(P, "RIGHT")
+    enterCombat(); leaveCombat()
+    t.ok(P:IsShown(), "reopened after combat")
+    local prop = {}
+    P.frame.SetPropagateKeyboardInput = function(_, v) prop[#prop + 1] = v end
+    press(P, "ENTER")
+    t.ok(P:IsShown()); t.eq(prop[#prop], true)
+    noErrors(t)
+  end,
+
+  -- Relâchement d'une touche : propagation remise, pour qu'une touche de déplacement relâchée après
+  -- une flèche ne reste pas bloquée ; rien en combat (fonction protégée).
+  popup_key_up_restores_propagation = function(t)
+    local Q, P = ready()
+    local prop = {}
+    P.frame.SetPropagateKeyboardInput = function(_, v) prop[#prop + 1] = v end
+    press(P, "RIGHT")
+    t.eq(prop[#prop], false)
+    release(P, "W")
+    t.eq(prop[#prop], true, "key up passes to the game")
+    local n = #prop
+    Mock.player.combat = true
+    release(P, "W")
+    t.eq(#prop, n, "nothing in combat")
+    noErrors(t)
+  end,
+
+  -- Erreur pendant le remplissage d'une carte : carte minimale (nom + « Y aller »), la fenêtre
+  -- s'affiche quand même et le choix reste possible ; erreur rapportée une seule fois.
+  popup_card_error_falls_back = function(t)
+    local Q, P = ready()
+    P:Later()
+    for _, c in ipairs(P.cardFrames) do
+      c.art.GetSize = function() error("broken art API") end
+    end
+    Mock.errors = {}
+    t.ok(P:Open("T_FROM", true), "window shown anyway")
+    t.eq(#Mock.errors, 1, "reported once")
+    t.ok(tostring(Mock.errors[1]):find("broken art API", 1, true))
+    local rec = 0
+    for i, c in ipairs(P.cardFrames) do
+      t.ok(c.frame:IsShown(), "card " .. i)
+      t.eq(c.name:GetText(), P.cards[i].title, "translated name")
+      t.ok(c.name:IsShown() and c.button:IsShown(), "name and Go there")
+      t.ok(not c.lines[1].text:IsShown(), "no figures")
+      t.ok(not c.hlHeader:IsShown())
+      t.eq(c.fallback, true)
+      if c.data.recommended then rec = rec + 1 end
+    end
+    t.eq(rec, 1)
+    Mock.click(P.cardFrames[2].button)
+    t.ok(not P:IsShown())
+    t.eq(Q.char.routeChoices.T_FROM, P.cards[2].id, "the route is not blocked")
   end,
 
   -- Demande en combat : aucun cadre créé, rien de montré ; ouverture à la sortie du combat.

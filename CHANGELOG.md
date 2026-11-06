@@ -40,8 +40,8 @@
   cartes avec la carte du monde de la zone en fond (ou une image de la zone quand elle est fournie), nom
   de la zone en gros, niveaux en badge, chiffres avec icônes, points forts tirés des données (donjon de
   la tranche, quête de classe de la zone, points de vol) ; la carte conseillée a un halo doré qui pulse
-  doucement. Clic sur une carte pour y aller ; flèches ou Tab pour changer de carte, Entrée pour
-  choisir, Échap pour « Plus tard ». La fenêtre se ferme d'elle-même quand un combat commence et revient
+  doucement. Clic sur une carte pour y aller ; au clavier, flèches pour changer de carte puis Entrée
+  pour choisir (Entrée seule ne choisit rien : elle reste à la discussion), Échap pour « Plus tard ». La fenêtre se ferme d'elle-même quand un combat commence et revient
   à la fin tant que le choix n'est pas fait ; fermée par le joueur, elle ne revient plus d'elle-même
   (même après /reload) jusqu'à la prochaine connexion : le suivi et `/qf route` la rouvrent.
 - Noms de chapitres traduits partout (suivi, journal, choix de suite, message « Chapitre suivant ») :
@@ -84,7 +84,8 @@
   with the zone's world map as background (or a picture of the zone when one is provided), the zone name
   in large type, levels as a badge, figures with icons, highlights taken from the data (dungeon of the
   level range, class quest of the zone, flight points); the recommended card has a softly pulsing gold
-  glow. Click a card to go there; arrows or Tab to switch card, Enter to choose, Esc for "Later". The
+  glow. Click a card to go there; with the keyboard, arrows to switch card then Enter to choose (Enter
+  alone chooses nothing: it stays with the chat), Esc for "Later". The
   window closes by itself when combat starts and comes back afterwards while the choice is not made;
   closed by the player, it does not come back by itself (even after /reload) until the next login: the
   tracker and `/qf route` open it again.

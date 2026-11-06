@@ -16,8 +16,11 @@ local addonName, Q = ...
 -- éclairci, image plus lumineuse. Clic sur une carte = « Y aller » ; en bas « Garder la route
 -- prévue » (suite par défaut) et « Plus tard » (Échap et la croix aussi) : le chapitre reste en
 -- attente, le suivi le rappelle et /qf route rouvre le choix.
--- Clavier (fenêtre ouverte, hors combat) : flèches gauche / droite et Tab (Maj+Tab) passent d'une carte
--- à l'autre, Entrée choisit, Échap = « Plus tard » ; toutes les autres touches passent au jeu.
+-- Clavier (fenêtre ouverte, hors combat) : flèches gauche / droite passent d'une carte à l'autre ; après
+-- une flèche seulement, Tab (Maj+Tab) aussi et Entrée choisit la carte active (sinon Entrée et Tab
+-- passent au jeu : le joueur qui tape Entrée pour écrire ne choisit rien sans avoir lu ; la carte
+-- active par défaut et le survol ne valent pas accord). Échap = « Plus tard » ; toutes les autres
+-- touches passent au jeu, et chaque relâchement de touche aussi.
 --
 -- Combat : jamais ouverte ni créée en combat ; une demande en combat attend PLAYER_REGEN_ENABLED.
 -- Ouverte au début d'un combat (PLAYER_REGEN_DISABLED) : fermée, puis rouverte à la fin si le choix
@@ -424,6 +427,7 @@ function Popup:Create()
   -- Échap ferme la fenêtre comme « Plus tard » quand le clavier n'est pas à elle
   if type(UISpecialFrames) == "table" then table.insert(UISpecialFrames, "QuestifyRouteChoicePopup") end
   root:SetScript("OnKeyDown", function(f, key) Q.SafeCall(Popup.OnKey, Popup, f, key) end)
+  root:SetScript("OnKeyUp", function(f, key) Q.SafeCall(Popup.OnKeyUp, Popup, f, key) end)
   root:SetScript("OnHide", function(f) Q.SafeCall(Popup.OnFrameHidden, Popup, f) end)
   self.frame = root
   return root
@@ -708,6 +712,43 @@ function Popup:FillCard(c, data, w, h)
   end
 end
 
+-- Carte de repli après une erreur de FillCard : fond uni, nom traduit et « Y aller » seulement
+-- (liseré et halo de la conseillée gardés).
+function Popup:FillMinimal(c, data, w, h)
+  c.data = data
+  c.frame:SetSize(w, h)
+  c.art:SetSize(w - 2 * ART_INSET, h - 2 * ART_INSET)
+  local fill = CARD_FILL[self.theme and self.theme.key] or CARD_FILL.default
+  c.solid:SetColorTexture(fill[1], fill[2], fill[3], 1)
+  c.solid:Show()
+  c.image:Hide()
+  for _, tx in ipairs(c.tiles) do tx:Hide() end
+  c.artMode = "color"
+  c.badge.text:SetText("")
+  c.badge:Hide()
+  c.levelPill:Hide()
+  c.warning:SetText("")
+  c.warning:Hide()
+  c.reason:SetText("")
+  for _, row in ipairs(c.lines) do hideLine(row) end
+  for _, row in ipairs(c.highlights) do hideLine(row) end
+  c.hlHeader:Hide()
+  setColor(c.name, NAME_COLOR)
+  c.name:SetWidth(w - 2 * INNER)
+  c.name:SetText(data.title or data.id or "?")
+  c.name:ClearAllPoints()
+  c.name:SetPoint("TOPLEFT", c.content, "TOPLEFT", INNER, -math.floor(h * 0.42))
+  c.name:Show()
+  c.button:Show()
+  if data.recommended then
+    c.halo:Show()
+    c.pulse:Play()
+  else
+    c.pulse:Stop()
+    c.halo:Hide()
+  end
+end
+
 -- Liseré et lumière d'une carte : dorés pour la conseillée, éclaircis pour la carte active (survol
 -- ou clavier).
 function Popup:RefreshLook(c)
@@ -729,7 +770,7 @@ function Popup:RefreshLooks()
   end
 end
 
--- Carte active (survol, flèches, Tab) : Entrée la choisit.
+-- Carte active (survol, flèches, Tab) : Entrée la choisit, après une flèche (Popup.armed).
 function Popup:Focus(i)
   if not (self.cards and self.cards[i]) then return end
   self.focus = i
@@ -753,12 +794,20 @@ function Popup:Fill(fromId, cards)
   for i, data in ipairs(cards) do
     if data.recommended then self.focus = i end
   end
+  local failed
   for i = 1, math.max(n, #self.cardFrames) do
     if i <= n then
       local c = self:CardFrame(i)
       c.frame:ClearAllPoints()
       c.frame:SetPoint("TOPLEFT", self.window, "TOPLEFT", PAD + (i - 1) * (cw + GAP), -HEADER_H)
-      self:FillCard(c, cards[i], cw, ch)
+      -- une erreur dans une carte ne bloque pas le choix : carte minimale, erreur rapportée une fois
+      local ok, err = pcall(self.FillCard, self, c, cards[i], cw, ch)
+      c.fallback = not ok
+      if not ok then
+        failed = failed or err
+        local okMin, errMin = pcall(self.FillMinimal, self, c, cards[i], cw, ch)
+        if not okMin then failed = failed or errMin end
+      end
       c.frame:Show()
     else
       local c = self.cardFrames[i]
@@ -769,6 +818,7 @@ function Popup:Fill(fromId, cards)
     end
   end
   self:RefreshLooks()
+  if failed then Q:ReportError(failed) end
 end
 
 ---------------------------------------------------------------------------
@@ -785,25 +835,32 @@ function Popup:SetKeyboard(on)
   self.keyboard = on
 end
 
+-- Entrée et Tab ne sont pris qu'après une flèche depuis l'ouverture (self.armed).
 function Popup:OnKey(f, key)
   -- en combat la propagation ne se règle plus (fonction protégée) : la fenêtre est déjà fermée
   if inCombat() then return end
   local handled = true
   if key == "ESCAPE" then
     self:Later()
-  elseif key == "RIGHT" then
-    self:MoveFocus(1)
-  elseif key == "LEFT" then
-    self:MoveFocus(-1)
-  elseif key == "TAB" then
+  elseif key == "RIGHT" or key == "LEFT" then
+    self.armed = true
+    self:MoveFocus(key == "RIGHT" and 1 or -1)
+  elseif key == "TAB" and self.armed then
     self:MoveFocus((IsShiftKeyDown and IsShiftKeyDown()) and -1 or 1)
-  elseif key == "ENTER" or key == "NUMPADENTER" then
+  elseif (key == "ENTER" or key == "NUMPADENTER") and self.armed then
     local card = self.cards and self.cards[self.focus or 0]
     if card then self:Choose(card.id) end
   else
     handled = false
   end
   if f.SetPropagateKeyboardInput then pcall(f.SetPropagateKeyboardInput, f, not handled) end
+end
+
+-- Relâchement : toujours transmis au jeu (une touche de déplacement relâchée après une flèche ne
+-- reste pas enfoncée). Rien en combat (propagation protégée ; la fenêtre est alors fermée).
+function Popup:OnKeyUp(f)
+  if inCombat() then return end
+  if f.SetPropagateKeyboardInput then pcall(f.SetPropagateKeyboardInput, f, true) end
 end
 
 ---------------------------------------------------------------------------
@@ -829,6 +886,7 @@ function Popup:Open(fromId, manual)
   end
   self.resume = nil
   self.fromId, self.manual = fromId, manual
+  self.armed = false   -- aucune flèche depuis l'ouverture : Entrée et Tab passent au jeu
   self.cards = Q.RouteChoice:Rank(options)
   local f = self:Create()
   local was = f:IsShown()

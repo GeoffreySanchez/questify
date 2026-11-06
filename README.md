@@ -1,7 +1,7 @@
 # Questify
 
-Guide de leveling **gratuit et open source** pour **World of Warcraft: Forever** (niveaux 1 à 30).
-*A **free and open-source** leveling guide for **World of Warcraft: Forever** (levels 1 to 30).*
+A **free and open-source** leveling guide for **World of Warcraft: Forever** (levels 1 to 60).
+*Guide de leveling **gratuit et open source** pour **World of Warcraft: Forever** (niveaux 1 à 60).*
 
 ## Installation rapide / Quick install
 

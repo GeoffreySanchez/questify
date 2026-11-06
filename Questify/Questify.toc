@@ -1,9 +1,9 @@
 ## Interface: 16001
 ## Title: Questify
-## Notes: Free leveling guide for World of Warcraft: Forever (1-30).
-## Notes-frFR: Guide de leveling gratuit pour World of Warcraft: Forever (1-30).
+## Notes: Free leveling guide for World of Warcraft: Forever (1-60).
+## Notes-frFR: Guide de leveling gratuit pour World of Warcraft: Forever (1-60).
 ## Author: Questify contributors
-## Version: 0.3.0
+## Version: 0.4.0
 ## IconTexture: Interface\Icons\INV_Misc_Book_09
 ## OptionalDeps: QuestieDB, TomTom, WaypointUI, ShortestPathForever
 ## SavedVariables: QuestifyDB

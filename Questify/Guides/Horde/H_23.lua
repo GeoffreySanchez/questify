@@ -2,17 +2,16 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 31 étapes, niveau final 52.00, ~62061 xp/h, 149 min.
+-- Simulation : 32 étapes, niveau final 52.00, ~61743 xp/h, 150 min.
 Q:RegisterGuide({
   id = "H_23",
   title = "Blasted Lands",
   faction = "Horde",
   minLevel = 51, maxLevel = 52,
   next = "H_24",
-  sim = { steps = 31, endLevel = 52.00, xpPerHour = 62061, minutes = 149 },
+  sim = { steps = 32, endLevel = 52.00, xpPerHour = 61743, minutes = 150 },
   steps = {
-    { "note", "Not running Maraudon? Abandon Twisted Evils, Vyletongue Corruption", optional = true, dungeon = "Maraudon" },
-    { "note", "Not running Zul'Farrak? Abandon Divino-matic Rod, Scarab Shells, Troll Temper", optional = true, dungeon = "Zul'Farrak" },
+    { "note", "Not running Zul'Farrak? Abandon Divino-matic Rod", optional = true, dungeon = "Zul'Farrak" },
     { "hearth", 1434 }, -- pierre de foyer
     { "goto", 1434, 32.54, 29.35, note = "Flight master" }, -- déplacement
     { "fly", 1435, node = 56, note = "Stonard, Swamp of Sorrows" }, -- vol
@@ -34,13 +33,15 @@ Q:RegisterGuide({
     { "complete", 2585, at = { 1419, 47.8, 20.03 } }, -- The Decisive Striker (lvl 50, ~4700 xp, sim lvl 51)
     { "complete", 2521, at = { 1419, 47.73, 19.9 } }, -- To Serve Kum'isha (lvl 55, ~8450 xp, sim lvl 51)
     { "turnin", 2581, xp = 4700 }, -- Snickerfang Jowls (lvl 50, ~4700 xp, sim lvl 51)
-    { "turnin", 2583, xp = 4700 }, -- A Boar's Vitality (lvl 50, ~4700 xp, sim lvl 51)
     { "turnin", 2585, xp = 4700 }, -- The Decisive Striker (lvl 50, ~4700 xp, sim lvl 51)
+    { "turnin", 2583, xp = 4700 }, -- A Boar's Vitality (lvl 50, ~4700 xp, sim lvl 51)
     { "turnin", 2601, xp = 4700 }, -- The Basilisk's Bite (lvl 50, ~4700 xp, sim lvl 51)
     { "turnin", 2603, xp = 4700 }, -- Vulture's Vigor (lvl 50, ~4700 xp, sim lvl 51)
     { "complete", 3501, at = { 1419, 65.34, 20.37 } }, -- Everything Counts In Large Amounts (lvl 55, ~5650 xp, sim lvl 51)
+    { "accept", 81956 }, -- Conjurer's Codex (lvl 45, ~0 xp, sim lvl 51)
+    { "complete", 81956, at = { 1419, 55.43, 32.3 } }, -- Conjurer's Codex (lvl 45, ~0 xp, sim lvl 51)
     { "turnin", 2521, xp = 8450 }, -- To Serve Kum'isha (lvl 55, ~8450 xp, sim lvl 51)
     { "turnin", 3501, xp = 5650 }, -- Everything Counts In Large Amounts (lvl 55, ~5650 xp, sim lvl 51)
-    { "level", 52, at = { 1419, 46.02, 36.2 }, note = "About 165 more mobs here (Helboar, level 52)" }, -- farm de niveau
+    { "level", 52, at = { 1419, 46.02, 36.2 }, note = "About 166 more mobs here (Helboar, level 52)" }, -- farm de niveau
   },
 })

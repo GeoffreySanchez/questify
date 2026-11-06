@@ -2,17 +2,17 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 53 étapes, niveau final 60.00, ~72167 xp/h, 174 min.
+-- Simulation : 53 étapes, niveau final 60.00, ~72497 xp/h, 173 min.
 Q:RegisterGuide({
   id = "H_30",
   title = "Silithus",
   faction = "Horde",
   minLevel = 59, maxLevel = 60,
-  sim = { steps = 53, endLevel = 60.00, xpPerHour = 72167, minutes = 174 },
+  sim = { steps = 53, endLevel = 60.00, xpPerHour = 72497, minutes = 173 },
   steps = {
     { "note", "Not running Blackrock Depths? Abandon The Heart of the Mountain", optional = true, dungeon = "Blackrock Depths" },
-    { "hearth", 1452 }, -- pierre de foyer
-    { "goto", 1452, 60.47, 36.3, note = "Flight master" }, -- déplacement
+    { "hearth", 1447 }, -- pierre de foyer
+    { "goto", 1454, 45.12, 63.89, note = "Flight master" }, -- déplacement
     { "fly", 1444, node = 42, note = "Camp Mojache, Feralas" }, -- vol
     { "fp", 1451, 48.68, 36.67 }, -- point de vol
     { "accept", 9416 }, -- Report to General Kirika (lvl 60, ~6600 xp, sim lvl 59)
@@ -62,6 +62,6 @@ Q:RegisterGuide({
     { "turnin", 8283, xp = 8050 }, -- Wanted - Deathclasp, Terror of the Sands (lvl 59, ~8050 xp, sim lvl 59)
     { "turnin", 8282, xp = 6200 }, -- Noggle's Lost Satchel (lvl 58, ~6200 xp, sim lvl 59)
     { "turnin", 8323, xp = 6400 }, -- True Believers (lvl 59, ~6400 xp, sim lvl 59)
-    { "level", 60, at = { 1451, 65.55, 74.85 }, note = "About 96 more mobs here (Rock Stalker, level 58)" }, -- farm de niveau
+    { "level", 60, at = { 1451, 65.55, 74.85 }, note = "About 95 more mobs here (Rock Stalker, level 58)" }, -- farm de niveau
   },
 })

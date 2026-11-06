@@ -222,7 +222,8 @@ return {
     t.eq(Q.Guides:MainMap("H_04"), 1413, "Southern Barrens: the most used map of the steps")
     t.eq(Q.Guides:MainMap("A_DwarfGnome_01"), 1426, "Coldridge Valley: Dun Morogh")
     local sm = Q.Guides:StepMaps("A_03")
-    t.eq(sm[1].mapId, 1431); t.eq(sm[1].count, 27)
+    -- carte la plus présente d'abord (le nombre exact d'étapes change à chaque régénération des guides)
+    t.eq(sm[1].mapId, 1431); t.ok(sm[2] == nil or sm[1].count >= sm[2].count, "sorted by count")
     t.eq(Q.Guides:MainMap("NOPE"), nil)
     for _, g in ipairs(Q.Guides:All()) do
       local used = {}

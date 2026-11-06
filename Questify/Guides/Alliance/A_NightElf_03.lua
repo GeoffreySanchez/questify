@@ -2,15 +2,15 @@ local addonName, Q = ...
 -- Généré par tools/routebuilder (générateur de routes de Questify). Ne pas modifier à la main :
 -- corriger tools/routebuilder/plans.lua ou overrides.lua, puis relancer tools/routebuilder/build.lua.
 -- Source : QuestieDB commit 80866960788084ae1592abf66a08f0d306458a95, généré le 2026-11-06.
--- Simulation : 161 étapes, niveau final 19.27, ~26043 xp/h, 246 min.
+-- Simulation : 162 étapes, niveau final 20.00, ~25463 xp/h, 288 min.
 Q:RegisterGuide({
   id = "A_NightElf_03",
   title = "Darkshore",
   faction = "Alliance",
   races = { "NightElf" },
-  minLevel = 11, maxLevel = 19,
+  minLevel = 11, maxLevel = 20,
   nextByRace = { NightElf = "A_02" },
-  sim = { steps = 161, endLevel = 19.27, xpPerHour = 26043, minutes = 246 },
+  sim = { steps = 162, endLevel = 20.00, xpPerHour = 25463, minutes = 288 },
   steps = {
     { "accept", 983 }, -- Buzzbox 827 (lvl 10, ~840 xp, sim lvl 12)
     { "sethearth", 1439, 37.04, 44.13 }, -- lier la pierre de foyer
@@ -173,5 +173,6 @@ Q:RegisterGuide({
     { "complete", 994, at = { 1439, 41.92, 81.76 } }, -- Escape Through Force (lvl 22, ~1750 xp, sim lvl 19)
     { "turnin", 994, xp = 1750 }, -- Escape Through Force (lvl 22, ~1750 xp, sim lvl 19)
     { "accept", 990 }, -- Trek to Ashenvale (lvl 19, ~0 xp, sim lvl 19)
+    { "level", 20, at = { 1439, 36.65, 44.24 }, note = "About 126 more mobs here (Cat, level 18)" }, -- farm de niveau
   },
 })
